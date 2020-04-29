@@ -4,6 +4,8 @@ import com.juice.timetable.utils.*;
 
 import org.junit.Test;
 
+import java.text.ParseException;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -17,10 +19,17 @@ public class ExampleUnitTest {
         assertEquals(4, 2 + 2);
     }
     @Test
-    public void Coursetest(){
-        //ParseCourse.parseAllCourse();
-        //ParseCourse.parseCourse();
+    public void AllCourseTest(){
+        ParseAllWeek.parseAllCourse();
+    }
+    @Test
+    public void OneCourseTest(){
+        ParseOneWeek.parseCourse();
 
+    }
+    @Test
+    public void leaveTest() throws ParseException {
+        ParseCheckIn.getMySignIn();
     }
 
 }
