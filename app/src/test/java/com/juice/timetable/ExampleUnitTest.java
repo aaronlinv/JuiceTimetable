@@ -1,5 +1,7 @@
 package com.juice.timetable;
 
+import com.juice.timetable.utils.*;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -14,4 +16,11 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+    @Test
+    public void Coursetest(){
+        //ParseCourse.parseAllCourse();
+        //ParseCourse.parseCourse();
+
+    }
+
 }
