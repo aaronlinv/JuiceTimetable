@@ -1,6 +1,8 @@
 package com.juice.timetable;
 
-import com.juice.timetable.utils.*;
+import com.juice.timetable.data.ParseAllWeek;
+import com.juice.timetable.data.ParseCheckIn;
+import com.juice.timetable.data.ParseOneWeek;
 
 import org.junit.Test;
 
@@ -18,18 +20,23 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+
     @Test
-    public void AllCourseTest(){
+    public void AllCourseTest() {
+
         ParseAllWeek.parseAllCourse();
     }
+
     @Test
-    public void OneCourseTest(){
+    public void OneCourseTest() {
         ParseOneWeek.parseCourse();
 
     }
+
     @Test
     public void leaveTest() throws ParseException {
-        ParseCheckIn.getMySignIn();
+        ParseCheckIn.getMySigned();
+        ParseCheckIn.getClassUnSigned();
     }
 
 }
