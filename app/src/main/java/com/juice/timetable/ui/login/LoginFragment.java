@@ -1,4 +1,4 @@
-package com.juice.timetable.ui.gallery;
+package com.juice.timetable.ui.login;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.juice.timetable.R;
 
-public class GalleryFragment extends Fragment {
+public class LoginFragment extends Fragment {
 
-    private GalleryViewModel galleryViewModel;
+    private LoginViewModel loginViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        loginViewModel =
+                ViewModelProviders.of(this).get(LoginViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
+        final TextView textView = root.findViewById(R.id.text_slideshow);
+        loginViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

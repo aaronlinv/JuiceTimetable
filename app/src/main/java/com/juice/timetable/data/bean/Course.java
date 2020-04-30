@@ -19,15 +19,11 @@ public class Course {
     // 这门课是在星期几上
     private Integer couWeek;
 
-    private Integer couStartNode;
-    private Integer couNodeCount;
-
-    private String couAllWeek;
-
     // 这门课是从当天的第几节课开始
-    private Integer couStartNodes;
+    private Integer couStartNode;
     // 这门课是从当天的第几节课结束
-    private Integer couEndNodes;
+    private Integer couEndNode;
+
     // 单双周的判断
     private Integer couWeekType;
     // 这门课程开始于第几周
