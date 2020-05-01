@@ -113,6 +113,7 @@ public class LoginFragment extends Fragment {
         binding.etLeavePassword.addTextChangedListener(textWatcher);//监听里面的内容
     }
 
+
     /**
      * 点击按钮，提示未输入学号
      */
