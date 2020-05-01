@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.home.CourseFragment">
+        tools:context=".ui.course.CourseFragment">
 
         <LinearLayout
             android:id="@+id/ll_week"
@@ -24,6 +24,7 @@
             android:id="@+id/sv_course"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
 
             <LinearLayout
                 android:id="@+id/ll_course"
@@ -40,7 +41,7 @@
                 </LinearLayout>
 
                 <com.juice.timetable.ui.course.CourseView
-                    android:id="@+id/textView2"
+                    android:id="@+id/course_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
