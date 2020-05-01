@@ -72,8 +72,13 @@ public class ParseAllWeek {
                 }
             }
         }
+        Long couID = 0L;
         for (Course cou : couList) {
 //            System.out.println(cou);
+            cou.setCouID(couID);
+            cou.setOnlyID(couID);
+            couID++;
+
         }
 
         //将table左边的表格标签里的内容提取（）
@@ -99,8 +104,8 @@ public class ParseAllWeek {
                             for (int a = 0; a < len_Br; a++) {
                                 if (tr.split("<br>")[a].contains("班")) {
                                     String couname = tr.split("<br>")[a];
-                                    /*//使用list对课程名字进行判断，相同的名字存储在同一个list
-                                    if(couname.equals(couName)){}*/
+                                    //使用list对课程名字进行判断，相同的名字存储在同一个list
+
                                     Course course = null;
                                     // 循环List 找到 本轮解析中对应的课程对象
                                     for (Course cou : couList) {

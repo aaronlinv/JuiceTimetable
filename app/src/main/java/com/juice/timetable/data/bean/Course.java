@@ -11,7 +11,7 @@ package com.juice.timetable.data.bean;
 public class Course {
 
     private Long couID;
-
+    private Long onlyID;
     private String couName;
     private String couRoom;
     private String couTeacher;
@@ -39,6 +39,14 @@ public class Course {
 
     public void setCouID(Long couID) {
         this.couID = couID;
+    }
+
+    public Long getOnlyID() {
+        return onlyID;
+    }
+
+    public void setOnlyID(Long onlyID) {
+        this.onlyID = onlyID;
     }
 
     public String getCouName() {
@@ -125,6 +133,7 @@ public class Course {
     public String toString() {
         return "Course{" +
                 "couID=" + couID +
+                ", onlyID=" + onlyID +
                 ", couName='" + couName + '\'' +
                 ", couRoom='" + couRoom + '\'' +
                 ", couTeacher='" + couTeacher + '\'' +

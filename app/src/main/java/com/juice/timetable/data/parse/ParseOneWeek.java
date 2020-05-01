@@ -1,11 +1,16 @@
 package com.juice.timetable.data.parse;
 
+
+import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.utils.ReadFile;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <pre>
@@ -19,22 +24,9 @@ import org.jsoup.select.Elements;
  */
 
 public class ParseOneWeek {
-    //课程对应的ID（与完整的课表相同ID的课表）
-    private static Long couID;
-    //课程名字
-    private static String couName;
-    //教室
-    private static String couRoom;
-    //第几个星期
+    private static List<OneWeekCourse> couList = new ArrayList<>();
     private static Integer week;
-    //星期几
-    private static Integer dayOfWeek;
-    //单双周
-    private static Integer typeOfWeek;
-    //第几节开始
-    private static Integer startNode;
-    //第几节结束
-    private static Integer endNode;
+
 
     /**
      * 解析周课表
@@ -65,76 +57,55 @@ public class ParseOneWeek {
                     for (int b = 1; b < len_Td; b++) {
                         //Elements ele1 = el.getElementsByTag("td").eq(b);
                         //System.out.println(ele1.html());
-
+                        OneWeekCourse owc = new OneWeekCourse();
                         //去除为空的课程
                         if (!"".equals(el.getElementsByTag("td").eq(b).text())) {
                             //couName,couRoom,单双周的判断
                             if (el.getElementsByTag("td").eq(b).text().contains("[单]")) {
-                                couName = el.getElementsByTag("td").eq(b).html().split("<br>")[0];
-                                System.out.println(couName);
-                                typeOfWeek = 1;
-                                System.out.println(typeOfWeek);
+                                String couName = el.getElementsByTag("td").eq(b).html().split("<br>")[0];
+                                owc.setCouName(couName);
+                                owc.setTypeOfWeek(1);
                                 String s1 = el.getElementsByTag("td").eq(b).html().split("<br>")[1];
-                                couRoom = s1.substring(4, s1.length() - 1);
-                                System.out.println("教室：" + couRoom);
+                                String couRoom = s1.substring(4, s1.length() - 1);
+                                owc.setCouRoom(couRoom);
                             } else if (el.getElementsByTag("td").eq(b).text().contains("[双]")) {
-                                couName = el.getElementsByTag("td").eq(b).html().split("<br>")[0];
-                                System.out.println(couName);
-                                typeOfWeek = 2;
-                                System.out.println(typeOfWeek);
+                                String couName = el.getElementsByTag("td").eq(b).html().split("<br>")[0];
+                                owc.setCouName(couName);
+                                owc.setTypeOfWeek(2);
                                 String s1 = el.getElementsByTag("td").eq(b).html().split("<br>")[1];
-                                couRoom = s1.substring(4, s1.length() - 1);
-                                System.out.println("教室：" + couRoom);
+                                String couRoom = s1.substring(4, s1.length() - 1);
+                                owc.setCouRoom(couRoom);
                             } else {
-                                couName = el.getElementsByTag("td").eq(b).html().split("<br>")[0];
-                                System.out.println(couName);
-                                typeOfWeek = 0;
-                                System.out.println(typeOfWeek);
+                                String couName = el.getElementsByTag("td").eq(b).html().split("<br>")[0];
+                                owc.setCouName(couName);
+                                owc.setTypeOfWeek(0);
                                 String s1 = el.getElementsByTag("td").eq(b).html().split("<br>")[1];
-                                couRoom = s1.substring(1, s1.length() - 1);
-                                System.out.println("教室：" + couRoom);
+                                String couRoom = s1.substring(1, s1.length() - 1);
+                                owc.setCouRoom(couRoom);
                             }
                             //标签中的id，例如id为11，第一个1是指从第1节课开始上课，第二个1为星期一
                             String id = el.getElementsByTag("td").eq(b).attr("id");
-                            dayOfWeek = Integer.valueOf(id.substring(id.length() - 1, id.length()));
-                            System.out.println("星期" + dayOfWeek);
-                            startNode = Integer.valueOf(id.substring(0, id.length() - 1));
-                            System.out.println("从第" + startNode + "节课开始");
+                            Integer dayOfWeek = Integer.valueOf(id.substring(id.length() - 1, id.length()));
+                            owc.setDayOfWeek(dayOfWeek);
+
+                            Integer startNode = Integer.valueOf(id.substring(0, id.length() - 1));
+                            owc.setStartNode(startNode);
                             Integer time = Integer.valueOf(el.getElementsByTag("td").eq(b).attr("rowspan"));
-                            endNode = startNode + time - 1;
-                            System.out.println("从第" + endNode + "节课结束");
+                            Integer endNode = startNode + time - 1;
+                            owc.setEndNode(endNode);
+                            couList.add(owc);
                         }
 
 
                     }
                 }
             }
+            // 解析结束
+            for (OneWeekCourse course : couList) {
+                System.out.println(course);
+            }
 
         }
-    }
-
-    public static Long getCouID() {
-        return couID;
-    }
-
-    public static void setCouID(Long couID) {
-        ParseOneWeek.couID = couID;
-    }
-
-    public static String getCouName() {
-        return couName;
-    }
-
-    public static void setCouName(String couName) {
-        ParseOneWeek.couName = couName;
-    }
-
-    public static String getCouRoom() {
-        return couRoom;
-    }
-
-    public static void setCouRoom(String couRoom) {
-        ParseOneWeek.couRoom = couRoom;
     }
 
     public static Integer getWeek() {
@@ -143,37 +114,5 @@ public class ParseOneWeek {
 
     public static void setWeek(Integer week) {
         ParseOneWeek.week = week;
-    }
-
-    public static Integer getDayOfWeek() {
-        return dayOfWeek;
-    }
-
-    public static void setDayOfWeek(Integer dayOfWeek) {
-        ParseOneWeek.dayOfWeek = dayOfWeek;
-    }
-
-    public static Integer getTypeOfWeek() {
-        return typeOfWeek;
-    }
-
-    public static void setTypeOfWeek(Integer typeOfWeek) {
-        ParseOneWeek.typeOfWeek = typeOfWeek;
-    }
-
-    public static Integer getStartNode() {
-        return startNode;
-    }
-
-    public static void setStartNode(Integer startNode) {
-        ParseOneWeek.startNode = startNode;
-    }
-
-    public static Integer getEndNode() {
-        return endNode;
-    }
-
-    public static void setEndNode(Integer endNode) {
-        ParseOneWeek.endNode = endNode;
     }
 }

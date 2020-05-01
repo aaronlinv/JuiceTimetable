@@ -1,8 +1,8 @@
 package com.juice.timetable;
 
-import com.juice.timetable.data.ParseAllWeek;
-import com.juice.timetable.data.ParseCheckIn;
-import com.juice.timetable.data.ParseOneWeek;
+import com.juice.timetable.data.parse.ParseAllWeek;
+import com.juice.timetable.data.parse.ParseCheckIn;
+import com.juice.timetable.data.parse.ParseOneWeek;
 
 import org.junit.Test;
 
