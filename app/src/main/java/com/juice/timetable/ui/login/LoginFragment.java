@@ -10,11 +10,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.juice.timetable.R;
 import com.juice.timetable.databinding.FragmentSlideshowBinding;
 
 public class LoginFragment extends Fragment {
@@ -24,15 +22,17 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
-        return root;
+//        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
+//        return root;
+        binding = FragmentSlideshowBinding.inflate(getLayoutInflater());//binding初始化
+//        binding = DataBindingUtil.setContentView(requireActivity(), R.layout.fragment_slideshow);
+        return binding.getRoot();
     }
 
 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        binding = FragmentSlideshowBinding.inflate(getLayoutInflater());//binding初始化
-        binding = DataBindingUtil.setContentView(requireActivity(), R.layout.fragment_slideshow);
+
         JudgeNotInput();
     }
 
