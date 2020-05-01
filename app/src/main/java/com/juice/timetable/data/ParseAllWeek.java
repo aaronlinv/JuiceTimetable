@@ -47,7 +47,7 @@ public class ParseAllWeek {
      */
     public static void parseAllCourse() {
         //从文档中导入完整课表txt
-        String i = ReadFile.readToString("C:\\Users\\14989\\Desktop\\网页内容\\2018完整课表.html");
+        String i = ReadFile.readToString("C:\\Users\\14989\\Desktop\\网页内容\\完整课表.html");
         //Jsoup解析
         Document document = Jsoup.parse(i);
         //从div中提取出文本，内容是课表与名字
@@ -96,47 +96,55 @@ public class ParseAllWeek {
                 Elements ele1 = element1.getElementsByTag("tr").eq(l);
                 //System.out.println(ele1.html());
                 for (Element el1 : ele1) {
-                    //tr标签中td的数量
-                    String tr = el1.getElementsByTag("td").html();
+
                     Integer len_Td1 = el1.getElementsByTag("td").size();
                     for (int j = 1; j < len_Td1; j++) {
                         //去除为空的课程
                         if (!"".equals(el1.getElementsByTag("td").eq(j).text())) {
-                            //Elements e1 = el1.getElementsByTag("td").eq(j);
+                            String tr = el1.getElementsByTag("td").eq(j).html();
+                            //tr标签中td的数量
+                            //String tr = el1.getElementsByTag("td").html();
                             //System.out.println(e1.html());
                             Integer len_Br = tr.split("<br>").length;
                             //System.out.println(tr.split("<br>")[0]+"======");
                             for (int a = 0; a < len_Br; a++) {
                                 if (tr.split("<br>")[a].contains("班")) {
                                     String couname = tr.split("<br>")[a];
-                                    //if(couname.equals(couName)){}
-                                    System.out.println(couname);
+                                    /*//使用list对课程名字进行判断，相同的名字存储在同一个list
+                                    if(couname.equals(couName)){}*/
+                                    System.out.println("课程名字：" + couname + "===");
                                     if (tr.split("<br>")[a + 1].contains("[单]")) {
                                         couWeekType = 1;
-                                        System.out.println("单双周:" + couWeekType);
-                                        couRoom = tr.split("<br>")[a + 1].substring(4, tr.split("<br>")[a + 1].length() - 2);
-                                        System.out.println("教室:" + couRoom);
+                                        System.out.println("单双周:" + couWeekType + "===");
+                                        //使用list后，对是否已经输入过教室进行判断，无则输入，有则重新开一个list存储
+                                        couRoom = tr.split("<br>")[a + 1].substring(4, tr.split("<br>")[a + 1].length() - 1);
+                                        System.out.println("教室:" + couRoom + "===");
                                     } else if (tr.split("<br>")[a + 1].contains("[双]")) {
                                         couWeekType = 2;
-                                        System.out.println("单双周:" + couWeekType);
-                                        couRoom = tr.split("<br>")[a + 1].substring(4, tr.split("<br>")[a + 1].length() - 2);
-                                        System.out.println("教室:" + couRoom);
+                                        System.out.println("单双周:" + couWeekType + "===");
+                                        //使用list后，对是否已经输入过教室进行判断，无则输入，有则重新开一个list存储
+                                        couRoom = tr.split("<br>")[a + 1].substring(4, tr.split("<br>")[a + 1].length() - 1);
+                                        System.out.println("教室:" + couRoom + "===");
                                     } else {
                                         couWeekType = 0;
-                                        System.out.println("单双周:" + couWeekType);
-                                        couRoom = tr.split("<br>")[a + 1].substring(1, tr.split("<br>")[a + 1].length() - 2);
-                                        System.out.println("教室:" + couRoom);
+                                        System.out.println("单双周:" + couWeekType + "===");
+                                        //使用list后，对是否已经输入过教室进行判断，无则输入，有则重新开一个list存储
+                                        couRoom = tr.split("<br>")[a + 1].substring(1, tr.split("<br>")[a + 1].length() - 1);
+                                        System.out.println("教室:" + couRoom + "===");
                                     }
+                                    String id = el1.getElementsByTag("td").eq(j).attr("id");
+                                    couWeek = Integer.valueOf(id.substring(id.length() - 1, id.length()));
+                                    System.out.println("星期" + couWeek);
+                                    couStartNode = Integer.valueOf(id.substring(0, id.length() - 1));
+                                    System.out.println("从第" + couStartNode + "节课开始");
+                                    Integer time = Integer.valueOf(el1.getElementsByTag("td").eq(j).attr("rowspan"));
+                                    couEndNode = couStartNode + time - 1;
+                                    System.out.println("从第" + couEndNode + "节课结束");
                                 }
-                                String id = el1.getElementsByTag("td").eq(j).attr("id");
-                                couWeek = Integer.valueOf(id.substring(id.length() - 1, id.length()));
-                                System.out.println("星期" + couWeek);
-                                couStartNode = Integer.valueOf(id.substring(0, id.length() - 1));
-                                System.out.println("从第" + couStartNode + "节课开始");
-                                Integer time = Integer.valueOf(el1.getElementsByTag("td").eq(j).attr("rowspan"));
-                                couEndNode = couStartNode + time - 1;
-                                System.out.println("从第" + couEndNode + "节课结束");
+
+
                             }
+
                         }
 
 
