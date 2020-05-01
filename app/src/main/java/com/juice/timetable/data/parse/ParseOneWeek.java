@@ -1,4 +1,4 @@
-package com.juice.timetable.data;
+package com.juice.timetable.data.parse;
 
 import com.juice.timetable.utils.ReadFile;
 
