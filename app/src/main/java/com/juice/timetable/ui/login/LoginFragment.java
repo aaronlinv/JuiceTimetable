@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.juice.timetable.databinding.FragmentSlideshowBinding;
+import com.juice.timetable.utils.LogUtils;
 
 /**
  *
@@ -105,7 +106,7 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                LogUtils.getInstance().d("");
             }
         };
         binding.etSno.addTextChangedListener(textWatcher);//监听里面的内容
