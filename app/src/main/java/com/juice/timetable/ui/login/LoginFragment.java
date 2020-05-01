@@ -96,7 +96,6 @@ public class LoginFragment extends Fragment {
                 if (!sno.isEmpty() && !edu.isEmpty() && !leave.isEmpty()) {
                     binding.btnGo.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
-
                             Toast.makeText(requireActivity(), "都不为空", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -146,7 +145,7 @@ public class LoginFragment extends Fragment {
             }
         });
     }
-
+/*
     private Integer transferSno(Integer i) {
         return i;
     }
@@ -158,6 +157,6 @@ public class LoginFragment extends Fragment {
     private String transferLeavePassword(String str) {
         return str;
     }
-
+*/
 
 }
