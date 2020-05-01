@@ -1,6 +1,12 @@
 package com.juice.timetable;
 
+import com.juice.timetable.data.parse.ParseAllWeek;
+import com.juice.timetable.data.parse.ParseCheckIn;
+import com.juice.timetable.data.parse.ParseOneWeek;
+
 import org.junit.Test;
+
+import java.text.ParseException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,4 +20,23 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+
+    @Test
+    public void AllCourseTest() {
+
+        ParseAllWeek.parseAllCourse();
+    }
+
+    @Test
+    public void OneCourseTest() {
+        ParseOneWeek.parseCourse();
+
+    }
+
+    @Test
+    public void leaveTest() throws ParseException {
+        ParseCheckIn.getMySigned();
+        ParseCheckIn.getClassUnSigned();
+    }
+
 }
