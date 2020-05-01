@@ -17,7 +17,7 @@ import com.juice.timetable.databinding.FragmentSlideshowBinding;
 import com.juice.timetable.utils.LogUtils;
 
 /**
- *
+ *修改认证页面相应功能实现类
  */
 public class LoginFragment extends Fragment {
     private FragmentSlideshowBinding binding;
@@ -58,7 +58,7 @@ public class LoginFragment extends Fragment {
     }
 
     /**
-     * 监听文本内容，对学号，教务网密码，请假系统密码未空的情况做出相应的判断
+     * 监听文本内容，对学号，教务网密码，请假系统密码相应的判断
      */
     private void btnPromptNull() {
         TextWatcher textWatcher = new TextWatcher() {
@@ -68,39 +68,7 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String sno = binding.etSno.getText().toString().trim();
-                String edu = binding.etEduPassword.getText().toString().trim();
-                String leave = binding.etLeavePassword.getText().toString().trim();
-
-                if (sno.isEmpty() && edu.isEmpty() && leave.isEmpty()) {
-                    snoNull();
-                }
-                if (sno.isEmpty() && edu.isEmpty() && !leave.isEmpty()) {
-                    snoNull();
-                }
-                if (sno.isEmpty() && !edu.isEmpty() && leave.isEmpty()) {
-                    snoNull();
-                }
-                if (sno.isEmpty() && !edu.isEmpty() && !leave.isEmpty()) {
-                    snoNull();
-                }
-                if (!sno.isEmpty() && edu.isEmpty() && leave.isEmpty()) {
-                    eduPasswordNull();
-                }
-                if (!sno.isEmpty() && edu.isEmpty() && !leave.isEmpty()) {
-                    eduPasswordNull();
-                }
-                if (!sno.isEmpty() && !edu.isEmpty() && leave.isEmpty()) {
-                    leavePasswordNull();
-                }
-                if (!sno.isEmpty() && !edu.isEmpty() && !leave.isEmpty()) {
-                    binding.btnGo.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            Toast.makeText(requireActivity(), "都不为空", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-
+                judgmentIsEmpty();
             }
 
             @Override
@@ -113,7 +81,42 @@ public class LoginFragment extends Fragment {
         binding.etLeavePassword.addTextChangedListener(textWatcher);//监听里面的内容
     }
 
+    private void judgmentIsEmpty() {
+        String sno = binding.etSno.getText().toString().trim();
+        final String edu = binding.etEduPassword.getText().toString().trim();
+        final String leave = binding.etLeavePassword.getText().toString().trim();
 
+        if (sno.isEmpty() && edu.isEmpty() && leave.isEmpty()) {
+            snoNull();
+        }
+        if (sno.isEmpty() && edu.isEmpty() && !leave.isEmpty()) {
+            snoNull();
+        }
+        if (sno.isEmpty() && !edu.isEmpty() && leave.isEmpty()) {
+            snoNull();
+        }
+        if (sno.isEmpty() && !edu.isEmpty() && !leave.isEmpty()) {
+            snoNull();
+        }
+        if (!sno.isEmpty() && edu.isEmpty() && leave.isEmpty()) {
+            eduPasswordNull();
+        }
+        if (!sno.isEmpty() && edu.isEmpty() && !leave.isEmpty()) {
+            eduPasswordNull();
+        }
+        if (!sno.isEmpty() && !edu.isEmpty() && leave.isEmpty()) {
+            leavePasswordNull();
+        }
+        if (!sno.isEmpty() && !edu.isEmpty() && !leave.isEmpty()) {
+            binding.btnGo.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    judgmentContent();
+
+                }
+            });
+        }
+
+    }
     /**
      * 点击按钮，提示未输入学号
      */
@@ -146,7 +149,73 @@ public class LoginFragment extends Fragment {
             }
         });
     }
-/*
+
+    /**
+     * 判断学号，教务网密码，请假系统密码，并弹出提示框相应的内容
+     */
+    private void judgmentContent() {
+        int sno = Integer.parseInt(binding.etSno.getText().toString());
+        final String edu = binding.etEduPassword.getText().toString().trim();
+        final String leave = binding.etLeavePassword.getText().toString().trim();
+        if (sno != transferSno(211706160) && !edu.equals(transferEduPassword("123"))
+                && !leave.equals(transferLeavePassword("123"))) {
+            snoError();
+        }
+        if (sno != transferSno(211706160) && !edu.equals(transferEduPassword("123"))
+                && leave.equals(transferLeavePassword("123"))) {
+            snoError();
+        }
+        if (sno != transferSno(211706160) && edu.equals(transferEduPassword("123"))
+                && !leave.equals(transferLeavePassword("123"))) {
+            snoError();
+        }
+        if (sno != transferSno(211706160) && edu.equals(transferEduPassword("123"))
+                && leave.equals(transferLeavePassword("123"))) {
+            snoError();
+        }
+        if (sno == transferSno(211706160) && !edu.equals(transferEduPassword("123"))
+                && !leave.equals(transferLeavePassword("123"))) {
+            eduPasswordError();
+        }
+        if (sno == transferSno(211706160) && !edu.equals(transferEduPassword("123"))
+                && leave.equals(transferLeavePassword("123"))) {
+            eduPasswordError();
+        }
+        if (sno == transferSno(211706160) && edu.equals(transferEduPassword("123"))
+                && !leave.equals(transferLeavePassword("123"))) {
+            leavePasswordError();
+        }
+        if (sno == transferSno(211706160) && edu.equals(transferEduPassword("123"))
+                && leave.equals(transferLeavePassword("123"))) {
+            Toast.makeText(requireActivity(), "验证成功", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * 提示框，提示“学号错误”
+     */
+    private void snoError() {
+        Toast.makeText(requireActivity(), "学号错误", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 提示框，提示“教务网密码错误”
+     */
+    private void eduPasswordError() {
+        Toast.makeText(requireActivity(), "教务网密码错误", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 提示框，提示“请假系统密码错误”
+     */
+    private void leavePasswordError() {
+        Toast.makeText(requireActivity(), "请假系统密码错误", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * @param i 数值型的学号
+     * @return 数值型学号
+     */
     private Integer transferSno(Integer i) {
         return i;
     }
@@ -158,6 +227,5 @@ public class LoginFragment extends Fragment {
     private String transferLeavePassword(String str) {
         return str;
     }
-*/
 
 }
