@@ -28,6 +28,7 @@ public class LoginFragment extends Fragment {
         return root;
     }
 
+
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         binding = FragmentSlideshowBinding.inflate(getLayoutInflater());//binding初始化
@@ -35,11 +36,15 @@ public class LoginFragment extends Fragment {
         JudgeNotInput();
     }
 
+
     private void JudgeNotInput() {
         allNull();
         btnPromptNull();
     }
 
+    /**
+     * 在什么都没输入时，提示学号未输入
+     */
     private void allNull() {
         String sno = binding.etSno.getText().toString().trim();
         String edu = binding.etEduPassword.getText().toString().trim();
