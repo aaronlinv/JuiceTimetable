@@ -15,6 +15,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.juice.timetable.databinding.FragmentSlideshowBinding;
 
+/**
+ *
+ */
 public class LoginFragment extends Fragment {
     private FragmentSlideshowBinding binding;
     private LoginViewModel loginViewModel;
@@ -32,7 +35,6 @@ public class LoginFragment extends Fragment {
 
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         JudgeNotInput();
     }
 
@@ -93,6 +95,7 @@ public class LoginFragment extends Fragment {
                 if (!sno.isEmpty() && !edu.isEmpty() && !leave.isEmpty()) {
                     binding.btnGo.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
+
                             Toast.makeText(requireActivity(), "都不为空", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -119,7 +122,6 @@ public class LoginFragment extends Fragment {
                 Toast.makeText(requireActivity(), "未输入学号", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     /**
@@ -143,5 +145,18 @@ public class LoginFragment extends Fragment {
             }
         });
     }
+
+    private Integer transferSno(Integer i) {
+        return i;
+    }
+
+    private String transferEduPassword(String str) {
+        return str;
+    }
+
+    private String transferLeavePassword(String str) {
+        return str;
+    }
+
 
 }
