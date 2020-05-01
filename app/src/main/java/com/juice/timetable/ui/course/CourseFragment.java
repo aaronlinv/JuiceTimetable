@@ -57,7 +57,7 @@ public class CourseFragment extends Fragment {
         for (int i = -1; i < 7; i++) {
             TextView textView = new TextView(requireContext().getApplicationContext());
             textView.setGravity(Gravity.CENTER);
-
+            textView.setTextColor(0xFF4B0082);
             textView.setWidth(0);
             LinearLayout.LayoutParams params;
 
@@ -96,14 +96,15 @@ public class CourseFragment extends Fragment {
             binding.llNode.addView(textView, params);
         }
 
-        // 尝试添加课程
-
-        for (int x = 1; x <= 7; x++) {
+        // 通过外部数据 尝试添加课程
+        // 未成功
+        for (int x = 4; x <= 7; x++) {
             for (int y = 1; y <= 11; y = y + 2) {
                 binding.courseView.addCourse(x, y);
             }
 
         }
+
         return binding.getRoot();
     }
 

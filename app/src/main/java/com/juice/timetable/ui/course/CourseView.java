@@ -1,6 +1,7 @@
 package com.juice.timetable.ui.course;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.text.TextPaint;
 import android.util.AttributeSet;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.juice.timetable.utils.LogUtils;
 
 /**
  * <pre>
@@ -30,6 +33,20 @@ public class CourseView extends FrameLayout {
     private int textLRMargin = textTBMargin;
     private int mTextColor = Color.WHITE;
     private int mTextSize = 12;
+
+
+    private int mWidth;
+    private int mHeight;
+
+    private int mRowCount = 7;
+    private int mColCount = 16;
+
+    private boolean mFirstDraw = false;
+
+    /**
+     * 行item的宽度根据view的总宽度自动平均分配
+     */
+    private boolean mRowItemWidthAuto = true;
 
     public CourseView(@NonNull Context context) {
         super(context);
@@ -110,5 +127,54 @@ public class CourseView extends FrameLayout {
 
     public int dip2px(float dpValue) {
         return (int) (0.5f + dpValue * getContext().getResources().getDisplayMetrics().density);
+    }
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
+
+
+        if (!mFirstDraw) {
+            // 通过这个添加 ，保证了课表宽度正常
+            initCourseItemView();
+            mFirstDraw = true;
+        }
+    }
+
+    /**
+     * 把数组中的数据全部添加到界面
+     */
+    private void initCourseItemView() {
+        removeAllViews();
+        LogUtils.getInstance().d("initCourseItemView执行了");
+
+
+        for (int x = 1; x <= 3; x++) {
+            for (int y = 1; y <= 11; y = y + 2) {
+                addCourse(x, y);
+            }
+
+        }
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        if (mRowItemWidthAuto) {
+            mWidth = w;
+            mRowItemWidth = mWidth / mRowCount;
+        } else {
+            mWidth = mRowItemWidth * mRowCount;
+        }
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        LogUtils.getInstance().d("调用onMeasure");
+
+        mHeight = mColItemHeight * mColCount;
+        int heightResult = MeasureSpec.makeMeasureSpec(mHeight, MeasureSpec.EXACTLY);
+
+        setMeasuredDimension(widthMeasureSpec, heightResult);
     }
 }
