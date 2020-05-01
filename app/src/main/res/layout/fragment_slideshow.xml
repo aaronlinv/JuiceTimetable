@@ -74,6 +74,7 @@
             android:layout_height="wrap_content"
             android:text="修改认证信息"
             android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
@@ -124,22 +125,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="登录"
+            android:text="更新认证信息"
+            android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/guideline6"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
             app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
-        <TextView
-            android:id="@+id/tv_user_item"
+        <Button
+            android:id="@+id/btn_user_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:shadowColor="@color/design_default_color_background"
             android:text="用户条款"
             android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/design_default_color_background"
+            android:textColorLink="@color/design_default_color_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
             app:layout_constraintTop_toTopOf="@+id/guideline6"
-            app:layout_constraintVertical_bias="0.9" />
+            app:layout_constraintVertical_bias="0.8" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

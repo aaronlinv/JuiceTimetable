@@ -14,10 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.juice.timetable.databinding.FragmentSlideshowBinding;
-import com.juice.timetable.utils.LogUtils;
 
 /**
- *修改认证页面相应功能实现类
+ * 修改认证页面相应功能实现类
  */
 public class LoginFragment extends Fragment {
     private FragmentSlideshowBinding binding;
@@ -73,7 +72,7 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                LogUtils.getInstance().d("");
+
             }
         };
         binding.etSno.addTextChangedListener(textWatcher);//监听里面的内容
@@ -81,10 +80,13 @@ public class LoginFragment extends Fragment {
         binding.etLeavePassword.addTextChangedListener(textWatcher);//监听里面的内容
     }
 
+    /**
+     * 判断是否为空，并提示相应信息
+     */
     private void judgmentIsEmpty() {
         String sno = binding.etSno.getText().toString().trim();
-        final String edu = binding.etEduPassword.getText().toString().trim();
-        final String leave = binding.etLeavePassword.getText().toString().trim();
+        String edu = binding.etEduPassword.getText().toString().trim();
+        String leave = binding.etLeavePassword.getText().toString().trim();
 
         if (sno.isEmpty() && edu.isEmpty() && leave.isEmpty()) {
             snoNull();
@@ -105,18 +107,22 @@ public class LoginFragment extends Fragment {
             eduPasswordNull();
         }
         if (!sno.isEmpty() && !edu.isEmpty() && leave.isEmpty()) {
-            leavePasswordNull();
+            binding.btnGo.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    preTwoJudge();
+                }
+            });
         }
         if (!sno.isEmpty() && !edu.isEmpty() && !leave.isEmpty()) {
             binding.btnGo.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    judgmentContent();
-
+                    preAllJudge();
                 }
             });
         }
 
     }
+
     /**
      * 点击按钮，提示未输入学号
      */
@@ -143,11 +149,47 @@ public class LoginFragment extends Fragment {
      * 点击按钮，提示未输入请假系统密码
      */
     private void leavePasswordNull() {
-        binding.btnGo.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Toast.makeText(requireActivity(), "未输入请假系统密码", Toast.LENGTH_SHORT).show();
-            }
-        });
+        Toast.makeText(requireActivity(), "进入主界面，仅显示课表，签到提示功能、本班未签功能停用", Toast.LENGTH_SHORT).show();
+    }
+
+    private void preAllJudge() {
+        String snoStr = binding.etSno.getText().toString().trim();
+        //对学号状态的预判断
+        if (snoStr.length() != 9) {
+            Toast.makeText(requireActivity(), "请输入九位数字的学号", Toast.LENGTH_SHORT).show();
+        } else {
+            judgmentContent();
+        }
+    }
+
+    private void preTwoJudge() {
+        String snoStr = binding.etSno.getText().toString().trim();
+        //对学号状态的预判断
+        if (snoStr.length() != 9) {
+            Toast.makeText(requireActivity(), "请输入九位数字的学号", Toast.LENGTH_SHORT).show();
+        } else {
+            judgmentSnoEdu();
+        }
+    }
+
+    /**
+     * 学号不为空，教务网密码不为空，请假系统密码为空时，对学号和教务网密码的判断
+     */
+    private void judgmentSnoEdu() {
+        int sno = Integer.parseInt(binding.etSno.getText().toString());
+        String edu = binding.etEduPassword.getText().toString().trim();
+        if (sno != transferSno(211706160) && !edu.equals(transferEduPassword("123"))) {
+            snoError();
+        }
+        if (sno != transferSno(211706160) && edu.equals(transferEduPassword("123"))) {
+            snoError();
+        }
+        if (sno == transferSno(211706160) && !edu.equals(transferEduPassword("123"))) {
+            eduPasswordError();
+        }
+        if (sno == transferSno(211706160) && edu.equals(transferEduPassword("123"))) {
+            leavePasswordNull();
+        }
     }
 
     /**
@@ -155,8 +197,9 @@ public class LoginFragment extends Fragment {
      */
     private void judgmentContent() {
         int sno = Integer.parseInt(binding.etSno.getText().toString());
-        final String edu = binding.etEduPassword.getText().toString().trim();
-        final String leave = binding.etLeavePassword.getText().toString().trim();
+        String edu = binding.etEduPassword.getText().toString().trim();
+        String leave = binding.etLeavePassword.getText().toString().trim();
+
         if (sno != transferSno(211706160) && !edu.equals(transferEduPassword("123"))
                 && !leave.equals(transferLeavePassword("123"))) {
             snoError();
@@ -189,6 +232,7 @@ public class LoginFragment extends Fragment {
                 && leave.equals(transferLeavePassword("123"))) {
             Toast.makeText(requireActivity(), "验证成功", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     /**
