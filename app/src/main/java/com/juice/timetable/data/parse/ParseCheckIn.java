@@ -1,5 +1,6 @@
 package com.juice.timetable.data.parse;
 
+import com.juice.timetable.data.bean.ClassNoSignrdItem;
 import com.juice.timetable.utils.ReadFile;
 
 import org.jsoup.Jsoup;
@@ -9,7 +10,9 @@ import org.jsoup.select.Elements;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <pre>
@@ -26,10 +29,8 @@ public class ParseCheckIn {
     private static boolean isCheckIn;
     //签到时间
     private static Date checkTime;
-    //未签名单学号
-    private static String sno;
-    //未签名单名字
-    private static String sname;
+
+    private static List<ClassNoSignrdItem> noSignedList = new ArrayList<>();
 
     /**
      * 获取自己签到信息
@@ -47,24 +48,24 @@ public class ParseCheckIn {
         for (Element element : elements) {
             //计算tr标签的数量
             Integer len_Tr = element.getElementsByTag("tr").size();
-            //循环
-            for (int a = 0; a < len_Tr; a++) {
-                Elements ele = element.getElementsByTag("tr").eq(a);
-                for (Element el : ele) {
-                    //tr标签中td的数量
-                    Integer len_Td = el.getElementsByTag("td").size();
 
-                    checkTime = sdf.parse(el.getElementsByTag("td").eq(1).text());
-                    if ("未签".equals(el.getElementsByTag("td").eq(2).text())) {
-                        isCheckIn = false;
-                    } else {
-                        isCheckIn = true;
-                    }
-                    System.out.println("签到时间：" + checkTime);
-                    System.out.println("是否签到：" + isCheckIn);
+            Elements ele = element.getElementsByTag("tr").eq(0);
+            for (Element el : ele) {
+                //tr标签中td的数量
+                Integer len_Td = el.getElementsByTag("td").size();
 
+                checkTime = sdf.parse(el.getElementsByTag("td").eq(1).text());
+                if ("未签".equals(el.getElementsByTag("td").eq(2).text())) {
+                    isCheckIn = false;
+                } else {
+                    isCheckIn = true;
                 }
+
+                System.out.println("签到时间：" + checkTime);
+                System.out.println("是否签到：" + isCheckIn);
+
             }
+
         }
     }
 
@@ -85,49 +86,24 @@ public class ParseCheckIn {
             Integer len_Tr = element.getElementsByTag("tr").size();
             //循环
             for (int a = 0; a < len_Tr; a++) {
+                ClassNoSignrdItem cnsi = new ClassNoSignrdItem();
                 Elements ele = element.getElementsByTag("tr").eq(a);
                 for (Element el : ele) {
                     //tr标签中td的数量
-                    sno = el.getElementsByTag("td").eq(2).text();
-                    sname = el.getElementsByTag("td").eq(3).text();
-                    System.out.println(sno);
-                    System.out.println(sname);
+                    String sno = el.getElementsByTag("td").eq(2).text();
+                    cnsi.setSno(sno);
+                    String sname = el.getElementsByTag("td").eq(3).text();
+                    cnsi.setSname(sname);
+                    noSignedList.add(cnsi);
                 }
             }
+        }
+        for (ClassNoSignrdItem item : noSignedList) {
+            System.out.println(item);
         }
 
     }
 
-    public static boolean isIsCheckIn() {
-        return isCheckIn;
-    }
 
-    public static void setIsCheckIn(boolean isCheckIn) {
-        ParseCheckIn.isCheckIn = isCheckIn;
-    }
-
-    public static Date getCheckTime() {
-        return checkTime;
-    }
-
-    public static void setCheckTime(Date checkTime) {
-        ParseCheckIn.checkTime = checkTime;
-    }
-
-    public static String getSno() {
-        return sno;
-    }
-
-    public static void setSno(String sno) {
-        ParseCheckIn.sno = sno;
-    }
-
-    public static String getSname() {
-        return sname;
-    }
-
-    public static void setSname(String sname) {
-        ParseCheckIn.sname = sname;
-    }
 }
 
