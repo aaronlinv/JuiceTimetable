@@ -51,7 +51,7 @@ public class CourseView extends FrameLayout {
      * 行item的宽度根据view的总宽度自动平均分配
      */
     private boolean mRowItemWidthAuto = true;
-    private int mCurrentIndex = 1;
+    private int mCurrentIndex = 10;
 
     public CourseView(@NonNull Context context) {
         super(context);
@@ -62,7 +62,8 @@ public class CourseView extends FrameLayout {
     }
 
     public void addCourse(Course course) {
-        if (course == null) {
+        // 课为空，或这不是当前显示周的课，就return回去 不显示
+        if (course == null || !isActiveStatus(course)) {
             return;
         }
 
@@ -79,6 +80,16 @@ public class CourseView extends FrameLayout {
 
         addView(itemView);
 
+    }
+
+    // 是否为当前显示周的课
+    private boolean isActiveStatus(Course course) {
+        LogUtils.getInstance().d("isActiveStatus:" + course.toString());
+        if ((course.getCouStartWeek() == null) || (course.getCouEndWeek() == null)) {
+            return false;
+        }
+
+        return course.getCouStartWeek() <= mCurrentIndex && mCurrentIndex <= course.getCouEndWeek();
     }
 
     /**
@@ -154,13 +165,14 @@ public class CourseView extends FrameLayout {
      * 把数组中的数据全部添加到界面
      */
     private void initCourseItemView() {
+        // 移除课表界面所有课程
         removeAllViews();
+
         LogUtils.getInstance().d("initCourseItemView执行了");
         // 通过Dao层获取课程数据 添加课程到课程界面
         List<Course> courses = testCourseData.getCourses();
         for (Course cou : courses) {
             addCourse(cou);
-
         }
 
     }
@@ -198,4 +210,6 @@ public class CourseView extends FrameLayout {
     public void resetView() {
         initCourseItemView();
     }
+
+
 }
