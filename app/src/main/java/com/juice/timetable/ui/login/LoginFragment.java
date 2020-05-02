@@ -15,10 +15,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.juice.timetable.R;
 import com.juice.timetable.databinding.FragmentSlideshowBinding;
+
+import java.util.List;
 
 /**
  * 修改认证页面相应功能实现类
@@ -26,6 +30,7 @@ import com.juice.timetable.databinding.FragmentSlideshowBinding;
 public class LoginFragment extends Fragment {
     private FragmentSlideshowBinding binding;
     private LoginViewModel loginViewModel;
+    private DrawerLayout drawer;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -34,6 +39,7 @@ public class LoginFragment extends Fragment {
 //        return root;
         binding = FragmentSlideshowBinding.inflate(getLayoutInflater());//binding初始化
 //        binding = DataBindingUtil.setContentView(requireActivity(), R.layout.fragment_slideshow);
+        drawer = requireActivity().findViewById(R.id.drawer_layout);
         return binding.getRoot();
     }
 
@@ -42,6 +48,37 @@ public class LoginFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         btnDialogClick();
         JudgeNotInput();
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+                if (drawerView == null) return;
+                if (isAdded()) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getApplicationContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(drawerView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
     }
 
     /**
@@ -55,6 +92,7 @@ public class LoginFragment extends Fragment {
         });
 
     }
+
     private void JudgeNotInput() {
         allNull();
         btnPromptNull();
@@ -165,6 +203,7 @@ public class LoginFragment extends Fragment {
      * 点击按钮，提示未输入请假系统密码
      */
     private void leavePasswordNull() {
+        hideSoftKeyboard(requireActivity());
         Toast.makeText(requireActivity(), "进入主界面，仅显示课表，签到提示功能、本班未签功能停用", Toast.LENGTH_SHORT).show();
     }
 
@@ -246,6 +285,7 @@ public class LoginFragment extends Fragment {
         }
         if (sno == transferSno(211706160) && edu.equals(transferEduPassword("123"))
                 && leave.equals(transferLeavePassword("123"))) {
+            hideSoftKeyboard(requireActivity());
             Toast.makeText(requireActivity(), "验证成功", Toast.LENGTH_SHORT).show();
         }
 
@@ -364,8 +404,20 @@ public class LoginFragment extends Fragment {
      *
      * @param activity
      */
-    public static void hideSoftKeyboard(Activity activity) {
+    private static void hideSoftKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0); //强制隐藏键盘
     }
+
+    /**
+     * 隐藏软键盘(可用于Activity，Fragment)
+     */
+    private static void hideSoftKeyboard(Context context, List<View> viewList) {
+        if (viewList == null) return;
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        for (View v : viewList) {
+            inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
 }
+
