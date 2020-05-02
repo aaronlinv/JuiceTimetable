@@ -2,6 +2,8 @@ package com.juice.timetable.utils;
 
 import android.content.Context;
 
+import java.util.UUID;
+
 /**
  * <pre>
  *     author : Aaron
@@ -21,5 +23,12 @@ public class Utils {
      */
     public static int dip2px(Context context, float dpValue) {
         return (int) (0.5f + dpValue * context.getResources().getDisplayMetrics().density);
+    }
+
+    /**
+     * 生成UUID
+     */
+    public static String createUUID() {
+        return UUID.randomUUID().toString().replace("-", "");
     }
 }

@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -11,8 +12,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.databinding.FragmentCourseBinding;
 import com.juice.timetable.utils.LogUtils;
@@ -21,7 +24,7 @@ import com.juice.timetable.utils.Utils;
 public class CourseFragment extends Fragment {
     private CourseViewModel homeViewModel;
     private FragmentCourseBinding binding;
-
+    private Toolbar toolbar;
     private int WEEK_TEXT_SIZE = 12;
     private int NODE_TEXT_SIZE = 11;
     private int NODE_WIDTH = 28;
@@ -51,6 +54,7 @@ public class CourseFragment extends Fragment {
         // 星期栏
         // 清除所有View
         binding.llWeek.removeAllViews();
+        toolbar = requireActivity().findViewById(R.id.toolbar);
 
 
         // -1 ：星期栏   0-6：星期 一 ...日
@@ -96,14 +100,6 @@ public class CourseFragment extends Fragment {
             binding.llNode.addView(textView, params);
         }
 
-        // 通过外部数据 尝试添加课程
-        // 未成功
-        for (int x = 4; x <= 7; x++) {
-            for (int y = 1; y <= 11; y = y + 2) {
-                binding.courseView.addCourse(x, y);
-            }
-
-        }
 
         return binding.getRoot();
     }
@@ -111,6 +107,32 @@ public class CourseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+/*        new Runnable() {
+            @Override
+            public void run() {
+                // 通过外部数据 尝试添加课程
+                // 未成功
+                for (int x = 4; x <= 7; x++) {
+                    for (int y = 1; y <= 10; y = y + 2) {
+                        binding.courseView.addCourse(x, y);
+                    }
+                    LogUtils.getInstance().d("binding.courseView");
+
+                }
+            }
+        };*/
+
+        // 获取点击的周
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                LogUtils.getInstance().d("MenuItem <" + item.getItemId() + "> onMenuItemClick");
+
+                binding.courseView.setCurrentIndex(item.getItemId());
+                return false;
+            }
+        });
 
 
     }

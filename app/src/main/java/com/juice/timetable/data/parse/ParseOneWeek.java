@@ -33,7 +33,8 @@ public class ParseOneWeek {
      */
     public static void parseCourse() {
         //导入
-        String s = ReadFile.readToString("C:\\Users\\14989\\Desktop\\网页内容\\2020网络方向.html");
+//        String s = ReadFile.readToString("C:\\Users\\14989\\Desktop\\网页内容\\2020网络方向.html");
+        String s = ReadFile.readToString("C:\\Users\\Aaron\\Desktop\\课表.html");
         //解析
         Document doc = Jsoup.parse(s);
         //标题

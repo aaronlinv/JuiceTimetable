@@ -14,7 +14,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.juice.timetable.data.bean.Course;
+import com.juice.timetable.data.testCourseData;
 import com.juice.timetable.utils.LogUtils;
+
+import java.util.List;
 
 /**
  * <pre>
@@ -47,6 +51,7 @@ public class CourseView extends FrameLayout {
      * 行item的宽度根据view的总宽度自动平均分配
      */
     private boolean mRowItemWidthAuto = true;
+    private int mCurrentIndex = 1;
 
     public CourseView(@NonNull Context context) {
         super(context);
@@ -56,15 +61,18 @@ public class CourseView extends FrameLayout {
         super(context, attrs);
     }
 
-    public void addCourse(int x, int y) {
-        View itemView = createCourseItem();
-        // 暂时设置2节课
+    public void addCourse(Course course) {
+        if (course == null) {
+            return;
+        }
+
+        View itemView = createCourseItem(course);
+        // 节课节数
+        int row = course.getCouEndNode() - course.getCouStartNode() + 1;
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(mRowItemWidth,
-                mColItemHeight * 2);
-//        params.leftMargin = (course.getRow() - 1) * mRowItemWidth;
-//        params.topMargin = (course.getCol() - 1) * mColItemHeight;
-        params.leftMargin = (x - 1) * mRowItemWidth;
-        params.topMargin = (y - 1) * mColItemHeight;
+                mColItemHeight * row);
+        params.leftMargin = (course.getCouWeek() - 1) * mRowItemWidth;
+        params.topMargin = (course.getCouStartNode() - 1) * mColItemHeight;
 
 
         itemView.setLayoutParams(params);
@@ -78,12 +86,14 @@ public class CourseView extends FrameLayout {
      *
      * @return
      */
-    public View createCourseItem() {
+    public View createCourseItem(Course course) {
         // 背景
         FrameLayout backgroundView = new FrameLayout(getContext());
 
-        //TextView 暂时设置为 2节课
-        final TextView tv = getCourseTextView(mColItemHeight * 2, mRowItemWidth);
+        //TextView
+        LogUtils.getInstance().d(course.toString());
+        int row = course.getCouEndNode() - course.getCouStartNode() + 1;
+        final TextView tv = getCourseTextView(mColItemHeight * row, mRowItemWidth);
         // 设置tv的边界
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -91,8 +101,7 @@ public class CourseView extends FrameLayout {
         params.setMargins(textLRMargin, textTBMargin, textLRMargin, textTBMargin);
         tv.setLayoutParams(params);
         // 设置tv文本
-        String showText = "高级数据库技术(1)班\n" +
-                "[网络教学]";
+        String showText = course.getCouName() + "\n" + course.getCouRoom();
         tv.setText(showText);
         tv.setBackgroundColor(0x80Fbadac);
 
@@ -147,14 +156,13 @@ public class CourseView extends FrameLayout {
     private void initCourseItemView() {
         removeAllViews();
         LogUtils.getInstance().d("initCourseItemView执行了");
-
-
-        for (int x = 1; x <= 3; x++) {
-            for (int y = 1; y <= 11; y = y + 2) {
-                addCourse(x, y);
-            }
+        // 通过Dao层获取课程数据 添加课程到课程界面
+        List<Course> courses = testCourseData.getCourses();
+        for (Course cou : courses) {
+            addCourse(cou);
 
         }
+
     }
 
     @Override
@@ -176,5 +184,18 @@ public class CourseView extends FrameLayout {
         int heightResult = MeasureSpec.makeMeasureSpec(mHeight, MeasureSpec.EXACTLY);
 
         setMeasuredDimension(widthMeasureSpec, heightResult);
+    }
+
+    // 设置当前周
+    public CourseView setCurrentIndex(int currentIndex) {
+        this.mCurrentIndex = currentIndex;
+        LogUtils.getInstance().d("setCurrentIndex:" + currentIndex);
+        postInvalidate();
+        return this;
+    }
+
+    // 设置当前周后重新刷新课表界面
+    public void resetView() {
+        initCourseItemView();
     }
 }
