@@ -130,6 +130,7 @@ public class CourseFragment extends Fragment {
                 LogUtils.getInstance().d("MenuItem <" + item.getItemId() + "> onMenuItemClick");
 
                 binding.courseView.setCurrentIndex(item.getItemId());
+                binding.courseView.resetView();
                 return false;
             }
         });
