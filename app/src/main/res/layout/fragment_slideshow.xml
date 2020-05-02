@@ -10,6 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:backgroundTint="@color/design_default_color_background"
         tools:context=".ui.login.LoginFragment">
 
         <androidx.constraintlayout.widget.Guideline
@@ -126,6 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="更新认证信息"
+            android:textColor="@color/design_default_color_on_secondary"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/guideline6"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
@@ -136,9 +138,12 @@
             android:id="@+id/btn_user_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:hapticFeedbackEnabled="false"
             android:shadowColor="@color/design_default_color_background"
             android:text="用户条款"
             android:textColor="@color/colorPrimary"
+            android:textColorHighlight="@color/design_default_color_background"
             android:textColorHint="@color/design_default_color_background"
             android:textColorLink="@color/design_default_color_background"
             app:layout_constraintBottom_toBottomOf="parent"
