@@ -20,6 +20,8 @@ import java.io.IOException;
  */
 public class LeaveInfo {
     static final String PREF_LEAVE_COOKIE = "PREF_LEAVE_COOKIE";
+    // 保存Cookie，以减少获取Cookie的次数
+    static boolean enableSaveCookie = false;
 
     /**
      * 获取请假信息的主函数
@@ -34,7 +36,7 @@ public class LeaveInfo {
         String prefLeaveCookie = PreferencesUtils.getString(PREF_LEAVE_COOKIE, null);
         LogUtils.getInstance().d("PREF_LEAVE_COOKIE:" + prefLeaveCookie);
         // 本地存在Cookie先用本地Cookie 尝试登录
-        if (prefLeaveCookie != null) {
+        if ((prefLeaveCookie != null) && enableSaveCookie) {
             LogUtils.getInstance().d("本地存在Cookie先用本地Cookie 尝试登录");
             try {
                 // 成功直接返回
@@ -62,6 +64,7 @@ public class LeaveInfo {
      * @return
      */
     public static String parse(String tmpCookies, String uri) {
+
 
         HttpClient httpClient = new HttpClient();
         GetMethod getMethod2 = new GetMethod(uri);

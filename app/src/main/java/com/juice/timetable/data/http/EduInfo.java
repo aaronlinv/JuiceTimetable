@@ -18,13 +18,15 @@ import org.apache.commons.httpclient.methods.GetMethod;
  */
 public class EduInfo {
     static final String PREF_EDU_COOKIE = "PREF_EDU_COOKIE";
+    // 保存Cookie，以减少获取Cookie的次数
+    static boolean enableSaveCookie = false;
 
     public static String getTimeTable(String stuID, String stuPassword, String uri, Context context) throws Exception {
         PreferencesUtils.init(context.getApplicationContext());
         String prefEduCookie = PreferencesUtils.getString(PREF_EDU_COOKIE, null);
         LogUtils.getInstance().d("PREF_EDU_COOKIE:" + prefEduCookie);
         // 本地存在Cookie先用本地Cookie 尝试登录
-        if (prefEduCookie != null) {
+        if ((prefEduCookie != null) && enableSaveCookie) {
             LogUtils.getInstance().d("本地存在Cookie先用本地Cookie 尝试登录");
             try {
                 // 成功直接返回
