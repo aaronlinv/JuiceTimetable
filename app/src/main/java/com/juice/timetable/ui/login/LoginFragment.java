@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -20,7 +21,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.juice.timetable.R;
+import com.juice.timetable.data.http.EduInfo;
+import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.databinding.FragmentLoginBinding;
+import com.juice.timetable.utils.LogUtils;
 
 /**
  * 修改认证页面相应功能实现类
@@ -129,9 +133,9 @@ public class LoginFragment extends Fragment {
      * 判断是否为空，并提示相应信息
      */
     private void judgmentIsEmpty() {
-        String sno = binding.etSno.getText().toString().trim();
+        final String sno = binding.etSno.getText().toString().trim();
         final String edu = binding.etEduPassword.getText().toString().trim();
-        String leave = binding.etLeavePassword.getText().toString().trim();
+        final String leave = binding.etLeavePassword.getText().toString().trim();
         if (sno.isEmpty() && edu.isEmpty() && leave.isEmpty()) {
             snoNull();
         }
@@ -160,7 +164,61 @@ public class LoginFragment extends Fragment {
         if (!sno.isEmpty() && !edu.isEmpty() && !leave.isEmpty()) {
             binding.btnGo.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    preAllJudge();
+//                    preAllJudge();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // 教务网验证
+                            LogUtils.getInstance().d("教务网前端验证成功");
+                            String uri = "http://jwb.fdzcxy.com/kb/zkb_xs.asp";
+                            try {
+                                EduInfo.getTimeTable(sno, edu, uri, getContext().getApplicationContext());
+                            } catch (Exception e) {
+                                String errorText = e.getMessage();
+                                LogUtils.getInstance().d("errorText:" + errorText);
+                                //解决在子线程中调用Toast的异常情况处理
+                                Looper.prepare();
+
+                                Toast.makeText(getContext().getApplicationContext(), errorText, Toast.LENGTH_SHORT).show();
+
+                                //解决在子线程中调用Toast的异常情况处理-结束需要添加这句
+                                Looper.loop();
+                            }
+                            LogUtils.getInstance().d("教务网密码验证成功");
+                            // 跳转到课表首页
+
+                            // 添加了下面三行，后面的请假系统验证将不执行
+                            if (leave == "") {
+                                Looper.prepare();
+                                Toast.makeText(getContext().getApplicationContext(), "教务网密码验证成功", Toast.LENGTH_SHORT).show();
+                                Looper.loop();
+                                // 只填写了教务网密码 跳转课表首页
+                                // 
+                            }
+
+
+                            // 请假系统验证
+                            LogUtils.getInstance().d("请假系统前端验证成功");
+                            uri = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-record-student&c=dormcheckrecordstudent";
+                            try {
+                                LeaveInfo.getLeave(sno, leave, uri, getContext().getApplicationContext());
+                            } catch (Exception e) {
+                                String errorText = e.getMessage();
+                                LogUtils.getInstance().d("errorText:" + errorText);
+                                //解决在子线程中调用Toast的异常情况处理
+                                Looper.prepare();
+                                Toast.makeText(getContext().getApplicationContext(), errorText, Toast.LENGTH_SHORT).show();
+                                //解决在子线程中调用Toast的异常情况处理-结束需要添加这句
+                                Looper.loop();
+                            }
+                            LogUtils.getInstance().d("教务网和请假系统密码均验证成功");
+                            // 跳转到课表首页
+
+                            Looper.prepare();
+                            Toast.makeText(getContext().getApplicationContext(), "教务网和请假系统密码均验证成功", Toast.LENGTH_SHORT).show();
+                            Looper.loop();
+                        }
+                    }).start();
                 }
             });
         }

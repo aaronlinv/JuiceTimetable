@@ -17,7 +17,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.juice.timetable.data.http.EduInfo;
-import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.ui.course.CourseView;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.UserInfoUtils;
@@ -72,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();*/
         // 测试 请假系统模拟登录
-        new Thread(new Runnable() {
+/*        new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             }
-        }).start();
+        }).start();*/
 
     }
 
