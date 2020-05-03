@@ -20,23 +20,23 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.juice.timetable.R;
-import com.juice.timetable.databinding.FragmentSlideshowBinding;
+import com.juice.timetable.databinding.FragmentLoginBinding;
 
 /**
  * 修改认证页面相应功能实现类
  */
 public class LoginFragment extends Fragment {
-    private FragmentSlideshowBinding binding;
+    private FragmentLoginBinding binding;
     private LoginViewModel loginViewModel;
     private DrawerLayout drawer;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-//        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
+//        View root = inflater.inflate(R.layout.fragment_login, container, false);
 //        return root;
-        binding = FragmentSlideshowBinding.inflate(getLayoutInflater());//binding初始化
-//        binding = DataBindingUtil.setContentView(requireActivity(), R.layout.fragment_slideshow);
+        binding = FragmentLoginBinding.inflate(getLayoutInflater());//binding初始化
+//        binding = DataBindingUtil.setContentView(requireActivity(), R.layout.fragment_login);
         drawer = requireActivity().findViewById(R.id.drawer_layout);
         return binding.getRoot();
     }
