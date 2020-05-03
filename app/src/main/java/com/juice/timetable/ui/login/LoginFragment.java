@@ -22,8 +22,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.juice.timetable.R;
 import com.juice.timetable.databinding.FragmentSlideshowBinding;
 
-import java.util.List;
-
 /**
  * 修改认证页面相应功能实现类
  */
@@ -44,16 +42,12 @@ public class LoginFragment extends Fragment {
     }
 
 
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        btnDialogClick();
-        JudgeNotInput();
-
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        btnDialogClick();
+        allNull();
+        btnPromptNull();
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
@@ -93,10 +87,6 @@ public class LoginFragment extends Fragment {
 
     }
 
-    private void JudgeNotInput() {
-        allNull();
-        btnPromptNull();
-    }
 
     /**
      * 在什么都没输入时，提示学号未输入
@@ -109,6 +99,7 @@ public class LoginFragment extends Fragment {
             snoNull();
         }
     }
+
 
     /**
      * 监听文本内容，对学号，教务网密码，请假系统密码相应的判断
@@ -139,9 +130,8 @@ public class LoginFragment extends Fragment {
      */
     private void judgmentIsEmpty() {
         String sno = binding.etSno.getText().toString().trim();
-        String edu = binding.etEduPassword.getText().toString().trim();
+        final String edu = binding.etEduPassword.getText().toString().trim();
         String leave = binding.etLeavePassword.getText().toString().trim();
-
         if (sno.isEmpty() && edu.isEmpty() && leave.isEmpty()) {
             snoNull();
         }
@@ -219,30 +209,40 @@ public class LoginFragment extends Fragment {
 
     private void preTwoJudge() {
         String snoStr = binding.etSno.getText().toString().trim();
+        String eduStr = binding.etEduPassword.getText().toString().trim();
         //对学号状态的预判断
         if (snoStr.length() != 9) {
-            Toast.makeText(requireActivity(), "请输入九位数字的学号", Toast.LENGTH_SHORT).show();
+            if (eduStr.length() < 6) {
+                Toast.makeText(requireActivity(), "学号密码不符合规范", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(requireActivity(), "请输入九位数字的学号", Toast.LENGTH_SHORT).show();
+            }
         } else {
-            judgmentSnoEdu();
+            if (eduStr.length() < 6) {
+                Toast.makeText(requireActivity(), "请输入至少六位数的密码", Toast.LENGTH_SHORT).show();
+            } else {
+                judgmentSnoEdu();
+            }
         }
     }
+
 
     /**
      * 学号不为空，教务网密码不为空，请假系统密码为空时，对学号和教务网密码的判断
      */
     private void judgmentSnoEdu() {
-        int sno = Integer.parseInt(binding.etSno.getText().toString());
+        String sno = binding.etSno.getText().toString();
         String edu = binding.etEduPassword.getText().toString().trim();
-        if (sno != transferSno(211706160) && !edu.equals(transferEduPassword("123"))) {
+        if (!sno.matches(transferSno()) && !edu.equals(transferEduPassword("123456"))) {
             snoError();
         }
-        if (sno != transferSno(211706160) && edu.equals(transferEduPassword("123"))) {
+        if (!sno.matches(transferSno()) && edu.equals(transferEduPassword("123456"))) {
             snoError();
         }
-        if (sno == transferSno(211706160) && !edu.equals(transferEduPassword("123"))) {
+        if (sno.matches(transferSno()) && !edu.equals(transferEduPassword("123456"))) {
             eduPasswordError();
         }
-        if (sno == transferSno(211706160) && edu.equals(transferEduPassword("123"))) {
+        if (sno.matches(transferSno()) && edu.equals(transferEduPassword("123456"))) {
             leavePasswordNull();
         }
     }
@@ -251,40 +251,40 @@ public class LoginFragment extends Fragment {
      * 判断学号，教务网密码，请假系统密码，并弹出提示框相应的内容
      */
     private void judgmentContent() {
-        int sno = Integer.parseInt(binding.etSno.getText().toString());
+        String sno = binding.etSno.getText().toString();
         String edu = binding.etEduPassword.getText().toString().trim();
         String leave = binding.etLeavePassword.getText().toString().trim();
 
-        if (sno != transferSno(211706160) && !edu.equals(transferEduPassword("123"))
-                && !leave.equals(transferLeavePassword("123"))) {
+        if (!sno.matches(transferSno()) && !edu.equals(transferEduPassword("123456"))
+                && !leave.equals(transferLeavePassword("123456"))) {
             snoError();
         }
-        if (sno != transferSno(211706160) && !edu.equals(transferEduPassword("123"))
-                && leave.equals(transferLeavePassword("123"))) {
+        if (!sno.matches(transferSno()) && !edu.equals(transferEduPassword("123456"))
+                && leave.equals(transferLeavePassword("123456"))) {
             snoError();
         }
-        if (sno != transferSno(211706160) && edu.equals(transferEduPassword("123"))
-                && !leave.equals(transferLeavePassword("123"))) {
+        if (!sno.matches(transferSno()) && edu.equals(transferEduPassword("123456"))
+                && !leave.equals(transferLeavePassword("123456"))) {
             snoError();
         }
-        if (sno != transferSno(211706160) && edu.equals(transferEduPassword("123"))
-                && leave.equals(transferLeavePassword("123"))) {
+        if (sno.matches(transferSno()) && !edu.equals(transferEduPassword("123456"))
+                && !leave.equals(transferLeavePassword("123456"))) {
             snoError();
         }
-        if (sno == transferSno(211706160) && !edu.equals(transferEduPassword("123"))
-                && !leave.equals(transferLeavePassword("123"))) {
+        if (sno.matches(transferSno()) && !edu.equals(transferEduPassword("123456"))
+                && !leave.equals(transferLeavePassword("123456"))) {
             eduPasswordError();
         }
-        if (sno == transferSno(211706160) && !edu.equals(transferEduPassword("123"))
-                && leave.equals(transferLeavePassword("123"))) {
+        if (sno.matches(transferSno()) && !edu.equals(transferEduPassword("123456"))
+                && leave.equals(transferLeavePassword("123456"))) {
             eduPasswordError();
         }
-        if (sno == transferSno(211706160) && edu.equals(transferEduPassword("123"))
-                && !leave.equals(transferLeavePassword("123"))) {
+        if (sno.matches(transferSno()) && edu.equals(transferEduPassword("123456"))
+                && !leave.equals(transferLeavePassword("123456"))) {
             leavePasswordError();
         }
-        if (sno == transferSno(211706160) && edu.equals(transferEduPassword("123"))
-                && leave.equals(transferLeavePassword("123"))) {
+        if (sno.matches(transferSno()) && edu.equals(transferEduPassword("123456"))
+                && leave.equals(transferLeavePassword("123456"))) {
             hideSoftKeyboard(requireActivity());
             Toast.makeText(requireActivity(), "验证成功", Toast.LENGTH_SHORT).show();
         }
@@ -312,12 +312,9 @@ public class LoginFragment extends Fragment {
         Toast.makeText(requireActivity(), "请假系统密码错误", Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * @param i 数值型的学号
-     * @return 数值型学号
-     */
-    private Integer transferSno(Integer i) {
-        return i;
+
+    private String transferSno() {
+        return "21\\d{7}";
     }
 
     private String transferEduPassword(String str) {
@@ -389,15 +386,6 @@ public class LoginFragment extends Fragment {
 
     }
 
-    /**
-     * 强制显示软键盘
-     *
-     * @param activity
-     */
-    public static void showSoftKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(activity.getWindow().getDecorView(), InputMethodManager.SHOW_FORCED);
-    }
 
     /**
      * 强制隐藏软键盘
@@ -409,15 +397,6 @@ public class LoginFragment extends Fragment {
         imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0); //强制隐藏键盘
     }
 
-    /**
-     * 隐藏软键盘(可用于Activity，Fragment)
-     */
-    private static void hideSoftKeyboard(Context context, List<View> viewList) {
-        if (viewList == null) return;
-        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        for (View v : viewList) {
-            inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
+
 }
 
