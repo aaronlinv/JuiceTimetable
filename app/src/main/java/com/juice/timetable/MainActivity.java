@@ -16,7 +16,10 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.ui.course.CourseView;
+import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.UserInfoUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,6 +54,23 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        // 测试 教育系统模拟登录
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+//                    String cookie = EduHttp.getCookie(getID(), getEduPasswd(), getApplicationContext());
+                    String uri = "http://jwb.fdzcxy.com/kb/zkb_xs.asp";
+                    String parse = EduInfo.getTimeTable(getID(), getEduPasswd(), uri, getApplicationContext());
+                    LogUtils.getInstance().d(parse);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+
     }
 
     @Override
@@ -71,5 +91,34 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+
+    public void getTimeTable() {
+        // 周课表
+        String uri = "http://jwb.fdzcxy.com/kb/zkb_xs.asp";
+        try {
+            String timeTable = EduInfo.getTimeTable(getID(), getEduPasswd(), uri, getApplicationContext());
+            LogUtils.getInstance().d("课表数据：" + timeTable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public String getID() {
+        return getUserInfo("id");
+    }
+
+    public String getEduPasswd() {
+        return getUserInfo("eduPasswd");
+    }
+
+    public String getLeavePasswd() {
+        return getUserInfo("leavePasswd");
+    }
+
+    public String getUserInfo(String info) {
+        return UserInfoUtils.getINSTANT(getApplication()).getProperty(info);
     }
 }
