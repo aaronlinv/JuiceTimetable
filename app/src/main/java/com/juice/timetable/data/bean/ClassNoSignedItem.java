@@ -1,5 +1,8 @@
 package com.juice.timetable.data.bean;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 /**
  * <pre>
  *     author : soreak
@@ -10,33 +13,35 @@ package com.juice.timetable.data.bean;
  *     version: 1.0
  * </pre>
  */
-public class ClassNoSignrdItem {
+@Entity
+public class ClassNoSignedItem {
+    @PrimaryKey
     //未签名单学号
-    private String sno;
+    private String Sno;
     //未签名单名字
-    private String sname;
+    private String Sname;
 
     public String getSno() {
-        return sno;
+        return Sno;
     }
 
-    public void setSno(String sno) {
-        this.sno = sno;
+    public void setSno(String Sno) {
+        this.Sno = Sno;
     }
 
     public String getSname() {
-        return sname;
+        return Sname;
     }
 
-    public void setSname(String sname) {
-        this.sname = sname;
+    public void setSname(String Sname) {
+        this.Sname = Sname;
     }
 
     @Override
     public String toString() {
         return "ClassNoSignrdItem{" +
-                "sno='" + sno + '\'' +
-                ", sname='" + sname + '\'' +
+                "sno='" + Sno + '\'' +
+                ", sname='" + Sname + '\'' +
                 '}';
     }
 }

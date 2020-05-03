@@ -1,5 +1,8 @@
 package com.juice.timetable.data.bean;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 /**
  * <pre>
  *     author : Aaron
@@ -8,8 +11,9 @@ package com.juice.timetable.data.bean;
  *     version: 1.0
  * </pre>
  */
-public class Course {
-
+@Entity
+public class AllWeekCourse {
+    @PrimaryKey
     private Long couID;
     private Long onlyID;
     private String couName;

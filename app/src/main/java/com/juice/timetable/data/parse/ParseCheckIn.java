@@ -1,6 +1,6 @@
 package com.juice.timetable.data.parse;
 
-import com.juice.timetable.data.bean.ClassNoSignrdItem;
+import com.juice.timetable.data.bean.ClassNoSignedItem;
 import com.juice.timetable.utils.ReadFile;
 
 import org.jsoup.Jsoup;
@@ -30,7 +30,7 @@ public class ParseCheckIn {
     //签到时间
     private static Date checkTime;
 
-    private static List<ClassNoSignrdItem> noSignedList = new ArrayList<>();
+    private static List<ClassNoSignedItem> noSignedList = new ArrayList<>();
 
     /**
      * 获取自己签到信息
@@ -72,7 +72,7 @@ public class ParseCheckIn {
     /**
      * 获取班级签到信息
      */
-    public static void getClassUnSigned() {
+    public static List<ClassNoSignedItem> getClassUnSigned() {
         //抓取
         String s = ReadFile.readToString("C:\\Users\\14989\\Desktop\\网页内容\\未签列表.html");
         //解析文档
@@ -86,7 +86,7 @@ public class ParseCheckIn {
             Integer len_Tr = element.getElementsByTag("tr").size();
             //循环
             for (int a = 0; a < len_Tr; a++) {
-                ClassNoSignrdItem cnsi = new ClassNoSignrdItem();
+                ClassNoSignedItem cnsi = new ClassNoSignedItem();
                 Elements ele = element.getElementsByTag("tr").eq(a);
                 for (Element el : ele) {
                     //tr标签中td的数量
@@ -98,11 +98,12 @@ public class ParseCheckIn {
                 }
             }
         }
-        for (ClassNoSignrdItem item : noSignedList) {
+        for (ClassNoSignedItem item : noSignedList) {
             System.out.println(item);
         }
-
+        return noSignedList;
     }
+
 
 
 }

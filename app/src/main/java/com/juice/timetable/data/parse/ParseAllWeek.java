@@ -1,6 +1,6 @@
 package com.juice.timetable.data.parse;
 
-import com.juice.timetable.data.bean.Course;
+import com.juice.timetable.data.bean.AllWeekCourse;
 import com.juice.timetable.utils.ReadFile;
 
 import org.jsoup.Jsoup;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 public class ParseAllWeek {
-    private static List<Course> couList = new ArrayList<>();
+    private static List<AllWeekCourse> couList = new ArrayList<>();
 
     /**
      * 解析完整的课表
@@ -48,7 +48,7 @@ public class ParseAllWeek {
                 Elements oneCourse = el.getElementsByTag("tr").eq(a);
                 //System.out.println(oneCourse.html());
                 for (Element ele : oneCourse) {
-                    Course course = new Course();
+                    AllWeekCourse course = new AllWeekCourse();
                     if (ele.getElementsByTag("td").size() < 3) {
                         break;
                     }
@@ -73,7 +73,7 @@ public class ParseAllWeek {
             }
         }
         Long couID = 0L;
-        for (Course cou : couList) {
+        for (AllWeekCourse cou : couList) {
 //            System.out.println(cou);
             cou.setCouID(couID);
             cou.setOnlyID(couID);
@@ -106,9 +106,9 @@ public class ParseAllWeek {
                                     String couname = tr.split("<br>")[a];
                                     //使用list对课程名字进行判断，相同的名字存储在同一个list
 
-                                    Course course = null;
+                                    AllWeekCourse course = null;
                                     // 循环List 找到 本轮解析中对应的课程对象
-                                    for (Course cou : couList) {
+                                    for (AllWeekCourse cou : couList) {
                                         String parseName = couname.replace(" ", "");
                                         String listCouName = cou.getCouName().replace(" ", "");
                                         if (parseName.equals(listCouName)) {
@@ -157,7 +157,7 @@ public class ParseAllWeek {
 
 
         // 解析结束
-        for (Course course : couList) {
+        for (AllWeekCourse course : couList) {
             System.out.println(course);
         }
     }
