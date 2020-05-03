@@ -1,14 +1,6 @@
 package com.juice.timetable;
 
-import android.content.Context;
-
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.room.DatabaseConfiguration;
-import androidx.room.InvalidationTracker;
-import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.database.Dao.OneWeekCourseDao;
@@ -55,33 +47,10 @@ public class ExampleUnitTest {
     @Test
     public void leaveTest() throws ParseException {
         ParseCheckIn.getMySigned();
-        ParseCheckIn.getClassUnSigned();
+        ParseCheckIn.getClassNoSigned();
     }
 
 
-    @Test
-    public void test() {
-/*        new ViewModelProvider
-        List<OneWeekCourse> oneWeekCourses = ParseOneWeek.parseCourse();
-        oneWeekCourseDao = JuiceDatabase.getCourseDao();
-        OneWeekCourseLive = oneWeekCourseDao.getOneWeekCourseLive();
-        OneWeekCourseLive.observe(this, new Observer<List<OneWeekCourse>>() {
-            @Override
-            public void onChanged(List<OneWeekCourse> oneWeekCourses) {
 
-            }
-        });
-        System.out.println(oneWeekCourses);
-        oneWeekCourseDao.insertOneWeekCourse(oneWeekCourses);
-
-    }
-    static class InsertAsyncTask extends AsyncTask<OneWeekCourse,void,void>{
-
-
-        @Override
-        protected void doInBackground(OneWeekCourse... oneWeekCourses) {
-            oneWeekCourseDao.insertOneWeekCourse();
-        }*/
-    }
 
 }

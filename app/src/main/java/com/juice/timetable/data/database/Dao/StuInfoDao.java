@@ -5,10 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.bean.StuInfo;
-
-import java.util.List;
 
 /**
  * <pre>
@@ -24,6 +21,7 @@ import java.util.List;
 public interface StuInfoDao {
     @Insert
     void insertStuInfo(StuInfo...stuInfos);
+
     @Query("Delete From StuInfo")
     void deleteStuInfo();
 

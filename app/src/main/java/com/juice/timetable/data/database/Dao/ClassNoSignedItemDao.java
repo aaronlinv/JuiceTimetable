@@ -25,8 +25,8 @@ public interface ClassNoSignedItemDao {
     void insertClassNoSignedItem(ClassNoSignedItem... Items);
 
     @Query("Delete From ClassNoSignedItem")
-    void deleteItems();
+    void deleteClassNoSignedItem();
 
     @Query("Select * From ClassNoSignedItem ORDER BY Sno Desc")
-    LiveData<List<ClassNoSignedItem>> getItemsLive();
+    LiveData<List<ClassNoSignedItem>> getClassNoSignedItemLive();
 }

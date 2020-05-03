@@ -26,7 +26,7 @@ public class OneWeekCourseRepository {
     private OneWeekCourseDao oneWeekCourseDao;
     public OneWeekCourseRepository(Context context) {
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
-        oneWeekCourseDao = juiceDatabase.getCourseDao();
+        oneWeekCourseDao = juiceDatabase.getOneCourseDao();
         oneWeekCourseLive = oneWeekCourseDao.getOneWeekCourseLive();
     }
 

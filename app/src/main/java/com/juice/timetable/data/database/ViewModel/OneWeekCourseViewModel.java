@@ -1,7 +1,6 @@
 package com.juice.timetable.data.database.ViewModel;
 
 import android.app.Application;
-import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -32,7 +31,7 @@ public class OneWeekCourseViewModel extends AndroidViewModel {
     public OneWeekCourseViewModel(@NonNull Application application, OneWeekCourseDao oneWeekCourseDao) {
         super(application);
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(application);
-        oneWeekCourseDao = juiceDatabase.getCourseDao();
+        oneWeekCourseDao = juiceDatabase.getOneCourseDao();
         oneWeekCourseLive = oneWeekCourseDao.getOneWeekCourseLive();
         oneWeekCourseRepository = new OneWeekCourseRepository(application);
 

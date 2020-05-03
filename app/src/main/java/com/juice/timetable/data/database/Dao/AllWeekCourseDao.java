@@ -1,5 +1,6 @@
 package com.juice.timetable.data.database.Dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -21,11 +22,11 @@ import java.util.List;
 @Dao
 public interface AllWeekCourseDao {
     @Insert
-    void insertCourse(AllWeekCourse... owc);
+    void insertAllWeekCourse(AllWeekCourse... owc);
 
     @Query("Delete From AllWeekCourse")
     void deleteAllWeekCourse();
 
     @Query("Select * From AllWeekCourse ORDER BY couID Desc")
-    List<AllWeekCourse> getAllWeekCourse();
+    LiveData<List<AllWeekCourse>> getAllWeekCourseLive();
 }

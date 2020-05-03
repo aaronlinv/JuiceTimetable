@@ -2,7 +2,6 @@ package com.juice.timetable.data.database.Dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
@@ -21,10 +20,11 @@ import com.juice.timetable.data.bean.MyCheckInInfo;
 @Dao
 public interface MyCheckInInfoDao {
     @Insert
-    void insertCheckInfo(MyCheckInInfo...myCheckInInfos);
+    void insertMyCheckInInfo(MyCheckInInfo... myCheckInInfos);
+
     @Query("Delete From MyCheckInInfo")
-    void deleteMyCheckInfo();
+    void deleteMyCheckInInfo();
 
     @Query("Select * From MyCheckInInfo")
-    LiveData<MyCheckInInfo> getMyCheckInfoLive();
+    LiveData<MyCheckInInfo> getMyCheckInInfoLive();
 }

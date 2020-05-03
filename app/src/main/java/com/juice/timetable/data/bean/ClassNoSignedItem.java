@@ -17,15 +17,15 @@ import androidx.room.PrimaryKey;
 public class ClassNoSignedItem {
     @PrimaryKey
     //未签名单学号
-    private String Sno;
+    private Integer Sno;
     //未签名单名字
     private String Sname;
 
-    public String getSno() {
+    public Integer getSno() {
         return Sno;
     }
 
-    public void setSno(String Sno) {
+    public void setSno(Integer Sno) {
         this.Sno = Sno;
     }
 
