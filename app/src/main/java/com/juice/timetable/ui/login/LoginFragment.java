@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -21,10 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.juice.timetable.R;
-import com.juice.timetable.data.http.EduInfo;
-import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.databinding.FragmentLoginBinding;
-import com.juice.timetable.utils.LogUtils;
 
 /**
  * 修改认证页面相应功能实现类
@@ -164,8 +160,8 @@ public class LoginFragment extends Fragment {
         if (!sno.isEmpty() && !edu.isEmpty() && !leave.isEmpty()) {
             binding.btnGo.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-//                    preAllJudge();
-                    new Thread(new Runnable() {
+                    //  preAllJudge();
+                  /*  new Thread(new Runnable() {
                         @Override
                         public void run() {
                             // 教务网验证
@@ -218,7 +214,7 @@ public class LoginFragment extends Fragment {
                             Toast.makeText(getContext().getApplicationContext(), "教务网和请假系统密码均验证成功", Toast.LENGTH_SHORT).show();
                             Looper.loop();
                         }
-                    }).start();
+                    }).start();*/
                 }
             });
         }
@@ -255,7 +251,7 @@ public class LoginFragment extends Fragment {
         Toast.makeText(requireActivity(), "进入主界面，仅显示课表，签到提示功能、本班未签功能停用", Toast.LENGTH_SHORT).show();
     }
 
-    private void preAllJudge() {
+   /* private void preAllJudge() {
         String snoStr = binding.etSno.getText().toString().trim();
         //对学号状态的预判断
         if (snoStr.length() != 9) {
@@ -263,7 +259,7 @@ public class LoginFragment extends Fragment {
         } else {
             judgmentContent();
         }
-    }
+    }*/
 
     private void preTwoJudge() {
         String snoStr = binding.etSno.getText().toString().trim();
@@ -308,7 +304,7 @@ public class LoginFragment extends Fragment {
     /**
      * 判断学号，教务网密码，请假系统密码，并弹出提示框相应的内容
      */
-    private void judgmentContent() {
+  /*  private void judgmentContent() {
         String sno = binding.etSno.getText().toString();
         String edu = binding.etEduPassword.getText().toString().trim();
         String leave = binding.etLeavePassword.getText().toString().trim();
@@ -347,7 +343,7 @@ public class LoginFragment extends Fragment {
             Toast.makeText(requireActivity(), "验证成功", Toast.LENGTH_SHORT).show();
         }
 
-    }
+    }*/
 
     /**
      * 提示框，提示“学号错误”
