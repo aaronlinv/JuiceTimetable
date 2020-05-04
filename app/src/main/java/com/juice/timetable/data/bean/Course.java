@@ -13,9 +13,10 @@ import androidx.room.PrimaryKey;
  */
 @Entity
 public class Course {
-    @PrimaryKey
+
     private Long couID;
-    private Long onlyID;
+    @PrimaryKey
+    private Integer onlyID;
     private String couName;
     private String couRoom;
     private String couTeacher;
@@ -37,11 +38,11 @@ public class Course {
 
     private Integer couColor;
 
-    public Course() {
-    }
+
 
     // 课程名，老师，起始结束周
-    public Course(String couName, String couTeacher, Integer couStartWeek, Integer couEndWeek) {
+    public Course(Long couID, String couName, String couTeacher, Integer couStartWeek, Integer couEndWeek) {
+        this.couID = couID;
         this.couName = couName;
         this.couTeacher = couTeacher;
         this.couStartWeek = couStartWeek;
@@ -56,11 +57,11 @@ public class Course {
         this.couID = couID;
     }
 
-    public Long getOnlyID() {
+    public Integer getOnlyID() {
         return onlyID;
     }
 
-    public void setOnlyID(Long onlyID) {
+    public void setOnlyID(Integer onlyID) {
         this.onlyID = onlyID;
     }
 
