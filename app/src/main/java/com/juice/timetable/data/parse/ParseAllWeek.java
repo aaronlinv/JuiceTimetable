@@ -51,11 +51,12 @@ public class ParseAllWeek {
                 Elements oneCourse = el.getElementsByTag("tr").eq(a);
                 //System.out.println(oneCourse.html());
                 for (Element ele : oneCourse) {
-                    Course course = null;
+                    Course course = new Course();
                     if (ele.getElementsByTag("td").size() < 3) {
                         break;
                     }
                     String couName = ele.getElementsByTag("td").eq(0).text();
+
                     course.setCouName(couName);
                     //
                     if (!"".equals(ele.getElementsByTag("td").eq(2).text())) {

@@ -3,6 +3,8 @@ package com.juice.timetable.data.Repository;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import androidx.lifecycle.LiveData;
+
 import com.juice.timetable.data.Dao.AllWeekCourseDao;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.Course;
@@ -20,17 +22,17 @@ import java.util.List;
  * </pre>
  */
 public class AllWeekCourseRepository {
-    private List<Course> allWeekCourseList;
+    private LiveData<List<Course>> allWeekCourseLive;
     private AllWeekCourseDao allWeekCourseDao;
 
     public AllWeekCourseRepository(Context context) {
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
         allWeekCourseDao = juiceDatabase.getAllWeekCourseDao();
-        allWeekCourseList = allWeekCourseDao.getAllWeekCourse();
+        allWeekCourseLive = allWeekCourseDao.getAllWeekCourseLive();
     }
 
-    public List<Course> getClassNoSignedItem() {
-        return allWeekCourseList;
+    public LiveData<List<Course>> getAllWeekCourseLive() {
+        return allWeekCourseLive;
     }
 
 

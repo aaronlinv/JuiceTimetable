@@ -3,6 +3,8 @@ package com.juice.timetable.data.Repository;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import androidx.lifecycle.LiveData;
+
 import com.juice.timetable.data.Dao.ClassNoSignedItemDao;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
@@ -20,17 +22,17 @@ import java.util.List;
  * </pre>
  */
 public class ClassNoSignedItemRepositroy {
-    private List<ClassNoSignedItem> classNoSignedItems;
+    private LiveData<List<ClassNoSignedItem>> classNoSignedItemsLive;
     private ClassNoSignedItemDao classNoSignedItemDao;
 
     public ClassNoSignedItemRepositroy(Context context) {
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
         classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
-        classNoSignedItems = classNoSignedItemDao.getNoSignedItem();
+        classNoSignedItemsLive = classNoSignedItemDao.getClassNoSignedItemLive();
     }
 
-    public List<ClassNoSignedItem> getClassNoSignedItem() {
-        return classNoSignedItems;
+    public LiveData<List<ClassNoSignedItem>> getClassNoSignedItemLive() {
+        return classNoSignedItemsLive;
     }
 
 

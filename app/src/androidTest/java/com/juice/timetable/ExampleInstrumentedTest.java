@@ -2,6 +2,7 @@ package com.juice.timetable;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -36,11 +37,11 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
-    private List<OneWeekCourse> CourseList;
+    private LiveData<List<OneWeekCourse>> courseLive;
     private List<ClassNoSignedItem> classNoSignedItems;
     private MyCheckIn myCheckIn;
     private StuInfo stuInfo;
-    private List<Course> allWeekCourseList;
+    private LiveData<List<Course>> allWeekCourseLive;
 
     private OneWeekCourseDao CourseDao;
     private ClassNoSignedItemDao classNoSignedItemDao;
@@ -84,6 +85,7 @@ public class ExampleInstrumentedTest {
         }
     }
 
+    // 获取数据
     @Test
     public void Query() {
         // 初始化
@@ -98,19 +100,22 @@ public class ExampleInstrumentedTest {
         allWeekCourseDao = juiceDatabase.getAllWeekCourseDao();
 
         //输出数据
-        CourseList = CourseDao.getOneWeekCourseLive();
-        LogUtils.getInstance().d("CourseList数据：");
-        for (OneWeekCourse course : CourseList) {
-            LogUtils.getInstance().d(course.toString());
-        }
-
-        classNoSignedItems = classNoSignedItemDao.getNoSignedItem();
-        LogUtils.getInstance().d("classNoSignedItems数据：");
-        ClassNoSignedItem classNoSignedItem = classNoSignedItems.get(0);
-        LogUtils.getInstance().d(classNoSignedItem.toString());
-        LogUtils.getInstance().d(String.valueOf(classNoSignedItems.size()));
 
 
+        // 调用observe方法来获取ViewModel里的数据(请在UI线程里使用，在这里没有用，只是注释给你看)
+        /*OneWeekCourseViewModel oneWeekCourseViewModel = new ViewModelProvider(this).get(OneWeekCourseViewModel.class);
+        LiveData<List<OneWeekCourse>> oneWeekCourseLive = oneWeekCourseViewModel.getOneWeekCourseLive();
+        oneWeekCourseLive.observe(requireActivity(), new Observer<List<OneWeekCourse>>() {
+            @Override
+            public void onChanged(List<OneWeekCourse> oneWeekCourses) {
+                if(oneWeekCourses!=null){
+                    LogUtils.getInstance().d("读取数据"+oneWeekCourses);
+                }
+            }
+        });*/
+
+
+        //非ViewModel的调用在这里↓
         LogUtils.getInstance().d("myCheckIn数据：");
         myCheckIn = myCheckInDao.getMyCheckIn();
         LogUtils.getInstance().d(myCheckIn.toString());
@@ -119,11 +124,6 @@ public class ExampleInstrumentedTest {
         stuInfo = stuInfoDao.getStuInfo();
         LogUtils.getInstance().d(stuInfo.toString());
 
-        allWeekCourseList = allWeekCourseDao.getAllWeekCourse();
-        LogUtils.getInstance().d("AllWeekCourseList数据：");
-        for (Course course : allWeekCourseList) {
-            LogUtils.getInstance().d(course.toString());
-        }
 
     }
 }

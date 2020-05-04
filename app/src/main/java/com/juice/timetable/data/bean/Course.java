@@ -1,6 +1,7 @@
 package com.juice.timetable.data.bean;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 /**
@@ -38,9 +39,13 @@ public class Course {
 
     private Integer couColor;
 
+    public Course() {
+
+    }
 
 
     // 课程名，老师，起始结束周
+    @Ignore
     public Course(Long couID, String couName, String couTeacher, Integer couStartWeek, Integer couEndWeek) {
         this.couID = couID;
         this.couName = couName;

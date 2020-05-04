@@ -1,5 +1,6 @@
 package com.juice.timetable.data.Dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -27,5 +28,5 @@ public interface OneWeekCourseDao {
     void deleteCourse();
 
     @Query("Select * From OneWeekCourse")
-    List<OneWeekCourse> getOneWeekCourseLive();
+    LiveData<List<OneWeekCourse>> getOneWeekCourseLive();
 }
