@@ -15,9 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.juice.timetable.data.bean.Course;
-import com.juice.timetable.data.testCourseData;
 import com.juice.timetable.utils.LogUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,6 +52,7 @@ public class CourseView extends FrameLayout {
      */
     private boolean mRowItemWidthAuto = true;
     private int mCurrentIndex = 10;
+    private List<Course> courses = null;
 
     public CourseView(@NonNull Context context) {
         super(context);
@@ -170,7 +171,10 @@ public class CourseView extends FrameLayout {
 
         LogUtils.getInstance().d("initCourseItemView执行了");
         // 通过Dao层获取课程数据 添加课程到课程界面
-        List<Course> courses = testCourseData.getCourses();
+        if (courses == null) {
+//            courses = testCourseData.getCourses();
+            courses = new ArrayList<>();
+        }
         for (Course cou : courses) {
             addCourse(cou);
         }
@@ -211,5 +215,8 @@ public class CourseView extends FrameLayout {
         initCourseItemView();
     }
 
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
 
 }

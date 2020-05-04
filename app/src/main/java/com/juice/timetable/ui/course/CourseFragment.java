@@ -18,9 +18,13 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
+import com.juice.timetable.data.bean.Course;
+import com.juice.timetable.data.testCourseData;
 import com.juice.timetable.databinding.FragmentCourseBinding;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.Utils;
+
+import java.util.List;
 
 public class CourseFragment extends Fragment {
     private CourseViewModel homeViewModel;
@@ -151,7 +155,9 @@ public class CourseFragment extends Fragment {
                 return false;
             }
         });
-
+        List<Course> courses = testCourseData.getCourses();
+        // 传入课表List 以显示
+        binding.courseView.setCourses(courses);
 
     }
 
