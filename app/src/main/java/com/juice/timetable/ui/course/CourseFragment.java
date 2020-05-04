@@ -14,10 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
+import com.juice.timetable.data.Dao.AllWeekCourseDao;
+import com.juice.timetable.data.JuiceDatabase;
+import com.juice.timetable.data.ViewModel.AllWeekCourseViewModel;
 import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.data.testCourseData;
 import com.juice.timetable.databinding.FragmentCourseBinding;
@@ -156,9 +161,28 @@ public class CourseFragment extends Fragment {
             }
         });
         List<Course> courses = testCourseData.getCourses();
-        // 传入课表List 以显示
-        binding.courseView.setCourses(courses);
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext().getApplicationContext());
+        //生成对应的Dao
+        AllWeekCourseDao allWeekCourseDao = juiceDatabase.getAllWeekCourseDao();
+        allWeekCourseDao.deleteAllWeekCourse();
+        for (Course cours : courses) {
+            allWeekCourseDao.insertAllWeekCourse(cours);
 
+        }
+
+
+        // 传入课表List 以显示
+        AllWeekCourseViewModel allWeekCou = new ViewModelProvider(requireActivity()).get(AllWeekCourseViewModel.class);
+        allWeekCou.getAllWeekCourseLive().observe(getActivity(), new Observer<List<Course>>() {
+            @Override
+            public void onChanged(List<Course> courses) {
+                if (courses != null) {
+
+                    binding.courseView.setCourses(courses);
+                    binding.courseView.resetView();
+                }
+            }
+        });
     }
 
 
