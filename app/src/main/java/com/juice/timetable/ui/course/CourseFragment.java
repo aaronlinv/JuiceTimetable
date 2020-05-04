@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
@@ -32,7 +33,8 @@ public class CourseFragment extends Fragment {
     private Integer mCurrentWeek = 11;
 
     private TextView mMonthTextView;
-
+    // 调式Init界面，用于调试登录界面
+    public static boolean debugInit = false;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -108,6 +110,11 @@ public class CourseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // 进入首次登录界面
+        if (debugInit) {
+            NavHostFragment.findNavController(this).navigate(R.id.initFragment);
+
+        }
 /*        new Runnable() {
             @Override
             public void run() {
