@@ -40,4 +40,8 @@
         android:name="com.juice.timetable.ui.login.LoginFragment"
         android:label="@string/menu_login"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/initFragment"
+        android:name="com.juice.timetable.ui.init.InitFragment"
+        android:label="InitFragment" />
 </navigation>
