@@ -52,4 +52,11 @@ dependencies {
     implementation files('libs/commons-httpclient-3.1.jar')
     implementation files('libs/commons-logging-1.2.jar')
     implementation files('libs/httpclient-4.5.2.jar')
+    def room_version = "2.2.3"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version" // For Kotlin use kapt instead of annotationProcessor
+
+    // Test helpers
+    testImplementation "androidx.room:room-testing:$room_version"
 }

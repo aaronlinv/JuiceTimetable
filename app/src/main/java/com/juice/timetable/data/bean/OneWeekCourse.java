@@ -18,17 +18,17 @@ public class OneWeekCourse {
     @PrimaryKey(autoGenerate = true)
     //课程对应的ID（与完整的课表相同ID的课表）
     private Long couID;
-    //课程名字
+
     private String couName;
-    //教室
+
     private String couRoom;
-    //星期几
+
     private Integer dayOfWeek;
-    //单双周
+
     private Integer typeOfWeek;
-    //第几节开始
+
     private Integer startNode;
-    //第几节结束
+
     private Integer endNode;
 
     @Override
@@ -43,6 +43,7 @@ public class OneWeekCourse {
                 ", endNode=" + endNode +
                 '}';
     }
+
 
     public Long getCouID() {
         return couID;
