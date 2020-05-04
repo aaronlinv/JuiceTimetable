@@ -24,7 +24,7 @@ public interface ClassNoSignedItemDao {
     void insertNoSignedItem(ClassNoSignedItem... classNoSignedItems);
 
     @Query("Delete From ClassNoSignedItem")
-    void deleteNosignedItem();
+    void deleteNoSignedItem();
 
     @Query("Select * from ClassNoSignedItem")
     List<ClassNoSignedItem> getNoSignedItem();

@@ -6,8 +6,6 @@ import com.juice.timetable.data.parse.ParseOneWeek;
 
 import org.junit.Test;
 
-import java.text.ParseException;
-
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -34,9 +32,8 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void leaveTest() throws ParseException {
+    public void leaveTest() {
         ParseCheckIn.getMySigned();
-        ParseCheckIn.getClassUnSigned();
     }
 
 }
