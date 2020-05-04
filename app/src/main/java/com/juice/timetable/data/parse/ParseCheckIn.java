@@ -22,9 +22,9 @@ public class ParseCheckIn {
     /**
      * 获取自己签到信息
      */
-    public static void getMySigned() {
+    public static MyCheckIn getMySigned() {
 
-
+        MyCheckIn myCheckIn = new MyCheckIn();
         //抓取
         String s = getMyCheckInStr();
         //String s = ReadFile.readToString("C:\\Users\\14989\\Desktop\\网页内容\\自己签到记录.html");
@@ -36,7 +36,7 @@ public class ParseCheckIn {
         for (Element element : elements) {
             //计算tr标签的数量
             Integer len_Tr = element.getElementsByTag("tr").size();
-            MyCheckIn myCheckIn = new MyCheckIn();
+
             Elements ele = element.getElementsByTag("tr").eq(0);
             for (Element el : ele) {
                 //tr标签中td的数量
@@ -57,6 +57,7 @@ public class ParseCheckIn {
             }
 
         }
+        return myCheckIn;
     }
 
     public static String getMyCheckInStr() {

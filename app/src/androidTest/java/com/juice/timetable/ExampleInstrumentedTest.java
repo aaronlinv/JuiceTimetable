@@ -8,9 +8,12 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.juice.timetable.data.ClassNoSignedItemDao;
 import com.juice.timetable.data.JuiceDatabase;
+import com.juice.timetable.data.MyCheckInDao;
 import com.juice.timetable.data.OneWeekCourseDao;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
+import com.juice.timetable.data.bean.MyCheckIn;
 import com.juice.timetable.data.bean.OneWeekCourse;
+import com.juice.timetable.data.parse.ParseCheckIn;
 import com.juice.timetable.data.parse.ParseClassNoSignedItem;
 import com.juice.timetable.data.parse.ParseOneWeek;
 
@@ -30,17 +33,24 @@ import static org.junit.Assert.assertEquals;
 public class ExampleInstrumentedTest {
     private List<OneWeekCourse> CourseList;
     private List<ClassNoSignedItem> classNoSignedItems;
+    private MyCheckIn myCheckIn;
+
     private OneWeekCourseDao CourseDao;
     private ClassNoSignedItemDao classNoSignedItemDao;
+    private MyCheckInDao myCheckInDao;
     @Test
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         assertEquals("com.juice.timetable", appContext.getPackageName());
+
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(appContext);
+
         CourseDao = juiceDatabase.getOneWeekCourseDao();
         classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
+        myCheckInDao = juiceDatabase.getMyCheckInDao();
+
         List<OneWeekCourse> a = ParseOneWeek.parseCourse();
         for (OneWeekCourse oneWeekCourse : a) {
             CourseDao.insertCourse(oneWeekCourse);
@@ -49,6 +59,8 @@ public class ExampleInstrumentedTest {
         for (ClassNoSignedItem classNoSignedItem : b) {
             classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
         }
+        MyCheckIn myCheckIn1 = ParseCheckIn.getMySigned();
+        myCheckInDao.insertMyCheckIn(myCheckIn1);
 
         CourseList = CourseDao.getOneWeekCourseLive();
         for (OneWeekCourse course : CourseList) {
@@ -69,5 +81,7 @@ public class ExampleInstrumentedTest {
             Log.d("a2", a2);
             Log.d("a3", a3);
         }
+        myCheckIn = myCheckInDao.getMyCheckIn();
+        Log.d("c1", myCheckIn.getCheckTime());
     }
 }
