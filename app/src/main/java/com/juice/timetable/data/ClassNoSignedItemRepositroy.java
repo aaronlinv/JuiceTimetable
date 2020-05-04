@@ -40,6 +40,9 @@ public class ClassNoSignedItemRepositroy {
         new DeleteAsyncTask(classNoSignedItemDao).execute();
     }
 
+    public void selectClassNoSignedItem(Void... Voids) {
+        new SelectAsyncTask(classNoSignedItemDao).execute();
+    }
 
     //插入
     static class InsertAsyncTask extends AsyncTask<ClassNoSignedItem, Void, Void> {
@@ -57,6 +60,21 @@ public class ClassNoSignedItemRepositroy {
         }
     }
 
+    //查询
+    static class SelectAsyncTask extends AsyncTask<Void, Void, Void> {
+        private ClassNoSignedItemDao classNoSignedItemDao;
+
+
+        public SelectAsyncTask(ClassNoSignedItemDao classNoSignedItemDao) {
+            this.classNoSignedItemDao = classNoSignedItemDao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            classNoSignedItemDao.getNoSignedItem();
+            return null;
+        }
+    }
     //删除
     static class DeleteAsyncTask extends AsyncTask<Void, Void, Void> {
         private ClassNoSignedItemDao classNoSignedItemDao;

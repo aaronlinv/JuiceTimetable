@@ -7,17 +7,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.juice.timetable.R;
 import com.juice.timetable.data.ClassNoSignedItemDao;
 import com.juice.timetable.data.ClassNoSignedItemRepositroy;
 import com.juice.timetable.data.JuiceDatabase;
-import com.juice.timetable.data.JuiceDatabase_Impl;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
+import com.juice.timetable.data.parse.ParseClassNoSignedItem;
 
 import java.util.List;
 
@@ -27,11 +26,13 @@ public class UnsignedFragment extends Fragment {
     RecyclerView recyclerView;
     UnsignedAdapter unsignedAdapter;
     private ClassNoSignedItemDao classNoSignedItemDao;
+    private ClassNoSignedItemRepositroy classNoSignedItemRepositroy;
     private List<ClassNoSignedItem> classNoSignedItem;
+    private SwipeRefreshLayout swipeRefreshLayout;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_unsign, container, false);
-        recyclerView = root.findViewById(R.id.recyclerView);
+        View root = inflater.inflate(R.layout.fragment_unsigned, container, false);
+        recyclerView = root.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         unsignedAdapter = new UnsignedAdapter();
         recyclerView.setAdapter(unsignedAdapter);
@@ -39,9 +40,24 @@ public class UnsignedFragment extends Fragment {
         //classNoSignedItem = unsignedViewModel.getClassNoSignedItemList();
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(requireContext());
         classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
-        classNoSignedItem = classNoSignedItemDao.getNoSignedItem();
+        /*classNoSignedItem = classNoSignedItemDao.getNoSignedItem();
         unsignedAdapter.setAllInfos(classNoSignedItem);
-        unsignedAdapter.notifyDataSetChanged();
+        unsignedAdapter.notifyDataSetChanged();*/
+        swipeRefreshLayout = root.findViewById(R.id.swiperefreshlayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                classNoSignedItemDao.deleteNoSignedItem();
+                List<ClassNoSignedItem> b = ParseClassNoSignedItem.getClassUnSigned();
+                for (ClassNoSignedItem classNoSignedItem : b) {
+                    classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
+                }
+                classNoSignedItem = classNoSignedItemDao.getNoSignedItem();
+                unsignedAdapter.setAllInfos(classNoSignedItem);
+                unsignedAdapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         return root;
     }
 
