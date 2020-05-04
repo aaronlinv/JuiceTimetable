@@ -1,7 +1,6 @@
 package com.juice.timetable;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -18,6 +17,7 @@ import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.parse.ParseCheckIn;
 import com.juice.timetable.data.parse.ParseClassNoSignedItem;
 import com.juice.timetable.data.parse.ParseOneWeek;
+import com.juice.timetable.utils.LogUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +42,7 @@ public class ExampleInstrumentedTest {
     private ClassNoSignedItemDao classNoSignedItemDao;
     private MyCheckInDao myCheckInDao;
     private StuInfoDao stuInfoDao;
+
     @Test
     public void useAppContext() {
         // Context of the app under test.
@@ -71,33 +72,41 @@ public class ExampleInstrumentedTest {
         stuInfo1.setEduPassword("123456");
         stuInfo1.setLeavePassword("123456");
         stuInfoDao.insertStuInfo(stuInfo1);
+
+    }
+
+    @Test
+    public void Query() {
+        // 初始化
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        //生成数据库，如果数据库已有，则调用
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(appContext);
+        //生成对应的Dao
+        CourseDao = juiceDatabase.getOneWeekCourseDao();
+        classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
+        myCheckInDao = juiceDatabase.getMyCheckInDao();
+        stuInfoDao = juiceDatabase.getStuInfoDao();
+
+
         //输出数据
         CourseList = CourseDao.getOneWeekCourseLive();
+        LogUtils.getInstance().d("CourseList数据：");
         for (OneWeekCourse course : CourseList) {
-            String a1 = course.getCouName();
-            String a2 = course.getCouRoom();
-            String a3 = "nihao===============";
-            Log.d("a1", a1);
-            Log.d("a2", a2);
-            Log.d("a3", a3);
-
-
+            LogUtils.getInstance().d(course.toString());
         }
+
         classNoSignedItems = classNoSignedItemDao.getNoSignedItem();
+        LogUtils.getInstance().d("classNoSignedItems数据：");
         for (ClassNoSignedItem classNoSignedItem : classNoSignedItems) {
-            String a1 = classNoSignedItem.getSno();
-            String a2 = classNoSignedItem.getSname();
-            String a3 = "nihao===============";
-            Log.d("b1", a1);
-            Log.d("b2", a2);
-            Log.d("b3", a3);
+            LogUtils.getInstance().d(classNoSignedItem.toString());
         }
-        myCheckIn = myCheckInDao.getMyCheckIn();
-        Log.d("c1", myCheckIn.getCheckTime());
 
+        LogUtils.getInstance().d("myCheckIn数据：");
+        myCheckIn = myCheckInDao.getMyCheckIn();
+        LogUtils.getInstance().d(myCheckIn.toString());
+
+        LogUtils.getInstance().d("stuInfo数据：");
         stuInfo = stuInfoDao.getStuInfo();
-        Log.d("d1", String.valueOf(stuInfo.getStuID()));
-        Log.d("d2", stuInfo.getEduPassword());
-        Log.d("d3", stuInfo.getLeavePassword());
+        LogUtils.getInstance().d(stuInfo.toString());
     }
 }
