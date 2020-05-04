@@ -10,8 +10,6 @@ import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 
-import java.io.IOException;
-
 /**
  * <pre>
  *     author : Aaron
@@ -21,7 +19,7 @@ import java.io.IOException;
  * </pre>
  */
 public class LeaveHttp {
-    public static String getCookie(String stuID, String stuPassword) throws IOException {
+    public static String getCookie(String stuID, String stuPassword) throws Exception {
 
         String userId = FileUtils.hex_md5(stuID);
         String passWd = FileUtils.hex_md5(stuPassword);
@@ -66,16 +64,19 @@ public class LeaveHttp {
         postMethod.setRequestBody(data);
 
         int statusCode = httpClient.executeMethod(postMethod);
+        // 无论密码正误都是返回200
         LogUtils.getInstance().d("发送账号密码返回的状态码：" + statusCode);
 
         byte[] b = postMethod.getResponseBody();
-        LogUtils.getInstance().d("响应体：");
-        LogUtils.getInstance().d(new String(b, "utf-8"));
+        String responseBody = new String(b, "utf-8");
 
+        LogUtils.getInstance().d("响应体：" + responseBody);
+
+        if (responseBody.contains("{\"result\":false}")) {
+            throw new Exception("您输入的请假系统用户名或是密码有误");
+        }
 
         // 登录成功后当前cookie将能够访问系统
         return cookies;
-
     }
-
 }

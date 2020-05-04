@@ -37,6 +37,17 @@ public class Course {
 
     private Integer couColor;
 
+    public Course() {
+    }
+
+    // 课程名，老师，起始结束周
+    public Course(String couName, String couTeacher, Integer couStartWeek, Integer couEndWeek) {
+        this.couName = couName;
+        this.couTeacher = couTeacher;
+        this.couStartWeek = couStartWeek;
+        this.couEndWeek = couEndWeek;
+    }
+
     public Long getCouID() {
         return couID;
     }

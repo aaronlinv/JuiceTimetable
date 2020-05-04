@@ -13,8 +13,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.juice.timetable.R;
-import com.juice.timetable.data.http.EduInfo;
-import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.utils.UserInfoUtils;
 
 public class UnsignedFragment extends Fragment {
@@ -44,7 +42,7 @@ public class UnsignedFragment extends Fragment {
         final String id = userInfoUtils.getProperty("id");
         final String eduPasswd = userInfoUtils.getProperty("eduPasswd");
         final String leavePasswd = userInfoUtils.getProperty("leavePasswd");
-
+/*
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -74,6 +72,6 @@ public class UnsignedFragment extends Fragment {
                 }
             }
 
-        }).start();
+        }).start();*/
     }
 }

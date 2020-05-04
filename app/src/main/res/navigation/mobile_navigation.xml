@@ -39,5 +39,5 @@
         android:id="@+id/nav_login"
         android:name="com.juice.timetable.ui.login.LoginFragment"
         android:label="@string/menu_login"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_login" />
 </navigation>

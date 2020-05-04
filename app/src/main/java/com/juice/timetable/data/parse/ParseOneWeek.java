@@ -2,6 +2,7 @@ package com.juice.timetable.data.parse;
 
 
 import com.juice.timetable.data.bean.OneWeekCourse;
+import com.juice.timetable.utils.ReadFile;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

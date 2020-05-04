@@ -103,7 +103,8 @@ public class EduHttp {
         LogUtils.getInstance().d("发送账号密码接收的状态码： " + statusCode);
 
         byte[] b = postMethod.getResponseBody();
-        LogUtils.getInstance().d("ResponseBody:" + new String(b, "utf-8"));
+        String responseBody = new String(b, "utf-8");
+        LogUtils.getInstance().d("ResponseBody:" + responseBody);
 
 
         //重定向 获取可用于免登录的cookie
@@ -121,6 +122,13 @@ public class EduHttp {
             }
             LogUtils.getInstance().d("登录页面cookies：" + finallyCookies.toString());
 
+        } else if (responseBody == null) {
+            throw new Exception("responseBody为空");
+        } else if (responseBody.contains("您输入的用户名或是密码出错")) {
+            throw new Exception("您输入的教务网用户名或是密码有误");
+        } else if (responseBody.contains("您输入的验证码不正确")) {
+            throw new Exception("验证码识别失败，请再尝试一次");
+//            LogUtils.getInstance().d("登录页面cookies：" + finallyCookies.toString());
         } else {
             throw new Exception("非302 跳转");
         }

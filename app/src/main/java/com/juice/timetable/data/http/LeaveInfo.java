@@ -1,6 +1,9 @@
 package com.juice.timetable.data.http;
 
+import android.content.Context;
+
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.PreferencesUtils;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -16,6 +19,10 @@ import java.io.IOException;
  * </pre>
  */
 public class LeaveInfo {
+    static final String PREF_LEAVE_COOKIE = "PREF_LEAVE_COOKIE";
+    // 保存Cookie，以减少获取Cookie的次数
+    static boolean enableSaveCookie = false;
+
     /**
      * 获取请假信息的主函数
      *
@@ -24,11 +31,29 @@ public class LeaveInfo {
      * @return
      * @throws IOException
      */
-    public static String getLeave(String stuID, String stuPassword, String uri) throws IOException {
-
+    public static String getLeave(String stuID, String stuPassword, String uri, Context context) throws Exception {
+        PreferencesUtils.init(context.getApplicationContext());
+        String prefLeaveCookie = PreferencesUtils.getString(PREF_LEAVE_COOKIE, null);
+        LogUtils.getInstance().d("PREF_LEAVE_COOKIE:" + prefLeaveCookie);
+        // 本地存在Cookie先用本地Cookie 尝试登录
+        if ((prefLeaveCookie != null) && enableSaveCookie) {
+            LogUtils.getInstance().d("本地存在Cookie先用本地Cookie 尝试登录");
+            try {
+                // 成功直接返回
+                return parse(prefLeaveCookie, uri);
+            } catch (Exception e) {
+                LogUtils.getInstance().d("本地Cookie不可用，开始模拟登录获取Cookie");
+            }
+        }
+        // 本地Cookie 不可用，获取新的Cookie 更新Cookie 并返回得到的数据
         String cookie = LeaveHttp.getCookie(stuID, stuPassword);
-        String info = LeaveInfo.parse(cookie, uri);
-        return info;
+        PreferencesUtils.putString(PREF_LEAVE_COOKIE, cookie);
+
+        prefLeaveCookie = PreferencesUtils.getString(PREF_LEAVE_COOKIE, null);
+        LogUtils.getInstance().d("PREF_LEAVE_COOKIE 设置后:" + prefLeaveCookie);
+
+        // 开始根据Cookie 解析数据
+        return LeaveInfo.parse(cookie, uri);
 
     }
 
@@ -39,6 +64,7 @@ public class LeaveInfo {
      * @return
      */
     public static String parse(String tmpCookies, String uri) {
+
 
         HttpClient httpClient = new HttpClient();
         GetMethod getMethod2 = new GetMethod(uri);
