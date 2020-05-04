@@ -52,26 +52,26 @@ public class ExampleInstrumentedTest {
         //生成数据库，如果数据库已有，则调用
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(appContext);
         //生成对应的Dao
-        CourseDao = juiceDatabase.getOneWeekCourseDao();
+        //CourseDao = juiceDatabase.getOneWeekCourseDao();
         classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
-        myCheckInDao = juiceDatabase.getMyCheckInDao();
-        stuInfoDao = juiceDatabase.getStuInfoDao();
+        //myCheckInDao = juiceDatabase.getMyCheckInDao();
+        //stuInfoDao = juiceDatabase.getStuInfoDao();
         //插入数据
-        List<OneWeekCourse> a = ParseOneWeek.parseCourse();
+        /*List<OneWeekCourse> a = ParseOneWeek.parseCourse();
         for (OneWeekCourse oneWeekCourse : a) {
             CourseDao.insertCourse(oneWeekCourse);
-        }
+        }*/
         List<ClassNoSignedItem> b = ParseClassNoSignedItem.getClassUnSigned();
         for (ClassNoSignedItem classNoSignedItem : b) {
             classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
         }
-        MyCheckIn myCheckIn1 = ParseCheckIn.getMySigned();
+        /*MyCheckIn myCheckIn1 = ParseCheckIn.getMySigned();
         myCheckInDao.insertMyCheckIn(myCheckIn1);
         StuInfo stuInfo1 = new StuInfo();
         stuInfo1.setStuID(211706162);
         stuInfo1.setEduPassword("123456");
         stuInfo1.setLeavePassword("123456");
-        stuInfoDao.insertStuInfo(stuInfo1);
+        stuInfoDao.insertStuInfo(stuInfo1);*/
 
     }
 

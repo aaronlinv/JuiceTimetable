@@ -4,45 +4,56 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.juice.timetable.R;
-import com.juice.timetable.utils.UserInfoUtils;
+import com.juice.timetable.data.ClassNoSignedItemDao;
+import com.juice.timetable.data.ClassNoSignedItemRepositroy;
+import com.juice.timetable.data.JuiceDatabase;
+import com.juice.timetable.data.JuiceDatabase_Impl;
+import com.juice.timetable.data.bean.ClassNoSignedItem;
+
+import java.util.List;
 
 public class UnsignedFragment extends Fragment {
-
     private UnsignedViewModel unsignedViewModel;
-
+    private ClassNoSignedItemRepositroy classNoSignedItemRepository;
+    RecyclerView recyclerView;
+    UnsignedAdapter unsignedAdapter;
+    private ClassNoSignedItemDao classNoSignedItemDao;
+    private List<ClassNoSignedItem> classNoSignedItem;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        unsignedViewModel =
-                ViewModelProviders.of(this).get(UnsignedViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        unsignedViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        View root = inflater.inflate(R.layout.fragment_unsign, container, false);
+        recyclerView = root.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        unsignedAdapter = new UnsignedAdapter();
+        recyclerView.setAdapter(unsignedAdapter);
+        //unsignedViewModel = new ViewModelProvider(requireActivity()).get(UnsignedViewModel.class);
+        //classNoSignedItem = unsignedViewModel.getClassNoSignedItemList();
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(requireContext());
+        classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
+        classNoSignedItem = classNoSignedItemDao.getNoSignedItem();
+        unsignedAdapter.setAllInfos(classNoSignedItem);
+        unsignedAdapter.notifyDataSetChanged();
         return root;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+    //@Override
+    //public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    //    super.onViewCreated(view, savedInstanceState);
+        /*
         UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
         final String id = userInfoUtils.getProperty("id");
         final String eduPasswd = userInfoUtils.getProperty("eduPasswd");
         final String leavePasswd = userInfoUtils.getProperty("leavePasswd");
-/*
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -72,6 +83,7 @@ public class UnsignedFragment extends Fragment {
                 }
             }
 
-        }).start();*/
-    }
+        }).start();
+        */
+    // }
 }

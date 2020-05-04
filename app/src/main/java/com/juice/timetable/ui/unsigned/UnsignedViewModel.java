@@ -1,19 +1,27 @@
 package com.juice.timetable.ui.unsigned;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-public class UnsignedViewModel extends ViewModel {
+import com.juice.timetable.data.ClassNoSignedItemDao;
+import com.juice.timetable.data.ClassNoSignedItemRepositroy;
+import com.juice.timetable.data.JuiceDatabase;
+import com.juice.timetable.data.bean.ClassNoSignedItem;
+import com.juice.timetable.data.parse.ParseClassNoSignedItem;
 
-    private MutableLiveData<String> mText;
+import java.util.List;
 
-    public UnsignedViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is gallery fragment");
+public class UnsignedViewModel extends AndroidViewModel {
+    private ClassNoSignedItemRepositroy classNoSignedItemRepository;
+    public UnsignedViewModel(@NonNull Application application) {
+        super(application);
+        classNoSignedItemRepository = new ClassNoSignedItemRepositroy(application);
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    List<ClassNoSignedItem> getClassNoSignedItemList() {
+        return classNoSignedItemRepository.getClassNoSignedItem();
     }
 }
