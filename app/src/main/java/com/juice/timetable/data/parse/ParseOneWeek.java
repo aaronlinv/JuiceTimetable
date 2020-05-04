@@ -101,9 +101,9 @@ public class ParseOneWeek {
                 }
             }
             // 解析结束
-            for (OneWeekCourse course : couList) {
+            /*for (OneWeekCourse course : couList) {
                 System.out.println(course);
-            }
+            }*/
 
         }
         return couList;
