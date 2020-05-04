@@ -11,7 +11,7 @@ import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.OneWeekCourseDao;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
 import com.juice.timetable.data.bean.OneWeekCourse;
-import com.juice.timetable.data.parse.ParseCheckIn;
+import com.juice.timetable.data.parse.ParseClassNoSignedItem;
 import com.juice.timetable.data.parse.ParseOneWeek;
 
 import org.junit.Test;
@@ -45,7 +45,7 @@ public class ExampleInstrumentedTest {
         for (OneWeekCourse oneWeekCourse : a) {
             CourseDao.insertCourse(oneWeekCourse);
         }
-        List<ClassNoSignedItem> b = ParseCheckIn.getClassUnSigned();
+        List<ClassNoSignedItem> b = ParseClassNoSignedItem.getClassUnSigned();
         for (ClassNoSignedItem classNoSignedItem : b) {
             classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
         }

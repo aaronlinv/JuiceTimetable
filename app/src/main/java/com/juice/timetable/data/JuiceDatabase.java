@@ -7,6 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.juice.timetable.data.bean.ClassNoSignedItem;
+import com.juice.timetable.data.bean.MyCheckIn;
 import com.juice.timetable.data.bean.OneWeekCourse;
 
 /**
@@ -19,7 +20,7 @@ import com.juice.timetable.data.bean.OneWeekCourse;
  *     version: 1.0
  * </pre>
  */
-@Database(entities = {OneWeekCourse.class, ClassNoSignedItem.class}, version = 1, exportSchema = false)
+@Database(entities = {OneWeekCourse.class, ClassNoSignedItem.class, MyCheckIn.class}, version = 1, exportSchema = false)
 public abstract class JuiceDatabase extends RoomDatabase {
     private static JuiceDatabase INSTANCE;
 
@@ -35,4 +36,6 @@ public abstract class JuiceDatabase extends RoomDatabase {
     public abstract OneWeekCourseDao getOneWeekCourseDao();
 
     public abstract ClassNoSignedItemDao getClassNoSignedItemDao();
+
+    public abstract MyCheckInDao getMyCheckInDao();
 }

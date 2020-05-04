@@ -16,7 +16,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class ClassNoSignedItem {
     @PrimaryKey(autoGenerate = true)
-    private Integer No;
+    private Integer CNo;
     //未签名单学号
     private String sno;
     //未签名单名字
@@ -25,22 +25,21 @@ public class ClassNoSignedItem {
     @Override
     public String toString() {
         return "ClassNoSignrdItem{" +
-                "No=" + No +
                 ", sno='" + sno + '\'' +
                 ", sname='" + sname + '\'' +
                 '}';
     }
 
-    public Integer getNo() {
-        return No;
-    }
-
-    public void setNo(Integer no) {
-        No = no;
-    }
-
     public String getSno() {
         return sno;
+    }
+
+    public Integer getCNo() {
+        return CNo;
+    }
+
+    public void setCNo(Integer CNo) {
+        this.CNo = CNo;
     }
 
     public void setSno(String sno) {
