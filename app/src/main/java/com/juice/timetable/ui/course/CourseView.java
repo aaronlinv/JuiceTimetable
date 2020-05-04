@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 
 import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +116,8 @@ public class CourseView extends FrameLayout {
         // 设置tv文本
         String showText = course.getCouName() + "\n" + course.getCouRoom();
         tv.setText(showText);
-        tv.setBackgroundColor(0x80Fbadac);
+        LogUtils.getInstance().d("course.getCouColor():" + course.getCouColor());
+        tv.setBackgroundColor(course.getCouColor());
 
         // 背景图层
         backgroundView.addView(tv);
@@ -176,6 +178,13 @@ public class CourseView extends FrameLayout {
             courses = new ArrayList<>();
         }
         for (Course cou : courses) {
+            // 没有颜色 添加颜色
+            if (cou.getCouColor() == null) {
+                cou.setCouColor(Utils.getColor(cou.getCouID().intValue()));
+                LogUtils.getInstance().d("添加颜色" + cou.getCouColor());
+            }
+            // TODO: 2020/5/5
+            // 写回数据库
             addCourse(cou);
         }
 
