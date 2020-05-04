@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey;
  * </pre>
  */
 @Entity
-public class AllWeekCourse {
+public class Course {
     @PrimaryKey
     private Long couID;
     private Long onlyID;
