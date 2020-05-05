@@ -1,14 +1,11 @@
 package com.juice.timetable.ui.init;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,8 +15,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.juice.timetable.R;
-import com.juice.timetable.data.http.EduInfo;
-import com.juice.timetable.data.http.LeaveInfo;
+import com.juice.timetable.data.Dao.StuInfoDao;
+import com.juice.timetable.data.JuiceDatabase;
+import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.databinding.FragmentInitBinding;
 import com.juice.timetable.ui.course.CourseFragment;
 import com.juice.timetable.utils.LogUtils;
@@ -32,6 +30,10 @@ public class InitFragment extends Fragment {
     private String sno;
     private String edu;
     private String leave;
+    private StuInfo stuInfo;
+    private JuiceDatabase juiceDatabase;
+    private StuInfoDao stuInfoDao;
+
 
     public InitFragment() {
         // Required empty public constructor
@@ -82,8 +84,14 @@ public class InitFragment extends Fragment {
                 } else {
                     if (leave.isEmpty()) {
                         hideSoftKeyboard(requireActivity());
+                        writeSnoEduData();
+                        CourseFragment.debugInit = false;
+                        Navigation.findNavController(requireView()).navigate(R.id.nav_course);
+                        LogUtils.getInstance().d(readSnoData());
+                        LogUtils.getInstance().d(readEduData());
+
                         //Toast.makeText(getContext().getApplicationContext(), "教务网密码验证成功", Toast.LENGTH_SHORT).show();
-                        new Thread(new Runnable() {
+                       /* new Thread(new Runnable() {
                             @Override
                             public void run() {
 
@@ -104,8 +112,7 @@ public class InitFragment extends Fragment {
                                     Looper.loop();
                                 }
                                 LogUtils.getInstance().d("教务网密码验证成功");
-                                CourseFragment.debugInit = false;
-                                Navigation.findNavController(requireView()).navigate(R.id.nav_course);
+
                                 // 跳转到课表首页
                                 if (leave == "") {
                                     Looper.prepare();
@@ -115,10 +122,28 @@ public class InitFragment extends Fragment {
 
                                 }
                             }
-                        });
+                        }).start();*/
+                        // TODO 跳转页面，并调用写入数据库的方法writeSnoEduData()
+
                     } else {
                         hideSoftKeyboard(requireActivity());
-                        new Thread(new Runnable() {
+                        writeAllData();
+                        CourseFragment.debugInit = false;
+                        Navigation.findNavController(requireView()).navigate(R.id.nav_course);
+
+                        // Dao
+                        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
+                        /*stuInfoDao = juiceDatabase.getStuInfoDao();
+                        StuInfo stuInfo = stuInfoDao.getStuInfo();
+
+                        LogUtils.getInstance().d("读取用户数据：" + stuInfo.getStuID());
+                        LogUtils.getInstance().d("读取用户数据：" + stuInfo.getEduPassword());
+                        LogUtils.getInstance().d("读取用户数据：" + stuInfo.getLeavePassword());*/
+                        LogUtils.getInstance().d("读取用户数据" + readSnoData());
+                        LogUtils.getInstance().d("读取用户数据" + readEduData());
+                        LogUtils.getInstance().d("读取用户数据" + readLeavaData());
+                        stuInfoDao.deleteStuInfo();
+                        /*new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 // 教务网验证
@@ -161,11 +186,13 @@ public class InitFragment extends Fragment {
                                 Looper.prepare();
                                 Toast.makeText(getContext().getApplicationContext(), "教务网和请假系统密码均验证成功", Toast.LENGTH_SHORT).show();
                                 Looper.loop();
-                                CourseFragment.debugInit = false;
-                                Navigation.findNavController(requireView()).navigate(R.id.nav_course);
+
                             }
-                        }).start();
+                        }).start();*/
                     }
+                    // TODO 跳转页面，并调用写入数据库的方法writeAllData()
+                    CourseFragment.debugInit = false;
+                    Navigation.findNavController(requireView()).navigate(R.id.nav_course);
                 }
 
             }
@@ -181,6 +208,45 @@ public class InitFragment extends Fragment {
         sno = binding.etSno.getText().toString().trim();
         edu = binding.etEduPassword.getText().toString().trim();
         leave = binding.etLeavePassword.getText().toString().trim();
+    }
+
+    private void writeSnoEduData() {
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
+        stuInfoDao = juiceDatabase.getStuInfoDao();
+        Integer snoStr = Integer.parseInt(sno);
+        StuInfo stuInfo1 = new StuInfo();
+        stuInfo1.setStuID(snoStr);
+        stuInfo1.setEduPassword(edu);
+        stuInfoDao.insertStuInfo(stuInfo1);
+    }
+
+    private void writeAllData() {
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
+        stuInfoDao = juiceDatabase.getStuInfoDao();
+        Integer snoStr = Integer.parseInt(sno);
+        StuInfo stuInfo1 = new StuInfo();
+        stuInfo1.setStuID(snoStr);
+        stuInfo1.setEduPassword(edu);
+        stuInfo1.setEduPassword(leave);
+        stuInfoDao.insertStuInfo(stuInfo1);
+    }
+
+    private String readSnoData() {
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
+        stuInfoDao = juiceDatabase.getStuInfoDao();
+        return stuInfoDao.getStuInfo().getStuID().toString();
+    }
+
+    private String readEduData() {
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
+        stuInfoDao = juiceDatabase.getStuInfoDao();
+        return stuInfoDao.getStuInfo().getEduPassword();
+    }
+
+    private String readLeavaData() {
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
+        stuInfoDao = juiceDatabase.getStuInfoDao();
+        return stuInfoDao.getStuInfo().getLeavePassword();
     }
 
 
@@ -263,8 +329,12 @@ public class InitFragment extends Fragment {
      * @param activity
      */
     private static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0); //强制隐藏键盘
+        // TODO: 2020/5/5 隐藏键盘
+/*        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null && activity.getCurrentFocus().getWindowToken() != null) {
+            imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0); //强制隐藏键盘
+        }*/
     }
+
 
 }
