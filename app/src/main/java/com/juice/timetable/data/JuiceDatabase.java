@@ -6,7 +6,13 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.juice.timetable.data.Dao.AllWeekCourseDao;
+import com.juice.timetable.data.Dao.ClassNoSignedItemDao;
+import com.juice.timetable.data.Dao.MyCheckInDao;
+import com.juice.timetable.data.Dao.OneWeekCourseDao;
+import com.juice.timetable.data.Dao.StuInfoDao;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
+import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.data.bean.MyCheckIn;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.bean.StuInfo;
@@ -21,7 +27,7 @@ import com.juice.timetable.data.bean.StuInfo;
  *     version: 1.0
  * </pre>
  */
-@Database(entities = {OneWeekCourse.class, ClassNoSignedItem.class, MyCheckIn.class, StuInfo.class}, version = 1, exportSchema = false)
+@Database(entities = {OneWeekCourse.class, ClassNoSignedItem.class, MyCheckIn.class, StuInfo.class, Course.class}, version = 1, exportSchema = false)
 public abstract class JuiceDatabase extends RoomDatabase {
     private static JuiceDatabase INSTANCE;
 
@@ -42,4 +48,6 @@ public abstract class JuiceDatabase extends RoomDatabase {
     public abstract MyCheckInDao getMyCheckInDao();
 
     public abstract StuInfoDao getStuInfoDao();
+
+    public abstract AllWeekCourseDao getAllWeekCourseDao();
 }

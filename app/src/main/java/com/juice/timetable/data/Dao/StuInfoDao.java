@@ -1,4 +1,4 @@
-package com.juice.timetable.data;
+package com.juice.timetable.data.Dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
