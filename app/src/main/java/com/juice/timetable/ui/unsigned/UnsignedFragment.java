@@ -72,16 +72,16 @@ public class UnsignedFragment extends Fragment {
                 }
             }
 
-        }).start();
+        }).start();*/
 
         // 调用observe方法来获取ViewModel里的数据
-        /*OneWeekCourseViewModel oneWeekCourseViewModel = new ViewModelProvider(this).get(OneWeekCourseViewModel.class);
-        LiveData<List<OneWeekCourse>> oneWeekCourseLive = oneWeekCourseViewModel.getOneWeekCourseLive();
-        oneWeekCourseLive.observe(requireActivity(), new Observer<List<OneWeekCourse>>() {
+       /* OneWeekCourseViewModel oneWeekCourseViewModel = new ViewModelProvider(this).get(OneWeekCourseViewModel.class);
+        final LiveData<List<Integer>> oneWeekCourseLive = oneWeekCourseViewModel.getInWeekLive();
+        oneWeekCourseLive.observe(requireActivity(), new Observer<List<Integer>>() {
             @Override
-            public void onChanged(List<OneWeekCourse> oneWeekCourses) {
+            public void onChanged(List<Integer> oneWeekCourses) {
                 if(oneWeekCourses!=null){
-                    LogUtils.getInstance().d("读取数据"+oneWeekCourses);
+                    Log.d("a1",oneWeekCourses.toString());
                 }
             }
         });*/
