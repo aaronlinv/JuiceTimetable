@@ -38,8 +38,10 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.11.3'
     testImplementation 'junit:junit:4.12'
     def room_version = "2.2.3"
+
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     // For Kotlin use kapt instead of annotationProcessor
@@ -53,5 +55,4 @@ dependencies {
     implementation files('libs/commons-httpclient-3.1.jar')
     implementation files('libs/commons-logging-1.2.jar')
     implementation files('libs/httpclient-4.5.2.jar')
-
 }

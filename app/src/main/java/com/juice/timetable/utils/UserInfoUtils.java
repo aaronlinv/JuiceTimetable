@@ -42,4 +42,15 @@ public class UserInfoUtils {
 
     }
 
+    public String getID() {
+        return getProperty("id");
+    }
+
+    public String getEduPasswd() {
+        return getProperty("eduPasswd");
+    }
+
+    public String getLeavePasswd() {
+        return getProperty("leavePasswd");
+    }
 }
