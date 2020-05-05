@@ -1,11 +1,13 @@
 package com.juice.timetable.ui.init;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,8 @@ import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.databinding.FragmentInitBinding;
 import com.juice.timetable.ui.course.CourseFragment;
 import com.juice.timetable.utils.LogUtils;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -329,11 +333,9 @@ public class InitFragment extends Fragment {
      * @param activity
      */
     private static void hideSoftKeyboard(Activity activity) {
-        // TODO: 2020/5/5 隐藏键盘
-/*        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null && activity.getCurrentFocus().getWindowToken() != null) {
-            imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0); //强制隐藏键盘
-        }*/
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert imm != null;
+        imm.hideSoftInputFromWindow(Objects.requireNonNull(activity.getCurrentFocus()).getWindowToken(), 0); //强制隐藏键盘
     }
 
 
