@@ -47,7 +47,8 @@ public class UnsignedAdapter extends RecyclerView.Adapter<UnsignedAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return allInfos.size();
+        return 0;
+        //return allInfos.size();
     }
 
 

@@ -7,26 +7,29 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.juice.timetable.R;
-import com.juice.timetable.data.ClassNoSignedItemDao;
-import com.juice.timetable.data.ClassNoSignedItemRepositroy;
-import com.juice.timetable.data.JuiceDatabase;
+import com.juice.timetable.data.Dao.ClassNoSignedItemDao;
+import com.juice.timetable.data.Repository.ClassNoSignedItemRepositroy;
+import com.juice.timetable.data.ViewModel.ClassNoSignedItemViewModel;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
 import com.juice.timetable.data.parse.ParseClassNoSignedItem;
 
 import java.util.List;
 
 public class UnsignedFragment extends Fragment {
-    private UnsignedViewModel unsignedViewModel;
-    private ClassNoSignedItemRepositroy classNoSignedItemRepository;
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     UnsignedAdapter unsignedAdapter;
     private ClassNoSignedItemDao classNoSignedItemDao;
+    private LiveData<List<ClassNoSignedItem>> classNoSignedItemLive;
     private ClassNoSignedItemRepositroy classNoSignedItemRepositroy;
+    private ClassNoSignedItemViewModel classNoSignedItemViewModel;
     private List<ClassNoSignedItem> classNoSignedItem;
     private SwipeRefreshLayout swipeRefreshLayout;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -36,13 +39,32 @@ public class UnsignedFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         unsignedAdapter = new UnsignedAdapter();
         recyclerView.setAdapter(unsignedAdapter);
-        //unsignedViewModel = new ViewModelProvider(requireActivity()).get(UnsignedViewModel.class);
-        //classNoSignedItem = unsignedViewModel.getClassNoSignedItemList();
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(requireContext());
-        classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
+        classNoSignedItemViewModel = new ViewModelProvider(requireActivity()).get(ClassNoSignedItemViewModel.class);
+        classNoSignedItemLive = classNoSignedItemViewModel.getClassNoSignedItemLive();
+        classNoSignedItemLive.observe(requireActivity(), new Observer<List<ClassNoSignedItem>>() {
+            @Override
+            public void onChanged(List<ClassNoSignedItem> classNoSignedItems) {
+                unsignedAdapter.setAllInfos(classNoSignedItem);
+                unsignedAdapter.notifyDataSetChanged();
+            }
+        });
+        swipeRefreshLayout = root.findViewById(R.id.swiperefreshlayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                classNoSignedItemDao.deleteNoSignedItem();
+                List<ClassNoSignedItem> b = ParseClassNoSignedItem.getClassUnSigned();
+                for (ClassNoSignedItem classNoSignedItem : b) {
+                    classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
+                }
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        return root;
+    }
+    //JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(requireContext());
+    //classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
         /*classNoSignedItem = classNoSignedItemDao.getNoSignedItem();
-        unsignedAdapter.setAllInfos(classNoSignedItem);
-        unsignedAdapter.notifyDataSetChanged();*/
         swipeRefreshLayout = root.findViewById(R.id.swiperefreshlayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -58,7 +80,6 @@ public class UnsignedFragment extends Fragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-        return root;
     }
 
     //@Override

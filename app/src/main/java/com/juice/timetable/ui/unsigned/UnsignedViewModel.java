@@ -1,12 +1,6 @@
 package com.juice.timetable.ui.unsigned;
 
-import android.app.Application;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-
-import com.juice.timetable.data.ClassNoSignedItemDao;
+/*import com.juice.timetable.data.ClassNoSignedItemDao;
 import com.juice.timetable.data.ClassNoSignedItemRepositroy;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
@@ -25,3 +19,5 @@ public class UnsignedViewModel extends AndroidViewModel {
         return classNoSignedItemRepository.getClassNoSignedItem();
     }
 }
+
+ */

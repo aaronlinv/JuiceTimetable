@@ -75,7 +75,7 @@ public class ClassNoSignedItemRepositroy {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            classNoSignedItemDao.getNoSignedItem();
+            classNoSignedItemDao.getClassNoSignedItemLive();
             return null;
         }
     }
