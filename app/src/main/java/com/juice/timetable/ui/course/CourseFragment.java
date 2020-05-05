@@ -20,11 +20,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
-import com.juice.timetable.data.Dao.AllWeekCourseDao;
-import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.ViewModel.AllWeekCourseViewModel;
 import com.juice.timetable.data.bean.Course;
-import com.juice.timetable.data.testCourseData;
 import com.juice.timetable.databinding.FragmentCourseBinding;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.Utils;
@@ -160,7 +157,7 @@ public class CourseFragment extends Fragment {
                 return false;
             }
         });
-        List<Course> courses = testCourseData.getCourses();
+/*        List<Course> courses = testCourseData.getCourses();
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext().getApplicationContext());
         //生成对应的Dao
         AllWeekCourseDao allWeekCourseDao = juiceDatabase.getAllWeekCourseDao();
@@ -168,7 +165,7 @@ public class CourseFragment extends Fragment {
         for (Course cours : courses) {
             allWeekCourseDao.insertAllWeekCourse(cours);
 
-        }
+        }*/
 
 
         // 传入课表List 以显示
@@ -176,8 +173,8 @@ public class CourseFragment extends Fragment {
         allWeekCou.getAllWeekCourseLive().observe(getActivity(), new Observer<List<Course>>() {
             @Override
             public void onChanged(List<Course> courses) {
-                if (courses != null) {
-
+                //  一直观察，可能造成卡顿，检查数据发生了改变再改变
+                if (courses != null && courses != binding.courseView.getCourses()) {
                     binding.courseView.setCourses(courses);
                     binding.courseView.resetView();
                 }

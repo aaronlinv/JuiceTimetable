@@ -53,6 +53,11 @@ public class CourseView extends FrameLayout {
      */
     private boolean mRowItemWidthAuto = true;
     private int mCurrentIndex = 10;
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
     private List<Course> courses = null;
 
     public CourseView(@NonNull Context context) {
