@@ -1,7 +1,10 @@
 package com.juice.timetable.ui.course;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -9,18 +12,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
+import com.juice.timetable.data.Dao.AllWeekCourseDao;
+import com.juice.timetable.data.JuiceDatabase;
+import com.juice.timetable.data.ViewModel.AllWeekCourseViewModel;
+import com.juice.timetable.data.bean.Course;
+import com.juice.timetable.data.bean.StuInfo;
+import com.juice.timetable.data.http.EduInfo;
+import com.juice.timetable.data.parse.ParseAllWeek;
 import com.juice.timetable.databinding.FragmentCourseBinding;
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.UserInfoUtils;
 import com.juice.timetable.utils.Utils;
+
+import java.util.List;
 
 public class CourseFragment extends Fragment {
     private CourseViewModel homeViewModel;
@@ -35,6 +52,7 @@ public class CourseFragment extends Fragment {
     private TextView mMonthTextView;
     // 调式Init界面，用于调试登录界面
     public static boolean debugInit = false;
+    private Handler mHandler;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -107,6 +125,7 @@ public class CourseFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @SuppressLint("HandlerLeak")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -151,9 +170,98 @@ public class CourseFragment extends Fragment {
                 return false;
             }
         });
+/*        List<Course> courses = testCourseData.getCourses();
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext().getApplicationContext());
+        //生成对应的Dao
+        AllWeekCourseDao allWeekCourseDao = juiceDatabase.getAllWeekCourseDao();
+        allWeekCourseDao.deleteAllWeekCourse();
+        for (Course cours : courses) {
+            allWeekCourseDao.insertAllWeekCourse(cours);
+
+        }*/
+        // TODO: 2020/5/5 写入账户密码
+        UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
+        JuiceDatabase database = JuiceDatabase.getDatabase(requireContext());
+        database.getStuInfoDao().deleteStuInfo();
+        StuInfo stuInfo = new StuInfo();
+        stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
+        stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
+        database.getStuInfoDao().insertStuInfo(stuInfo);
 
 
+        // 传入课表List 以显示
+        final AllWeekCourseViewModel allWeekCou = new ViewModelProvider(requireActivity()).get(AllWeekCourseViewModel.class);
+        allWeekCou.getAllWeekCourseLive().observe(getActivity(), new Observer<List<Course>>() {
+            @Override
+            public void onChanged(List<Course> courses) {
+                //  一直观察，可能造成卡顿，检查数据发生了改变再改变
+                if (courses != null && courses != binding.courseView.getCourses()) {
+                    binding.courseView.setCourses(courses);
+                    binding.courseView.resetView();
+                }
+            }
+        });
+        final AllWeekCourseDao allWeekCourseDao = JuiceDatabase.getDatabase(requireContext().getApplicationContext()).getAllWeekCourseDao();
+        binding.slRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        Message message = new Message();
+                        message.what = Constant.MSG_REFRESH;
+
+
+                        LogUtils.getInstance().d("setOnRefreshListener:开始刷新");
+                        // 更新数据
+                        allWeekCourseDao.deleteAllWeekCourse();
+                        LogUtils.getInstance().d("setOnRefreshListener:删除数据库");
+                        String allCourse = null;
+                        try {
+                            allCourse = EduInfo.getAllCourse(requireContext().getApplicationContext());
+                        } catch (Exception e) {
+                            LogUtils.getInstance().d("setOnRefreshListener：" + e.getMessage());
+                        }
+                        LogUtils.getInstance().d("setOnRefreshListener:模拟登录获取完整课表结束");
+                        if (allCourse == null) {
+                            message.obj = "网络好像不太好，再试一次";
+                            mHandler.sendMessage(message);
+
+                        } else {
+                            List<Course> courses = ParseAllWeek.parseAllCourse(allCourse);
+                            LogUtils.getInstance().d("setOnRefreshListener:解析完整课表结束");
+                            for (Course cours : courses) {
+                                allWeekCourseDao.insertAllWeekCourse(cours);
+                            }
+                            LogUtils.getInstance().d("setOnRefreshListener:完整课写入数据库表结束");
+                            message.obj = "ok";
+                            mHandler.sendMessage(message);
+                        }
+                    }
+                }.start();
+
+            }
+        });
+
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case Constant.MSG_REFRESH:
+                        // 关闭刷新动画
+                        binding.slRefresh.setRefreshing(false);
+                        String msgStr = (String) msg.obj;
+                        if (!"ok".equals(msgStr)) {
+                            Toast.makeText(requireContext(), msgStr, Toast.LENGTH_SHORT).show();
+                        }
+
+                        break;
+                }
+
+            }
+        };
     }
-
 
 }
