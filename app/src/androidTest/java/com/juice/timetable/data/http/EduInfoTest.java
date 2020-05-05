@@ -54,4 +54,16 @@ public class EduInfoTest {
     @Test
     public void parse() {
     }
+
+    /**
+     * 测试获取第10周周课表
+     *
+     * @throws Exception
+     */
+    @Test
+    public void getOneWeekCourse() throws Exception {
+
+        String oneWeekCourse = EduInfo.getOneWeekCourse(10, getContext());
+        System.out.println(oneWeekCourse);
+    }
 }
