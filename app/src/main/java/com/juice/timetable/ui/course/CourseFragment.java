@@ -20,7 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.juice.timetable.R;
@@ -130,7 +130,8 @@ public class CourseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // 进入首次登录界面
         if (Constant.DEBUG_INIT_FRAGMENT) {
-            NavHostFragment.findNavController(this).navigate(R.id.initFragment);
+            Navigation.findNavController(requireView()).navigate(R.id.action_nav_course_to_initFragment);
+//            NavHostFragment.findNavController(this).navigate(R.id.action_initFragment_to_nav_course);
 
         }
 /*        new Runnable() {

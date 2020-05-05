@@ -83,7 +83,8 @@ public class InitFragment extends Fragment {
                     Toast.makeText(requireActivity(), "请输入六位及以上的教务网密码", Toast.LENGTH_SHORT).show();
                 } else {
                     if (leave.isEmpty()) {
-                        hideSoftKeyboard(requireActivity());
+                        // TODO: 2020/5/5 键盘隐藏
+//                        hideSoftKeyboard(requireActivity());
                         writeSnoEduData();
                         // 跳转结束后将debugInit置为false否则死循环
                         Constant.DEBUG_INIT_FRAGMENT = false;
@@ -128,7 +129,8 @@ public class InitFragment extends Fragment {
                         // TODO 跳转页面，并调用写入数据库的方法writeSnoEduData()
 
                     } else {
-                        hideSoftKeyboard(requireActivity());
+                        // TODO: 2020/5/5 键盘隐藏
+//                        hideSoftKeyboard(requireActivity());
                         writeAllData();
                         Constant.DEBUG_INIT_FRAGMENT = false;
                         Navigation.findNavController(requireView()).navigate(R.id.nav_course);
@@ -194,7 +196,7 @@ public class InitFragment extends Fragment {
                     }
                     // TODO 跳转页面，并调用写入数据库的方法writeAllData()
                     Constant.DEBUG_INIT_FRAGMENT = false;
-                    Navigation.findNavController(requireView()).popBackStack();
+                    Navigation.findNavController(requireView()).popBackStack(R.id.initFragment, true);
                 }
 
             }
