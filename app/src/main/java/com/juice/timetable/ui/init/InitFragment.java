@@ -326,7 +326,6 @@ public class InitFragment extends Fragment {
                 }).create().show();
 
     }
-
     /**
      * 强制隐藏软键盘
      *
@@ -337,6 +336,4 @@ public class InitFragment extends Fragment {
         assert imm != null;
         imm.hideSoftInputFromWindow(Objects.requireNonNull(activity.getCurrentFocus()).getWindowToken(), 0); //强制隐藏键盘
     }
-
-
 }
