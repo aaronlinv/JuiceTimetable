@@ -17,11 +17,11 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.juice.timetable.R;
+import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.Dao.StuInfoDao;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.databinding.FragmentInitBinding;
-import com.juice.timetable.ui.course.CourseFragment;
 import com.juice.timetable.utils.LogUtils;
 
 import java.util.Objects;
@@ -63,10 +63,6 @@ public class InitFragment extends Fragment {
             public void onClick(View v) {
                 LogUtils.getInstance().d("InitFragment:按键点击事件");
                 judgmentLogic();
-                // 跳转结束后将debugInit置为false否则死循环
-
-//                Navigation.findNavController(v).navigate(R.id.action_initFragment_to_nav_course);
-
             }
         });
     }
@@ -89,8 +85,10 @@ public class InitFragment extends Fragment {
                     if (leave.isEmpty()) {
                         hideSoftKeyboard(requireActivity());
                         writeSnoEduData();
-                        CourseFragment.debugInit = false;
-                        Navigation.findNavController(requireView()).navigate(R.id.nav_course);
+                        // 跳转结束后将debugInit置为false否则死循环
+                        Constant.DEBUG_INIT_FRAGMENT = false;
+                        // Navigation.findNavController(v).navigate(R.id.action_initFragment_to_nav_course);
+                        Navigation.findNavController(requireView()).navigate(R.id.action_nav_course_to_initFragment);
                         LogUtils.getInstance().d(readSnoData());
                         LogUtils.getInstance().d(readEduData());
 
@@ -132,7 +130,7 @@ public class InitFragment extends Fragment {
                     } else {
                         hideSoftKeyboard(requireActivity());
                         writeAllData();
-                        CourseFragment.debugInit = false;
+                        Constant.DEBUG_INIT_FRAGMENT = false;
                         Navigation.findNavController(requireView()).navigate(R.id.nav_course);
 
                         // Dao
@@ -195,8 +193,8 @@ public class InitFragment extends Fragment {
                         }).start();*/
                     }
                     // TODO 跳转页面，并调用写入数据库的方法writeAllData()
-                    CourseFragment.debugInit = false;
-                    Navigation.findNavController(requireView()).navigate(R.id.nav_course);
+                    Constant.DEBUG_INIT_FRAGMENT = false;
+                    Navigation.findNavController(requireView()).popBackStack();
                 }
 
             }
@@ -231,7 +229,7 @@ public class InitFragment extends Fragment {
         StuInfo stuInfo1 = new StuInfo();
         stuInfo1.setStuID(snoStr);
         stuInfo1.setEduPassword(edu);
-        stuInfo1.setEduPassword(leave);
+        stuInfo1.setLeavePassword(leave);
         stuInfoDao.insertStuInfo(stuInfo1);
     }
 
@@ -326,6 +324,7 @@ public class InitFragment extends Fragment {
                 }).create().show();
 
     }
+
     /**
      * 强制隐藏软键盘
      *
@@ -336,4 +335,22 @@ public class InitFragment extends Fragment {
         assert imm != null;
         imm.hideSoftInputFromWindow(Objects.requireNonNull(activity.getCurrentFocus()).getWindowToken(), 0); //强制隐藏键盘
     }
+
+    /*// 屏蔽返回按键
+    @Override
+    public void onResume() {
+        super.onResume();
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                    //拦截到的返回事件
+                    return true;
+                }
+                return false;
+            }
+        });
+    }*/
 }

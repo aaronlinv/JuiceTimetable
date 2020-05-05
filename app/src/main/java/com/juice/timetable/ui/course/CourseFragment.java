@@ -50,8 +50,7 @@ public class CourseFragment extends Fragment {
     private Integer mCurrentWeek = 11;
 
     private TextView mMonthTextView;
-    // 调式Init界面，用于调试登录界面
-    public static boolean debugInit = false;
+
     private Handler mHandler;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -130,7 +129,7 @@ public class CourseFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // 进入首次登录界面
-        if (debugInit) {
+        if (Constant.DEBUG_INIT_FRAGMENT) {
             NavHostFragment.findNavController(this).navigate(R.id.initFragment);
 
         }

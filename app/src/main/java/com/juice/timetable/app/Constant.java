@@ -24,5 +24,8 @@ public class Constant {
     // 当前学校周
     public static final int CUR_WEEK = 0;
 
+    // 调式Init界面，用于调试登录界面
+    public static boolean DEBUG_INIT_FRAGMENT = true;
+
 
 }

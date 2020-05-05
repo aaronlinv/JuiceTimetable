@@ -19,11 +19,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.juice.timetable.R;
+import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.Dao.StuInfoDao;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.databinding.FragmentLoginBinding;
-import com.juice.timetable.ui.course.CourseFragment;
 
 import java.util.Objects;
 
@@ -113,7 +113,7 @@ public class LoginFragment extends Fragment {
                 } else {
                     if (leave.isEmpty()) {
                         hideSoftKeyboard(requireActivity());
-                        CourseFragment.debugInit = false;
+                        Constant.DEBUG_INIT_FRAGMENT = false;
                         Navigation.findNavController(requireView()).navigate(R.id.nav_course);
                         //Toast.makeText(getContext().getApplicationContext(), "教务网密码验证成功", Toast.LENGTH_SHORT).show();
                        /* new Thread(new Runnable() {
@@ -152,7 +152,7 @@ public class LoginFragment extends Fragment {
 
                     } else {
                         hideSoftKeyboard(requireActivity());
-                        CourseFragment.debugInit = false;
+                        Constant.DEBUG_INIT_FRAGMENT = false;
                         Navigation.findNavController(requireView()).navigate(R.id.nav_course);
 
                         /*new Thread(new Runnable() {
@@ -203,7 +203,7 @@ public class LoginFragment extends Fragment {
                         }).start();*/
                     }
                     // TODO 跳转页面，删除学号教务网密码请假系统密码，并调用写入数据库的方法writeAllData()
-                    CourseFragment.debugInit = false;
+                    Constant.DEBUG_INIT_FRAGMENT = false;
                     Navigation.findNavController(requireView()).navigate(R.id.nav_course);
                 }
 
