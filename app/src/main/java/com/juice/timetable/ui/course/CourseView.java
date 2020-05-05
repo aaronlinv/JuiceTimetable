@@ -15,10 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.juice.timetable.data.bean.Course;
+import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -59,6 +61,25 @@ public class CourseView extends FrameLayout {
     }
 
     private List<Course> courses = null;
+
+    public List<OneWeekCourse> getOneWeekCourses() {
+        return oneWeekCourses;
+    }
+
+    public void setOneWeekCourses(List<OneWeekCourse> oneWeekCourses) {
+        this.oneWeekCourses = oneWeekCourses;
+    }
+
+    private List<OneWeekCourse> oneWeekCourses = null;
+    HashSet<Integer> set = null;
+
+    public HashSet<Integer> getSet() {
+        return set;
+    }
+
+    public void setSet(HashSet<Integer> set) {
+        this.set = set;
+    }
 
     public CourseView(@NonNull Context context) {
         super(context);

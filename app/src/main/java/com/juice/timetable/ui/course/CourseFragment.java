@@ -26,15 +26,22 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.Dao.AllWeekCourseDao;
+import com.juice.timetable.data.Dao.OneWeekCourseDao;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.ViewModel.AllWeekCourseViewModel;
 import com.juice.timetable.data.bean.Course;
+import com.juice.timetable.data.bean.OneWeekCourse;
+import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.data.parse.ParseAllWeek;
+import com.juice.timetable.data.parse.ParseOneWeek;
 import com.juice.timetable.databinding.FragmentCourseBinding;
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.UserInfoUtils;
 import com.juice.timetable.utils.Utils;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class CourseFragment extends Fragment {
@@ -132,20 +139,6 @@ public class CourseFragment extends Fragment {
 //            NavHostFragment.findNavController(this).navigate(R.id.action_initFragment_to_nav_course);
 
         }
-/*        new Runnable() {
-            @Override
-            public void run() {
-                // 通过外部数据 尝试添加课程
-                // 未成功
-                for (int x = 4; x <= 7; x++) {
-                    for (int y = 1; y <= 10; y = y + 2) {
-                        binding.courseView.addCourse(x, y);
-                    }
-                    LogUtils.getInstance().d("binding.courseView");
-
-                }
-            }
-        };*/
 
         // 获取点击的周
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -178,13 +171,13 @@ public class CourseFragment extends Fragment {
 
         }*/
         // TODO: 2020/5/5 测试：手动写入账户密码
-/*        UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
+        UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
         JuiceDatabase database = JuiceDatabase.getDatabase(requireContext());
         database.getStuInfoDao().deleteStuInfo();
         StuInfo stuInfo = new StuInfo();
         stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
         stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
-        database.getStuInfoDao().insertStuInfo(stuInfo);*/
+        database.getStuInfoDao().insertStuInfo(stuInfo);
 
 
         // 传入课表List 以显示
@@ -195,11 +188,39 @@ public class CourseFragment extends Fragment {
                 //  一直观察，可能造成卡顿，检查数据发生了改变再改变
                 if (courses != null && courses != binding.courseView.getCourses()) {
                     binding.courseView.setCourses(courses);
+                    // 刷新结束后 resetView更好 这样颜色变动不会闪烁
+//                    binding.courseView.resetView();
+                }
+            }
+        });
+
+
+        OneWeekCourseDao oneWeekCourseDao = database.getOneWeekCourseDao();
+        oneWeekCourseDao.getOneWeekCourseLive().observe(getActivity(), new Observer<List<OneWeekCourse>>() {
+            @Override
+            public void onChanged(List<OneWeekCourse> oneWeekCourses) {
+                if (oneWeekCourses != null && oneWeekCourses != binding.courseView.getOneWeekCourses()) {
+                    binding.courseView.setOneWeekCourses(oneWeekCourses);
                     binding.courseView.resetView();
                 }
             }
         });
+
+        oneWeekCourseDao.getInWeekLive().observe(getActivity(), new Observer<List<Integer>>() {
+            @Override
+            public void onChanged(List<Integer> integers) {
+                if (integers != null) {
+                    HashSet<Integer> set = new HashSet<>(integers);
+                    if (set != binding.courseView.getSet()) {
+                        LogUtils.getInstance().d("获取数据库中 存在的周课表的周Set" + set);
+                        binding.courseView.setSet(set);
+                    }
+                }
+            }
+        });
+
         final AllWeekCourseDao allWeekCourseDao = JuiceDatabase.getDatabase(requireContext().getApplicationContext()).getAllWeekCourseDao();
+
         binding.slRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -254,12 +275,42 @@ public class CourseFragment extends Fragment {
                         if (!"ok".equals(msgStr)) {
                             Toast.makeText(requireContext(), msgStr, Toast.LENGTH_SHORT).show();
                         }
-
+                        binding.courseView.resetView();
                         break;
                 }
 
             }
         };
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    getOneWeekCou();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
     }
 
+    /**
+     * 解析课表 获取本周、上两周、下两周的周课表
+     */
+    private void getOneWeekCou() throws Exception {
+        ArrayList<OneWeekCourse> couList = new ArrayList<>();
+        JuiceDatabase database = JuiceDatabase.getDatabase(requireContext());
+        OneWeekCourseDao oneWeekCourseDao = database.getOneWeekCourseDao();
+        for (int i = -2; i <= 2; i++) {
+            String oneWeekCourse = EduInfo.getOneWeekCourse(Constant.CUR_WEEK + i, requireContext());
+            List<OneWeekCourse> oneWeekCourses = ParseOneWeek.parseCourse(oneWeekCourse);
+            couList.addAll(oneWeekCourses);
+        }
+        for (OneWeekCourse oneWeekCourse : couList) {
+//            LogUtils.getInstance().d(oneWeekCourse.toString());
+            // 插入数据库
+            oneWeekCourseDao.insertCourse(oneWeekCourse);
+        }
+        LogUtils.getInstance().d("解析本周、上两周、下两周的周课表 结束");
+    }
 }
