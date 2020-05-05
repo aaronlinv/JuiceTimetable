@@ -20,26 +20,24 @@ import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.ViewModel.ClassNoSignedItemViewModel;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
 import com.juice.timetable.data.parse.ParseClassNoSignedItem;
+import com.juice.timetable.utils.LogUtils;
 
 import java.util.List;
-
 public class UnsignedFragment extends Fragment {
-    private RecyclerView recyclerView;
-    UnsignedAdapter unsignedAdapter;
+    private UnsignedAdapter unsignedAdapter;
     private ClassNoSignedItemDao classNoSignedItemDao;
     private LiveData<List<ClassNoSignedItem>> classNoSignedItemLive;
-    private ClassNoSignedItemViewModel classNoSignedItemViewModel;
     private SwipeRefreshLayout swipeRefreshLayout;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_unsigned, container, false);
-        recyclerView = root.findViewById(R.id.recyclerview);
+        RecyclerView recyclerView = root.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         unsignedAdapter = new UnsignedAdapter();
         recyclerView.setAdapter(unsignedAdapter);
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(requireContext());
         classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
-        classNoSignedItemViewModel = new ViewModelProvider(requireActivity()).get(ClassNoSignedItemViewModel.class);
+        ClassNoSignedItemViewModel classNoSignedItemViewModel = new ViewModelProvider(requireActivity()).get(ClassNoSignedItemViewModel.class);
         classNoSignedItemLive = classNoSignedItemViewModel.getClassNoSignedItemLive();
         classNoSignedItemLive.observe(requireActivity(), new Observer<List<ClassNoSignedItem>>() {
             @Override
@@ -57,13 +55,7 @@ public class UnsignedFragment extends Fragment {
                 for (ClassNoSignedItem classNoSignedItem : b) {
                     classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
                 }
-                classNoSignedItemLive.observe(requireActivity(), new Observer<List<ClassNoSignedItem>>() {
-                    @Override
-                    public void onChanged(List<ClassNoSignedItem> classNoSignedItems) {
-                        unsignedAdapter.setAllInfos(classNoSignedItems);
-                        unsignedAdapter.notifyDataSetChanged();
-                    }
-                });
+                LogUtils.getInstance().d(String.valueOf(b.size()));
                 swipeRefreshLayout.setRefreshing(false);
             }
         });

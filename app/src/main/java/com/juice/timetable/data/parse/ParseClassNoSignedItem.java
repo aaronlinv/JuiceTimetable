@@ -1,6 +1,7 @@
 package com.juice.timetable.data.parse;
 
 import com.juice.timetable.data.bean.ClassNoSignedItem;
+import com.juice.timetable.utils.LogUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -36,6 +37,7 @@ public class ParseClassNoSignedItem {
         Elements elements = doc.getElementsByTag("tbody");
         //System.out.println(elements.html());
         //System.out.println("未签名单");
+        noSignedList.clear();
         for (Element element : elements) {
             //计算tr标签的数量
             Integer len_Tr = element.getElementsByTag("tr").size();
@@ -56,6 +58,7 @@ public class ParseClassNoSignedItem {
         /*for (ClassNoSignedItem item : noSignedList) {
             System.out.println(item);
         }*/
+        LogUtils.getInstance().d(String.valueOf(noSignedList.size()));
         return noSignedList;
     }
 
