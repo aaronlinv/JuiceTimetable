@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -297,8 +298,8 @@ public class InitFragment extends Fragment {
         imm.hideSoftInputFromWindow(Objects.requireNonNull(activity.getCurrentFocus()).getWindowToken(), 0); //强制隐藏键盘
     }
 
-    /*// 屏蔽返回按键
-    @Override
+    // 屏蔽返回按键
+    /*@Override
     public void onResume() {
         super.onResume();
         getView().setFocusableInTouchMode(true);
@@ -314,4 +315,27 @@ public class InitFragment extends Fragment {
             }
         });
     }*/
+    @Override
+    public void onResume() {
+        super.onResume();
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                    //拦截到的返回事件
+                    LogUtils.getInstance().d("Init界面 拦截返回键");
+                    // 返回 true 表示已经消耗了返回的时间，返回false表示没有消耗，依旧会执行返回。
+                    // true 就等于按下返回 无反应
+                    // 按下直接结束退出应用
+                    getActivity().finish();
+                    return false;
+                }
+                return false;
+            }
+
+        });
+    }
+
 }
