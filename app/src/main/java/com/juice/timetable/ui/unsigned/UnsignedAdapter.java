@@ -42,13 +42,12 @@ public class UnsignedAdapter extends RecyclerView.Adapter<UnsignedAdapter.MyView
         ClassNoSignedItem classNoSignedItem = allInfos.get(position);
         holder.textViewID.setText(String.valueOf(classNoSignedItem.getSno()));
         holder.textViewName.setText(String.valueOf(classNoSignedItem.getSname()));
-        holder.textViewNumber.setText(classNoSignedItem.getCNo().toString());
+        holder.textViewNumber.setText("" + (position + 1));
     }
 
     @Override
     public int getItemCount() {
-        return 0;
-        //return allInfos.size();
+        return allInfos.size();
     }
 
 

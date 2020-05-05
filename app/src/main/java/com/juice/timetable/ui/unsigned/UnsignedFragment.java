@@ -16,7 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.juice.timetable.R;
 import com.juice.timetable.data.Dao.ClassNoSignedItemDao;
-import com.juice.timetable.data.Repository.ClassNoSignedItemRepositroy;
+import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.ViewModel.ClassNoSignedItemViewModel;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
 import com.juice.timetable.data.parse.ParseClassNoSignedItem;
@@ -28,9 +28,7 @@ public class UnsignedFragment extends Fragment {
     UnsignedAdapter unsignedAdapter;
     private ClassNoSignedItemDao classNoSignedItemDao;
     private LiveData<List<ClassNoSignedItem>> classNoSignedItemLive;
-    private ClassNoSignedItemRepositroy classNoSignedItemRepositroy;
     private ClassNoSignedItemViewModel classNoSignedItemViewModel;
-    private List<ClassNoSignedItem> classNoSignedItem;
     private SwipeRefreshLayout swipeRefreshLayout;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -39,12 +37,14 @@ public class UnsignedFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         unsignedAdapter = new UnsignedAdapter();
         recyclerView.setAdapter(unsignedAdapter);
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(requireContext());
+        classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
         classNoSignedItemViewModel = new ViewModelProvider(requireActivity()).get(ClassNoSignedItemViewModel.class);
         classNoSignedItemLive = classNoSignedItemViewModel.getClassNoSignedItemLive();
         classNoSignedItemLive.observe(requireActivity(), new Observer<List<ClassNoSignedItem>>() {
             @Override
             public void onChanged(List<ClassNoSignedItem> classNoSignedItems) {
-                unsignedAdapter.setAllInfos(classNoSignedItem);
+                unsignedAdapter.setAllInfos(classNoSignedItems);
                 unsignedAdapter.notifyDataSetChanged();
             }
         });
@@ -57,6 +57,13 @@ public class UnsignedFragment extends Fragment {
                 for (ClassNoSignedItem classNoSignedItem : b) {
                     classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
                 }
+                classNoSignedItemLive.observe(requireActivity(), new Observer<List<ClassNoSignedItem>>() {
+                    @Override
+                    public void onChanged(List<ClassNoSignedItem> classNoSignedItems) {
+                        unsignedAdapter.setAllInfos(classNoSignedItems);
+                        unsignedAdapter.notifyDataSetChanged();
+                    }
+                });
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
