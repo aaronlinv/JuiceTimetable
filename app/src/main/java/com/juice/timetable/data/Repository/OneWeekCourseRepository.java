@@ -23,18 +23,23 @@ import java.util.List;
  */
 public class OneWeekCourseRepository {
     private LiveData<List<OneWeekCourse>> oneWeekCourseLive;
+    private LiveData<List<Integer>> inWeekLive;
     private OneWeekCourseDao oneWeekCourseDao;
 
     public OneWeekCourseRepository(Context context) {
         JuiceDatabase wordDatabase = JuiceDatabase.getDatabase(context);
         oneWeekCourseDao = wordDatabase.getOneWeekCourseDao();
         oneWeekCourseLive = oneWeekCourseDao.getOneWeekCourseLive();
+        inWeekLive = oneWeekCourseDao.getInWeekLive();
     }
 
     public LiveData<List<OneWeekCourse>> getOneWeekCourseLive() {
         return oneWeekCourseLive;
     }
 
+    public LiveData<List<Integer>> getInWeekLive() {
+        return inWeekLive;
+    }
 
     public void insertOneWeekCourse(OneWeekCourse... courses) {
         new InsertAsyncTask(oneWeekCourseDao).execute(courses);

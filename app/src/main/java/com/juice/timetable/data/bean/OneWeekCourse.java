@@ -31,6 +31,8 @@ public class OneWeekCourse {
 
     private Integer endNode;
 
+    private Integer InWeek;
+
     @Override
     public String toString() {
         return "OneWeekCourse{" +
@@ -41,9 +43,9 @@ public class OneWeekCourse {
                 ", typeOfWeek=" + typeOfWeek +
                 ", startNode=" + startNode +
                 ", endNode=" + endNode +
+                ", InWeek=" + InWeek +
                 '}';
     }
-
 
     public Long getCouID() {
         return couID;
@@ -68,7 +70,6 @@ public class OneWeekCourse {
     public void setCouRoom(String couRoom) {
         this.couRoom = couRoom;
     }
-
 
     public Integer getDayOfWeek() {
         return dayOfWeek;
@@ -100,5 +101,13 @@ public class OneWeekCourse {
 
     public void setEndNode(Integer endNode) {
         this.endNode = endNode;
+    }
+
+    public Integer getInWeek() {
+        return InWeek;
+    }
+
+    public void setInWeek(Integer inWeek) {
+        InWeek = inWeek;
     }
 }

@@ -2,7 +2,6 @@ package com.juice.timetable.data.parse;
 
 
 import com.juice.timetable.data.bean.OneWeekCourse;
-import com.juice.timetable.utils.ReadFile;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -37,10 +36,7 @@ public class ParseOneWeek {
         String s = getStr();
         //解析
         Document doc = Jsoup.parse(s);
-        //标题
-        //String title = doc.getElementsByClass("td3").text();
-        //week = Integer.valueOf(String.valueOf(title.substring(title.indexOf("第") + 1, title.indexOf("周"))));
-        //System.out.println("第" + week + "周");
+
         //表格主干
         Elements elements = doc.getElementsByTag("table").eq(2);
         //System.out.println(elements.html());
@@ -60,6 +56,9 @@ public class ParseOneWeek {
                         //System.out.println(ele1.html());
                         OneWeekCourse owc = new OneWeekCourse();
                         //去除为空的课程
+                        String title = doc.getElementsByClass("td3").text();
+                        Integer week = Integer.valueOf(String.valueOf(title.substring(title.indexOf("第") + 1, title.indexOf("周"))));
+                        owc.setInWeek(week);
                         if (!"".equals(el.getElementsByTag("td").eq(b).text())) {
                             //couName,couRoom,单双周的判断
                             if (el.getElementsByTag("td").eq(b).text().contains("[单]")) {
