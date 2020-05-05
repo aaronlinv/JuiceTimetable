@@ -1,9 +1,11 @@
-package com.juice.timetable.data;
+package com.juice.timetable.data.Repository;
 
 
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.juice.timetable.data.Dao.StuInfoDao;
+import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.StuInfo;
 
 /**

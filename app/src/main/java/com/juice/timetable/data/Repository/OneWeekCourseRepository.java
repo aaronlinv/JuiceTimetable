@@ -1,8 +1,12 @@
-package com.juice.timetable.data;
+package com.juice.timetable.data.Repository;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
+import androidx.lifecycle.LiveData;
+
+import com.juice.timetable.data.Dao.OneWeekCourseDao;
+import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.OneWeekCourse;
 
 import java.util.List;
@@ -18,7 +22,7 @@ import java.util.List;
  * </pre>
  */
 public class OneWeekCourseRepository {
-    private List<OneWeekCourse> oneWeekCourseLive;
+    private LiveData<List<OneWeekCourse>> oneWeekCourseLive;
     private OneWeekCourseDao oneWeekCourseDao;
 
     public OneWeekCourseRepository(Context context) {
@@ -27,7 +31,7 @@ public class OneWeekCourseRepository {
         oneWeekCourseLive = oneWeekCourseDao.getOneWeekCourseLive();
     }
 
-    public List<OneWeekCourse> getOneWeekCourseLive() {
+    public LiveData<List<OneWeekCourse>> getOneWeekCourseLive() {
         return oneWeekCourseLive;
     }
 
