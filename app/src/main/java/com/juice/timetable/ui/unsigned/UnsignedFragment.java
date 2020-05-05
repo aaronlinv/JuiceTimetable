@@ -20,13 +20,11 @@ import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.ViewModel.ClassNoSignedItemViewModel;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
 import com.juice.timetable.data.parse.ParseClassNoSignedItem;
-import com.juice.timetable.utils.LogUtils;
 
 import java.util.List;
 public class UnsignedFragment extends Fragment {
     private UnsignedAdapter unsignedAdapter;
     private ClassNoSignedItemDao classNoSignedItemDao;
-    private LiveData<List<ClassNoSignedItem>> classNoSignedItemLive;
     private SwipeRefreshLayout swipeRefreshLayout;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -38,7 +36,7 @@ public class UnsignedFragment extends Fragment {
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(requireContext());
         classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
         ClassNoSignedItemViewModel classNoSignedItemViewModel = new ViewModelProvider(requireActivity()).get(ClassNoSignedItemViewModel.class);
-        classNoSignedItemLive = classNoSignedItemViewModel.getClassNoSignedItemLive();
+        LiveData<List<ClassNoSignedItem>> classNoSignedItemLive = classNoSignedItemViewModel.getClassNoSignedItemLive();
         classNoSignedItemLive.observe(requireActivity(), new Observer<List<ClassNoSignedItem>>() {
             @Override
             public void onChanged(List<ClassNoSignedItem> classNoSignedItems) {
@@ -55,7 +53,6 @@ public class UnsignedFragment extends Fragment {
                 for (ClassNoSignedItem classNoSignedItem : b) {
                     classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
                 }
-                LogUtils.getInstance().d(String.valueOf(b.size()));
                 swipeRefreshLayout.setRefreshing(false);
             }
         });

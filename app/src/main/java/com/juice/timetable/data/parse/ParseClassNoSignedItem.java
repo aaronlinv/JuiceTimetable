@@ -1,7 +1,6 @@
 package com.juice.timetable.data.parse;
 
 import com.juice.timetable.data.bean.ClassNoSignedItem;
-import com.juice.timetable.utils.LogUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -58,7 +57,6 @@ public class ParseClassNoSignedItem {
         /*for (ClassNoSignedItem item : noSignedList) {
             System.out.println(item);
         }*/
-        LogUtils.getInstance().d(String.valueOf(noSignedList.size()));
         return noSignedList;
     }
 
