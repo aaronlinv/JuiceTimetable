@@ -29,12 +29,10 @@ import com.juice.timetable.data.Dao.AllWeekCourseDao;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.ViewModel.AllWeekCourseViewModel;
 import com.juice.timetable.data.bean.Course;
-import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.data.parse.ParseAllWeek;
 import com.juice.timetable.databinding.FragmentCourseBinding;
 import com.juice.timetable.utils.LogUtils;
-import com.juice.timetable.utils.UserInfoUtils;
 import com.juice.timetable.utils.Utils;
 
 import java.util.List;
@@ -179,14 +177,14 @@ public class CourseFragment extends Fragment {
             allWeekCourseDao.insertAllWeekCourse(cours);
 
         }*/
-        // TODO: 2020/5/5 写入账户密码
-        UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
+        // TODO: 2020/5/5 测试：手动写入账户密码
+/*        UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
         JuiceDatabase database = JuiceDatabase.getDatabase(requireContext());
         database.getStuInfoDao().deleteStuInfo();
         StuInfo stuInfo = new StuInfo();
         stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
         stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
-        database.getStuInfoDao().insertStuInfo(stuInfo);
+        database.getStuInfoDao().insertStuInfo(stuInfo);*/
 
 
         // 传入课表List 以显示

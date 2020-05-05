@@ -1,9 +1,13 @@
 package com.juice.timetable.ui.init;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +25,8 @@ import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.Dao.StuInfoDao;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.StuInfo;
+import com.juice.timetable.data.http.EduInfo;
+import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.databinding.FragmentInitBinding;
 import com.juice.timetable.utils.LogUtils;
 
@@ -37,6 +43,7 @@ public class InitFragment extends Fragment {
     private StuInfo stuInfo;
     private JuiceDatabase juiceDatabase;
     private StuInfoDao stuInfoDao;
+    private Handler mHandler;
 
 
     public InitFragment() {
@@ -62,13 +69,21 @@ public class InitFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 LogUtils.getInstance().d("InitFragment:按键点击事件");
+
+                // 初始化数据库和Dao
+                juiceDatabase = JuiceDatabase.getDatabase(requireContext());
+                stuInfoDao = juiceDatabase.getStuInfoDao();
+
                 judgmentLogic();
             }
         });
     }
 
+    @SuppressLint("HandlerLeak")
     private void judgmentLogic() {
-        allStr();
+        // 获取三个输入框的内容
+        getInput();
+
         if (sno.isEmpty()) {
             Toast.makeText(requireActivity(), "请输入学号", Toast.LENGTH_SHORT).show();
         } else {
@@ -82,94 +97,43 @@ public class InitFragment extends Fragment {
                 } else if (edu.length() < 6) {
                     Toast.makeText(requireActivity(), "请输入六位及以上的教务网密码", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (leave.isEmpty()) {
-                        // TODO: 2020/5/5 键盘隐藏
-//                        hideSoftKeyboard(requireActivity());
-                        writeSnoEduData();
-                        // 跳转结束后将debugInit置为false否则死循环
-                        Constant.DEBUG_INIT_FRAGMENT = false;
-                        // Navigation.findNavController(v).navigate(R.id.action_initFragment_to_nav_course);
-                        Navigation.findNavController(requireView()).navigate(R.id.action_nav_course_to_initFragment);
-                        LogUtils.getInstance().d(readSnoData());
-                        LogUtils.getInstance().d(readEduData());
+                    // 键盘隐藏
+                    // TODO: 2020/5/5
+//                    hideSoftKeyboard(requireActivity());
 
-                        //Toast.makeText(getContext().getApplicationContext(), "教务网密码验证成功", Toast.LENGTH_SHORT).show();
-                       /* new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                // 教务网验证
-                                LogUtils.getInstance().d("教务网前端验证成功");
-                                String uri = "http://jwb.fdzcxy.com/kb/zkb_xs.asp";
-                                try {
-                                    EduInfo.getTimeTable(sno, edu, uri, getContext().getApplicationContext());
-                                } catch (Exception e) {
-                                    String errorText = e.getMessage();
-                                    LogUtils.getInstance().d("errorText:" + errorText);
-                                    //解决在子线程中调用Toast的异常情况处理
-                                    Looper.prepare();
-
-                                    Toast.makeText(getContext().getApplicationContext(), errorText, Toast.LENGTH_SHORT).show();
-
-                                    //解决在子线程中调用Toast的异常情况处理-结束需要添加这句
-                                    Looper.loop();
-                                }
-                                LogUtils.getInstance().d("教务网密码验证成功");
-
-                                // 跳转到课表首页
-                                if (leave == "") {
-                                    Looper.prepare();
-                                    Toast.makeText(getContext().getApplicationContext(), "教务网密码验证成功", Toast.LENGTH_SHORT).show();
-                                    Looper.loop();
-                                    // 只填写了教务网密码 跳转课表首页
-
-                                }
-                            }
-                        }).start();*/
-                        // TODO 跳转页面，并调用写入数据库的方法writeSnoEduData()
-
-                    } else {
-                        // TODO: 2020/5/5 键盘隐藏
-//                        hideSoftKeyboard(requireActivity());
-                        writeAllData();
-                        Constant.DEBUG_INIT_FRAGMENT = false;
-                        Navigation.findNavController(requireView()).navigate(R.id.nav_course);
-
-                        // Dao
-                        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
-                        /*stuInfoDao = juiceDatabase.getStuInfoDao();
+                    // TODO: 2020/5/5 有Cookie的话清空Cookie缓存
+                    // TODO: 2020/5/5 用于测试，删除数据库内容
+                    stuInfoDao.deleteStuInfo();
+                    // Dao
+                    /*JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
+                        stuInfoDao = juiceDatabase.getStuInfoDao();
                         StuInfo stuInfo = stuInfoDao.getStuInfo();
-
-                        LogUtils.getInstance().d("读取用户数据：" + stuInfo.getStuID());
-                        LogUtils.getInstance().d("读取用户数据：" + stuInfo.getEduPassword());
-                        LogUtils.getInstance().d("读取用户数据：" + stuInfo.getLeavePassword());*/
                         LogUtils.getInstance().d("读取用户数据" + readSnoData());
                         LogUtils.getInstance().d("读取用户数据" + readEduData());
                         LogUtils.getInstance().d("读取用户数据" + readLeavaData());
-                        stuInfoDao.deleteStuInfo();
-                        /*new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                // 教务网验证
-                                LogUtils.getInstance().d("教务网前端验证成功");
-                                String uri = "http://jwb.fdzcxy.com/kb/zkb_xs.asp";
-                                try {
-                                    EduInfo.getTimeTable(sno, edu, uri, getContext().getApplicationContext());
-                                } catch (Exception e) {
-                                    String errorText = e.getMessage();
-                                    LogUtils.getInstance().d("errorText:" + errorText);
-                                    //解决在子线程中调用Toast的异常情况处理
-                                    Looper.prepare();
-
-                                    Toast.makeText(getContext().getApplicationContext(), errorText, Toast.LENGTH_SHORT).show();
-
-                                    //解决在子线程中调用Toast的异常情况处理-结束需要添加这句
-                                    Looper.loop();
-                                }
-                                LogUtils.getInstance().d("教务网密码验证成功");
-                                // 跳转到课表首页
+                        stuInfoDao.deleteStuInfo();*/
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // 教务网验证
+                            LogUtils.getInstance().d("教务网前端验证成功");
+                            String uri = "http://jwb.fdzcxy.com/kb/zkb_xs.asp";
+                            try {
+                                EduInfo.getTimeTable(sno, edu, uri, getContext().getApplicationContext());
+                            } catch (Exception e) {
+                                String errorText = e.getMessage();
+                                LogUtils.getInstance().d("errorText:" + errorText);
+                                //解决在子线程中调用Toast的异常情况处理
+                                Looper.prepare();
+                                Toast.makeText(getContext().getApplicationContext(), errorText, Toast.LENGTH_SHORT).show();
+                                //解决在子线程中调用Toast的异常情况处理-结束需要添加这句
+                                Looper.loop();
+                            }
+                            LogUtils.getInstance().d("教务网密码验证成功");
 
 
+                            // 填写了请假系统，需要校验请假系统密码
+                            if (!leave.isEmpty()) {
                                 // 请假系统验证
                                 LogUtils.getInstance().d("请假系统前端验证成功");
                                 uri = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-record-student&c=dormcheckrecordstudent";
@@ -184,75 +148,70 @@ public class InitFragment extends Fragment {
                                     //解决在子线程中调用Toast的异常情况处理-结束需要添加这句
                                     Looper.loop();
                                 }
-                                LogUtils.getInstance().d("教务网和请假系统密码均验证成功");
-                                // 跳转到课表首页
-
-                                Looper.prepare();
-                                Toast.makeText(getContext().getApplicationContext(), "教务网和请假系统密码均验证成功", Toast.LENGTH_SHORT).show();
-                                Looper.loop();
 
                             }
-                        }).start();*/
-                    }
-                    // TODO 跳转页面，并调用写入数据库的方法writeAllData()
-                    Constant.DEBUG_INIT_FRAGMENT = false;
-                    Navigation.findNavController(requireView()).popBackStack(R.id.initFragment, true);
+                            LogUtils.getInstance().d("教务网和请假系统密码均验证成功");
+                            // 跳转到课表首页
+                            Message message = new Message();
+                            message.what = Constant.MSG_LOGIN_SUCCESS;
+                            mHandler.sendMessage(message);
+
+                            Looper.prepare();
+                            Toast.makeText(getContext().getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
+                            Looper.loop();
+
+                        }
+                    }).start();
+
                 }
 
             }
 
         }
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    // 登录成功跳转页面
+                    case Constant.MSG_LOGIN_SUCCESS:
+                        // TODO 跳转页面，并调用写入数据库的方法writeAllData()
+                        LogUtils.getInstance().d("接受消息：开始写入数据库");
+                        writeUser();
+                        LogUtils.getInstance().d("查询数据库：" + stuInfoDao.getStuInfo());
+                        // 跳转结束后将debugInit置为false否则死循环
+                        Constant.DEBUG_INIT_FRAGMENT = false;
+                        Navigation.findNavController(requireView()).popBackStack(R.id.initFragment, true);
+                        break;
+                }
+            }
+        };
 
     }
 
     /**
      * 提取三个文本的内容
      */
-    private void allStr() {
+    private void getInput() {
         sno = binding.etSno.getText().toString().trim();
         edu = binding.etEduPassword.getText().toString().trim();
         leave = binding.etLeavePassword.getText().toString().trim();
     }
 
-    private void writeSnoEduData() {
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
-        stuInfoDao = juiceDatabase.getStuInfoDao();
-        Integer snoStr = Integer.parseInt(sno);
-        StuInfo stuInfo1 = new StuInfo();
-        stuInfo1.setStuID(snoStr);
-        stuInfo1.setEduPassword(edu);
-        stuInfoDao.insertStuInfo(stuInfo1);
-    }
 
-    private void writeAllData() {
+    private void writeUser() {
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
         stuInfoDao = juiceDatabase.getStuInfoDao();
+
         Integer snoStr = Integer.parseInt(sno);
+
         StuInfo stuInfo1 = new StuInfo();
         stuInfo1.setStuID(snoStr);
         stuInfo1.setEduPassword(edu);
         stuInfo1.setLeavePassword(leave);
+
         stuInfoDao.insertStuInfo(stuInfo1);
     }
-
-    private String readSnoData() {
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
-        stuInfoDao = juiceDatabase.getStuInfoDao();
-        return stuInfoDao.getStuInfo().getStuID().toString();
-    }
-
-    private String readEduData() {
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
-        stuInfoDao = juiceDatabase.getStuInfoDao();
-        return stuInfoDao.getStuInfo().getEduPassword();
-    }
-
-    private String readLeavaData() {
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
-        stuInfoDao = juiceDatabase.getStuInfoDao();
-        return stuInfoDao.getStuInfo().getLeavePassword();
-    }
-
 
     /**
      * 点击用户协议，弹出对话框
