@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.utils.LogUtils;
@@ -53,7 +54,7 @@ public class CourseView extends FrameLayout {
      * 行item的宽度根据view的总宽度自动平均分配
      */
     private boolean mRowItemWidthAuto = true;
-    private int mCurrentIndex = 10;
+    private int mCurrentIndex = Constant.CUR_WEEK;
 
     public List<Course> getCourses() {
         return courses;
@@ -89,8 +90,12 @@ public class CourseView extends FrameLayout {
     }
 
     public void addCourse(Course course) {
-        // 课为空，或这不是当前显示周的课，就return回去 不显示
-        if (course == null || !isActiveStatus(course)) {
+        // 课为空 return回去 不显示
+        if (course == null) {
+            return;
+        }
+        // 当前显示的不是周课表 且 该课程不是当前显示周的课，return回去 不显示
+        if (!set.contains(mCurrentIndex) && !isActiveStatus(course)) {
             return;
         }
 
@@ -201,16 +206,32 @@ public class CourseView extends FrameLayout {
         if (courses == null) {
             courses = new ArrayList<>();
         }
-        for (Course cou : courses) {
+        // 数据库有存当前需要显示的周课表
+        if (set.contains(mCurrentIndex)) {
+            for (OneWeekCourse oneCou : oneWeekCourses) {
+                if (oneCou.getInWeek().equals(mCurrentIndex)) {
+                    // 封装一个Course对象
+                    Course course = new Course();
+                    course.setCouName(oneCou.getCouName());
+                    course.setCouRoom(oneCou.getCouRoom());
+                    course.setCouStartNode(oneCou.getStartNode());
+                    course.setCouEndNode(oneCou.getEndNode());
+                    course.setCouColor(oneCou.getColor());
+                    course.setCouWeek(oneCou.getDayOfWeek());
+                    addCourse(course);
+                }
+            }
+        } else {
+            for (Course cou : courses) {
 //            LogUtils.getInstance().d("课表控件 遍历课程："+cou);
-            // 没有颜色 添加颜色
+                // 没有颜色 添加颜色
 /*            if (cou.getCouColor() == null) {
                 cou.setCouColor(Utils.getColor(cou.getCouID().intValue()));
 //                LogUtils.getInstance().d("添加颜色" + cou.getCouColor());
             }*/
-            // TODO: 2020/5/5
-            // 写回数据库
-            addCourse(cou);
+                addCourse(cou);
+            }
+
         }
 
     }

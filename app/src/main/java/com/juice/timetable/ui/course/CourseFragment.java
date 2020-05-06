@@ -50,7 +50,6 @@ public class CourseFragment extends Fragment {
     private int NODE_TEXT_SIZE = 11;
     private int NODE_WIDTH = 28;
     private Integer mCurrentMonth = 4;
-    private Integer mCurrentWeek = 11;
 
     private TextView mMonthTextView;
 
@@ -125,7 +124,7 @@ public class CourseFragment extends Fragment {
                     ViewGroup.LayoutParams.MATCH_PARENT, nodeItemHeight);
             binding.llNode.addView(textView, params);
         }
-        toolbar.setTitle("第" + mCurrentWeek + "周");
+        toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
 
         return binding.getRoot();
     }
@@ -148,11 +147,11 @@ public class CourseFragment extends Fragment {
 
                 LogUtils.getInstance().d("MenuItem <" + item.getItemId() + "> onMenuItemClick");
 
-                if (item.getItemId() != mCurrentWeek) {
+                if (item.getItemId() != Constant.CUR_WEEK) {
 
                     toolbar.setTitle("第" + item.getItemId() + "周 (非本周)");
                 } else {
-                    toolbar.setTitle("第" + mCurrentWeek + "周");
+                    toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
 
                 }
 
