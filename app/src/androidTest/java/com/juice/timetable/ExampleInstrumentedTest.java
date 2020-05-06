@@ -23,9 +23,11 @@ import com.juice.timetable.data.parse.ParseClassNoSignedItem;
 import com.juice.timetable.data.parse.ParseOneWeek;
 import com.juice.timetable.utils.LogUtils;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -48,6 +50,22 @@ public class ExampleInstrumentedTest {
     private MyCheckInDao myCheckInDao;
     private StuInfoDao stuInfoDao;
     private AllWeekCourseDao allWeekCourseDao;
+    private OneWeekCourseDao OneWeekCourseDao;
+
+    @Before
+    public void initDataBase() {
+        // 初始化
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        //生成数据库，如果数据库已有，则调用
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(appContext);
+        //生成对应的Dao
+        CourseDao = juiceDatabase.getOneWeekCourseDao();
+        classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
+        myCheckInDao = juiceDatabase.getMyCheckInDao();
+        stuInfoDao = juiceDatabase.getStuInfoDao();
+        allWeekCourseDao = juiceDatabase.getAllWeekCourseDao();
+        OneWeekCourseDao = juiceDatabase.getOneWeekCourseDao();
+    }
 
     @Test
     public void useAppContext() {
@@ -882,17 +900,6 @@ public class ExampleInstrumentedTest {
     // 获取数据
     @Test
     public void Query() {
-        // 初始化
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        //生成数据库，如果数据库已有，则调用
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(appContext);
-        //生成对应的Dao
-        CourseDao = juiceDatabase.getOneWeekCourseDao();
-        classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
-        myCheckInDao = juiceDatabase.getMyCheckInDao();
-        stuInfoDao = juiceDatabase.getStuInfoDao();
-        allWeekCourseDao = juiceDatabase.getAllWeekCourseDao();
-
         //输出数据
 
 
@@ -919,6 +926,20 @@ public class ExampleInstrumentedTest {
         LogUtils.getInstance().d(stuInfo.toString());
 
 
+    }
+
+    @Test
+    public void testDeleteOneWeekByWeek() {
+        ArrayList<Integer> delList = new ArrayList<>();
+        delList.add(14);
+        delList.add(13);
+        OneWeekCourseDao.deleteCourseByWeek(delList);
+
+        List<OneWeekCourse> oneWeekCourse1 = OneWeekCourseDao.getOneWeekCourse();
+        for (OneWeekCourse oneWeekCourse : oneWeekCourse1) {
+            LogUtils.getInstance().d(oneWeekCourse.toString());
+
+        }
     }
 
     public static String getStr() {

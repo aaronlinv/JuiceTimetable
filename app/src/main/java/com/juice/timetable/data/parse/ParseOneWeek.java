@@ -31,6 +31,9 @@ public class ParseOneWeek {
      * 解析周课表
      */
     public static List<OneWeekCourse> parseCourse(String parseStr) {
+        // 先清空数据，防止数据重复
+        couList.clear();
+
         //导入
         //String s = ReadFile.readToString("C:\\Users\\14989\\Desktop\\网页内容\\2020网络方向.html");
         //解析
