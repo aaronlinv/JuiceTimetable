@@ -131,8 +131,9 @@ public class CourseFragment extends Fragment {
             binding.tvCheckIn.setText("今天 " + checkInTime + " 已签到");
             binding.tvCheckIn.setBackgroundColor(0xFFe6e6e6);
             binding.tvCheckIn.setTextColor(0xFF101010);
-
         }
+        // TODO: 2020/5/6 关闭签到提示栏显示
+        binding.tvCheckIn.setVisibility(TextView.GONE);
         return binding.getRoot();
     }
 
