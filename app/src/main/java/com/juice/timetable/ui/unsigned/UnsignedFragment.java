@@ -33,6 +33,7 @@ public class UnsignedFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         unsignedAdapter = new UnsignedAdapter();
         recyclerView.setAdapter(unsignedAdapter);
+        recyclerView.addItemDecoration(new UnsignedItemDecoration(requireContext()));
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(requireContext());
         classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
         ClassNoSignedItemViewModel classNoSignedItemViewModel = new ViewModelProvider(requireActivity()).get(ClassNoSignedItemViewModel.class);
