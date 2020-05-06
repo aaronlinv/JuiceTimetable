@@ -25,6 +25,7 @@ import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.Dao.AllWeekCourseDao;
 import com.juice.timetable.data.Dao.OneWeekCourseDao;
+import com.juice.timetable.data.Dao.StuInfoDao;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.data.bean.OneWeekCourse;
@@ -53,6 +54,9 @@ public class CourseFragment extends Fragment {
     private TextView mMonthTextView;
 
     private Handler mHandler;
+    private JuiceDatabase database;
+    private AllWeekCourseDao allWeekCourseDao;
+    private OneWeekCourseDao oneWeekCourseDao;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -166,14 +170,21 @@ public class CourseFragment extends Fragment {
             allWeekCourseDao.insertAllWeekCourse(cours);
 
         }*/
+
+        // 初始化数据库和Dao
+
+        database = JuiceDatabase.getDatabase(requireContext().getApplicationContext());
+        allWeekCourseDao = database.getAllWeekCourseDao();
+        oneWeekCourseDao = database.getOneWeekCourseDao();
+        StuInfoDao stuInfoDao = database.getStuInfoDao();
         // TODO: 2020/5/5 测试：手动写入账户密码
         UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
         JuiceDatabase database = JuiceDatabase.getDatabase(requireContext());
-        database.getStuInfoDao().deleteStuInfo();
+        stuInfoDao.deleteStuInfo();
         StuInfo stuInfo = new StuInfo();
         stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
         stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
-        database.getStuInfoDao().insertStuInfo(stuInfo);
+        stuInfoDao.insertStuInfo(stuInfo);
 
 
 /*        // 传入课表List 以显示
@@ -215,7 +226,6 @@ public class CourseFragment extends Fragment {
             }
         });*/
 
-        final AllWeekCourseDao allWeekCourseDao = JuiceDatabase.getDatabase(requireContext().getApplicationContext()).getAllWeekCourseDao();
 
         binding.slRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -308,8 +318,6 @@ public class CourseFragment extends Fragment {
      */
     private void getOneWeekCou() throws Exception {
         ArrayList<OneWeekCourse> couList = new ArrayList<>();
-        JuiceDatabase database = JuiceDatabase.getDatabase(requireContext());
-        OneWeekCourseDao oneWeekCourseDao = database.getOneWeekCourseDao();
         for (int i = -2; i <= 2; i++) {
             String oneWeekCourse = EduInfo.getOneWeekCourse(Constant.CUR_WEEK + i, requireContext());
             List<OneWeekCourse> oneWeekCourses = ParseOneWeek.parseCourse(oneWeekCourse);
