@@ -17,7 +17,6 @@ import androidx.annotation.Nullable;
 import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.utils.LogUtils;
-import com.juice.timetable.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -200,15 +199,15 @@ public class CourseView extends FrameLayout {
         LogUtils.getInstance().d("initCourseItemView执行了");
         // 通过Dao层获取课程数据 添加课程到课程界面
         if (courses == null) {
-//            courses = testCourseData.getCourses();
             courses = new ArrayList<>();
         }
         for (Course cou : courses) {
+//            LogUtils.getInstance().d("课表控件 遍历课程："+cou);
             // 没有颜色 添加颜色
-            if (cou.getCouColor() == null) {
+/*            if (cou.getCouColor() == null) {
                 cou.setCouColor(Utils.getColor(cou.getCouID().intValue()));
 //                LogUtils.getInstance().d("添加颜色" + cou.getCouColor());
-            }
+            }*/
             // TODO: 2020/5/5
             // 写回数据库
             addCourse(cou);

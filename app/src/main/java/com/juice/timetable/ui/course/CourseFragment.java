@@ -242,7 +242,8 @@ public class CourseFragment extends Fragment {
 
                         LogUtils.getInstance().d("setOnRefreshListener:开始刷新");
                         // 更新数据
-                        allWeekCourseDao.deleteAllWeekCourse();
+                        // TODO: 2020/5/6
+//                        allWeekCourseDao.deleteAllWeekCourse();
                         LogUtils.getInstance().d("setOnRefreshListener:删除数据库");
                         String allCourse = null;
                         try {
@@ -259,11 +260,31 @@ public class CourseFragment extends Fragment {
                             List<Course> courses = ParseAllWeek.parseAllCourse(allCourse);
                             // TODO: 2020/5/6 处理获取的完成课表 颜色
                             LogUtils.getInstance().d("setOnRefreshListener:解析完整课表结束");
-                            // 将课程置入课表界面
-                            binding.courseView.setCourses(courses);
-                            for (Course cours : courses) {
-                                allWeekCourseDao.insertAllWeekCourse(cours);
+                            // 首次登录，完整课表为空
+                            List<Course> allWeekCourse = allWeekCourseDao.getAllWeekCourse();
+                            if (allWeekCourse.isEmpty()) {
+                                for (Course cours : courses) {
+                                    if (cours.getCouColor() == null) {
+
+                                        // 这里的courses是模拟登录获取的，所有color为null，所以每次都刷新颜色
+                                        cours.setCouColor(Utils.getColor(cours.getCouID().intValue()));
+                                    }
+                                    allWeekCourseDao.insertAllWeekCourse(cours);
+
+                                }
+                                // 将课程置入课表界面
+                                binding.courseView.setCourses(courses);
+
+                            } else {
+                                // TODO: 2020/5/6  非初次登录，更新数据没有写
+                                // 将课程置入课表界面
+                                binding.courseView.setCourses(allWeekCourse);
                             }
+
+                            /*LogUtils.getInstance().d("查看 插入后的数据库情况");
+                            LogUtils.getInstance().d(allWeekCourseDao.getAllWeekCourse().toString());*/
+
+
                             LogUtils.getInstance().d("setOnRefreshListener:完整课写入数据库表结束");
                             try {
                                 getOneWeekCou();
@@ -365,7 +386,8 @@ public class CourseFragment extends Fragment {
 /*        for (OneWeekCourse oneWeekCourse : oneWeekCourse1) {
             LogUtils.getInstance().d("数据库删除后的情况：" + oneWeekCourse.toString());
         }*/
-
+        // 颜色的随机数
+        int colorNum = 0;
         for (OneWeekCourse oneWeekCourse : couList) {
 //            LogUtils.getInstance().d("整理后的周课表插入数据库" + oneWeekCourse.toString());
 
@@ -381,6 +403,10 @@ public class CourseFragment extends Fragment {
                     LogUtils.getInstance().d("在完整课表中找到了该课程并修改：" + oneWeekCourse);
                     break;
                 }
+                // 没有找到 可能是一些考试的显示
+                // 取当前的完整课表的课数目为随机数
+                oneWeekCourse.setColor(Utils.getColor(binding.courseView.getCourses().size() + colorNum));
+                colorNum++;
             }
             // 插入数据库
             oneWeekCourseDao.insertCourse(oneWeekCourse);
