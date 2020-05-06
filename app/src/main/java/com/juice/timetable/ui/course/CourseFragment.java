@@ -18,8 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -28,7 +26,6 @@ import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.Dao.AllWeekCourseDao;
 import com.juice.timetable.data.Dao.OneWeekCourseDao;
 import com.juice.timetable.data.JuiceDatabase;
-import com.juice.timetable.data.ViewModel.AllWeekCourseViewModel;
 import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.bean.StuInfo;
@@ -41,7 +38,6 @@ import com.juice.timetable.utils.UserInfoUtils;
 import com.juice.timetable.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class CourseFragment extends Fragment {
@@ -180,7 +176,7 @@ public class CourseFragment extends Fragment {
         database.getStuInfoDao().insertStuInfo(stuInfo);
 
 
-        // 传入课表List 以显示
+/*        // 传入课表List 以显示
         final AllWeekCourseViewModel allWeekCou = new ViewModelProvider(requireActivity()).get(AllWeekCourseViewModel.class);
         allWeekCou.getAllWeekCourseLive().observe(getActivity(), new Observer<List<Course>>() {
             @Override
@@ -192,10 +188,10 @@ public class CourseFragment extends Fragment {
 //                    binding.courseView.resetView();
                 }
             }
-        });
+        });*/
 
-
-        OneWeekCourseDao oneWeekCourseDao = database.getOneWeekCourseDao();
+/*
+        final OneWeekCourseDao oneWeekCourseDao = database.getOneWeekCourseDao();
         oneWeekCourseDao.getOneWeekCourseLive().observe(getActivity(), new Observer<List<OneWeekCourse>>() {
             @Override
             public void onChanged(List<OneWeekCourse> oneWeekCourses) {
@@ -204,9 +200,9 @@ public class CourseFragment extends Fragment {
                     binding.courseView.resetView();
                 }
             }
-        });
+        });*/
 
-        oneWeekCourseDao.getInWeekLive().observe(getActivity(), new Observer<List<Integer>>() {
+/*        oneWeekCourseDao.getInWeekLive().observe(getActivity(), new Observer<List<Integer>>() {
             @Override
             public void onChanged(List<Integer> integers) {
                 if (integers != null) {
@@ -217,7 +213,7 @@ public class CourseFragment extends Fragment {
                     }
                 }
             }
-        });
+        });*/
 
         final AllWeekCourseDao allWeekCourseDao = JuiceDatabase.getDatabase(requireContext().getApplicationContext()).getAllWeekCourseDao();
 
@@ -249,11 +245,20 @@ public class CourseFragment extends Fragment {
 
                         } else {
                             List<Course> courses = ParseAllWeek.parseAllCourse(allCourse);
+                            // TODO: 2020/5/6 处理获取的完成课表 颜色
                             LogUtils.getInstance().d("setOnRefreshListener:解析完整课表结束");
+                            // 将课程置入课表界面
+                            binding.courseView.setCourses(courses);
                             for (Course cours : courses) {
                                 allWeekCourseDao.insertAllWeekCourse(cours);
                             }
                             LogUtils.getInstance().d("setOnRefreshListener:完整课写入数据库表结束");
+                            try {
+                                getOneWeekCou();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            LogUtils.getInstance().d("setOnRefreshListener:周课表写入数据库表结束");
                             message.obj = "ok";
                             mHandler.sendMessage(message);
                         }
@@ -281,16 +286,18 @@ public class CourseFragment extends Fragment {
 
             }
         };
-        new Thread(new Runnable() {
+/*        new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     getOneWeekCou();
+                    List<Integer> inWeek = oneWeekCourseDao.getInWeek();
+                    LogUtils.getInstance().d("查询数据库周：" + inWeek);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        }).start();*/
 
     }
 

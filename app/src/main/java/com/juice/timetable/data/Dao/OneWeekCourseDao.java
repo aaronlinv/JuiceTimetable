@@ -32,4 +32,7 @@ public interface OneWeekCourseDao {
 
     @Query("Select InWeek from OneWeekCourse")
     LiveData<List<Integer>> getInWeekLive();
+
+    @Query("Select InWeek from OneWeekCourse")
+    List<Integer> getInWeek();
 }
