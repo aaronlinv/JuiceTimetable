@@ -1,8 +1,6 @@
 package com.juice.timetable;
 
-import com.juice.timetable.data.parse.ParseAllWeek;
 import com.juice.timetable.data.parse.ParseCheckIn;
-import com.juice.timetable.data.parse.ParseOneWeek;
 
 import org.junit.Test;
 
@@ -22,12 +20,12 @@ public class ExampleUnitTest {
     @Test
     public void AllCourseTest() {
 
-        ParseAllWeek.parseAllCourse();
+//        ParseAllWeek.parseAllCourse();
     }
 
     @Test
     public void OneCourseTest() {
-        ParseOneWeek.parseCourse();
+//        ParseOneWeek.parseCourse();
 
     }
 

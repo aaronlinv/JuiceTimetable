@@ -7,6 +7,7 @@ import androidx.room.Query;
 
 import com.juice.timetable.data.bean.OneWeekCourse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +31,16 @@ public interface OneWeekCourseDao {
     @Query("Select * From OneWeekCourse")
     LiveData<List<OneWeekCourse>> getOneWeekCourseLive();
 
+    @Query("Select * From OneWeekCourse")
+    List<OneWeekCourse> getOneWeekCourse();
+
     @Query("Select InWeek from OneWeekCourse")
     LiveData<List<Integer>> getInWeekLive();
+
+    @Query("Select InWeek from OneWeekCourse")
+    List<Integer> getInWeek();
+
+    // 删除指定周的课程信息
+    @Query("DELETE FROM OneWeekCourse  WHERE InWeek IN (:week)")
+    void deleteCourseByWeek(ArrayList<Integer> week);
 }

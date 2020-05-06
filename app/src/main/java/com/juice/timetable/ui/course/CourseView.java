@@ -14,11 +14,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.Course;
+import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.utils.LogUtils;
-import com.juice.timetable.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -52,13 +54,32 @@ public class CourseView extends FrameLayout {
      * 行item的宽度根据view的总宽度自动平均分配
      */
     private boolean mRowItemWidthAuto = true;
-    private int mCurrentIndex = 10;
+    private int mCurrentIndex = Constant.CUR_WEEK;
 
     public List<Course> getCourses() {
         return courses;
     }
 
     private List<Course> courses = null;
+
+    public List<OneWeekCourse> getOneWeekCourses() {
+        return oneWeekCourses;
+    }
+
+    public void setOneWeekCourses(List<OneWeekCourse> oneWeekCourses) {
+        this.oneWeekCourses = oneWeekCourses;
+    }
+
+    private List<OneWeekCourse> oneWeekCourses = null;
+    HashSet<Integer> set = null;
+
+    public HashSet<Integer> getSet() {
+        return set;
+    }
+
+    public void setSet(HashSet<Integer> set) {
+        this.set = set;
+    }
 
     public CourseView(@NonNull Context context) {
         super(context);
@@ -69,8 +90,12 @@ public class CourseView extends FrameLayout {
     }
 
     public void addCourse(Course course) {
-        // 课为空，或这不是当前显示周的课，就return回去 不显示
-        if (course == null || !isActiveStatus(course)) {
+        // 课为空 return回去 不显示
+        if (course == null) {
+            return;
+        }
+        // 当前显示的不是周课表 且 该课程不是当前显示周的课，return回去 不显示
+        if (!set.contains(mCurrentIndex) && !isActiveStatus(course)) {
             return;
         }
 
@@ -179,18 +204,34 @@ public class CourseView extends FrameLayout {
         LogUtils.getInstance().d("initCourseItemView执行了");
         // 通过Dao层获取课程数据 添加课程到课程界面
         if (courses == null) {
-//            courses = testCourseData.getCourses();
             courses = new ArrayList<>();
         }
-        for (Course cou : courses) {
-            // 没有颜色 添加颜色
-            if (cou.getCouColor() == null) {
-                cou.setCouColor(Utils.getColor(cou.getCouID().intValue()));
-                LogUtils.getInstance().d("添加颜色" + cou.getCouColor());
+        // 数据库有存当前需要显示的周课表
+        if (set.contains(mCurrentIndex)) {
+            for (OneWeekCourse oneCou : oneWeekCourses) {
+                if (oneCou.getInWeek().equals(mCurrentIndex)) {
+                    // 封装一个Course对象
+                    Course course = new Course();
+                    course.setCouName(oneCou.getCouName());
+                    course.setCouRoom(oneCou.getCouRoom());
+                    course.setCouStartNode(oneCou.getStartNode());
+                    course.setCouEndNode(oneCou.getEndNode());
+                    course.setCouColor(oneCou.getColor());
+                    course.setCouWeek(oneCou.getDayOfWeek());
+                    addCourse(course);
+                }
             }
-            // TODO: 2020/5/5
-            // 写回数据库
-            addCourse(cou);
+        } else {
+            for (Course cou : courses) {
+//            LogUtils.getInstance().d("课表控件 遍历课程："+cou);
+                // 没有颜色 添加颜色
+/*            if (cou.getCouColor() == null) {
+                cou.setCouColor(Utils.getColor(cou.getCouID().intValue()));
+//                LogUtils.getInstance().d("添加颜色" + cou.getCouColor());
+            }*/
+                addCourse(cou);
+            }
+
         }
 
     }

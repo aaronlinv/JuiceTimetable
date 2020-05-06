@@ -21,6 +21,15 @@ public class Constant {
     public static final String URI_CHECK_IN = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-record-student&c=dormcheckrecordstudent";
     // 未签到列表
     public static final int MSG_REFRESH = 2020;
+    // 登录成功
+    public static final int MSG_LOGIN_SUCCESS = 2021;
+
+    // TODO: 2020/5/6 判断当前周
+    // 当前学校周
+    public static final int CUR_WEEK = 12;
+
+    // 调式Init界面，用于调试登录界面
+    public static boolean DEBUG_INIT_FRAGMENT = false;
 
 
 }
