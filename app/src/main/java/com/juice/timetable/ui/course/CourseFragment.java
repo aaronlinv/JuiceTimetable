@@ -368,6 +368,20 @@ public class CourseFragment extends Fragment {
 
         for (OneWeekCourse oneWeekCourse : couList) {
 //            LogUtils.getInstance().d("整理后的周课表插入数据库" + oneWeekCourse.toString());
+
+            // 周课表课程存在完整课表中，就赋值上完整课表id
+            for (Course cou : binding.courseView.getCourses()) {
+                // 去除空格
+                String wholeCouName = cou.getCouName().replace(" ", "");
+                String oneCouName = oneWeekCourse.getCouName().replace(" ", "");
+                if (wholeCouName.equals(oneCouName)) {
+                    // 设置上课程id和颜色
+                    oneWeekCourse.setCouID(cou.getCouID());
+                    oneWeekCourse.setColor(cou.getCouColor());
+                    LogUtils.getInstance().d("在完整课表中找到了该课程并修改：" + oneWeekCourse);
+                    break;
+                }
+            }
             // 插入数据库
             oneWeekCourseDao.insertCourse(oneWeekCourse);
         }
