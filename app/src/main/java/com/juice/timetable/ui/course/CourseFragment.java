@@ -124,8 +124,15 @@ public class CourseFragment extends Fragment {
                     ViewGroup.LayoutParams.MATCH_PARENT, nodeItemHeight);
             binding.llNode.addView(textView, params);
         }
-        toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
+        // 签到提示栏
+        if (Utils.isCheckInTime()) {
+            toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
+            String checkInTime = "21:50";
+            binding.tvCheckIn.setText("今天 " + checkInTime + " 已签到");
+            binding.tvCheckIn.setBackgroundColor(0xFFe6e6e6);
+            binding.tvCheckIn.setTextColor(0xFF101010);
 
+        }
         return binding.getRoot();
     }
 
