@@ -178,6 +178,24 @@ public class CourseFragment extends Fragment {
         allWeekCourseDao = database.getAllWeekCourseDao();
         oneWeekCourseDao = database.getOneWeekCourseDao();
         StuInfoDao stuInfoDao = database.getStuInfoDao();
+
+        // 加载课表
+        // TODO: 2020/5/6 首次登录课表要做初始化
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        List<Course> allWeekCourse = allWeekCourseDao.getAllWeekCourse();
+                        List<OneWeekCourse> oneWeekCourse = oneWeekCourseDao.getOneWeekCourse();
+                        List<Integer> inWeek = oneWeekCourseDao.getInWeek();
+                        binding.courseView.setCourses(allWeekCourse);
+                        binding.courseView.setOneWeekCourses(oneWeekCourse);
+                        binding.courseView.setSet(new HashSet<Integer>(inWeek));
+                        binding.courseView.resetView();
+                    }
+                }
+        ).start();
+
         // TODO: 2020/5/5 测试：手动写入账户密码
         UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
         JuiceDatabase database = JuiceDatabase.getDatabase(requireContext());
