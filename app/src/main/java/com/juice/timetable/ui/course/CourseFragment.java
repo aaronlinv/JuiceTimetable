@@ -226,7 +226,8 @@ public class CourseFragment extends Fragment {
                         super.run();
                         Message message = new Message();
                         message.what = Constant.MSG_REFRESH;
-
+                        // 关闭刷新动画
+                        binding.slRefresh.setRefreshing(false);
 
                         LogUtils.getInstance().d("setOnRefreshListener:开始刷新");
                         // 更新数据
@@ -274,11 +275,12 @@ public class CourseFragment extends Fragment {
                 super.handleMessage(msg);
                 switch (msg.what) {
                     case Constant.MSG_REFRESH:
-                        // 关闭刷新动画
-                        binding.slRefresh.setRefreshing(false);
                         String msgStr = (String) msg.obj;
                         if (!"ok".equals(msgStr)) {
                             Toast.makeText(requireContext(), msgStr, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(requireContext(), "课表刷新成功", Toast.LENGTH_SHORT).show();
+
                         }
                         binding.courseView.resetView();
                         break;
