@@ -258,7 +258,7 @@ public class LoginFragment extends Fragment {
     /**
      * 对话框的一个实现
      *
-     * @param
+     * @param v
      */
     private void onDialogClick(View v) {
         new AlertDialog.Builder(requireContext())

@@ -12,4 +12,10 @@
     <string name="menu_login">修改认证信息</string>
 
     <string name="home_second">Home Second</string>
+    <string name="tv_amend_title">登录</string>
+    <string name="et_sno">学号</string>
+    <string name="et_edu_password">教务网密码</string>
+    <string name="et_leave_password">请假系统密码(选填)</string>
+    <string name="btn_go">登录</string>
+    <string name="btn_user_item">用户条款</string>
 </resources>

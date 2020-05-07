@@ -94,7 +94,7 @@ public class CourseFragment extends Fragment {
         for (int i = -1; i < 7; i++) {
             TextView textView = new TextView(requireContext().getApplicationContext());
             textView.setGravity(Gravity.CENTER);
-            textView.setTextColor(0xFF4B0082);
+            textView.setTextColor(Color.GRAY);
             textView.setWidth(0);
             LinearLayout.LayoutParams params;
 
