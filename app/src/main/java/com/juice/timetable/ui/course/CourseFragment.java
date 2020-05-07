@@ -1,5 +1,7 @@
 package com.juice.timetable.ui.course;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -28,10 +30,13 @@ import com.juice.timetable.data.Dao.OneWeekCourseDao;
 import com.juice.timetable.data.Dao.StuInfoDao;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.Course;
+import com.juice.timetable.data.bean.MyCheckIn;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.http.EduInfo;
+import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseAllWeek;
+import com.juice.timetable.data.parse.ParseCheckIn;
 import com.juice.timetable.data.parse.ParseOneWeek;
 import com.juice.timetable.databinding.FragmentCourseBinding;
 import com.juice.timetable.utils.LogUtils;
@@ -41,6 +46,8 @@ import com.juice.timetable.utils.Utils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import static android.animation.ObjectAnimator.ofObject;
 
 public class CourseFragment extends Fragment {
     private CourseViewModel homeViewModel;
@@ -57,6 +64,7 @@ public class CourseFragment extends Fragment {
     private JuiceDatabase database;
     private AllWeekCourseDao allWeekCourseDao;
     private OneWeekCourseDao oneWeekCourseDao;
+    private StuInfoDao stuInfoDao;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -124,8 +132,13 @@ public class CourseFragment extends Fragment {
                     ViewGroup.LayoutParams.MATCH_PARENT, nodeItemHeight);
             binding.llNode.addView(textView, params);
         }
+        // 初始化标题栏
         toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
 
+        // 不在签到时间并且不在调试模式 隐藏签到提示栏
+        if (!Utils.isCheckInTime() && !Constant.DEBUG_CHECK_IN_TEXTVIEW) {
+            binding.tvCheckIn.setVisibility(TextView.GONE);
+        }
         return binding.getRoot();
     }
 
@@ -176,7 +189,16 @@ public class CourseFragment extends Fragment {
         database = JuiceDatabase.getDatabase(requireContext().getApplicationContext());
         allWeekCourseDao = database.getAllWeekCourseDao();
         oneWeekCourseDao = database.getOneWeekCourseDao();
-        StuInfoDao stuInfoDao = database.getStuInfoDao();
+        stuInfoDao = database.getStuInfoDao();
+
+        // TODO: 2020/5/5 测试：手动写入账户密码
+        final UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
+        stuInfoDao.deleteStuInfo();
+        StuInfo stuInfo = new StuInfo();
+        stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
+        stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
+        stuInfo.setLeavePassword(userInfoUtils.getLeavePasswd());
+        stuInfoDao.insertStuInfo(stuInfo);
 
         // 加载课表
         // TODO: 2020/5/6 首次登录课表要做初始化
@@ -191,18 +213,39 @@ public class CourseFragment extends Fragment {
                         binding.courseView.setOneWeekCourses(oneWeekCourse);
                         binding.courseView.setSet(new HashSet<Integer>(inWeek));
                         binding.courseView.resetView();
+
+                        LogUtils.getInstance().d("用户数据库信息：" + stuInfoDao.getStuInfo());
+                        boolean hasLeavePwd = (stuInfoDao.getStuInfo().getEduPassword() != null);
+                        // (签到时间或者调试模式)且数据库有请假系统密码  初始化签到信息
+                        LogUtils.getInstance().d("有请假系统密码则开始获取签到信息");
+                        if ((Utils.isCheckInTime() || Constant.DEBUG_CHECK_IN_TEXTVIEW) && hasLeavePwd) {
+                            try {
+                                String checkIn = LeaveInfo.getCheckIn(requireContext());
+                                LogUtils.getInstance().d("签到数据：" + checkIn);
+
+                                MyCheckIn mySigned = ParseCheckIn.getMySigned(checkIn);
+
+                                if (!mySigned.isCheckIn()) {
+                                    String checkInTime = mySigned.getCheckTime();
+                                    // TODO: 2020/5/7 需要更换为签到时间
+                                    checkInTime = "21:50";
+
+                                    Message checkInMSG = new Message();
+                                    checkInMSG.what = Constant.MSG_CHECK_IN_SUCCESS;
+                                    checkInMSG.obj = checkInTime;
+                                    mHandler.sendMessage(checkInMSG);
+                                }
+
+                            } catch (Exception e) {
+                                LogUtils.getInstance().e("获取签到信息失败：" + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }
         ).start();
 
-        // TODO: 2020/5/5 测试：手动写入账户密码
-        UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
-        JuiceDatabase database = JuiceDatabase.getDatabase(requireContext());
-        stuInfoDao.deleteStuInfo();
-        StuInfo stuInfo = new StuInfo();
-        stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
-        stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
-        stuInfoDao.insertStuInfo(stuInfo);
+
 
 
 /*        // 传入课表List 以显示
@@ -341,10 +384,35 @@ public class CourseFragment extends Fragment {
                         }
                         binding.courseView.resetView();
                         break;
+                    case Constant.MSG_CHECK_IN_SUCCESS:
+                        String checkInTime = (String) msg.obj;
+                        final String checkInStr = "今天 " + checkInTime + " 已签到";
+
+//                        binding.tvCheckIn.setBackgroundColor(0xFFe6e6e6);
+                        ObjectAnimator backgroundColor = ofObject(binding.tvCheckIn, "backgroundColor", new ArgbEvaluator(), 0xFFec6b6b, 0xFFe6e6e6);
+                        backgroundColor.setDuration(1000);
+                        backgroundColor.start();
+//                        ObjectAnimator text = ObjectAnimator.ofObject(binding.tvCheckIn, "text", new ArgbEvaluator(), "今日未签到", checkInStr);
+//                        text.setDuration(5000);
+//                        text.start();
+//                        binding.tvCheckIn.setTextColor(0xFF101010);
+                        ObjectAnimator textColor = ofObject(binding.tvCheckIn, "textColor", new ArgbEvaluator(), 0xFFFFFFFF, 0xFF101010);
+                        textColor.setDuration(1000);
+                        textColor.start();
+
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                binding.tvCheckIn.setText(checkInStr);
+                            }
+                        }, 500);
+                        break;
                 }
 
             }
-        };
+        }
+
+        ;
 /*        new Thread(new Runnable() {
             @Override
             public void run() {

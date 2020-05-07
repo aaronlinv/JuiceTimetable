@@ -19,10 +19,16 @@ public class Constant {
 
     // 自己签到情况
     public static final String URI_CHECK_IN = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-record-student&c=dormcheckrecordstudent";
+    // 班级未签
+    public static final String URI_UNSIGNED_LIST = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-unsignin-cls&c=dormcheckclassunsignin";
+
     // 未签到列表
     public static final int MSG_REFRESH = 2020;
     // 登录成功
     public static final int MSG_LOGIN_SUCCESS = 2021;
+
+    // 指纹签到成功
+    public static final int MSG_CHECK_IN_SUCCESS = 2022;
 
     // TODO: 2020/5/6 判断当前周
     // 当前学校周
@@ -30,6 +36,8 @@ public class Constant {
 
     // 调式Init界面，用于调试登录界面
     public static boolean DEBUG_INIT_FRAGMENT = false;
+    // 调式签到提示栏
+    public static boolean DEBUG_CHECK_IN_TEXTVIEW = true;
 
 
 }

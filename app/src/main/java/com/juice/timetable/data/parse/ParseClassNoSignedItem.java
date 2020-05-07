@@ -26,12 +26,11 @@ public class ParseClassNoSignedItem {
     /**
      * 获取班级签到信息
      */
-    public static List<ClassNoSignedItem> getClassUnSigned() {
+    public static List<ClassNoSignedItem> getClassUnSigned(String parseStr) {
         //抓取
-        String s = getNoSignedItemStr();
         //String s = ReadFile.readToString("C:\\Users\\14989\\Desktop\\网页内容\\未签列表.html");
         //解析文档
-        Document doc = Jsoup.parse(s);
+        Document doc = Jsoup.parse(parseStr);
         //提取表格
         Elements elements = doc.getElementsByTag("tbody");
         //System.out.println(elements.html());

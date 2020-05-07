@@ -17,6 +17,19 @@
             android:orientation="vertical"
             tools:context=".ui.course.CourseFragment">
 
+            <TextView
+                android:id="@+id/tv_check_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:gravity="center"
+                android:text="今日未签到"
+                android:textColor="@android:color/white"
+                android:background="#ec6b6b"
+                android:textSize="15sp"
+
+                />
 
             <LinearLayout
                 android:id="@+id/ll_week"

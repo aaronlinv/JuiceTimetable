@@ -19,13 +19,16 @@ import com.juice.timetable.data.Dao.ClassNoSignedItemDao;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.ViewModel.ClassNoSignedItemViewModel;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
+import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseClassNoSignedItem;
 
 import java.util.List;
+
 public class UnsignedFragment extends Fragment {
     private UnsignedAdapter unsignedAdapter;
     private ClassNoSignedItemDao classNoSignedItemDao;
     private SwipeRefreshLayout swipeRefreshLayout;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_unsigned, container, false);
@@ -60,75 +63,31 @@ public class UnsignedFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                classNoSignedItemDao.deleteNoSignedItem();
-                List<ClassNoSignedItem> b = ParseClassNoSignedItem.getClassUnSigned();
-                for (ClassNoSignedItem classNoSignedItem : b) {
-                    classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
-                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 模拟登录获取数据
+                        List<ClassNoSignedItem> unsignedList = null;
+                        try {
+                            String unsigned = LeaveInfo.getUnsignedList(requireContext());
+                            unsignedList = ParseClassNoSignedItem.getClassUnSigned(unsigned);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        // 删除数据库
+                        classNoSignedItemDao.deleteNoSignedItem();
+
+                        // 插入数据
+                        for (ClassNoSignedItem classNoSignedItem : unsignedList) {
+                            classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
+                        }
+                    }
+                }).start();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
         return root;
     }
-    //JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(requireContext());
-    //classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
-        /*classNoSignedItem = classNoSignedItemDao.getNoSignedItem();
-        swipeRefreshLayout = root.findViewById(R.id.swiperefreshlayout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                classNoSignedItemDao.deleteNoSignedItem();
-                List<ClassNoSignedItem> b = ParseClassNoSignedItem.getClassUnSigned();
-                for (ClassNoSignedItem classNoSignedItem : b) {
-                    classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
-                }
-                classNoSignedItem = classNoSignedItemDao.getNoSignedItem();
-                unsignedAdapter.setAllInfos(classNoSignedItem);
-                unsignedAdapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
-    }
-
-    //@Override
-    //public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-    //    super.onViewCreated(view, savedInstanceState);
-        /*
-        UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
-        final String id = userInfoUtils.getProperty("id");
-        final String eduPasswd = userInfoUtils.getProperty("eduPasswd");
-        final String leavePasswd = userInfoUtils.getProperty("leavePasswd");
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // 周课表
-                String uri = "http://jwb.fdzcxy.com/kb/zkb_xs.asp";
-                try {
-                    EduInfo.getTimeTable(id, eduPasswd, uri, requireContext().getApplicationContext());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }).start();//
-
-        // 请假系统
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // 未签到列表
-                // "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-unsignin-cls&c=dormcheckclassunsignin"
-                // 自己签到情况
-                String uri = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-record-student&c=dormcheckrecordstudent";
-                try {
-                    LeaveInfo.getLeave(id, leavePasswd, uri);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }).start();
-        */
-    // }
 }

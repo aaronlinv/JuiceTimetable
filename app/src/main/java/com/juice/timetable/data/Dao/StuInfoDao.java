@@ -3,6 +3,7 @@ package com.juice.timetable.data.Dao;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.juice.timetable.data.bean.StuInfo;
 
@@ -23,6 +24,9 @@ public interface StuInfoDao {
 
     @Query("Delete from StuInfo")
     void deleteStuInfo();
+
+    @Update
+    void updateWords(StuInfo... stuInfos);
 
     @Query("Select * from StuInfo")
     StuInfo getStuInfo();

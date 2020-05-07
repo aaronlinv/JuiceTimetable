@@ -2,6 +2,9 @@ package com.juice.timetable.data.http;
 
 import android.content.Context;
 
+import com.juice.timetable.app.Constant;
+import com.juice.timetable.data.JuiceDatabase;
+import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
 
@@ -22,6 +25,33 @@ public class LeaveInfo {
     static final String PREF_LEAVE_COOKIE = "PREF_LEAVE_COOKIE";
     // 保存Cookie，以减少获取Cookie的次数
     static boolean enableSaveCookie = false;
+
+    /**
+     * 读取数据库 用户账户密码 获取自己的签到情况(直接访问请假系统获取)，需要已存在请假系统密码
+     *
+     * @return
+     */
+    public static String getCheckIn(Context context) throws Exception {
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
+        StuInfo stu = juiceDatabase.getStuInfoDao().getStuInfo();
+
+        // 存在请假系统密码，则可以开始获取
+        return getLeave(stu.getStuID().toString(), stu.getLeavePassword(),
+                Constant.URI_CHECK_IN, context);
+    }
+
+    /**
+     * 读取数据库 用户账户密码 获取班级未签(直接访问请假系统获取)，需要已存在请假系统密码
+     *
+     * @param context
+     * @return
+     */
+    public static String getUnsignedList(Context context) throws Exception {
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
+        StuInfo stu = juiceDatabase.getStuInfoDao().getStuInfo();
+        return getLeave(stu.getStuID().toString(), stu.getLeavePassword(),
+                Constant.URI_UNSIGNED_LIST, context);
+    }
 
     /**
      * 获取请假信息的主函数

@@ -71,7 +71,7 @@ public class CourseView extends FrameLayout {
     }
 
     private List<OneWeekCourse> oneWeekCourses = null;
-    HashSet<Integer> set = null;
+    HashSet<Integer> set = new HashSet<>();
 
     public HashSet<Integer> getSet() {
         return set;
