@@ -1,9 +1,12 @@
 package com.juice.timetable.ui.unsigned;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -64,6 +67,7 @@ public class UnsignedFragment extends Fragment {
             @Override
             public void onRefresh() {
                 new Thread(new Runnable() {
+                    @SuppressLint("ShowToast")
                     @Override
                     public void run() {
                         // 模拟登录获取数据
@@ -71,17 +75,19 @@ public class UnsignedFragment extends Fragment {
                         try {
                             String unsigned = LeaveInfo.getUnsignedList(requireContext());
                             unsignedList = ParseClassNoSignedItem.getClassUnSigned(unsigned);
+                            // 删除数据库
+                            classNoSignedItemDao.deleteNoSignedItem();
+
+                            // 插入数据
+                            for (ClassNoSignedItem classNoSignedItem : unsignedList) {
+                                classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
+                            }
 
                         } catch (Exception e) {
+                            Looper.prepare();
+                            Toast.makeText(requireContext(), "未输入请假系统密码，功能未启用", Toast.LENGTH_SHORT).show();
+                            Looper.loop();
                             e.printStackTrace();
-                        }
-
-                        // 删除数据库
-                        classNoSignedItemDao.deleteNoSignedItem();
-
-                        // 插入数据
-                        for (ClassNoSignedItem classNoSignedItem : unsignedList) {
-                            classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
                         }
                     }
                 }).start();
