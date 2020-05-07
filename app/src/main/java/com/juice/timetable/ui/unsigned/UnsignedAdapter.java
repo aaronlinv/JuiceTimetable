@@ -23,23 +23,22 @@ import java.util.List;
  * </pre>
  */
 public class UnsignedAdapter extends RecyclerView.Adapter<UnsignedAdapter.MyViewHolder> {
-    private List<ClassNoSignedItem> allInfos = new ArrayList<>();
-
-    void setAllInfos(List<ClassNoSignedItem> allInfos) {
-        this.allInfos = allInfos;
+    private List<ClassNoSignedItem> Ifs = new ArrayList<>();
+    void setIfs(List<ClassNoSignedItem> ifs) {
+        this.Ifs = ifs;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View item = layoutInflater.inflate(R.layout.recycler, parent, false);
+        View item = layoutInflater.inflate(R.layout.fragment_recycler, parent, false);
         return new MyViewHolder(item);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder,final int position) {
-        ClassNoSignedItem classNoSignedItem = allInfos.get(position);
+        ClassNoSignedItem classNoSignedItem = Ifs.get(position);
         holder.textViewID.setText(String.valueOf(classNoSignedItem.getSno()));
         holder.textViewName.setText(String.valueOf(classNoSignedItem.getSname()));
         holder.textViewNumber.setText(String.valueOf(position + 1));
@@ -47,7 +46,7 @@ public class UnsignedAdapter extends RecyclerView.Adapter<UnsignedAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return allInfos.size();
+        return Ifs.size();
     }
 
 

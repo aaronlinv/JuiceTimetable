@@ -18,4 +18,9 @@
     <string name="et_leave_password">请假系统密码(选填)</string>
     <string name="btn_go">登录</string>
     <string name="btn_user_item">用户条款</string>
+
+    <string name="center">center</string>
+    <string name="textView1">序号</string>
+    <string name="textView2">学号</string>
+    <string name="textView3">姓名</string>
 </resources>
