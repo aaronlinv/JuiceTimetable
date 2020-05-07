@@ -19,6 +19,9 @@ public class Constant {
 
     // 自己签到情况
     public static final String URI_CHECK_IN = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-record-student&c=dormcheckrecordstudent";
+    // 班级未签
+    public static final String URI_UNSIGNED_LIST = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-unsignin-cls&c=dormcheckclassunsignin";
+
     // 未签到列表
     public static final int MSG_REFRESH = 2020;
     // 登录成功

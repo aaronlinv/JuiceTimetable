@@ -41,6 +41,19 @@ public class LeaveInfo {
     }
 
     /**
+     * 读取数据库 用户账户密码 获取班级未签(直接访问请假系统获取)，需要已存在请假系统密码
+     *
+     * @param context
+     * @return
+     */
+    public static String getUnsignedList(Context context) throws Exception {
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
+        StuInfo stu = juiceDatabase.getStuInfoDao().getStuInfo();
+        return getLeave(stu.getStuID().toString(), stu.getLeavePassword(),
+                Constant.URI_UNSIGNED_LIST, context);
+    }
+
+    /**
      * 获取请假信息的主函数
      *
      * @param stuID
