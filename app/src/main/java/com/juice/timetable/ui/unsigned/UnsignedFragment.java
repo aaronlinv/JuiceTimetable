@@ -24,6 +24,7 @@ import com.juice.timetable.data.ViewModel.ClassNoSignedItemViewModel;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
 import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseClassNoSignedItem;
+import com.juice.timetable.databinding.FragmentUnsignedBinding;
 
 import java.util.List;
 
@@ -31,11 +32,12 @@ public class UnsignedFragment extends Fragment {
     private UnsignedAdapter unsignedAdapter;
     private ClassNoSignedItemDao classNoSignedItemDao;
     private SwipeRefreshLayout swipeRefreshLayout;
-
+    private FragmentUnsignedBinding fragmentUnsignedBinding;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_unsigned, container, false);
-        RecyclerView recyclerView = root.findViewById(R.id.recyclerview);
+        fragmentUnsignedBinding = FragmentUnsignedBinding.inflate(getLayoutInflater());
+        RecyclerView recyclerView = root.findViewById(fragmentUnsignedBinding.recyclerview.getId());
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         unsignedAdapter = new UnsignedAdapter();
         recyclerView.setAdapter(unsignedAdapter);
@@ -62,7 +64,7 @@ public class UnsignedFragment extends Fragment {
                 unsignedAdapter.notifyDataSetChanged();
             }
         });
-        swipeRefreshLayout = root.findViewById(R.id.swiperefreshlayout);
+        swipeRefreshLayout = root.findViewById(fragmentUnsignedBinding.swiperefreshlayout.getId());
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

@@ -24,7 +24,6 @@ import java.util.List;
  */
 public class UnsignedAdapter extends RecyclerView.Adapter<UnsignedAdapter.MyViewHolder> {
     private List<ClassNoSignedItem> Ifs = new ArrayList<>();
-
     void setIfs(List<ClassNoSignedItem> ifs) {
         this.Ifs = ifs;
     }
@@ -33,7 +32,7 @@ public class UnsignedAdapter extends RecyclerView.Adapter<UnsignedAdapter.MyView
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View item = layoutInflater.inflate(R.layout.recycler, parent, false);
+        View item = layoutInflater.inflate(R.layout.fragment_recycler, parent, false);
         return new MyViewHolder(item);
     }
 
