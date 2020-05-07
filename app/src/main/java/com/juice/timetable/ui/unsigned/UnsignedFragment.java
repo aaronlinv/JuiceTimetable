@@ -86,7 +86,7 @@ public class UnsignedFragment extends Fragment {
                             }
                             swipeRefreshLayout.setRefreshing(false);
                             Looper.prepare();
-                            Toast.makeText(requireContext(), "课表更新成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "未签名单更新成功", Toast.LENGTH_SHORT).show();
                             Looper.loop();
 
                         } catch (Exception e) {
