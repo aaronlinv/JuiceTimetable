@@ -1,4 +1,4 @@
-package com.juice.timetable.data.ViewModel;
+package com.juice.timetable.data.viewmodel;
 
 import android.app.Application;
 
@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.juice.timetable.data.Repository.AllWeekCourseRepository;
 import com.juice.timetable.data.bean.Course;
+import com.juice.timetable.data.repository.AllWeekCourseRepository;
 
 import java.util.List;
 

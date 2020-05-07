@@ -4,14 +4,14 @@ import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.juice.timetable.data.Dao.AllWeekCourseDao;
-import com.juice.timetable.data.Dao.ClassNoSignedItemDao;
-import com.juice.timetable.data.Dao.MyCheckInDao;
-import com.juice.timetable.data.Dao.OneWeekCourseDao;
-import com.juice.timetable.data.Dao.StuInfoDao;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.MyCheckIn;
 import com.juice.timetable.data.bean.StuInfo;
+import com.juice.timetable.data.dao.AllWeekCourseDao;
+import com.juice.timetable.data.dao.ClassNoSignedItemDao;
+import com.juice.timetable.data.dao.MyCheckInDao;
+import com.juice.timetable.data.dao.OneWeekCourseDao;
+import com.juice.timetable.data.dao.StuInfoDao;
 import com.juice.timetable.data.parse.ParseCheckIn;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.UserInfoUtils;
@@ -29,7 +29,7 @@ import org.junit.Test;
  */
 public class LeaveInfoTest {
 
-    private com.juice.timetable.data.Dao.OneWeekCourseDao CourseDao;
+    private com.juice.timetable.data.dao.OneWeekCourseDao CourseDao;
     private ClassNoSignedItemDao classNoSignedItemDao;
     private MyCheckInDao myCheckInDao;
     private StuInfoDao stuInfoDao;

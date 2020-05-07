@@ -6,16 +6,16 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.juice.timetable.data.Dao.AllWeekCourseDao;
-import com.juice.timetable.data.Dao.ClassNoSignedItemDao;
-import com.juice.timetable.data.Dao.MyCheckInDao;
-import com.juice.timetable.data.Dao.OneWeekCourseDao;
-import com.juice.timetable.data.Dao.StuInfoDao;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
 import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.data.bean.MyCheckIn;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.bean.StuInfo;
+import com.juice.timetable.data.dao.AllWeekCourseDao;
+import com.juice.timetable.data.dao.ClassNoSignedItemDao;
+import com.juice.timetable.data.dao.MyCheckInDao;
+import com.juice.timetable.data.dao.OneWeekCourseDao;
+import com.juice.timetable.data.dao.StuInfoDao;
 
 /**
  * <pre>

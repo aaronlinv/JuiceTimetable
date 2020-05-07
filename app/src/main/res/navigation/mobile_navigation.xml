@@ -21,7 +21,7 @@
         android:id="@+id/nav_unsigned"
         android:name="com.juice.timetable.ui.unsigned.UnsignedFragment"
         android:label="@string/menu_unsigned"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_unsigned" />
 
     <fragment
         android:id="@+id/nav_login"

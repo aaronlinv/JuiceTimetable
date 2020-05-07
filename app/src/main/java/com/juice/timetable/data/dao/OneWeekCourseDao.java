@@ -1,4 +1,4 @@
-package com.juice.timetable.data.Dao;
+package com.juice.timetable.data.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

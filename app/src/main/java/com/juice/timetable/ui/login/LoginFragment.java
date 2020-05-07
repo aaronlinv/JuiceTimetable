@@ -20,9 +20,9 @@ import androidx.navigation.Navigation;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
-import com.juice.timetable.data.Dao.StuInfoDao;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.StuInfo;
+import com.juice.timetable.data.dao.StuInfoDao;
 import com.juice.timetable.databinding.FragmentLoginBinding;
 
 import java.util.Objects;

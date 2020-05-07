@@ -1,13 +1,13 @@
-package com.juice.timetable.data.Repository;
+package com.juice.timetable.data.repository;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import com.juice.timetable.data.Dao.ClassNoSignedItemDao;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
+import com.juice.timetable.data.dao.ClassNoSignedItemDao;
 
 import java.util.List;
 
