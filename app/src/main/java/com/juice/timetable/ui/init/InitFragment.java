@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -337,6 +338,14 @@ public class InitFragment extends Fragment {
             }
 
         });
+        // 隐藏Toolbar -1
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
     }
 
+    // 隐藏Toolbar -2
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+    }
 }
