@@ -50,7 +50,7 @@ public class AllWeekCourseRepository {
         private AllWeekCourseDao allWeekCourseDao;
 
 
-        public InsertAsyncTask(AllWeekCourseDao allWeekCourseDao) {
+        InsertAsyncTask(AllWeekCourseDao allWeekCourseDao) {
             this.allWeekCourseDao = allWeekCourseDao;
         }
 
@@ -65,7 +65,7 @@ public class AllWeekCourseRepository {
     static class DeleteAsyncTask extends AsyncTask<Void, Void, Void> {
         private AllWeekCourseDao allWeekCourseDao;
 
-        public DeleteAsyncTask(AllWeekCourseDao allWeekCourseDao) {
+        DeleteAsyncTask(AllWeekCourseDao allWeekCourseDao) {
             this.allWeekCourseDao = allWeekCourseDao;
         }
 

@@ -32,10 +32,9 @@ public class ParseAllWeek {
     public static List<Course> parseAllCourse(String parseData) {
         //从文档中导入完整课表txt
 //        String s = getAllCourseStr2018();
-        String s = parseData;
         //String s = ReadFile.readToString("C:\\Users\\14989\\Desktop\\网页内容\\完整课表.html");
         //Jsoup解析
-        Document document = Jsoup.parse(s);
+        Document document = Jsoup.parse(parseData);
         //从div中提取出文本，内容是课表与名字
         //String title = document.getElementsByTag("div").eq(0).text();
         //System.out.println(title);
@@ -46,7 +45,7 @@ public class ParseAllWeek {
 
 
         for (Element el : leftTable) {
-            Integer len_Tr = el.getElementsByTag("tr").size();
+            int len_Tr = el.getElementsByTag("tr").size();
             //System.out.println(len_Tr);
             for (int a = 1; a < len_Tr; a++) {
                 Elements oneCourse = el.getElementsByTag("tr").eq(a);
@@ -88,13 +87,13 @@ public class ParseAllWeek {
         Elements rightTable = document.getElementsByTag("tbody").eq(3);
 
         for (Element element1 : rightTable) {
-            Integer len_Tr1 = element1.getElementsByTag("tr").size();
+            int len_Tr1 = element1.getElementsByTag("tr").size();
             for (int l = 1; l < len_Tr1; l++) {
                 Elements ele1 = element1.getElementsByTag("tr").eq(l);
                 //System.out.println(ele1.html());
                 for (Element el1 : ele1) {
 
-                    Integer len_Td1 = el1.getElementsByTag("td").size();
+                    int len_Td1 = el1.getElementsByTag("td").size();
                     for (int j = 1; j < len_Td1; j++) {
                         //去除为空的课程
                         if (!"".equals(el1.getElementsByTag("td").eq(j).text())) {
@@ -102,7 +101,7 @@ public class ParseAllWeek {
                             //tr标签中td的数量
                             //String tr = el1.getElementsByTag("td").html();
                             //System.out.println(e1.html());
-                            Integer len_Br = tr.split("<br>").length;
+                            int len_Br = tr.split("<br>").length;
                             //System.out.println(tr.split("<br>")[0]+"======");
                             for (int a = 0; a < len_Br; a++) {
                                 Course course = null;
@@ -150,7 +149,7 @@ public class ParseAllWeek {
                                         }
                                     }
                                     String id = el1.getElementsByTag("td").eq(j).attr("id");
-                                    Integer couWeek = Integer.valueOf(id.substring(id.length() - 1, id.length()));
+                                    Integer couWeek = Integer.valueOf(id.substring(id.length() - 1));
                                     course.setCouWeek(couWeek);
                                     Integer couStartNode = Integer.valueOf(id.substring(0, id.length() - 1));
                                     course.setCouStartNode(couStartNode);

@@ -21,7 +21,7 @@ import java.util.List;
  * </pre>
  */
 public class ParseClassNoSignedItem {
-    static List<ClassNoSignedItem> noSignedList = new ArrayList<>();
+    private static List<ClassNoSignedItem> noSignedList = new ArrayList<>();
 
     /**
      * 获取班级签到信息
@@ -38,18 +38,18 @@ public class ParseClassNoSignedItem {
         noSignedList.clear();
         for (Element element : elements) {
             //计算tr标签的数量
-            Integer len_Tr = element.getElementsByTag("tr").size();
+            int len_Tr = element.getElementsByTag("tr").size();
             //循环
             for (int a = 0; a < len_Tr; a++) {
-                ClassNoSignedItem cnsi = new ClassNoSignedItem();
+                ClassNoSignedItem casi = new ClassNoSignedItem();
                 Elements ele = element.getElementsByTag("tr").eq(a);
                 for (Element el : ele) {
                     //tr标签中td的数量
                     String sno = el.getElementsByTag("td").eq(2).text();
-                    cnsi.setSno(sno);
-                    String sname = el.getElementsByTag("td").eq(3).text();
-                    cnsi.setSname(sname);
-                    noSignedList.add(cnsi);
+                    casi.setSno(sno);
+                    String Sname = el.getElementsByTag("td").eq(3).text();
+                    casi.setSname(Sname);
+                    noSignedList.add(casi);
                 }
             }
         }
@@ -59,7 +59,7 @@ public class ParseClassNoSignedItem {
         return noSignedList;
     }
 
-    public static String getNoSignedItemStr() {
+    private static String getNoSignedItemStr() {
         return "<!doctype html public '-//w3c//dtd html 4.01 transitional//en' 'http://www.w3.org/tr/html4/loose.dtd' >\n" +
                 "<html >\n" +
                 "\t<head >\n" +

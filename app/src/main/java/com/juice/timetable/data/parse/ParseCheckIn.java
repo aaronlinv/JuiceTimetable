@@ -44,12 +44,10 @@ public class ParseCheckIn {
                 String checkTime = el.getElementsByTag("td").eq(1).text();
                 myCheckIn.setCheckTime(checkTime);
                 if ("未签".equals(el.getElementsByTag("td").eq(2).text())) {
-                    boolean isCheckIn = false;
-                    myCheckIn.setCheckIn(isCheckIn);
+                    myCheckIn.setCheckIn(false);
 
                 } else {
-                    boolean isCheckIn = true;
-                    myCheckIn.setCheckIn(isCheckIn);
+                    myCheckIn.setCheckIn(true);
                 }
 
 
