@@ -71,7 +71,7 @@ public class UnsignedFragment extends Fragment {
                     @Override
                     public void run() {
                         // 模拟登录获取数据
-                        List<ClassNoSignedItem> unsignedList = null;
+                        List<ClassNoSignedItem> unsignedList;
                         try {
                             String unsigned = LeaveInfo.getUnsignedList(requireContext());
                             unsignedList = ParseClassNoSignedItem.getClassUnSigned(unsigned);
