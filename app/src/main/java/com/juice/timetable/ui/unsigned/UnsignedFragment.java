@@ -84,6 +84,7 @@ public class UnsignedFragment extends Fragment {
                             for (ClassNoSignedItem classNoSignedItem : unsignedList) {
                                 classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
                             }
+                            swipeRefreshLayout.setRefreshing(false);
                             Looper.prepare();
                             Toast.makeText(requireContext(), "课表更新成功", Toast.LENGTH_SHORT).show();
                             Looper.loop();
@@ -96,7 +97,6 @@ public class UnsignedFragment extends Fragment {
                         }
                     }
                 }).start();
-                swipeRefreshLayout.setRefreshing(false);
             }
         });
         return root;
