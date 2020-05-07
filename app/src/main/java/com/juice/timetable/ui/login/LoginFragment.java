@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -49,6 +51,12 @@ public class LoginFragment extends Fragment {
         binding = FragmentLoginBinding.inflate(getLayoutInflater());//binding初始化
 //        binding = DataBindingUtil.setContentView(requireActivity(), R.layout.fragment_login);
         drawer = requireActivity().findViewById(R.id.drawer_layout);
+
+        // 隐藏Toolbar的下拉菜单按钮
+        Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
+        Menu menu = toolbar.getMenu();
+        menu.setGroupVisible(0, false);
+
         return binding.getRoot();
     }
 

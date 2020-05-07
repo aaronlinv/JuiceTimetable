@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,6 +90,10 @@ public class CourseFragment extends Fragment {
         binding.llWeek.removeAllViews();
         toolbar = requireActivity().findViewById(R.id.toolbar);
 
+        // 显示Toolbar的下拉菜单按钮
+        Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
+        Menu menu = toolbar.getMenu();
+        menu.setGroupVisible(0, true);
 
         // -1 ：星期栏   0-6：星期 一 ...日
         for (int i = -1; i < 7; i++) {
