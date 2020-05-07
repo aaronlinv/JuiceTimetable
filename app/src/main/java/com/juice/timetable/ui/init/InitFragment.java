@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -46,6 +47,7 @@ public class InitFragment extends Fragment {
     private JuiceDatabase juiceDatabase;
     private StuInfoDao stuInfoDao;
     private Handler mHandler;
+    private DrawerLayout drawer;
 
 
     public InitFragment() {
@@ -60,6 +62,10 @@ public class InitFragment extends Fragment {
 
 //        return inflater.inflate(R.layout.fragment_init, container, false);
         binding = FragmentInitBinding.inflate(getLayoutInflater());
+        // 禁止侧滑打开抽屉
+        drawer = requireActivity().findViewById(R.id.drawer_layout);
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
         return binding.getRoot();
     }
 
@@ -158,7 +164,7 @@ public class InitFragment extends Fragment {
                             Message message = new Message();
                             message.what = Constant.MSG_LOGIN_SUCCESS;
                             mHandler.sendMessage(message);
-
+                            // TODO: 2020/5/8 修改这种写法，按钮点击过快 可能导致闪退
                             Looper.prepare();
                             Toast.makeText(getContext().getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
                             Looper.loop();
@@ -185,6 +191,10 @@ public class InitFragment extends Fragment {
                         // 跳转结束后将debugInit置为false否则死循环
                         Constant.DEBUG_INIT_FRAGMENT = false;
                         Navigation.findNavController(requireView()).popBackStack(R.id.initFragment, true);
+
+                        // 允许侧滑打开抽屉
+                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
                         break;
                 }
             }
