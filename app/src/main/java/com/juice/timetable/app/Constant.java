@@ -24,6 +24,9 @@ public class Constant {
     // 登录成功
     public static final int MSG_LOGIN_SUCCESS = 2021;
 
+    // 指纹签到成功
+    public static final int MSG_CHECK_IN_SUCCESS = 2022;
+
     // TODO: 2020/5/6 判断当前周
     // 当前学校周
     public static final int CUR_WEEK = 12;

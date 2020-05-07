@@ -1,5 +1,7 @@
 package com.juice.timetable.ui.course;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -44,6 +46,8 @@ import com.juice.timetable.utils.Utils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import static android.animation.ObjectAnimator.ofObject;
 
 public class CourseFragment extends Fragment {
     private CourseViewModel homeViewModel;
@@ -225,9 +229,11 @@ public class CourseFragment extends Fragment {
                                     String checkInTime = mySigned.getCheckTime();
                                     // TODO: 2020/5/7 需要更换为签到时间
                                     checkInTime = "21:50";
-                                    binding.tvCheckIn.setText("今天 " + checkInTime + " 已签到");
-                                    binding.tvCheckIn.setBackgroundColor(0xFFe6e6e6);
-                                    binding.tvCheckIn.setTextColor(0xFF101010);
+
+                                    Message checkInMSG = new Message();
+                                    checkInMSG.what = Constant.MSG_CHECK_IN_SUCCESS;
+                                    checkInMSG.obj = checkInTime;
+                                    mHandler.sendMessage(checkInMSG);
                                 }
 
                             } catch (Exception e) {
@@ -378,10 +384,35 @@ public class CourseFragment extends Fragment {
                         }
                         binding.courseView.resetView();
                         break;
+                    case Constant.MSG_CHECK_IN_SUCCESS:
+                        String checkInTime = (String) msg.obj;
+                        final String checkInStr = "今天 " + checkInTime + " 已签到";
+
+//                        binding.tvCheckIn.setBackgroundColor(0xFFe6e6e6);
+                        ObjectAnimator backgroundColor = ofObject(binding.tvCheckIn, "backgroundColor", new ArgbEvaluator(), 0xFFec6b6b, 0xFFe6e6e6);
+                        backgroundColor.setDuration(1000);
+                        backgroundColor.start();
+//                        ObjectAnimator text = ObjectAnimator.ofObject(binding.tvCheckIn, "text", new ArgbEvaluator(), "今日未签到", checkInStr);
+//                        text.setDuration(5000);
+//                        text.start();
+//                        binding.tvCheckIn.setTextColor(0xFF101010);
+                        ObjectAnimator textColor = ofObject(binding.tvCheckIn, "textColor", new ArgbEvaluator(), 0xFFFFFFFF, 0xFF101010);
+                        textColor.setDuration(1000);
+                        textColor.start();
+
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                binding.tvCheckIn.setText(checkInStr);
+                            }
+                        }, 500);
+                        break;
                 }
 
             }
-        };
+        }
+
+        ;
 /*        new Thread(new Runnable() {
             @Override
             public void run() {
