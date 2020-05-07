@@ -90,6 +90,7 @@ public class UnsignedFragment extends Fragment {
                             Looper.loop();
 
                         } catch (Exception e) {
+                            swipeRefreshLayout.setRefreshing(false);
                             Looper.prepare();
                             Toast.makeText(requireContext(), "未输入请假系统密码或无网络", Toast.LENGTH_SHORT).show();
                             Looper.loop();
