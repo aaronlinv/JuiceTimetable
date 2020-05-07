@@ -13,4 +13,7 @@
 
     <string name="home_second">Home Second</string>
     <string name="center">center</string>
+    <string name="textView1">序号</string>
+    <string name="textView2">学号</string>
+    <string name="textView3">姓名</string>
 </resources>
