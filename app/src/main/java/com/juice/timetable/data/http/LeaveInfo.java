@@ -27,7 +27,7 @@ public class LeaveInfo {
     static boolean enableSaveCookie = false;
 
     /**
-     * 读取数据库 用户账户密码 获取自己的签到情况(直接访问请假系统获取)
+     * 读取数据库 用户账户密码 获取自己的签到情况(直接访问请假系统获取)，需要已存在请假系统密码
      *
      * @return
      */
@@ -36,11 +36,8 @@ public class LeaveInfo {
         StuInfo stu = juiceDatabase.getStuInfoDao().getStuInfo();
 
         // 存在请假系统密码，则可以开始获取
-        if (stu.getLeavePassword() != null) {
-            return getLeave(stu.getStuID().toString(), stu.getLeavePassword(),
-                    Constant.URI_CHECK_IN, context);
-        }
-        return null;
+        return getLeave(stu.getStuID().toString(), stu.getLeavePassword(),
+                Constant.URI_CHECK_IN, context);
     }
 
     /**

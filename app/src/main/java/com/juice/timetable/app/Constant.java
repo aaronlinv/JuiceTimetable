@@ -30,6 +30,8 @@ public class Constant {
 
     // 调式Init界面，用于调试登录界面
     public static boolean DEBUG_INIT_FRAGMENT = false;
+    // 调式签到提示栏
+    public static boolean DEBUG_CHECK_IN_TEXTVIEW = true;
 
 
 }

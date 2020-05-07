@@ -28,10 +28,13 @@ import com.juice.timetable.data.Dao.OneWeekCourseDao;
 import com.juice.timetable.data.Dao.StuInfoDao;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.Course;
+import com.juice.timetable.data.bean.MyCheckIn;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.http.EduInfo;
+import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseAllWeek;
+import com.juice.timetable.data.parse.ParseCheckIn;
 import com.juice.timetable.data.parse.ParseOneWeek;
 import com.juice.timetable.databinding.FragmentCourseBinding;
 import com.juice.timetable.utils.LogUtils;
@@ -57,6 +60,7 @@ public class CourseFragment extends Fragment {
     private JuiceDatabase database;
     private AllWeekCourseDao allWeekCourseDao;
     private OneWeekCourseDao oneWeekCourseDao;
+    private StuInfoDao stuInfoDao;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -124,16 +128,13 @@ public class CourseFragment extends Fragment {
                     ViewGroup.LayoutParams.MATCH_PARENT, nodeItemHeight);
             binding.llNode.addView(textView, params);
         }
-        // 签到提示栏
-        if (Utils.isCheckInTime()) {
-            toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
-            String checkInTime = "21:50";
-            binding.tvCheckIn.setText("今天 " + checkInTime + " 已签到");
-            binding.tvCheckIn.setBackgroundColor(0xFFe6e6e6);
-            binding.tvCheckIn.setTextColor(0xFF101010);
+        // 初始化标题栏
+        toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
+
+        // 不在签到时间并且不在调试模式 隐藏签到提示栏
+        if (!Utils.isCheckInTime() && !Constant.DEBUG_CHECK_IN_TEXTVIEW) {
+            binding.tvCheckIn.setVisibility(TextView.GONE);
         }
-        // TODO: 2020/5/6 关闭签到提示栏显示
-        binding.tvCheckIn.setVisibility(TextView.GONE);
         return binding.getRoot();
     }
 
@@ -184,7 +185,16 @@ public class CourseFragment extends Fragment {
         database = JuiceDatabase.getDatabase(requireContext().getApplicationContext());
         allWeekCourseDao = database.getAllWeekCourseDao();
         oneWeekCourseDao = database.getOneWeekCourseDao();
-        StuInfoDao stuInfoDao = database.getStuInfoDao();
+        stuInfoDao = database.getStuInfoDao();
+
+        // TODO: 2020/5/5 测试：手动写入账户密码
+        final UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
+        stuInfoDao.deleteStuInfo();
+        StuInfo stuInfo = new StuInfo();
+        stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
+        stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
+        stuInfo.setLeavePassword(userInfoUtils.getLeavePasswd());
+        stuInfoDao.insertStuInfo(stuInfo);
 
         // 加载课表
         // TODO: 2020/5/6 首次登录课表要做初始化
@@ -199,18 +209,37 @@ public class CourseFragment extends Fragment {
                         binding.courseView.setOneWeekCourses(oneWeekCourse);
                         binding.courseView.setSet(new HashSet<Integer>(inWeek));
                         binding.courseView.resetView();
+
+                        LogUtils.getInstance().d("用户数据库信息：" + stuInfoDao.getStuInfo());
+                        boolean hasLeavePwd = (stuInfoDao.getStuInfo().getEduPassword() != null);
+                        // (签到时间或者调试模式)且数据库有请假系统密码  初始化签到信息
+                        LogUtils.getInstance().d("有请假系统密码则开始获取签到信息");
+                        if ((Utils.isCheckInTime() || Constant.DEBUG_CHECK_IN_TEXTVIEW) && hasLeavePwd) {
+                            try {
+                                String checkIn = LeaveInfo.getCheckIn(requireContext());
+                                LogUtils.getInstance().d("签到数据：" + checkIn);
+
+                                MyCheckIn mySigned = ParseCheckIn.getMySigned(checkIn);
+
+                                if (!mySigned.isCheckIn()) {
+                                    String checkInTime = mySigned.getCheckTime();
+                                    // TODO: 2020/5/7 需要更换为签到时间
+                                    checkInTime = "21:50";
+                                    binding.tvCheckIn.setText("今天 " + checkInTime + " 已签到");
+                                    binding.tvCheckIn.setBackgroundColor(0xFFe6e6e6);
+                                    binding.tvCheckIn.setTextColor(0xFF101010);
+                                }
+
+                            } catch (Exception e) {
+                                LogUtils.getInstance().e("获取签到信息失败：" + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }
         ).start();
 
-        // TODO: 2020/5/5 测试：手动写入账户密码
-        UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
-        JuiceDatabase database = JuiceDatabase.getDatabase(requireContext());
-        stuInfoDao.deleteStuInfo();
-        StuInfo stuInfo = new StuInfo();
-        stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
-        stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
-        stuInfoDao.insertStuInfo(stuInfo);
+
 
 
 /*        // 传入课表List 以显示
