@@ -4,10 +4,17 @@ import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.juice.timetable.app.Constant;
+import com.juice.timetable.data.bean.OneWeekCourse;
+import com.juice.timetable.data.parse.ParseOneWeek;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.UserInfoUtils;
 
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * <pre>
@@ -18,6 +25,8 @@ import org.junit.Test;
  * </pre>
  */
 public class EduInfoTest {
+    ArrayList<OneWeekCourse> couList = new ArrayList<>();
+
     public Context getContext() {
         return InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
@@ -38,6 +47,7 @@ public class EduInfoTest {
         return getUserInfo("leavePasswd");
     }
 
+
     @Test
     public void getTimeTable() {
         // 周课表
@@ -53,5 +63,57 @@ public class EduInfoTest {
 
     @Test
     public void parse() {
+    }
+
+    /**
+     * 测试获取第10周周课表并解析
+     *
+     * @throws Exception
+     */
+    @Test
+    public void getOneWeekCourse() throws Exception {
+
+        String oneWeekCourse = EduInfo.getOneWeekCourse(10, getContext());
+        List<OneWeekCourse> oneWeekCourses = ParseOneWeek.parseCourse(oneWeekCourse);
+        for (OneWeekCourse oneWeekCours : oneWeekCourses) {
+            System.out.println(oneWeekCours);
+        }
+        System.out.println(oneWeekCourse);
+    }
+
+    @Test
+    public void getWeekCourse() throws Exception {
+        List<OneWeekCourse> tempList = new ArrayList<>();
+        int week = 0;
+
+//        oneWeekCourseDao.deleteCourse();
+//        List<Integer> inWeek = oneWeekCourseDao.getInWeek();
+        // 获取数据库中存了哪些周的周课表
+        HashSet<Integer> set = new HashSet<>();
+        LogUtils.getInstance().d("周课表set:" + set);
+        // 数据库为空 需要爬取上两周课程
+        if (set.isEmpty()) {
+            week = -2;
+        }
+        // 模拟登录获取课表数据
+        for (; week <= 2; week++) {
+            String oneWeekCourse = EduInfo.getOneWeekCourse(Constant.CUR_WEEK + week, getContext());
+            List<OneWeekCourse> oneWeekCourses = ParseOneWeek.parseCourse(oneWeekCourse);
+            LogUtils.getInstance().d("获取第 <" + (Constant.CUR_WEEK + week) + "> 周课表");
+            LogUtils.getInstance().d("获取第 <" + (Constant.CUR_WEEK + week) + "> 周课表 获取前List:" + oneWeekCourses);
+            for (OneWeekCourse oneWeekCours : oneWeekCourses) {
+                LogUtils.getInstance().d("获取第 <" + (Constant.CUR_WEEK + week) + "> 周课表:" + oneWeekCours);
+            }
+            couList.addAll(oneWeekCourses);
+            // 删除该数据库中周的课表，避免冲突
+
+        }
+        for (OneWeekCourse oneWeekCourse : couList) {
+            LogUtils.getInstance().d(oneWeekCourse.toString());
+            // 插入数据库
+//            oneWeekCourseDao.insertCourse(oneWeekCourse);
+
+        }
+        LogUtils.getInstance().d("解析本周、上两周、下两周的周课表 结束");
     }
 }

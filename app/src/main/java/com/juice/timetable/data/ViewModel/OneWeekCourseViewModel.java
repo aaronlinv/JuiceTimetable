@@ -34,5 +34,9 @@ public class OneWeekCourseViewModel extends AndroidViewModel {
         return repository.getOneWeekCourseLive();
     }
 
+    public LiveData<List<Integer>> getInWeekLive() {
+        return repository.getInWeekLive();
+    }
+
 
 }

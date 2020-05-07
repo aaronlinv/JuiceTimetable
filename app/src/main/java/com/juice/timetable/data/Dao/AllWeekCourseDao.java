@@ -29,4 +29,7 @@ public interface AllWeekCourseDao {
 
     @Query("Select * from Course")
     LiveData<List<Course>> getAllWeekCourseLive();
+
+    @Query("Select * from Course")
+    List<Course> getAllWeekCourse();
 }

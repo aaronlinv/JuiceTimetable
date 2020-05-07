@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Looper;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +16,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.juice.timetable.R;
-import com.juice.timetable.data.http.EduInfo;
-import com.juice.timetable.data.http.LeaveInfo;
+import com.juice.timetable.app.Constant;
+import com.juice.timetable.data.Dao.StuInfoDao;
+import com.juice.timetable.data.JuiceDatabase;
+import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.databinding.FragmentLoginBinding;
-import com.juice.timetable.utils.LogUtils;
+
+import java.util.Objects;
 
 /**
  * 修改认证页面相应功能实现类
@@ -33,6 +34,12 @@ public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding;
     private LoginViewModel loginViewModel;
     private DrawerLayout drawer;
+    private String sno;
+    private String edu;
+    private String leave;
+    private StuInfo stuInfo;
+    private JuiceDatabase juiceDatabase;
+    private StuInfoDao stuInfoDao;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -50,8 +57,7 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnDialogClick();
-        allNull();
-        btnPromptNull();
+        btoGoListen();
         drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
@@ -80,6 +86,164 @@ public class LoginFragment extends Fragment {
     }
 
     /**
+     * 登录按钮的监听事件
+     */
+    private void btoGoListen() {
+        binding.btnGo.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                judgmentLogic();
+            }
+        });
+    }
+
+    private void judgmentLogic() {
+        allStr();
+        if (sno.isEmpty()) {
+            Toast.makeText(requireActivity(), "请输入学号", Toast.LENGTH_SHORT).show();
+        } else {
+            if (sno.length() != 9) {
+                Toast.makeText(requireActivity(), "请输入九位数的学号", Toast.LENGTH_SHORT).show();
+            } else if (!sno.matches("21\\d{7}")) {
+                Toast.makeText(requireActivity(), "请输入以21开头的学号", Toast.LENGTH_SHORT).show();
+            } else {
+                if (edu.isEmpty()) {
+                    Toast.makeText(requireActivity(), "请输入教务网密码", Toast.LENGTH_SHORT).show();
+                } else if (edu.length() < 6) {
+                    Toast.makeText(requireActivity(), "请输入六位及以上的教务网密码", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (leave.isEmpty()) {
+                        hideSoftKeyboard(requireActivity());
+                        Constant.DEBUG_INIT_FRAGMENT = false;
+                        Navigation.findNavController(requireView()).navigate(R.id.nav_course);
+                        //Toast.makeText(getContext().getApplicationContext(), "教务网密码验证成功", Toast.LENGTH_SHORT).show();
+                       /* new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                // 教务网验证
+                                LogUtils.getInstance().d("教务网前端验证成功");
+                                String uri = "http://jwb.fdzcxy.com/kb/zkb_xs.asp";
+                                try {
+                                    EduInfo.getTimeTable(sno, edu, uri, getContext().getApplicationContext());
+                                } catch (Exception e) {
+                                    String errorText = e.getMessage();
+                                    LogUtils.getInstance().d("errorText:" + errorText);
+                                    //解决在子线程中调用Toast的异常情况处理
+                                    Looper.prepare();
+
+                                    Toast.makeText(getContext().getApplicationContext(), errorText, Toast.LENGTH_SHORT).show();
+
+                                    //解决在子线程中调用Toast的异常情况处理-结束需要添加这句
+                                    Looper.loop();
+                                }
+                                LogUtils.getInstance().d("教务网密码验证成功");
+
+                                // 跳转到课表首页
+                                if (leave == "") {
+                                    Looper.prepare();
+                                    Toast.makeText(getContext().getApplicationContext(), "教务网密码验证成功", Toast.LENGTH_SHORT).show();
+                                    Looper.loop();
+                                    // 只填写了教务网密码 跳转课表首页
+
+                                }
+                            }
+                        }).start();*/
+                        // TODO 跳转页面，删除学号教务网密码并调用写入数据库的方法writeAllData()writeSnoEduData()
+
+                    } else {
+                        hideSoftKeyboard(requireActivity());
+                        Constant.DEBUG_INIT_FRAGMENT = false;
+                        Navigation.findNavController(requireView()).navigate(R.id.nav_course);
+
+                        /*new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // 教务网验证
+                                LogUtils.getInstance().d("教务网前端验证成功");
+                                String uri = "http://jwb.fdzcxy.com/kb/zkb_xs.asp";
+                                try {
+                                    EduInfo.getTimeTable(sno, edu, uri, getContext().getApplicationContext());
+                                } catch (Exception e) {
+                                    String errorText = e.getMessage();
+                                    LogUtils.getInstance().d("errorText:" + errorText);
+                                    //解决在子线程中调用Toast的异常情况处理
+                                    Looper.prepare();
+
+                                    Toast.makeText(getContext().getApplicationContext(), errorText, Toast.LENGTH_SHORT).show();
+
+                                    //解决在子线程中调用Toast的异常情况处理-结束需要添加这句
+                                    Looper.loop();
+                                }
+                                LogUtils.getInstance().d("教务网密码验证成功");
+                                // 跳转到课表首页
+
+
+                                // 请假系统验证
+                                LogUtils.getInstance().d("请假系统前端验证成功");
+                                uri = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-record-student&c=dormcheckrecordstudent";
+                                try {
+                                    LeaveInfo.getLeave(sno, leave, uri, getContext().getApplicationContext());
+                                } catch (Exception e) {
+                                    String errorText = e.getMessage();
+                                    LogUtils.getInstance().d("errorText:" + errorText);
+                                    //解决在子线程中调用Toast的异常情况处理
+                                    Looper.prepare();
+                                    Toast.makeText(getContext().getApplicationContext(), errorText, Toast.LENGTH_SHORT).show();
+                                    //解决在子线程中调用Toast的异常情况处理-结束需要添加这句
+                                    Looper.loop();
+                                }
+                                LogUtils.getInstance().d("教务网和请假系统密码均验证成功");
+                                // 跳转到课表首页
+
+                                Looper.prepare();
+                                Toast.makeText(getContext().getApplicationContext(), "教务网和请假系统密码均验证成功", Toast.LENGTH_SHORT).show();
+                                Looper.loop();
+
+                            }
+                        }).start();*/
+                    }
+                    // TODO 跳转页面，删除学号教务网密码请假系统密码，并调用写入数据库的方法writeAllData()
+                    Constant.DEBUG_INIT_FRAGMENT = false;
+                    Navigation.findNavController(requireView()).navigate(R.id.nav_course);
+                }
+
+            }
+
+        }
+
+    }
+
+    /**
+     * 提取三个文本的内容
+     */
+    private void allStr() {
+        sno = binding.etSno.getText().toString().trim();
+        edu = binding.etEduPassword.getText().toString().trim();
+        leave = binding.etLeavePassword.getText().toString().trim();
+    }
+
+    private void writeSnoEduData() {
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
+        stuInfoDao = juiceDatabase.getStuInfoDao();
+        Integer snoStr = Integer.parseInt(sno);
+        StuInfo stuInfo1 = new StuInfo();
+        stuInfo1.setStuID(snoStr);
+        stuInfo1.setEduPassword(edu);
+        stuInfoDao.insertStuInfo(stuInfo1);
+    }
+
+    private void writeAllData() {
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
+        stuInfoDao = juiceDatabase.getStuInfoDao();
+        Integer snoStr = Integer.parseInt(sno);
+        StuInfo stuInfo1 = new StuInfo();
+        stuInfo1.setStuID(snoStr);
+        stuInfo1.setEduPassword(edu);
+        stuInfo1.setEduPassword(leave);
+        stuInfoDao.insertStuInfo(stuInfo1);
+    }
+
+    /**
      * 点击用户协议，弹出对话框
      */
     private void btnDialogClick() {
@@ -91,305 +255,13 @@ public class LoginFragment extends Fragment {
 
     }
 
-
-    /**
-     * 在什么都没输入时，提示学号未输入
-     */
-    private void allNull() {
-        String sno = binding.etSno.getText().toString().trim();
-        String edu = binding.etEduPassword.getText().toString().trim();
-        String leave = binding.etLeavePassword.getText().toString().trim();
-        if (sno.isEmpty() && edu.isEmpty() && leave.isEmpty()) {
-            snoNull();
-        }
-    }
-
-
-    /**
-     * 监听文本内容，对学号，教务网密码，请假系统密码相应的判断
-     */
-    private void btnPromptNull() {
-        TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                judgmentIsEmpty();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        };
-        binding.etSno.addTextChangedListener(textWatcher);//监听里面的内容
-        binding.etEduPassword.addTextChangedListener(textWatcher);//监听里面的内容
-        binding.etLeavePassword.addTextChangedListener(textWatcher);//监听里面的内容
-    }
-
-    /**
-     * 判断是否为空，并提示相应信息
-     */
-    private void judgmentIsEmpty() {
-        final String sno = binding.etSno.getText().toString().trim();
-        final String edu = binding.etEduPassword.getText().toString().trim();
-        final String leave = binding.etLeavePassword.getText().toString().trim();
-        if (sno.isEmpty() && edu.isEmpty() && leave.isEmpty()) {
-            snoNull();
-        }
-        if (sno.isEmpty() && edu.isEmpty() && !leave.isEmpty()) {
-            snoNull();
-        }
-        if (sno.isEmpty() && !edu.isEmpty() && leave.isEmpty()) {
-            snoNull();
-        }
-        if (sno.isEmpty() && !edu.isEmpty() && !leave.isEmpty()) {
-            snoNull();
-        }
-        if (!sno.isEmpty() && edu.isEmpty() && leave.isEmpty()) {
-            eduPasswordNull();
-        }
-        if (!sno.isEmpty() && edu.isEmpty() && !leave.isEmpty()) {
-            eduPasswordNull();
-        }
-        if (!sno.isEmpty() && !edu.isEmpty() && leave.isEmpty()) {
-            binding.btnGo.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    preTwoJudge();
-                }
-            });
-        }
-        if (!sno.isEmpty() && !edu.isEmpty() && !leave.isEmpty()) {
-            binding.btnGo.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-//                    preAllJudge();
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // 教务网验证
-                            LogUtils.getInstance().d("教务网前端验证成功");
-                            String uri = "http://jwb.fdzcxy.com/kb/zkb_xs.asp";
-                            try {
-                                EduInfo.getTimeTable(sno, edu, uri, getContext().getApplicationContext());
-                            } catch (Exception e) {
-                                String errorText = e.getMessage();
-                                LogUtils.getInstance().d("errorText:" + errorText);
-                                //解决在子线程中调用Toast的异常情况处理
-                                Looper.prepare();
-
-                                Toast.makeText(getContext().getApplicationContext(), errorText, Toast.LENGTH_SHORT).show();
-
-                                //解决在子线程中调用Toast的异常情况处理-结束需要添加这句
-                                Looper.loop();
-                            }
-                            LogUtils.getInstance().d("教务网密码验证成功");
-                            // 跳转到课表首页
-
-                            // 添加了下面三行，后面的请假系统验证将不执行
-                            if (leave == "") {
-                                Looper.prepare();
-                                Toast.makeText(getContext().getApplicationContext(), "教务网密码验证成功", Toast.LENGTH_SHORT).show();
-                                Looper.loop();
-                                // 只填写了教务网密码 跳转课表首页
-                                // 
-                            }
-
-
-                            // 请假系统验证
-                            LogUtils.getInstance().d("请假系统前端验证成功");
-                            uri = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-record-student&c=dormcheckrecordstudent";
-                            try {
-                                LeaveInfo.getLeave(sno, leave, uri, getContext().getApplicationContext());
-                            } catch (Exception e) {
-                                String errorText = e.getMessage();
-                                LogUtils.getInstance().d("errorText:" + errorText);
-                                //解决在子线程中调用Toast的异常情况处理
-                                Looper.prepare();
-                                Toast.makeText(getContext().getApplicationContext(), errorText, Toast.LENGTH_SHORT).show();
-                                //解决在子线程中调用Toast的异常情况处理-结束需要添加这句
-                                Looper.loop();
-                            }
-                            LogUtils.getInstance().d("教务网和请假系统密码均验证成功");
-                            // 跳转到课表首页
-
-                            Looper.prepare();
-                            Toast.makeText(getContext().getApplicationContext(), "教务网和请假系统密码均验证成功", Toast.LENGTH_SHORT).show();
-                            Looper.loop();
-                        }
-                    }).start();
-                }
-            });
-        }
-
-    }
-
-    /**
-     * 点击按钮，提示未输入学号
-     */
-    private void snoNull() {
-        binding.btnGo.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Toast.makeText(requireActivity(), "未输入学号", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    /**
-     * 点击按钮，提示未输入教务网密码
-     */
-    private void eduPasswordNull() {
-        binding.btnGo.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Toast.makeText(requireActivity(), "未输入教务网密码", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    /**
-     * 点击按钮，提示未输入请假系统密码
-     */
-    private void leavePasswordNull() {
-        hideSoftKeyboard(requireActivity());
-        Toast.makeText(requireActivity(), "进入主界面，仅显示课表，签到提示功能、本班未签功能停用", Toast.LENGTH_SHORT).show();
-    }
-
-    private void preAllJudge() {
-        String snoStr = binding.etSno.getText().toString().trim();
-        //对学号状态的预判断
-        if (snoStr.length() != 9) {
-            Toast.makeText(requireActivity(), "请输入九位数字的学号", Toast.LENGTH_SHORT).show();
-        } else {
-            judgmentContent();
-        }
-    }
-
-    private void preTwoJudge() {
-        String snoStr = binding.etSno.getText().toString().trim();
-        String eduStr = binding.etEduPassword.getText().toString().trim();
-        //对学号状态的预判断
-        if (snoStr.length() != 9) {
-            if (eduStr.length() < 6) {
-                Toast.makeText(requireActivity(), "学号密码不符合规范", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(requireActivity(), "请输入九位数字的学号", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            if (eduStr.length() < 6) {
-                Toast.makeText(requireActivity(), "请输入至少六位数的密码", Toast.LENGTH_SHORT).show();
-            } else {
-                judgmentSnoEdu();
-            }
-        }
-    }
-
-
-    /**
-     * 学号不为空，教务网密码不为空，请假系统密码为空时，对学号和教务网密码的判断
-     */
-    private void judgmentSnoEdu() {
-        String sno = binding.etSno.getText().toString();
-        String edu = binding.etEduPassword.getText().toString().trim();
-        if (!sno.matches(transferSno()) && !edu.equals(transferEduPassword("123456"))) {
-            snoError();
-        }
-        if (!sno.matches(transferSno()) && edu.equals(transferEduPassword("123456"))) {
-            snoError();
-        }
-        if (sno.matches(transferSno()) && !edu.equals(transferEduPassword("123456"))) {
-            eduPasswordError();
-        }
-        if (sno.matches(transferSno()) && edu.equals(transferEduPassword("123456"))) {
-            leavePasswordNull();
-        }
-    }
-
-    /**
-     * 判断学号，教务网密码，请假系统密码，并弹出提示框相应的内容
-     */
-    private void judgmentContent() {
-        String sno = binding.etSno.getText().toString();
-        String edu = binding.etEduPassword.getText().toString().trim();
-        String leave = binding.etLeavePassword.getText().toString().trim();
-
-        if (!sno.matches(transferSno()) && !edu.equals(transferEduPassword("123456"))
-                && !leave.equals(transferLeavePassword("123456"))) {
-            snoError();
-        }
-        if (!sno.matches(transferSno()) && !edu.equals(transferEduPassword("123456"))
-                && leave.equals(transferLeavePassword("123456"))) {
-            snoError();
-        }
-        if (!sno.matches(transferSno()) && edu.equals(transferEduPassword("123456"))
-                && !leave.equals(transferLeavePassword("123456"))) {
-            snoError();
-        }
-        if (sno.matches(transferSno()) && !edu.equals(transferEduPassword("123456"))
-                && !leave.equals(transferLeavePassword("123456"))) {
-            snoError();
-        }
-        if (sno.matches(transferSno()) && !edu.equals(transferEduPassword("123456"))
-                && !leave.equals(transferLeavePassword("123456"))) {
-            eduPasswordError();
-        }
-        if (sno.matches(transferSno()) && !edu.equals(transferEduPassword("123456"))
-                && leave.equals(transferLeavePassword("123456"))) {
-            eduPasswordError();
-        }
-        if (sno.matches(transferSno()) && edu.equals(transferEduPassword("123456"))
-                && !leave.equals(transferLeavePassword("123456"))) {
-            leavePasswordError();
-        }
-        if (sno.matches(transferSno()) && edu.equals(transferEduPassword("123456"))
-                && leave.equals(transferLeavePassword("123456"))) {
-            hideSoftKeyboard(requireActivity());
-            Toast.makeText(requireActivity(), "验证成功", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    /**
-     * 提示框，提示“学号错误”
-     */
-    private void snoError() {
-        Toast.makeText(requireActivity(), "学号错误", Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * 提示框，提示“教务网密码错误”
-     */
-    private void eduPasswordError() {
-        Toast.makeText(requireActivity(), "教务网密码错误", Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * 提示框，提示“请假系统密码错误”
-     */
-    private void leavePasswordError() {
-        Toast.makeText(requireActivity(), "请假系统密码错误", Toast.LENGTH_SHORT).show();
-    }
-
-
-    private String transferSno() {
-        return "21\\d{7}";
-    }
-
-    private String transferEduPassword(String str) {
-        return str;
-    }
-
-    private String transferLeavePassword(String str) {
-        return str;
-    }
-
     /**
      * 对话框的一个实现
      *
      * @param
      */
     private void onDialogClick(View v) {
-        new AlertDialog.Builder(getContext())
+        new AlertDialog.Builder(requireContext())
                 .setTitle("用户条款")
                 .setMessage("本应用深知个人信息对您的重要性，并会尽全力保护您的个人信息安全可靠。我们致力于维持您对我们的信任，恪守以下原则，保护您的个人信息：权责一致原则、目的明确原则、选择同意原则、最少够用原则、确保安全原则、主体参与原则、公开透明原则等。同时，我们承诺，我们将按业界成熟的安全标准，采取相应的安全保护措施来保护您的个人信息。 请在使用我们的产品（或服务）前，仔细阅读并了解本《隐私权政策》。\n" +
                         "一、我们如何收集和使用您的个人信息\n" +
@@ -444,7 +316,6 @@ public class LoginFragment extends Fragment {
 
     }
 
-
     /**
      * 强制隐藏软键盘
      *
@@ -452,7 +323,8 @@ public class LoginFragment extends Fragment {
      */
     private static void hideSoftKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0); //强制隐藏键盘
+        assert imm != null;
+        imm.hideSoftInputFromWindow(Objects.requireNonNull(activity.getCurrentFocus()).getWindowToken(), 0); //强制隐藏键盘
     }
 
 

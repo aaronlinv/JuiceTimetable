@@ -22,7 +22,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 public class EduInfo {
     static final String PREF_EDU_COOKIE = "PREF_EDU_COOKIE";
     // 保存Cookie，以减少获取Cookie的次数
-    static boolean enableSaveCookie = false;
+    static boolean enableSaveCookie = true;
 
     /**
      * 读取数据库 用户账户密码 获取完整课表
@@ -36,6 +36,26 @@ public class EduInfo {
 
         return getTimeTable(stu.getStuID().toString(), stu.getEduPassword(),
                 Constant.URI_WHOLE_COURSE, context);
+/*        UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(context);
+        return getTimeTable(userInfoUtils.getID(), userInfoUtils.getEduPasswd(),
+                Constant.URI_WHOLE_COURSE, context);*/
+    }
+
+
+    /**
+     * 读取数据库 用户账户密码 获取某一周的课表课表
+     *
+     * @param week    需要获取课表的周
+     * @param context
+     * @return
+     * @throws Exception
+     */
+    public static String getOneWeekCourse(Integer week, Context context) throws Exception {
+        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
+        StuInfo stu = juiceDatabase.getStuInfoDao().getStuInfo();
+
+        return getTimeTable(stu.getStuID().toString(), stu.getEduPassword(),
+                Constant.URI_ONE_WEEK + week.toString(), context);
 /*        UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(context);
         return getTimeTable(userInfoUtils.getID(), userInfoUtils.getEduPasswd(),
                 Constant.URI_WHOLE_COURSE, context);*/

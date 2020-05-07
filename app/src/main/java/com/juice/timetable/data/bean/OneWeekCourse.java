@@ -16,8 +16,11 @@ import androidx.room.PrimaryKey;
 @Entity
 public class OneWeekCourse {
     @PrimaryKey(autoGenerate = true)
+    private Integer onlyID;
+
     //课程对应的ID（与完整的课表相同ID的课表）
     private Long couID;
+
 
     private String couName;
 
@@ -31,19 +34,41 @@ public class OneWeekCourse {
 
     private Integer endNode;
 
+    private Integer InWeek;
+
+    public Integer getOnlyID() {
+        return onlyID;
+    }
+
+    public void setOnlyID(Integer onlyID) {
+        this.onlyID = onlyID;
+    }
+
+    public Integer getColor() {
+        return Color;
+    }
+
+    public void setColor(Integer color) {
+        Color = color;
+    }
+
+    private Integer Color;
+
     @Override
     public String toString() {
         return "OneWeekCourse{" +
                 "couID=" + couID +
+                ", onlyID=" + onlyID +
                 ", couName='" + couName + '\'' +
                 ", couRoom='" + couRoom + '\'' +
                 ", dayOfWeek=" + dayOfWeek +
                 ", typeOfWeek=" + typeOfWeek +
                 ", startNode=" + startNode +
                 ", endNode=" + endNode +
+                ", InWeek=" + InWeek +
+                ", Color=" + Color +
                 '}';
     }
-
 
     public Long getCouID() {
         return couID;
@@ -68,7 +93,6 @@ public class OneWeekCourse {
     public void setCouRoom(String couRoom) {
         this.couRoom = couRoom;
     }
-
 
     public Integer getDayOfWeek() {
         return dayOfWeek;
@@ -100,5 +124,13 @@ public class OneWeekCourse {
 
     public void setEndNode(Integer endNode) {
         this.endNode = endNode;
+    }
+
+    public Integer getInWeek() {
+        return InWeek;
+    }
+
+    public void setInWeek(Integer inWeek) {
+        InWeek = inWeek;
     }
 }
