@@ -45,12 +45,10 @@ public class ParseCheckIn {
                 String checkTime = el.getElementsByTag("td").eq(1).text();
                 myCheckIn.setCheckTime(checkTime);
                 if ("未签".equals(el.getElementsByTag("td").eq(2).text())) {
-                    boolean isCheckIn = false;
-                    myCheckIn.setCheckIn(isCheckIn);
+                    myCheckIn.setCheckIn(false);
 
                 } else {
-                    boolean isCheckIn = true;
-                    myCheckIn.setCheckIn(isCheckIn);
+                    myCheckIn.setCheckIn(true);
                 }
 
 
@@ -60,7 +58,7 @@ public class ParseCheckIn {
         return myCheckIn;
     }
 
-    public static String getMyCheckInStr() {
+    private static String getMyCheckInStr() {
         return "<!doctype html public '-//w3c//dtd html 4.01 transitional//en' 'http://www.w3.org/tr/html4/loose.dtd' >\n" +
                 "<html >\n" +
                 "\t<head >\n" +

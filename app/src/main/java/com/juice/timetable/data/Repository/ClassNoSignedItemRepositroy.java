@@ -53,7 +53,7 @@ public class ClassNoSignedItemRepositroy {
         private ClassNoSignedItemDao classNoSignedItemDao;
 
 
-        public InsertAsyncTask(ClassNoSignedItemDao classNoSignedItemDao) {
+        InsertAsyncTask(ClassNoSignedItemDao classNoSignedItemDao) {
             this.classNoSignedItemDao = classNoSignedItemDao;
         }
 
@@ -69,7 +69,7 @@ public class ClassNoSignedItemRepositroy {
         private ClassNoSignedItemDao classNoSignedItemDao;
 
 
-        public SelectAsyncTask(ClassNoSignedItemDao classNoSignedItemDao) {
+        SelectAsyncTask(ClassNoSignedItemDao classNoSignedItemDao) {
             this.classNoSignedItemDao = classNoSignedItemDao;
         }
 
@@ -83,7 +83,7 @@ public class ClassNoSignedItemRepositroy {
     static class DeleteAsyncTask extends AsyncTask<Void, Void, Void> {
         private ClassNoSignedItemDao classNoSignedItemDao;
 
-        public DeleteAsyncTask(ClassNoSignedItemDao classNoSignedItemDao) {
+        DeleteAsyncTask(ClassNoSignedItemDao classNoSignedItemDao) {
             this.classNoSignedItemDao = classNoSignedItemDao;
         }
 

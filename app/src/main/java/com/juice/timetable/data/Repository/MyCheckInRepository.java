@@ -46,7 +46,7 @@ public class MyCheckInRepository {
         private MyCheckInDao myCheckInDao;
 
 
-        public InsertAsyncTask(MyCheckInDao myCheckInDao) {
+        InsertAsyncTask(MyCheckInDao myCheckInDao) {
             this.myCheckInDao = myCheckInDao;
         }
 
@@ -61,7 +61,7 @@ public class MyCheckInRepository {
     static class DeleteAsyncTask extends AsyncTask<Void, Void, Void> {
         private MyCheckInDao myCheckInDao;
 
-        public DeleteAsyncTask(MyCheckInDao myCheckInDao) {
+        DeleteAsyncTask(MyCheckInDao myCheckInDao) {
             this.myCheckInDao = myCheckInDao;
         }
 

@@ -33,8 +33,8 @@ public class StuInfoRepository {
     }
 
 
-    public void insertStuInfo(StuInfo... stuInfos) {
-        new InsertAsyncTask(stuInfoDao).execute(stuInfos);
+    public void insertStuInfo(StuInfo... stuInfo) {
+        new InsertAsyncTask(stuInfoDao).execute(stuInfo);
     }
 
     public void deleteStuInfo(Void... Voids) {
@@ -47,13 +47,13 @@ public class StuInfoRepository {
         private StuInfoDao stuInfoDao;
 
 
-        public InsertAsyncTask(StuInfoDao stuInfoDao) {
+        InsertAsyncTask(StuInfoDao stuInfoDao) {
             this.stuInfoDao = stuInfoDao;
         }
 
         @Override
-        protected Void doInBackground(StuInfo... stuInfos) {
-            stuInfoDao.insertStuInfo(stuInfos);
+        protected Void doInBackground(StuInfo... stuInfo) {
+            stuInfoDao.insertStuInfo(stuInfo);
             return null;
         }
     }
@@ -62,7 +62,7 @@ public class StuInfoRepository {
     static class DeleteAsyncTask extends AsyncTask<Void, Void, Void> {
         private StuInfoDao stuInfoDao;
 
-        public DeleteAsyncTask(StuInfoDao stuInfoDao) {
+        DeleteAsyncTask(StuInfoDao stuInfoDao) {
             this.stuInfoDao = stuInfoDao;
         }
 

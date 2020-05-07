@@ -46,20 +46,20 @@ public class ParseOneWeek {
         //遍历表格
         for (Element element : elements) {
             //table中tr标签的数量
-            Integer len_Tr = element.getElementsByTag("tr").size();
+            int len_Tr = element.getElementsByTag("tr").size();
             for (int a = 1; a < len_Tr; a++) {
                 Elements ele = element.getElementsByTag("tr").eq(a);
                 //System.out.println(ele.html());
                 for (Element el : ele) {
                     //tr标签中td的数量
-                    Integer len_Td = el.getElementsByTag("td").size();
+                    int len_Td = el.getElementsByTag("td").size();
                     for (int b = 1; b < len_Td; b++) {
                         //Elements ele1 = el.getElementsByTag("td").eq(b);
                         //System.out.println(ele1.html());
                         OneWeekCourse owc = new OneWeekCourse();
                         //去除为空的课程
                         String title = doc.getElementsByClass("td3").text();
-                        Integer week = Integer.valueOf(String.valueOf(title.substring(title.indexOf("第") + 1, title.indexOf("周"))));
+                        Integer week = Integer.valueOf(title.substring(title.indexOf("第") + 1, title.indexOf("周")));
                         owc.setInWeek(week);
                         if (!"".equals(el.getElementsByTag("td").eq(b).text())) {
                             //couName,couRoom,单双周的判断
@@ -87,7 +87,7 @@ public class ParseOneWeek {
                             }
                             //标签中的id，例如id为11，第一个1是指从第1节课开始上课，第二个1为星期一
                             String id = el.getElementsByTag("td").eq(b).attr("id");
-                            Integer dayOfWeek = Integer.valueOf(id.substring(id.length() - 1, id.length()));
+                            Integer dayOfWeek = Integer.valueOf(id.substring(id.length() - 1));
                             owc.setDayOfWeek(dayOfWeek);
 
                             Integer startNode = Integer.valueOf(id.substring(0, id.length() - 1));
