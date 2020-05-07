@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.Guideline;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.juice.timetable.R;
@@ -24,10 +23,10 @@ import java.util.List;
  * </pre>
  */
 public class UnsignedAdapter extends RecyclerView.Adapter<UnsignedAdapter.MyViewHolder> {
-    private List<ClassNoSignedItem> allInfos = new ArrayList<>();
+    private List<ClassNoSignedItem> Ifs = new ArrayList<>();
 
-    void setAllInfos(List<ClassNoSignedItem> allInfos) {
-        this.allInfos = allInfos;
+    void setIfs(List<ClassNoSignedItem> ifs) {
+        this.Ifs = ifs;
     }
 
     @NonNull
@@ -40,7 +39,7 @@ public class UnsignedAdapter extends RecyclerView.Adapter<UnsignedAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder,final int position) {
-        ClassNoSignedItem classNoSignedItem = allInfos.get(position);
+        ClassNoSignedItem classNoSignedItem = Ifs.get(position);
         holder.textViewID.setText(String.valueOf(classNoSignedItem.getSno()));
         holder.textViewName.setText(String.valueOf(classNoSignedItem.getSname()));
         holder.textViewNumber.setText(String.valueOf(position + 1));
@@ -48,7 +47,7 @@ public class UnsignedAdapter extends RecyclerView.Adapter<UnsignedAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return allInfos.size();
+        return Ifs.size();
     }
 
 
@@ -60,11 +59,6 @@ public class UnsignedAdapter extends RecyclerView.Adapter<UnsignedAdapter.MyView
             textViewNumber = itemView.findViewById(R.id.textViewNumber);
             textViewName = itemView.findViewById(R.id.textViewName);
             textViewID = itemView.findViewById(R.id.textViewID);
-            Guideline guideline = itemView.findViewById(R.id.guideline);
-            guideline.setGuidelineBegin(10);
-            //textViewID.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG );
-            //textViewName.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG );
-            //textViewNumber.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG );
         }
     }
 }

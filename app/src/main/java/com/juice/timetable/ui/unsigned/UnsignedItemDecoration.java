@@ -18,8 +18,8 @@ public class UnsignedItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     public void onDrawOver(@NonNull Canvas c, RecyclerView parent, @NonNull RecyclerView.State state) {
-        int left = parent.getPaddingLeft();
-        int right = parent.getWidth() - parent.getPaddingRight();
+        int rLeft = parent.getPaddingLeft();
+        int rRight = parent.getWidth() - parent.getPaddingRight();
 
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -30,7 +30,7 @@ public class UnsignedItemDecoration extends RecyclerView.ItemDecoration {
             int top = child.getBottom() + params.bottomMargin;
             int bottom = top + mDivider.getIntrinsicHeight();
 
-            mDivider.setBounds(left, top, right, bottom);
+            mDivider.setBounds(rLeft, top, rRight, bottom);
             mDivider.draw(c);
         }
     }

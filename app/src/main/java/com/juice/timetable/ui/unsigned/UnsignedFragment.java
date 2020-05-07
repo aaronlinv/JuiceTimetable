@@ -52,7 +52,7 @@ public class UnsignedFragment extends Fragment {
         classNoSignedItemLive.observe(requireActivity(), new Observer<List<ClassNoSignedItem>>() {
             @Override
             public void onChanged(List<ClassNoSignedItem> classNoSignedItems) {
-                unsignedAdapter.setAllInfos(classNoSignedItems);
+                unsignedAdapter.setIfs(classNoSignedItems);
                 unsignedAdapter.notifyDataSetChanged();
             }
         });
