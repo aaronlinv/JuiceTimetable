@@ -84,10 +84,13 @@ public class UnsignedFragment extends Fragment {
                             for (ClassNoSignedItem classNoSignedItem : unsignedList) {
                                 classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
                             }
+                            Looper.prepare();
+                            Toast.makeText(requireContext(), "课表更新成功", Toast.LENGTH_SHORT).show();
+                            Looper.loop();
 
                         } catch (Exception e) {
                             Looper.prepare();
-                            Toast.makeText(requireContext(), "未输入请假系统密码，功能未启用", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "未输入请假系统密码或无网络", Toast.LENGTH_SHORT).show();
                             Looper.loop();
                             e.printStackTrace();
                         }
