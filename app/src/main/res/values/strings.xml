@@ -12,4 +12,5 @@
     <string name="menu_login">修改认证信息</string>
 
     <string name="home_second">Home Second</string>
+    <string name="center">center</string>
 </resources>

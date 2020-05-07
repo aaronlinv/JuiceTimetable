@@ -34,6 +34,17 @@ public class UnsignedFragment extends Fragment {
         unsignedAdapter = new UnsignedAdapter();
         recyclerView.setAdapter(unsignedAdapter);
         recyclerView.addItemDecoration(new UnsignedItemDecoration(requireContext()));
+        /*GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(),3);
+        UnsignedItemDecoration divider = new UnsignedItemDecoration.Builder(requireContext())
+                .setHorizontalSpan(R.dimen.activity_horizontal_margin)
+                .setVerticalSpan(R.dimen.activity_vertical_margin)
+                .setColorResource(R.color.dark_gray)
+                .setShowLastLine(true)
+                .build();
+        recyclerView.addItemDecoration(divider);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+         */
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(requireContext());
         classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
         ClassNoSignedItemViewModel classNoSignedItemViewModel = new ViewModelProvider(requireActivity()).get(ClassNoSignedItemViewModel.class);

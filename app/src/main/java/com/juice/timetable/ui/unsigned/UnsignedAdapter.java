@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.Guideline;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.juice.timetable.R;
@@ -59,6 +60,11 @@ public class UnsignedAdapter extends RecyclerView.Adapter<UnsignedAdapter.MyView
             textViewNumber = itemView.findViewById(R.id.textViewNumber);
             textViewName = itemView.findViewById(R.id.textViewName);
             textViewID = itemView.findViewById(R.id.textViewID);
+            Guideline guideline = itemView.findViewById(R.id.guideline);
+            guideline.setGuidelineBegin(10);
+            //textViewID.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG );
+            //textViewName.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG );
+            //textViewNumber.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG );
         }
     }
 }
