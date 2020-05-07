@@ -56,6 +56,7 @@ public class InitFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
 //        return inflater.inflate(R.layout.fragment_init, container, false);
         binding = FragmentInitBinding.inflate(getLayoutInflater());
         return binding.getRoot();
@@ -232,7 +233,7 @@ public class InitFragment extends Fragment {
      * @param
      */
     private void onDialogClick(View v) {
-        new AlertDialog.Builder(getContext())
+        new AlertDialog.Builder(requireContext())
                 .setTitle("用户条款")
                 .setMessage("本应用深知个人信息对您的重要性，并会尽全力保护您的个人信息安全可靠。我们致力于维持您对我们的信任，恪守以下原则，保护您的个人信息：权责一致原则、目的明确原则、选择同意原则、最少够用原则、确保安全原则、主体参与原则、公开透明原则等。同时，我们承诺，我们将按业界成熟的安全标准，采取相应的安全保护措施来保护您的个人信息。 请在使用我们的产品（或服务）前，仔细阅读并了解本《隐私权政策》。\n" +
                         "一、我们如何收集和使用您的个人信息\n" +
