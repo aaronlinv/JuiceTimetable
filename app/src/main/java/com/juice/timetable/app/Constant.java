@@ -29,7 +29,7 @@ public class Constant {
     public static final int CUR_WEEK = 12;
 
     // 调式Init界面，用于调试登录界面
-    public static boolean DEBUG_INIT_FRAGMENT = false;
+    public static boolean DEBUG_INIT_FRAGMENT = true;
 
 
 }
