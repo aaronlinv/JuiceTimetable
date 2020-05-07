@@ -100,7 +100,7 @@ public class InitFragment extends Fragment {
                 } else {
                     // 键盘隐藏
                     // TODO: 2020/5/5
-//                    hideSoftKeyboard(requireActivity());
+                    hideSoftKeyboard(requireActivity());
 
                     // TODO: 2020/5/5 有Cookie的话清空Cookie缓存
                     // TODO: 2020/5/5 用于测试，删除数据库内容
