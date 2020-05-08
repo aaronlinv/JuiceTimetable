@@ -126,9 +126,8 @@ public class InitFragment extends Fragment {
                         public void run() {
                             // 教务网验证
                             LogUtils.getInstance().d("教务网前端验证成功");
-                            String uri = "http://jwb.fdzcxy.com/kb/zkb_xs.asp";
                             try {
-                                EduInfo.getTimeTable(sno, edu, uri, getContext().getApplicationContext());
+                                EduInfo.getTimeTable(sno, edu, Constant.URI_CUR_WEEK, getContext().getApplicationContext());
                             } catch (Exception e) {
                                 String errorText = e.getMessage();
                                 LogUtils.getInstance().d("errorText:" + errorText);
@@ -145,9 +144,8 @@ public class InitFragment extends Fragment {
                             if (!leave.isEmpty()) {
                                 // 请假系统验证
                                 LogUtils.getInstance().d("请假系统前端验证成功");
-                                uri = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-record-student&c=dormcheckrecordstudent";
                                 try {
-                                    LeaveInfo.getLeave(sno, leave, uri, getContext().getApplicationContext());
+                                    LeaveInfo.getLeave(sno, leave, Constant.URI_CHECK_IN, getContext().getApplicationContext());
                                 } catch (Exception e) {
                                     String errorText = e.getMessage();
                                     LogUtils.getInstance().d("errorText:" + errorText);
