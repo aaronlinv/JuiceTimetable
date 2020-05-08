@@ -182,7 +182,7 @@ public class InitFragment extends Fragment {
                     // 登录失败
                     case Constant.MSG_LOGIN_FAIL:
                         String errorStr = (String) msg.obj;
-                        Toast.makeText(requireContext(), errorStr, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), errorStr, Toast.LENGTH_SHORT).show();
                         break;
                 }
             }

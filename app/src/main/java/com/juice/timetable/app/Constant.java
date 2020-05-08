@@ -34,15 +34,17 @@ public class Constant {
 
     // 停止下拉刷新的动画
     public static final int STOP_REFRESH = 2024;
+    // 成功加载完整课表 周课表 weekSet 数据
+    public static final int LOAD_DATA_SUCCESS = 2025;
 
     // TODO: 2020/5/6 判断当前周
     // 当前学校周
     public static final int CUR_WEEK = 12;
 
     // 注入自己的账号密码，用于免登录调式
-    public static boolean DEBUG_MODE = false;
+    public static boolean DEBUG_MODE = true;
     // 调式Init界面，用于调试登录界面
-    public static boolean DEBUG_INIT_FRAGMENT = true;
+    public static boolean DEBUG_INIT_FRAGMENT = false;
     // 调式签到提示栏
     public static boolean DEBUG_CHECK_IN_TEXTVIEW = true;
 
