@@ -192,7 +192,8 @@ public class InitFragment extends Fragment {
 
                         // 允许侧滑打开抽屉
                         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-
+                        // 显示Toolbar
+                        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
                         break;
                 }
             }
@@ -351,9 +352,9 @@ public class InitFragment extends Fragment {
     }
 
     // 隐藏Toolbar -2
-    @Override
+    /*@Override
     public void onStop() {
         super.onStop();
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
-    }
+    }*/
 }
