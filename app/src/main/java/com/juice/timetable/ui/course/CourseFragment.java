@@ -335,7 +335,15 @@ public class CourseFragment extends Fragment {
                                         cours.setCouColor(Utils.getColor(cours.getCouID().intValue()));
                                     }
                                     allWeekCourseDao.insertAllWeekCourse(cours);
-
+                                    // 测试单双周显示
+/*
+                                    if (cours.getCouID() == 1) {
+                                        cours.setCouWeekType(1);
+                                    }
+                                    if (cours.getCouID() == 2) {
+                                        cours.setCouWeekType(2);
+                                    }
+*/
                                 }
                                 // 将课程置入课表界面
                                 binding.courseView.setCourses(courses);
