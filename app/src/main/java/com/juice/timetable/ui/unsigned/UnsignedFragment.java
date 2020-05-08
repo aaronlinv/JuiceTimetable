@@ -4,11 +4,13 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -33,8 +35,14 @@ public class UnsignedFragment extends Fragment {
     private ClassNoSignedItemDao classNoSignedItemDao;
     private SwipeRefreshLayout swipeRefreshLayout;
     private FragmentUnsignedBinding fragmentUnsignedBinding;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        // 隐藏Toolbar的下拉菜单按钮
+        Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
+        Menu menu = toolbar.getMenu();
+        menu.setGroupVisible(0, false);
+
         View root = inflater.inflate(R.layout.fragment_unsigned, container, false);
         fragmentUnsignedBinding = FragmentUnsignedBinding.inflate(getLayoutInflater());
         RecyclerView recyclerView = root.findViewById(fragmentUnsignedBinding.recyclerview.getId());
