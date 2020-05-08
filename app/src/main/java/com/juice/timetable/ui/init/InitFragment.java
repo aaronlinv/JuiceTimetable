@@ -120,7 +120,7 @@ public class InitFragment extends Fragment {
                         LogUtils.getInstance().d("读取用户数据" + readSnoData());
                         LogUtils.getInstance().d("读取用户数据" + readEduData());
                         LogUtils.getInstance().d("读取用户数据" + readLeavaData());*/
-                    stuInfoDao.deleteStuInfo();
+                    //stuInfoDao.deleteStuInfo();
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
