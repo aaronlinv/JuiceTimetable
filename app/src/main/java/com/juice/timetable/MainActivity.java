@@ -1,5 +1,7 @@
 package com.juice.timetable;
 
+import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -26,9 +28,12 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private CourseView courseView;
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //屏幕固定为竖屏
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // 设置状态栏为白底黑字
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -87,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public String getID() {
@@ -105,4 +109,5 @@ public class MainActivity extends AppCompatActivity {
     public String getUserInfo(String info) {
         return UserInfoUtils.getINSTANT(getApplication()).getProperty(info);
     }
+
 }
