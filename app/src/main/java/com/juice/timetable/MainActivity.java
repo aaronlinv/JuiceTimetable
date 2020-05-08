@@ -18,6 +18,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.ui.course.CourseView;
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.UserInfoUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -50,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        // 初始化PreferencesUtils
+        PreferencesUtils.init(getApplicationContext());
 
     }
 

@@ -171,6 +171,9 @@ public class InitFragment extends Fragment {
                         Constant.DEBUG_INIT_FRAGMENT = false;
                         Navigation.findNavController(requireView()).popBackStack(R.id.initFragment, true);
 
+                        // 设置首次登录，刷新数据
+                        Constant.FIRST_LOGIN = true;
+
                         // 允许侧滑打开抽屉
                         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                         // 显示Toolbar
