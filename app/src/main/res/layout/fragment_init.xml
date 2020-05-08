@@ -176,6 +176,6 @@
             app:layout_constraintStart_toStartOf="@+id/guideline7"
             app:layout_constraintTop_toTopOf="@+id/guideline6"
             app:layout_constraintVertical_bias="0.9"
-            app:srcCompat="@drawable/logo" />
+            app:srcCompat="@drawable/ic_juice_icon" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
