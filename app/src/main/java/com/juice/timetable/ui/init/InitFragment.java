@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -58,9 +57,6 @@ public class InitFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
-//        return inflater.inflate(R.layout.fragment_init, container, false);
         binding = FragmentInitBinding.inflate(getLayoutInflater());
         // 禁止侧滑打开抽屉
         drawer = requireActivity().findViewById(R.id.drawer_layout);
@@ -72,17 +68,19 @@ public class InitFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        NavHostFragment.findNavController(this).navigate(R.id.nav_course);
+        // 初始化数据库和Dao
+        juiceDatabase = JuiceDatabase.getDatabase(requireContext());
+        stuInfoDao = juiceDatabase.getStuInfoDao();
+        // 删除数据库原有账号密码
+        stuInfoDao.deleteStuInfo();
+
         btnDialogClick();
         binding.btnGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LogUtils.getInstance().d("InitFragment:按键点击事件");
 
-                // 初始化数据库和Dao
-                juiceDatabase = JuiceDatabase.getDatabase(requireContext());
-                stuInfoDao = juiceDatabase.getStuInfoDao();
-
+                // 密码判断逻辑
                 judgmentLogic();
             }
         });
@@ -107,66 +105,49 @@ public class InitFragment extends Fragment {
                     Toast.makeText(requireActivity(), "请输入六位及以上的教务网密码", Toast.LENGTH_SHORT).show();
                 } else {
                     // 键盘隐藏
-                    // TODO: 2020/5/5
                     hideSoftKeyboard(requireActivity());
-
-                    // TODO: 2020/5/5 有Cookie的话清空Cookie缓存
-                    // TODO: 2020/5/5 用于测试，删除数据库内容
-                    stuInfoDao.deleteStuInfo();
-                    // Dao
-                    /*JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
-                        stuInfoDao = juiceDatabase.getStuInfoDao();
-                        StuInfo stuInfo = stuInfoDao.getStuInfo();
-                        LogUtils.getInstance().d("读取用户数据" + readSnoData());
-                        LogUtils.getInstance().d("读取用户数据" + readEduData());
-                        LogUtils.getInstance().d("读取用户数据" + readLeavaData());*/
-                    //stuInfoDao.deleteStuInfo();
+                    // 开始后端校验
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             // 教务网验证
+                            String errorStr = "";
                             LogUtils.getInstance().d("教务网前端验证成功");
                             try {
                                 EduInfo.getTimeTable(sno, edu, Constant.URI_CUR_WEEK, getContext().getApplicationContext());
                             } catch (Exception e) {
-                                String errorText = e.getMessage();
-                                LogUtils.getInstance().d("errorText:" + errorText);
-                                //解决在子线程中调用Toast的异常情况处理
-                                Looper.prepare();
-                                Toast.makeText(getContext().getApplicationContext(), errorText, Toast.LENGTH_SHORT).show();
-                                //解决在子线程中调用Toast的异常情况处理-结束需要添加这句
-                                Looper.loop();
+                                errorStr = e.getMessage();
+                                LogUtils.getInstance().d("errorText:" + errorStr);
                             }
-                            LogUtils.getInstance().d("教务网密码验证成功");
+                            LogUtils.getInstance().d("教务网密码验证结束");
 
 
-                            // 填写了请假系统，需要校验请假系统密码
-                            if (!leave.isEmpty()) {
+                            // 填写了请假系统，并且教务密码正确 校验请假系统密码
+                            assert errorStr != null;
+                            if (!leave.isEmpty() && errorStr.isEmpty()) {
                                 // 请假系统验证
                                 LogUtils.getInstance().d("请假系统前端验证成功");
                                 try {
                                     LeaveInfo.getLeave(sno, leave, Constant.URI_CHECK_IN, getContext().getApplicationContext());
                                 } catch (Exception e) {
-                                    String errorText = e.getMessage();
-                                    LogUtils.getInstance().d("errorText:" + errorText);
-                                    //解决在子线程中调用Toast的异常情况处理
-                                    Looper.prepare();
-                                    Toast.makeText(getContext().getApplicationContext(), errorText, Toast.LENGTH_SHORT).show();
-                                    //解决在子线程中调用Toast的异常情况处理-结束需要添加这句
-                                    Looper.loop();
+                                    errorStr = e.getMessage();
+                                    LogUtils.getInstance().d("errorText:" + errorStr);
                                 }
 
                             }
-                            LogUtils.getInstance().d("教务网和请假系统密码均验证成功");
+                            LogUtils.getInstance().d("教务网和请假系统密码验证结束");
                             // 跳转到课表首页
-                            Message message = new Message();
-                            message.what = Constant.MSG_LOGIN_SUCCESS;
-                            mHandler.sendMessage(message);
-                            // TODO: 2020/5/8 修改这种写法，按钮点击过快 可能导致闪退
-                            Looper.prepare();
-                            Toast.makeText(getContext().getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
-                            Looper.loop();
 
+                            Message message = new Message();
+                            assert errorStr != null;
+                            if (errorStr.isEmpty()) {
+                                message.what = Constant.MSG_LOGIN_SUCCESS;
+                            } else {
+                                message.what = Constant.MSG_LOGIN_FAIL;
+                                message.obj = errorStr;
+                            }
+
+                            mHandler.sendMessage(message);
                         }
                     }).start();
 
@@ -194,6 +175,11 @@ public class InitFragment extends Fragment {
                         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                         // 显示Toolbar
                         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+                        break;
+                    // 登录失败
+                    case Constant.MSG_LOGIN_FAIL:
+                        String errorStr = (String) msg.obj;
+                        Toast.makeText(requireContext(), errorStr, Toast.LENGTH_SHORT).show();
                         break;
                 }
             }

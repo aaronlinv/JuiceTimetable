@@ -69,18 +69,6 @@ public class CourseFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        /*homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_course, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;*/
         // dataBinding 用viewBinding的方式初始化也没问题
         binding = FragmentCourseBinding.inflate(getLayoutInflater());
 //        homeViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
@@ -195,15 +183,17 @@ public class CourseFragment extends Fragment {
         allWeekCourseDao = database.getAllWeekCourseDao();
         oneWeekCourseDao = database.getOneWeekCourseDao();
         stuInfoDao = database.getStuInfoDao();
+        if (Constant.DEBUG_MODE) {
+            // 注入自己的账号密码，用于免登录调式
+            final UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
+            stuInfoDao.deleteStuInfo();
+            StuInfo stuInfo = new StuInfo();
+            stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
+            stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
+            stuInfo.setLeavePassword(userInfoUtils.getLeavePasswd());
+            stuInfoDao.insertStuInfo(stuInfo);
+        }
 
-        // TODO: 2020/5/5 测试：手动写入账户密码
-        final UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
-        stuInfoDao.deleteStuInfo();
-        StuInfo stuInfo = new StuInfo();
-        stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
-        stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
-        stuInfo.setLeavePassword(userInfoUtils.getLeavePasswd());
-        stuInfoDao.insertStuInfo(stuInfo);
 
         // 加载课表
         // TODO: 2020/5/6 首次登录课表要做初始化
