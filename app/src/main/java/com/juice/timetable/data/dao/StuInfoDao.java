@@ -26,7 +26,7 @@ public interface StuInfoDao {
     void deleteStuInfo();
 
     @Update
-    void updateWords(StuInfo... stuInfos);
+    void updateStuInfo(StuInfo... stuInfos);
 
     @Query("Select * from StuInfo")
     StuInfo getStuInfo();

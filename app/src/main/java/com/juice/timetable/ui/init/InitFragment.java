@@ -107,50 +107,7 @@ public class InitFragment extends Fragment {
                     // 键盘隐藏
                     hideSoftKeyboard(requireActivity());
                     // 开始后端校验
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // 教务网验证
-                            String errorStr = "";
-                            LogUtils.getInstance().d("教务网前端验证成功");
-                            try {
-                                EduInfo.getTimeTable(sno, edu, Constant.URI_CUR_WEEK, getContext().getApplicationContext());
-                            } catch (Exception e) {
-                                errorStr = e.getMessage();
-                                LogUtils.getInstance().d("errorText:" + errorStr);
-                            }
-                            LogUtils.getInstance().d("教务网密码验证结束");
-
-
-                            // 填写了请假系统，并且教务密码正确 校验请假系统密码
-                            assert errorStr != null;
-                            if (!leave.isEmpty() && errorStr.isEmpty()) {
-                                // 请假系统验证
-                                LogUtils.getInstance().d("请假系统前端验证成功");
-                                try {
-                                    LeaveInfo.getLeave(sno, leave, Constant.URI_CHECK_IN, getContext().getApplicationContext());
-                                } catch (Exception e) {
-                                    errorStr = e.getMessage();
-                                    LogUtils.getInstance().d("errorText:" + errorStr);
-                                }
-
-                            }
-                            LogUtils.getInstance().d("教务网和请假系统密码验证结束");
-                            // 跳转到课表首页
-
-                            Message message = new Message();
-                            assert errorStr != null;
-                            if (errorStr.isEmpty()) {
-                                message.what = Constant.MSG_LOGIN_SUCCESS;
-                            } else {
-                                message.what = Constant.MSG_LOGIN_FAIL;
-                                message.obj = errorStr;
-                            }
-
-                            mHandler.sendMessage(message);
-                        }
-                    }).start();
-
+                    checkPassword();
                 }
 
             }
@@ -187,6 +144,56 @@ public class InitFragment extends Fragment {
                 }
             }
         };
+
+    }
+
+    /**
+     * 校验密码
+     */
+    private void checkPassword() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // 教务网验证
+                String errorStr = "";
+                LogUtils.getInstance().d("教务网前端验证成功");
+                try {
+                    EduInfo.getTimeTable(sno, edu, Constant.URI_CUR_WEEK, getContext().getApplicationContext());
+                } catch (Exception e) {
+                    errorStr = e.getMessage();
+                    LogUtils.getInstance().d("errorText:" + errorStr);
+                }
+                LogUtils.getInstance().d("教务网密码验证结束");
+
+
+                // 填写了请假系统，并且教务密码正确 校验请假系统密码
+                assert errorStr != null;
+                if (!leave.isEmpty() && errorStr.isEmpty()) {
+                    // 请假系统验证
+                    LogUtils.getInstance().d("请假系统前端验证成功");
+                    try {
+                        LeaveInfo.getLeave(sno, leave, Constant.URI_CHECK_IN, getContext().getApplicationContext());
+                    } catch (Exception e) {
+                        errorStr = e.getMessage();
+                        LogUtils.getInstance().d("errorText:" + errorStr);
+                    }
+
+                }
+                LogUtils.getInstance().d("教务网和请假系统密码验证结束");
+                // 跳转到课表首页
+
+                Message message = new Message();
+                assert errorStr != null;
+                if (errorStr.isEmpty()) {
+                    message.what = Constant.MSG_LOGIN_SUCCESS;
+                } else {
+                    message.what = Constant.MSG_LOGIN_FAIL;
+                    message.obj = errorStr;
+                }
+
+                mHandler.sendMessage(message);
+            }
+        }).start();
 
     }
 

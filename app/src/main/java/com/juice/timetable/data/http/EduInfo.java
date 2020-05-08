@@ -20,7 +20,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
  * </pre>
  */
 public class EduInfo {
-    static final String PREF_EDU_COOKIE = "PREF_EDU_COOKIE";
+
     // 保存Cookie，以减少获取Cookie的次数
     static boolean enableSaveCookie = true;
 
@@ -63,7 +63,7 @@ public class EduInfo {
 
     public static String getTimeTable(String stuID, String stuPassword, String uri, Context context) throws Exception {
         PreferencesUtils.init(context.getApplicationContext());
-        String prefEduCookie = PreferencesUtils.getString(PREF_EDU_COOKIE, null);
+        String prefEduCookie = PreferencesUtils.getString(Constant.PREF_EDU_COOKIE, null);
         LogUtils.getInstance().d("PREF_EDU_COOKIE:" + prefEduCookie);
         // 本地存在Cookie先用本地Cookie 尝试登录
         if ((prefEduCookie != null) && enableSaveCookie) {
@@ -77,9 +77,9 @@ public class EduInfo {
         }
         // 本地Cookie 不可用，获取新的Cookie 更新Cookie 并返回得到的数据
         String cookie = EduHttp.getCookie(stuID, stuPassword, context);
-        PreferencesUtils.putString(PREF_EDU_COOKIE, cookie);
+        PreferencesUtils.putString(Constant.PREF_EDU_COOKIE, cookie);
 
-        prefEduCookie = PreferencesUtils.getString(PREF_EDU_COOKIE, null);
+        prefEduCookie = PreferencesUtils.getString(Constant.PREF_EDU_COOKIE, null);
         LogUtils.getInstance().d("PREF_EDU_COOKIE 设置后:" + prefEduCookie);
 
         // 开始根据Cookie 解析数据

@@ -85,8 +85,10 @@ public class CourseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // 进入首次登录界面
-        if (Constant.DEBUG_INIT_FRAGMENT) {
+
+        StuInfo stu = stuInfoDao.getStuInfo();
+        // 在调试模式 或者是数据库中没有用户数据  进入首次登录界面
+        if (Constant.DEBUG_INIT_FRAGMENT || stu == null) {
             Navigation.findNavController(requireView()).navigate(R.id.action_nav_course_to_initFragment);
         } else {
             handler();
@@ -116,7 +118,8 @@ public class CourseFragment extends Fragment {
                     }
                 });
                 refreshData();
-
+                // 设置首次登录为false
+                Constant.FIRST_LOGIN = false;
             } else {
                 initTimetable();
             }
@@ -356,6 +359,7 @@ public class CourseFragment extends Fragment {
                         String msgStr = (String) msg.obj;
                         if (!"ok".equals(msgStr)) {
                             Toast.makeText(getActivity(), msgStr, Toast.LENGTH_SHORT).show();
+                            binding.slRefresh.setRefreshing(false);
                         } else {
                             binding.courseView.setCourses(allWeekCourse);
                             binding.courseView.setSet(weekSet);

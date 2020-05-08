@@ -41,14 +41,19 @@ public class Constant {
     // 当前学校周
     public static final int CUR_WEEK = 12;
 
+    //
+    public static final String PREF_EDU_COOKIE = "PREF_EDU_COOKIE";
+    public static final String PREF_LEAVE_COOKIE = "PREF_LEAVE_COOKIE";
+
     // 注入自己的账号密码，用于免登录调式
-    public static boolean DEBUG_MODE = true;
+    public static boolean DEBUG_MODE = false;
     // 调式Init界面，用于调试登录界面
     public static boolean DEBUG_INIT_FRAGMENT = false;
     // 调式签到提示栏
-    public static boolean DEBUG_CHECK_IN_TEXTVIEW = true;
+    public static boolean DEBUG_CHECK_IN_TEXTVIEW = false;
 
     // 首次登录
     public static boolean FIRST_LOGIN = false;
+
 
 }
