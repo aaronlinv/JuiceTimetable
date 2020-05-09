@@ -1,6 +1,9 @@
 package com.juice.timetable.ui.unsigned;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -42,10 +45,9 @@ public class UnsignedFragment extends Fragment {
         Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, false);
-
         View root = inflater.inflate(R.layout.fragment_unsigned, container, false);
         fragmentUnsignedBinding = FragmentUnsignedBinding.inflate(getLayoutInflater());
-        RecyclerView recyclerView = root.findViewById(fragmentUnsignedBinding.recyclerview.getId());
+        final RecyclerView recyclerView = root.findViewById(fragmentUnsignedBinding.recyclerview.getId());
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         unsignedAdapter = new UnsignedAdapter();
         recyclerView.setAdapter(unsignedAdapter);
@@ -82,32 +84,50 @@ public class UnsignedFragment extends Fragment {
                     public void run() {
                         // 模拟登录获取数据
                         List<ClassNoSignedItem> unsignedList;
-                        try {
-                            String unsigned = LeaveInfo.getUnsignedList(requireContext());
-                            unsignedList = ParseClassNoSignedItem.getClassUnSigned(unsigned);
-                            // 删除数据库
-                            classNoSignedItemDao.deleteNoSignedItem();
+                        if (isNetworkConnected(requireContext())) {
+                            try {
+                                String unsigned = LeaveInfo.getUnsignedList(requireContext());
+                                unsignedList = ParseClassNoSignedItem.getClassUnSigned(unsigned);
+                                // 删除数据库
+                                classNoSignedItemDao.deleteNoSignedItem();
 
-                            // 插入数据
-                            for (ClassNoSignedItem classNoSignedItem : unsignedList) {
-                                classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
+                                // 插入数据
+                                for (ClassNoSignedItem classNoSignedItem : unsignedList) {
+                                    classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
+                                }
+                                swipeRefreshLayout.setRefreshing(false);
+                                Looper.prepare();
+                                Toast.makeText(requireContext(), "未签名单更新成功", Toast.LENGTH_SHORT).show();
+                                Looper.loop();
+
+                            } catch (Exception e) {
+                                swipeRefreshLayout.setRefreshing(false);
+                                Looper.prepare();
+                                Toast.makeText(requireContext(), "未输入请假系统密码", Toast.LENGTH_SHORT).show();
+                                Looper.loop();
+                                e.printStackTrace();
                             }
+                        } else {
                             swipeRefreshLayout.setRefreshing(false);
                             Looper.prepare();
-                            Toast.makeText(requireContext(), "未签名单更新成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(requireContext(), "设备未联网", Toast.LENGTH_SHORT).show();
                             Looper.loop();
-
-                        } catch (Exception e) {
-                            swipeRefreshLayout.setRefreshing(false);
-                            Looper.prepare();
-                            Toast.makeText(requireContext(), "未输入请假系统密码或无网络", Toast.LENGTH_SHORT).show();
-                            Looper.loop();
-                            e.printStackTrace();
                         }
                     }
                 }).start();
             }
         });
         return root;
+    }
+
+    public static boolean isNetworkConnected(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return true;
+            }
+        }
+        return false;
     }
 }
