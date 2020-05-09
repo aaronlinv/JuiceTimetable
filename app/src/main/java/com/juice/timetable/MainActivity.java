@@ -20,6 +20,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.ui.course.CourseView;
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.UserInfoUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,38 +56,9 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        // 测试 教育系统模拟登录
-        /*new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-//                    String cookie = EduHttp.getCookie(getID(), getEduPasswd(), getApplicationContext());
-                    String uri = "http://jwb.fdzcxy.com/kb/zkb_xs.asp";
-                    String parse = EduInfo.getTimeTable(getID(), getEduPasswd(), uri, getApplicationContext());
-                    LogUtils.getInstance().d(parse);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }).start();*/
-        // 测试 请假系统模拟登录
-/*        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // 个人签到界面
-                    String uri = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-record-student&c=dormcheckrecordstudent";
-                    String leave = LeaveInfo.getLeave(getID(), getLeavePasswd(), uri, getApplication());
-                    LogUtils.getInstance().d("leave:" + leave);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }).start();*/
+        // 初始化PreferencesUtils
+        PreferencesUtils.init(getApplicationContext());
 
     }
 
