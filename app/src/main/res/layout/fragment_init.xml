@@ -10,8 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:backgroundTint="@color/design_default_color_background"
-        tools:context=".ui.login.LoginFragment">
+        android:background="#FFf5f5"
+        tools:context="ui.init.InitFragment">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
