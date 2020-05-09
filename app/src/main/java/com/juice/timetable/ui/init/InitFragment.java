@@ -25,13 +25,17 @@ import androidx.navigation.Navigation;
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.JuiceDatabase;
+import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.dao.StuInfoDao;
 import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.data.http.LeaveInfo;
+import com.juice.timetable.data.parse.ParseOneWeek;
 import com.juice.timetable.databinding.FragmentInitBinding;
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.Utils;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -162,7 +166,14 @@ public class InitFragment extends Fragment {
                 String errorStr = "";
                 LogUtils.getInstance().d("教务网前端验证成功");
                 try {
-                    EduInfo.getTimeTable(sno, edu, Constant.URI_CUR_WEEK, getContext().getApplicationContext());
+                    String timeTable = EduInfo.getTimeTable(sno, edu, Constant.URI_CUR_WEEK, getContext().getApplicationContext());
+                    // 初始化当前周
+                    List<OneWeekCourse> oneWeekCourses = ParseOneWeek.parseCourse(timeTable);
+                    if (!oneWeekCourses.isEmpty()) {
+                        Integer currentWeek = oneWeekCourses.get(0).getInWeek();
+                        Utils.setFirstWeekPref(currentWeek);
+                        LogUtils.getInstance().d("初始化 设置当前周为：" + currentWeek);
+                    }
                 } catch (Exception e) {
                     errorStr = e.getMessage();
                     LogUtils.getInstance().d("errorText:" + errorStr);

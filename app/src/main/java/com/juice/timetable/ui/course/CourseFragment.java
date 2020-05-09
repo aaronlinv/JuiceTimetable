@@ -57,7 +57,7 @@ public class CourseFragment extends Fragment {
     private int WEEK_TEXT_SIZE = 12;
     private int NODE_TEXT_SIZE = 11;
     private int NODE_WIDTH = 28;
-    private Integer mCurrentMonth = 4;
+    private Integer mCurrentMonth = 5;
 
     private TextView mMonthTextView;
 
@@ -74,11 +74,21 @@ public class CourseFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         // dataBinding 用viewBinding的方式初始化也没问题
         binding = FragmentCourseBinding.inflate(getLayoutInflater());
-
+        initCurrentWeek();
         init();
         initDatabase();
 
         return binding.getRoot();
+    }
+
+    /**
+     * 初始化当前周
+     */
+    private void initCurrentWeek() {
+
+        Constant.CUR_WEEK = Utils.getCurrentWeek();
+        // 也要给CourseView也设置上
+        binding.courseView.setCurrentIndex(Constant.CUR_WEEK);
     }
 
     @SuppressLint("HandlerLeak")
