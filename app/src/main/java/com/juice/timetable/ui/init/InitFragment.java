@@ -106,6 +106,9 @@ public class InitFragment extends Fragment {
                     // 键盘隐藏
                     hideSoftKeyboard(requireActivity());
                     // 开始后端校验
+                    // 禁止登录界面点击
+                    binding.btnGo.setClickable(false);
+
                     checkPassword();
                 }
 
@@ -137,6 +140,8 @@ public class InitFragment extends Fragment {
                         break;
                     // 登录失败
                     case Constant.MSG_LOGIN_FAIL:
+                        // 恢复登录界面点击
+                        binding.btnGo.setClickable(true);
                         String errorStr = (String) msg.obj;
                         Toast.makeText(getActivity(), errorStr, Toast.LENGTH_SHORT).show();
                         break;
