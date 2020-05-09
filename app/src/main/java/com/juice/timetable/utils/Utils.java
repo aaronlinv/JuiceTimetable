@@ -2,7 +2,10 @@ package com.juice.timetable.utils;
 
 import android.content.Context;
 
+import com.juice.timetable.app.Constant;
+
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -67,5 +70,54 @@ public class Utils {
         return now.after(beginTime) && now.before(endTime);
     }
 
+    /**
+     * 设置第一周星期一到Preference
+     *
+     * @param week 当前周
+     */
+    public static void setFirstWeekPref(int week) {
+        // 当前时间
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
 
+        // 获得当前日期是一个星期的第几天
+        int dayWeek = cal.get(Calendar.DAY_OF_WEEK);
+        // 周日实际上是上一周
+        if (1 == dayWeek) {
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+        }
+        // 设置一个星期的第一天，按中国的习惯一个星期的第一天是星期一
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        // 获得当前日期是一个星期的第几天
+        int day = cal.get(Calendar.DAY_OF_WEEK);
+        // 根据日历的规则，给当前日期减去 周差值
+        cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - week * 7);
+
+        LogUtils.getInstance().d("第一周星期一：" + cal.getTime());
+
+        PreferencesUtils.putLong(Constant.PREF_FIRST_WEEK_MONDAY, cal.getTimeInMillis());
+
+    }
+
+    /**
+     * 获取当前周
+     *
+     * @return
+     */
+    public static int getCurrentWeek() {
+        // 获取第一周星期一
+        long first_week_monday = PreferencesUtils.getLong(Constant.PREF_FIRST_WEEK_MONDAY, System.currentTimeMillis());
+        return getWeekGap(first_week_monday, System.currentTimeMillis()) + 1;
+    }
+
+    /**
+     * 返回某一周的第一周距离现在的实际周数
+     *
+     * @param weekBeginMillis
+     * @param endMillis
+     * @return
+     */
+    public static int getWeekGap(long weekBeginMillis, long endMillis) {
+        return (int) (((endMillis - weekBeginMillis) / (1000 * 3600 * 24)) / 7);
+    }
 }
