@@ -29,7 +29,6 @@ import com.juice.timetable.data.dao.ClassNoSignedItemDao;
 import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseClassNoSignedItem;
 import com.juice.timetable.data.viewmodel.ClassNoSignedItemViewModel;
-import com.juice.timetable.databinding.FragmentUnsignedBinding;
 
 import java.util.List;
 
@@ -37,7 +36,6 @@ public class UnsignedFragment extends Fragment {
     private UnsignedAdapter unsignedAdapter;
     private ClassNoSignedItemDao classNoSignedItemDao;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private FragmentUnsignedBinding fragmentUnsignedBinding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -46,8 +44,7 @@ public class UnsignedFragment extends Fragment {
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, false);
         View root = inflater.inflate(R.layout.fragment_unsigned, container, false);
-        fragmentUnsignedBinding = FragmentUnsignedBinding.inflate(getLayoutInflater());
-        final RecyclerView recyclerView = root.findViewById(fragmentUnsignedBinding.recyclerview.getId());
+        final RecyclerView recyclerView = root.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         unsignedAdapter = new UnsignedAdapter();
         recyclerView.setAdapter(unsignedAdapter);
@@ -74,7 +71,7 @@ public class UnsignedFragment extends Fragment {
                 unsignedAdapter.notifyDataSetChanged();
             }
         });
-        swipeRefreshLayout = root.findViewById(fragmentUnsignedBinding.swiperefreshlayout.getId());
+        swipeRefreshLayout = root.findViewById(R.id.swiperefreshlayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -120,13 +117,12 @@ public class UnsignedFragment extends Fragment {
         return root;
     }
 
-    public static boolean isNetworkConnected(Context context) {
+    private static boolean isNetworkConnected(Context context) {
         if (context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            assert mConnectivityManager != null;
             NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-            if (mNetworkInfo != null) {
-                return true;
-            }
+            return mNetworkInfo != null;
         }
         return false;
     }
