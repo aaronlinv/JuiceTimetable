@@ -17,10 +17,6 @@ import com.juice.timetable.data.dao.ClassNoSignedItemDao;
 import com.juice.timetable.data.dao.MyCheckInDao;
 import com.juice.timetable.data.dao.OneWeekCourseDao;
 import com.juice.timetable.data.dao.StuInfoDao;
-import com.juice.timetable.data.parse.ParseAllWeek;
-import com.juice.timetable.data.parse.ParseCheckIn;
-import com.juice.timetable.data.parse.ParseClassNoSignedItem;
-import com.juice.timetable.data.parse.ParseOneWeek;
 import com.juice.timetable.utils.LogUtils;
 
 import org.junit.Before;
@@ -29,8 +25,6 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -162,7 +156,7 @@ public class ExampleInstrumentedTest {
     }
 
     @Test
-    public void useAppContext() {
+   /*  public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
@@ -180,7 +174,7 @@ public class ExampleInstrumentedTest {
         for (OneWeekCourse oneWeekCourse : a) {
             CourseDao.insertCourse(oneWeekCourse);
         }
-        List<ClassNoSignedItem> b = ParseClassNoSignedItem.getClassUnSigned();
+       List<ClassNoSignedItem> b = ParseClassNoSignedItem.getClassUnSigned();
         for (ClassNoSignedItem classNoSignedItem : b) {
             classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
         }
@@ -195,7 +189,7 @@ public class ExampleInstrumentedTest {
         for (Course course : c) {
             allWeekCourseDao.insertAllWeekCourse(course);
         }
-    }
+    }*/
 
     public static String getAllCourseStr() {
         return "\n" +

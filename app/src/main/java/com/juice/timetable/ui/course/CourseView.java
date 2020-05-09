@@ -98,6 +98,14 @@ public class CourseView extends FrameLayout {
         if (!set.contains(mCurrentIndex) && !isActiveStatus(course)) {
             return;
         }
+        // 单周课程，当前不为单周 返回
+        if (course.getCouWeekType() != null && course.getCouWeekType() == 1 && mCurrentIndex % 2 != 1) {
+            return;
+        }
+        // 双周课程，当前不为双周 返回
+        if (course.getCouWeekType() != null && course.getCouWeekType() == 2 && mCurrentIndex % 2 != 0) {
+            return;
+        }
 
         View itemView = createCourseItem(course);
         // 节课节数

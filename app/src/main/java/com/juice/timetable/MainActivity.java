@@ -1,5 +1,7 @@
 package com.juice.timetable;
 
+import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +20,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.ui.course.CourseView;
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.UserInfoUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,9 +28,12 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private CourseView courseView;
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //屏幕固定为竖屏
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // 设置状态栏为白底黑字
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -50,38 +56,9 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        // 测试 教育系统模拟登录
-        /*new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-//                    String cookie = EduHttp.getCookie(getID(), getEduPasswd(), getApplicationContext());
-                    String uri = "http://jwb.fdzcxy.com/kb/zkb_xs.asp";
-                    String parse = EduInfo.getTimeTable(getID(), getEduPasswd(), uri, getApplicationContext());
-                    LogUtils.getInstance().d(parse);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }).start();*/
-        // 测试 请假系统模拟登录
-/*        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // 个人签到界面
-                    String uri = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-record-student&c=dormcheckrecordstudent";
-                    String leave = LeaveInfo.getLeave(getID(), getLeavePasswd(), uri, getApplication());
-                    LogUtils.getInstance().d("leave:" + leave);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }).start();*/
+        // 初始化PreferencesUtils
+        PreferencesUtils.init(getApplicationContext());
 
     }
 
@@ -115,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public String getID() {
@@ -133,4 +109,5 @@ public class MainActivity extends AppCompatActivity {
     public String getUserInfo(String info) {
         return UserInfoUtils.getINSTANT(getApplication()).getProperty(info);
     }
+
 }

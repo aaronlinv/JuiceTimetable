@@ -66,25 +66,74 @@ public class CourseFragment extends Fragment {
     private AllWeekCourseDao allWeekCourseDao;
     private OneWeekCourseDao oneWeekCourseDao;
     private StuInfoDao stuInfoDao;
+    private List<Course> allWeekCourse;
+    private HashSet<Integer> weekSet;
+    private List<OneWeekCourse> oneWeekCourse;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        /*homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_course, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;*/
         // dataBinding 用viewBinding的方式初始化也没问题
         binding = FragmentCourseBinding.inflate(getLayoutInflater());
-//        homeViewModel = new ViewModelProvider(this).get(CourseViewModel.class);
 
+        init();
+        initDatabase();
+
+        return binding.getRoot();
+    }
+
+    @SuppressLint("HandlerLeak")
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        StuInfo stu = stuInfoDao.getStuInfo();
+        // 在调试模式 或者是数据库中没有用户数据  进入首次登录界面
+        if (Constant.DEBUG_INIT_FRAGMENT || stu == null) {
+            Navigation.findNavController(requireView()).navigate(R.id.action_nav_course_to_initFragment);
+        } else {
+            handler();
+            menuListener();
+            refreshListener();
+
+            // 调式模式：注入自己的账号密码，用于免登录调式
+            if (Constant.DEBUG_MODE) {
+                final UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
+                stuInfoDao.deleteStuInfo();
+                StuInfo stuInfo = new StuInfo();
+                stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
+                stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
+                stuInfo.setLeavePassword(userInfoUtils.getLeavePasswd());
+                stuInfoDao.insertStuInfo(stuInfo);
+            }
+
+
+            // 首次登录，获取数据并刷新界面
+            if (Constant.FIRST_LOGIN) {
+                // 刷新动画
+                // 通过调用控件的引用调用post方法，在run方法中更新ui界面
+                binding.slRefresh.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.slRefresh.setRefreshing(true);
+                    }
+                });
+                refreshData();
+                // 设置首次登录为false
+                Constant.FIRST_LOGIN = false;
+            } else {
+                initTimetable();
+            }
+
+            getCheckIn();
+        }
+
+    }
+
+
+    /**
+     * 初始化界面
+     */
+    private void init() {
         // 星期栏
         // 清除所有View
         binding.llWeek.removeAllViews();
@@ -144,20 +193,22 @@ public class CourseFragment extends Fragment {
         if (!Utils.isCheckInTime() && !Constant.DEBUG_CHECK_IN_TEXTVIEW) {
             binding.tvCheckIn.setVisibility(TextView.GONE);
         }
-        return binding.getRoot();
     }
 
-    @SuppressLint("HandlerLeak")
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        // 进入首次登录界面
-        if (Constant.DEBUG_INIT_FRAGMENT) {
-            Navigation.findNavController(requireView()).navigate(R.id.action_nav_course_to_initFragment);
-//            NavHostFragment.findNavController(this).navigate(R.id.action_initFragment_to_nav_course);
+    /**
+     * 初始化数据库
+     */
+    private void initDatabase() {
+        database = JuiceDatabase.getDatabase(requireContext().getApplicationContext());
+        allWeekCourseDao = database.getAllWeekCourseDao();
+        oneWeekCourseDao = database.getOneWeekCourseDao();
+        stuInfoDao = database.getStuInfoDao();
+    }
 
-        }
-
+    /**
+     * 下拉菜单监听
+     */
+    private void menuListener() {
         // 获取点击的周
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -179,201 +230,126 @@ public class CourseFragment extends Fragment {
                 return false;
             }
         });
-/*        List<Course> courses = testCourseData.getCourses();
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext().getApplicationContext());
-        //生成对应的Dao
-        AllWeekCourseDao allWeekCourseDao = juiceDatabase.getAllWeekCourseDao();
-        allWeekCourseDao.deleteAllWeekCourse();
-        for (Course cours : courses) {
-            allWeekCourseDao.insertAllWeekCourse(cours);
+    }
 
-        }*/
+    /**
+     * 下拉刷新监听
+     */
+    private void refreshListener() {
+        binding.slRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshData();
 
-        // 初始化数据库和Dao
+            }
+        });
+    }
 
-        database = JuiceDatabase.getDatabase(requireContext().getApplicationContext());
-        allWeekCourseDao = database.getAllWeekCourseDao();
-        oneWeekCourseDao = database.getOneWeekCourseDao();
-        stuInfoDao = database.getStuInfoDao();
+    /**
+     * 开始刷新数据，结束刷新动画
+     */
+    private void refreshData() {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                Message message = new Message();
+                message.what = Constant.MSG_REFRESH;
 
-        // TODO: 2020/5/5 测试：手动写入账户密码
-        final UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
-        stuInfoDao.deleteStuInfo();
-        StuInfo stuInfo = new StuInfo();
-        stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
-        stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
-        stuInfo.setLeavePassword(userInfoUtils.getLeavePasswd());
-        stuInfoDao.insertStuInfo(stuInfo);
+                LogUtils.getInstance().d("setOnRefreshListener:开始刷新");
+                // 更新数据
+                // TODO: 2020/5/6
+//                        allWeekCourseDao.deleteAllWeekCourse();
+                LogUtils.getInstance().d("setOnRefreshListener:删除数据库");
+                String allCourse = null;
+                try {
+                    allCourse = EduInfo.getAllCourse(requireContext().getApplicationContext());
+                } catch (Exception e) {
+                    LogUtils.getInstance().d("setOnRefreshListener：" + e.getMessage());
+                }
+                LogUtils.getInstance().d("setOnRefreshListener:模拟登录获取完整课表结束");
+                if (allCourse == null) {
+                    message.obj = "网络好像不太好，再试一次";
+                    mHandler.sendMessage(message);
 
-        // 加载课表
-        // TODO: 2020/5/6 首次登录课表要做初始化
+                } else {
+                    List<Course> courses = ParseAllWeek.parseAllCourse(allCourse);
+                    // TODO: 2020/5/6 处理获取的完成课表 颜色
+                    LogUtils.getInstance().d("setOnRefreshListener:解析完整课表结束");
+
+                    // TODO: 2020/5/6  非初次登录，更新数据没有写
+                    // 首次登录，完整课表为空 加载数据填充颜色；数据库不为空，就使用数据库数据
+                    allWeekCourse = allWeekCourseDao.getAllWeekCourse();
+                    if (allWeekCourse.isEmpty()) {
+                        for (Course cours : courses) {
+                            if (cours.getCouColor() == null) {
+
+                                // 这里的courses是模拟登录获取的，所有color为null，所以每次都刷新颜色
+                                cours.setCouColor(Utils.getColor(cours.getCouID().intValue()));
+                            }
+                            allWeekCourseDao.insertAllWeekCourse(cours);
+                            // 测试单双周显示
+/*
+                                    if (cours.getCouID() == 1) {
+                                        cours.setCouWeekType(1);
+                                    }
+                                    if (cours.getCouID() == 2) {
+                                        cours.setCouWeekType(2);
+                                    }
+*/
+                        }
+                        // 填充完颜色将课程装回 allWeekCourse
+                        allWeekCourse = courses;
+                        LogUtils.getInstance().d("setOnRefreshListener:完整课写入数据库表结束");
+                    }
+                    try {
+                        getOneWeekCou();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    // 数据库有哪些周的周课表
+                    List<Integer> inWeek = oneWeekCourseDao.getInWeek();
+                    weekSet = new HashSet<>(inWeek);
+
+                    // 设置周课表List
+                    oneWeekCourse = oneWeekCourseDao.getOneWeekCourse();
+
+                    LogUtils.getInstance().d("setOnRefreshListener:周课表写入数据库表结束");
+                    message.obj = "ok";
+                    mHandler.sendMessage(message);
+                }
+            }
+        }.start();
+    }
+
+    /**
+     * 初始化课表（完整课表和周课表）
+     */
+    private void initTimetable() {
         new Thread(
                 new Runnable() {
                     @Override
                     public void run() {
-                        List<Course> allWeekCourse = allWeekCourseDao.getAllWeekCourse();
-                        List<OneWeekCourse> oneWeekCourse = oneWeekCourseDao.getOneWeekCourse();
+                        // TODO: 2020/5/8 这里使用成员变量，刷新数据也是用成员变量，可能冲突
+                        allWeekCourse = allWeekCourseDao.getAllWeekCourse();
+                        oneWeekCourse = oneWeekCourseDao.getOneWeekCourse();
                         List<Integer> inWeek = oneWeekCourseDao.getInWeek();
-                        binding.courseView.setCourses(allWeekCourse);
-                        binding.courseView.setOneWeekCourses(oneWeekCourse);
-                        binding.courseView.setSet(new HashSet<Integer>(inWeek));
-                        binding.courseView.resetView();
+                        weekSet = new HashSet<Integer>(inWeek);
 
-                        LogUtils.getInstance().d("用户数据库信息：" + stuInfoDao.getStuInfo());
-                        boolean hasLeavePwd = (stuInfoDao.getStuInfo().getEduPassword() != null);
-                        // (签到时间或者调试模式)且数据库有请假系统密码  初始化签到信息
-                        LogUtils.getInstance().d("有请假系统密码则开始获取签到信息");
-                        if ((Utils.isCheckInTime() || Constant.DEBUG_CHECK_IN_TEXTVIEW) && hasLeavePwd) {
-                            try {
-                                String checkIn = LeaveInfo.getCheckIn(requireContext());
-                                LogUtils.getInstance().d("签到数据：" + checkIn);
+                        Message loadDataSuccess = new Message();
+                        loadDataSuccess.what = Constant.LOAD_DATA_SUCCESS;
+                        mHandler.sendMessage(loadDataSuccess);
 
-                                MyCheckIn mySigned = ParseCheckIn.getMySigned(checkIn);
-
-                                if (!mySigned.isCheckIn()) {
-                                    String checkInTime = mySigned.getCheckTime();
-                                    // TODO: 2020/5/7 需要更换为签到时间
-                                    checkInTime = "21:50";
-
-                                    Message checkInMSG = new Message();
-                                    checkInMSG.what = Constant.MSG_CHECK_IN_SUCCESS;
-                                    checkInMSG.obj = checkInTime;
-                                    mHandler.sendMessage(checkInMSG);
-                                }
-
-                            } catch (Exception e) {
-                                LogUtils.getInstance().e("获取签到信息失败：" + e.getMessage());
-                                e.printStackTrace();
-                            }
-                        }
                     }
                 }
         ).start();
+    }
 
-
-
-
-/*        // 传入课表List 以显示
-        final AllWeekCourseViewModel allWeekCou = new ViewModelProvider(requireActivity()).get(AllWeekCourseViewModel.class);
-        allWeekCou.getAllWeekCourseLive().observe(getActivity(), new Observer<List<Course>>() {
-            @Override
-            public void onChanged(List<Course> courses) {
-                //  一直观察，可能造成卡顿，检查数据发生了改变再改变
-                if (courses != null && courses != binding.courseView.getCourses()) {
-                    binding.courseView.setCourses(courses);
-                    // 刷新结束后 resetView更好 这样颜色变动不会闪烁
-//                    binding.courseView.resetView();
-                }
-            }
-        });*/
-
-/*
-        final OneWeekCourseDao oneWeekCourseDao = database.getOneWeekCourseDao();
-        oneWeekCourseDao.getOneWeekCourseLive().observe(getActivity(), new Observer<List<OneWeekCourse>>() {
-            @Override
-            public void onChanged(List<OneWeekCourse> oneWeekCourses) {
-                if (oneWeekCourses != null && oneWeekCourses != binding.courseView.getOneWeekCourses()) {
-                    binding.courseView.setOneWeekCourses(oneWeekCourses);
-                    binding.courseView.resetView();
-                }
-            }
-        });*/
-
-/*        oneWeekCourseDao.getInWeekLive().observe(getActivity(), new Observer<List<Integer>>() {
-            @Override
-            public void onChanged(List<Integer> integers) {
-                if (integers != null) {
-                    HashSet<Integer> set = new HashSet<>(integers);
-                    if (set != binding.courseView.getSet()) {
-                        LogUtils.getInstance().d("获取数据库中 存在的周课表的周Set" + set);
-                        binding.courseView.setSet(set);
-                    }
-                }
-            }
-        });*/
-
-
-        binding.slRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        Message message = new Message();
-                        message.what = Constant.MSG_REFRESH;
-                        // 关闭刷新动画
-                        binding.slRefresh.setRefreshing(false);
-
-                        LogUtils.getInstance().d("setOnRefreshListener:开始刷新");
-                        // 更新数据
-                        // TODO: 2020/5/6
-//                        allWeekCourseDao.deleteAllWeekCourse();
-                        LogUtils.getInstance().d("setOnRefreshListener:删除数据库");
-                        String allCourse = null;
-                        try {
-                            allCourse = EduInfo.getAllCourse(requireContext().getApplicationContext());
-                        } catch (Exception e) {
-                            LogUtils.getInstance().d("setOnRefreshListener：" + e.getMessage());
-                        }
-                        LogUtils.getInstance().d("setOnRefreshListener:模拟登录获取完整课表结束");
-                        if (allCourse == null) {
-                            message.obj = "网络好像不太好，再试一次";
-                            mHandler.sendMessage(message);
-
-                        } else {
-                            List<Course> courses = ParseAllWeek.parseAllCourse(allCourse);
-                            // TODO: 2020/5/6 处理获取的完成课表 颜色
-                            LogUtils.getInstance().d("setOnRefreshListener:解析完整课表结束");
-                            // 首次登录，完整课表为空
-                            List<Course> allWeekCourse = allWeekCourseDao.getAllWeekCourse();
-                            if (allWeekCourse.isEmpty()) {
-                                for (Course cours : courses) {
-                                    if (cours.getCouColor() == null) {
-
-                                        // 这里的courses是模拟登录获取的，所有color为null，所以每次都刷新颜色
-                                        cours.setCouColor(Utils.getColor(cours.getCouID().intValue()));
-                                    }
-                                    allWeekCourseDao.insertAllWeekCourse(cours);
-
-                                }
-                                // 将课程置入课表界面
-                                binding.courseView.setCourses(courses);
-
-                            } else {
-                                // TODO: 2020/5/6  非初次登录，更新数据没有写
-                                // 将课程置入课表界面
-                                binding.courseView.setCourses(allWeekCourse);
-                            }
-
-                            /*LogUtils.getInstance().d("查看 插入后的数据库情况");
-                            LogUtils.getInstance().d(allWeekCourseDao.getAllWeekCourse().toString());*/
-
-
-                            LogUtils.getInstance().d("setOnRefreshListener:完整课写入数据库表结束");
-                            try {
-                                getOneWeekCou();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            // 数据库有哪些周的周课表
-                            List<Integer> inWeek = oneWeekCourseDao.getInWeek();
-                            HashSet<Integer> weekSet = new HashSet<>(inWeek);
-                            binding.courseView.setSet(weekSet);
-                            // 设置周课表List
-                            List<OneWeekCourse> oneWeekCourse = oneWeekCourseDao.getOneWeekCourse();
-                            binding.courseView.setOneWeekCourses(oneWeekCourse);
-
-                            LogUtils.getInstance().d("setOnRefreshListener:周课表写入数据库表结束");
-                            message.obj = "ok";
-                            mHandler.sendMessage(message);
-                        }
-                    }
-                }.start();
-
-            }
-        });
-
+    /**
+     * Handler接受message
+     */
+    @SuppressLint("HandlerLeak")
+    private void handler() {
         mHandler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -382,9 +358,15 @@ public class CourseFragment extends Fragment {
                     case Constant.MSG_REFRESH:
                         String msgStr = (String) msg.obj;
                         if (!"ok".equals(msgStr)) {
-                            Toast.makeText(requireContext(), msgStr, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), msgStr, Toast.LENGTH_SHORT).show();
+                            binding.slRefresh.setRefreshing(false);
                         } else {
-                            Toast.makeText(requireContext(), "课表刷新成功", Toast.LENGTH_SHORT).show();
+                            binding.courseView.setCourses(allWeekCourse);
+                            binding.courseView.setSet(weekSet);
+                            binding.courseView.setOneWeekCourses(oneWeekCourse);
+
+                            Toast.makeText(requireActivity(), "课表刷新成功", Toast.LENGTH_SHORT).show();
+                            binding.slRefresh.setRefreshing(false);
 
                         }
                         binding.courseView.resetView();
@@ -397,10 +379,6 @@ public class CourseFragment extends Fragment {
                         ObjectAnimator backgroundColor = ofObject(binding.tvCheckIn, "backgroundColor", new ArgbEvaluator(), 0xFFec6b6b, 0xFFe6e6e6);
                         backgroundColor.setDuration(1000);
                         backgroundColor.start();
-//                        ObjectAnimator text = ObjectAnimator.ofObject(binding.tvCheckIn, "text", new ArgbEvaluator(), "今日未签到", checkInStr);
-//                        text.setDuration(5000);
-//                        text.start();
-//                        binding.tvCheckIn.setTextColor(0xFF101010);
                         ObjectAnimator textColor = ofObject(binding.tvCheckIn, "textColor", new ArgbEvaluator(), 0xFFFFFFFF, 0xFF101010);
                         textColor.setDuration(1000);
                         textColor.start();
@@ -412,26 +390,61 @@ public class CourseFragment extends Fragment {
                             }
                         }, 500);
                         break;
+                    case Constant.STOP_REFRESH:
+                        binding.slRefresh.setRefreshing(false);
+                        break;
+
+                    case Constant.LOAD_DATA_SUCCESS:
+                        binding.courseView.setCourses(allWeekCourse);
+                        binding.courseView.setOneWeekCourses(oneWeekCourse);
+                        binding.courseView.setSet(weekSet);
+                        binding.courseView.resetView();
+                        break;
                 }
 
             }
-        }
+        };
+    }
 
-        ;
-/*        new Thread(new Runnable() {
+
+    /**
+     * 获取签到情况
+     */
+    private void getCheckIn() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    getOneWeekCou();
-                    List<Integer> inWeek = oneWeekCourseDao.getInWeek();
-                    LogUtils.getInstance().d("查询数据库周：" + inWeek);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                LogUtils.getInstance().d("用户数据库信息：" + stuInfoDao.getStuInfo());
+                boolean hasLeavePwd = (stuInfoDao.getStuInfo().getEduPassword() != null);
+                // (签到时间或者调试模式)且数据库有请假系统密码  初始化签到信息
+                LogUtils.getInstance().d("有请假系统密码则开始获取签到信息");
+                if ((Utils.isCheckInTime() || Constant.DEBUG_CHECK_IN_TEXTVIEW) && hasLeavePwd) {
+                    try {
+                        String checkIn = LeaveInfo.getCheckIn(requireContext());
+                        LogUtils.getInstance().d("签到数据：" + checkIn);
+
+                        MyCheckIn mySigned = ParseCheckIn.getMySigned(checkIn);
+
+                        if (!mySigned.isCheckIn()) {
+                            String checkInTime = mySigned.getCheckTime();
+                            // TODO: 2020/5/7 需要更换为签到时间
+                            checkInTime = "21:50";
+
+                            Message checkInMSG = new Message();
+                            checkInMSG.what = Constant.MSG_CHECK_IN_SUCCESS;
+                            checkInMSG.obj = checkInTime;
+                            mHandler.sendMessage(checkInMSG);
+                        }
+
+                    } catch (Exception e) {
+                        LogUtils.getInstance().e("获取签到信息失败：" + e.getMessage());
+                        e.printStackTrace();
+                    }
                 }
             }
-        }).start();*/
-
+        }).start();
     }
+
 
     /**
      * 解析课表 获取本周、上两周、下两周的周课表
@@ -482,7 +495,7 @@ public class CourseFragment extends Fragment {
 //            LogUtils.getInstance().d("整理后的周课表插入数据库" + oneWeekCourse.toString());
 
             // 周课表课程存在完整课表中，就赋值上完整课表id
-            for (Course cou : binding.courseView.getCourses()) {
+            for (Course cou : allWeekCourse) {
                 // 去除空格
                 String wholeCouName = cou.getCouName().replace(" ", "");
                 String oneCouName = oneWeekCourse.getCouName().replace(" ", "");

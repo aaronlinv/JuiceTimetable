@@ -129,6 +129,8 @@ public class EduHttp {
         } else if (responseBody.contains("您输入的验证码不正确")) {
             throw new Exception("验证码识别失败，请再尝试一次");
 //            LogUtils.getInstance().d("登录页面cookies：" + finallyCookies.toString());
+        } else if (responseBody.contains("您已连续输错密码3次，请过5分钟再尝试")) {
+            throw new Exception("您已连续输错教务网密码3次，请过5分钟再尝试");
         } else {
             throw new Exception("非302 跳转");
         }

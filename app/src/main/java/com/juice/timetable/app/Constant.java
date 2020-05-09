@@ -22,22 +22,38 @@ public class Constant {
     // 班级未签
     public static final String URI_UNSIGNED_LIST = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-unsignin-cls&c=dormcheckclassunsignin";
 
-    // 未签到列表
-    public static final int MSG_REFRESH = 2020;
     // 登录成功
-    public static final int MSG_LOGIN_SUCCESS = 2021;
+    public static final int MSG_LOGIN_SUCCESS = 2020;
+    // 登录失败
+    public static final int MSG_LOGIN_FAIL = 2021;
 
+    // 未签到列表
+    public static final int MSG_REFRESH = 2022;
     // 指纹签到成功
-    public static final int MSG_CHECK_IN_SUCCESS = 2022;
+    public static final int MSG_CHECK_IN_SUCCESS = 2023;
+
+    // 停止下拉刷新的动画
+    public static final int STOP_REFRESH = 2024;
+    // 成功加载完整课表 周课表 weekSet 数据
+    public static final int LOAD_DATA_SUCCESS = 2025;
 
     // TODO: 2020/5/6 判断当前周
     // 当前学校周
     public static final int CUR_WEEK = 12;
 
+    //
+    public static final String PREF_EDU_COOKIE = "PREF_EDU_COOKIE";
+    public static final String PREF_LEAVE_COOKIE = "PREF_LEAVE_COOKIE";
+
+    // 注入自己的账号密码，用于免登录调式
+    public static boolean DEBUG_MODE = false;
     // 调式Init界面，用于调试登录界面
     public static boolean DEBUG_INIT_FRAGMENT = false;
     // 调式签到提示栏
-    public static boolean DEBUG_CHECK_IN_TEXTVIEW = true;
+    public static boolean DEBUG_CHECK_IN_TEXTVIEW = false;
+
+    // 首次登录
+    public static boolean FIRST_LOGIN = false;
 
 
 }
