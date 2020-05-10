@@ -30,6 +30,7 @@ public class ParseAllWeek {
      * 解析完整的课表
      */
     public static List<Course> parseAllCourse(String parseData) {
+        Long couID = 0L;
         //从文档中导入完整课表txt
 //        String s = getAllCourseStr2018();
         //String s = ReadFile.readToString("C:\\Users\\14989\\Desktop\\网页内容\\完整课表.html");
@@ -63,25 +64,55 @@ public class ParseAllWeek {
                         String couTeacher = ele.getElementsByTag("td").eq(2).text();
                         course.setCouTeacher(couTeacher);
                     }
+                    // 解析 起讫时间周序(星期)
+                    // bug
+                    // 可能出现 <td align="center">01～01<br>03～03</td>
                     if (!"".equals(ele.getElementsByTag("td").eq(10).text())) {
-                        //System.out.println(ele.getElementsByTag("td").eq(10).text());
-                        Integer couStartWeek = Integer.valueOf(ele.getElementsByTag("td").eq(10).text().split("～")[0]);
-                        course.setCouStartWeek(couStartWeek);
-                        Integer couEndWeek = Integer.valueOf(ele.getElementsByTag("td").eq(10).text().split("～")[1]);
-                        course.setCouEndWeek(couEndWeek);
+                        // System.out.println(ele.getElementsByTag("td").eq(10).text());
+                        // 01～01 03～03
+                        String startEndNode = ele.getElementsByTag("td").eq(10).text();
+//                        System.out.println(startEndNode.split("\\s+").length);
+                        // 一般情况: 01～17
+                        if ((startEndNode.split("\\s+").length) == 1) {
+                            String[] split = startEndNode.split("～");
+
+                            course.setCouStartWeek(Integer.valueOf(split[0]));
+                            course.setCouEndWeek(Integer.valueOf(split[1]));
+                        } else {
+                            // 特殊情况：01～01 03～03
+                            // 有几个这样的小节
+                            String[] nodes = startEndNode.split("\\s+");
+//                            System.out.println(node);
+                            for (String node : nodes) {
+                                // new一个id相同的新课来存放
+                                Course repeatedCou = new Course();
+                                repeatedCou.setCouName(course.getCouName());
+                                repeatedCou.setCouTeacher(course.getCouTeacher());
+
+                                String[] split = node.split("～");
+
+                                repeatedCou.setCouStartWeek(Integer.valueOf(split[0]));
+                                repeatedCou.setCouEndWeek(Integer.valueOf(split[1]));
+
+                                repeatedCou.setCouID(couID);
+
+                                couList.add(repeatedCou);
+                            }
+                            // 已经添加到List，跳过本轮外层的添加
+                            couID++;
+                            continue;
+                        }
+
                     }
+                    course.setCouID(couID);
+                    couID++;
                     couList.add(course);
-
-
                 }
             }
         }
-        Long couID = 0L;
-        for (Course cou : couList) {
-//            System.out.println(cou);
-            cou.setCouID(couID);
-            couID++;
 
+        for (Course cou : couList) {
+            System.out.println(cou);
         }
         //将table左边的表格标签里的内容提取（）
         Elements rightTable = document.getElementsByTag("tbody").eq(3);
