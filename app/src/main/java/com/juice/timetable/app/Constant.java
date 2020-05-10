@@ -47,7 +47,7 @@ public class Constant {
     public static final String PREF_FIRST_WEEK_MONDAY = "PREF_FIRST_WEEK_MONDAY";
 
     // 注入自己的账号密码，用于免登录调式
-    public static boolean DEBUG_MODE = false;
+    public static boolean DEBUG_MODE = true;
     // 调式Init界面，用于调试登录界面
     public static boolean DEBUG_INIT_FRAGMENT = false;
     // 调式签到提示栏

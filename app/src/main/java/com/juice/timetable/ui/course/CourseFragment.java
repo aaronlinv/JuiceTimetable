@@ -96,6 +96,18 @@ public class CourseFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // 调式模式：注入自己的账号密码，用于免登录调式
+        if (Constant.DEBUG_MODE) {
+            final UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
+            stuInfoDao.deleteStuInfo();
+            StuInfo stuInfo = new StuInfo();
+            stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
+            stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
+            stuInfo.setLeavePassword(userInfoUtils.getLeavePasswd());
+            stuInfoDao.insertStuInfo(stuInfo);
+            LogUtils.getInstance().d("调试模式：注入学号密码结束");
+        }
+
         StuInfo stu = stuInfoDao.getStuInfo();
         // 在调试模式 或者是数据库中没有用户数据  进入首次登录界面
         if (Constant.DEBUG_INIT_FRAGMENT || stu == null) {
@@ -104,17 +116,6 @@ public class CourseFragment extends Fragment {
             handler();
             menuListener();
             refreshListener();
-
-            // 调式模式：注入自己的账号密码，用于免登录调式
-            if (Constant.DEBUG_MODE) {
-                final UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
-                stuInfoDao.deleteStuInfo();
-                StuInfo stuInfo = new StuInfo();
-                stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
-                stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
-                stuInfo.setLeavePassword(userInfoUtils.getLeavePasswd());
-                stuInfoDao.insertStuInfo(stuInfo);
-            }
 
 
             // 首次登录，获取数据并刷新界面
