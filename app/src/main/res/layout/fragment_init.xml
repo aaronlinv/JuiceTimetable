@@ -10,7 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFf5f5"
+        android:background="@color/colorPrimaryDark"
+        android:backgroundTint="@color/colorPrimaryDark"
         tools:context="ui.init.InitFragment">
 
         <androidx.constraintlayout.widget.Guideline
@@ -74,9 +75,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tv_amend_title"
-            android:textStyle="bold"
             android:textColor="@color/design_default_color_on_secondary"
             android:textSize="36sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintHorizontal_bias="0.091"
@@ -90,19 +91,20 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/et_sno"
+            android:importantForAutofill="no"
             android:inputType="number|textPersonName"
             android:maxLength="9"
             app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
             app:layout_constraintTop_toTopOf="@+id/guideline"
-            app:layout_constraintVertical_bias="0.265"
-            android:importantForAutofill="no" />
+            app:layout_constraintVertical_bias="0.265" />
 
         <EditText
             android:id="@+id/et_edu_password"
             android:layout_width="250sp"
             android:layout_height="wrap_content"
+            android:autofillHints=""
             android:ems="10"
             android:hint="@string/et_edu_password"
             android:inputType="textPassword"
@@ -112,13 +114,13 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/et_sno"
             app:layout_constraintTop_toTopOf="@+id/guideline2"
-            app:layout_constraintVertical_bias="0.246"
-            android:autofillHints="" />
+            app:layout_constraintVertical_bias="0.246" />
 
         <EditText
             android:id="@+id/et_leave_password"
             android:layout_width="250sp"
             android:layout_height="wrap_content"
+            android:autofillHints=""
             android:ems="10"
             android:hint="@string/et_leave_password"
             android:inputType="textPassword"
@@ -128,8 +130,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/et_edu_password"
             app:layout_constraintTop_toTopOf="@+id/guideline3"
-            app:layout_constraintVertical_bias="0.2"
-            android:autofillHints="" />
+            app:layout_constraintVertical_bias="0.2" />
 
         <Button
             android:id="@+id/btn_go"
@@ -170,6 +171,7 @@
             android:id="@+id/imageView2"
             android:layout_width="113dp"
             android:layout_height="131dp"
+            android:contentDescription="@string/todo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
