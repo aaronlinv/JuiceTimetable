@@ -105,18 +105,15 @@ public class UnsignedFragment extends Fragment {
                             classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
                         }
                         message.obj = "success";
-                        swipeRefreshLayout.setRefreshing(false);
                         mHandler.sendMessage(message);
 
                     } catch (Exception e) {
                         message.obj = "passwd";
-                        swipeRefreshLayout.setRefreshing(false);
                         mHandler.sendMessage(message);
                         e.printStackTrace();
                     }
                 } else {
                     message.obj = "network";
-                    swipeRefreshLayout.setRefreshing(false);
                     mHandler.sendMessage(message);
                 }
             }
@@ -137,6 +134,7 @@ public class UnsignedFragment extends Fragment {
                 } else if ("network".equals(msgStr)) {
                     Toast.makeText(requireActivity(), "设备未联网", Toast.LENGTH_SHORT).show();
                 }
+                swipeRefreshLayout.setRefreshing(false);
             }
         };
     }
