@@ -38,7 +38,7 @@ public class UnsignedFragment extends Fragment {
     private UnsignedAdapter unsignedAdapter;
     private ClassNoSignedItemDao classNoSignedItemDao;
     private SwipeRefreshLayout swipeRefreshLayout;
-    Handler mHandler;
+    private Handler mHandler;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
