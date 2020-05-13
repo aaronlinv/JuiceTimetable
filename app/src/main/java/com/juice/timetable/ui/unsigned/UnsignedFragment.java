@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.juice.timetable.R;
-import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
 import com.juice.timetable.data.dao.ClassNoSignedItemDao;
@@ -39,20 +38,38 @@ public class UnsignedFragment extends Fragment {
     private ClassNoSignedItemDao classNoSignedItemDao;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Handler mHandler;
+    private Toolbar toolbar;
+    private RecyclerView recyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        // 隐藏Toolbar的下拉菜单按钮
+        View root = inflater.inflate(R.layout.fragment_unsigned, container, false);
+        findID(root);
         handler();
-        Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
+        // 隐藏Toolbar的下拉菜单按钮
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, false);
-        View root = inflater.inflate(R.layout.fragment_unsigned, container, false);
-        final RecyclerView recyclerView = root.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         unsignedAdapter = new UnsignedAdapter();
         recyclerView.setAdapter(unsignedAdapter);
         recyclerView.addItemDecoration(new UnsignedItemDecoration(requireContext()));
+        getTable();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fresh();
+            }
+        });
+        return root;
+    }
+
+    private void findID(View root) {
+        toolbar = requireActivity().findViewById(R.id.toolbar);
+        recyclerView = root.findViewById(R.id.recyclerview);
+        swipeRefreshLayout = root.findViewById(R.id.swiperefreshlayout);
+    }
+
+    private void getTable() {
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(requireContext());
         classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
         ClassNoSignedItemViewModel classNoSignedItemViewModel = new ViewModelProvider(requireActivity()).get(ClassNoSignedItemViewModel.class);
@@ -64,16 +81,7 @@ public class UnsignedFragment extends Fragment {
                 unsignedAdapter.notifyDataSetChanged();
             }
         });
-        swipeRefreshLayout = root.findViewById(R.id.swiperefreshlayout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                fresh();
-            }
-        });
-        return root;
     }
-
     private static boolean isNetworkConnected(Context context) {
         if (context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -94,7 +102,6 @@ public class UnsignedFragment extends Fragment {
                 Message message = new Message();
                 if (isNetworkConnected(requireContext())) {
                     try {
-                        message.what = Constant.MSG_REFRESH;
                         String unsigned = LeaveInfo.getUnsignedList(requireContext());
                         unsignedList = ParseClassNoSignedItem.getClassUnSigned(unsigned);
                         // 删除数据库
