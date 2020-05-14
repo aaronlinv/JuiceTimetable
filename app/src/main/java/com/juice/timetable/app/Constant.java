@@ -55,5 +55,5 @@ public class Constant {
     // 首次登录
     public static boolean FIRST_LOGIN = false;
 
-
+    public static boolean FIRST_IN = true;
 }

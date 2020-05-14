@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.juice.timetable.R;
+import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
 import com.juice.timetable.data.dao.ClassNoSignedItemDao;
@@ -54,6 +55,19 @@ public class UnsignedFragment extends Fragment {
         recyclerView.setAdapter(unsignedAdapter);
         recyclerView.addItemDecoration(new UnsignedItemDecoration(requireContext()));
         getTable();
+        if (Constant.FIRST_IN) {
+            // 刷新动画
+            // 通过调用控件的引用调用post方法，在run方法中更新ui界面
+            swipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefreshLayout.setRefreshing(true);
+                }
+            });
+            fresh();
+            // 设置首次登录为false
+            Constant.FIRST_IN = false;
+        }
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
