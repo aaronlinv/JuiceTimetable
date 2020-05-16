@@ -89,17 +89,17 @@ public class LeaveInfo {
     /**
      * 根据cookie 爬取请假系统信息
      *
-     * @param tmpCookies
+     * @param cookies
      * @return
      */
-    public static String parse(String tmpCookies, String uri) {
+    public static String parse(String cookies, String uri) {
 
 
         HttpClient httpClient = new HttpClient();
         GetMethod getMethod2 = new GetMethod(uri);
         getMethod2.setRequestHeader("referer", "http://mis.fdzcxy.com/index.php?n=login");
         getMethod2.setRequestHeader("host", "mis.fdzcxy.com");
-        getMethod2.setRequestHeader("cookie", tmpCookies.toString());
+        getMethod2.setRequestHeader("cookie", cookies.toString());
         getMethod2.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36");
         try {
             httpClient.executeMethod(getMethod2);

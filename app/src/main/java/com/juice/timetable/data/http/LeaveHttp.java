@@ -1,5 +1,6 @@
 package com.juice.timetable.data.http;
 
+import com.juice.timetable.app.Constant;
 import com.juice.timetable.utils.FileUtils;
 import com.juice.timetable.utils.LogUtils;
 
@@ -15,7 +16,7 @@ import okhttp3.Response;
  *     author : Aaron
  *     time   : 2020/04/29
  *     desc   :
- *     version: 1.0
+ *     version: 2.0
  * </pre>
  */
 public class LeaveHttp {
@@ -25,9 +26,6 @@ public class LeaveHttp {
         String userId = FileUtils.hex_md5(stuID);
         String passWd = FileUtils.hex_md5(stuPassword);
 
-        // 登录入口url
-        String loginURL = "http://mis.fdzcxy.com/index.php?n=login&s=1001";
-
         // okHttp
         FormBody formBody = new FormBody.Builder()
                 .add("user", userId)
@@ -36,7 +34,7 @@ public class LeaveHttp {
         OkHttpClient client = HttpUtils.getHttpClient();
         Request request = new Request.Builder()
                 .post(formBody)
-                .url(loginURL)
+                .url(Constant.URI_LEAVE_LOGIN)
                 .build();
 
         Response response = client.newCall(request).execute();

@@ -21,6 +21,8 @@ public class Constant {
     public static final String URI_CHECK_IN = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-record-student&c=dormcheckrecordstudent";
     // 班级未签
     public static final String URI_UNSIGNED_LIST = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-unsignin-cls&c=dormcheckclassunsignin";
+    // 请假系统登录入口
+    public static final String URI_LEAVE_LOGIN = "http://mis.fdzcxy.com/index.php?n=login&s=1001";
 
     // 登录成功
     public static final int MSG_LOGIN_SUCCESS = 2020;
