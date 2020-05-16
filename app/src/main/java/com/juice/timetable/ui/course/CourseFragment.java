@@ -425,13 +425,14 @@ public class CourseFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                LogUtils.getInstance().d("用户数据库信息：" + stuInfoDao.getStuInfo());
-                boolean hasLeavePwd = (stuInfoDao.getStuInfo().getEduPassword() != null);
+                StuInfo stuInfo = stuInfoDao.getStuInfo();
+                LogUtils.getInstance().d("用户数据库信息：" + stuInfo);
+                boolean hasLeavePwd = (stuInfo.getEduPassword() != null);
                 // (签到时间或者调试模式)且数据库有请假系统密码  初始化签到信息
                 LogUtils.getInstance().d("有请假系统密码则开始获取签到信息");
                 if ((Utils.isCheckInTime() || Constant.DEBUG_CHECK_IN_TEXTVIEW) && hasLeavePwd) {
                     try {
-                        String checkIn = LeaveInfo.getCheckIn(requireContext());
+                        String checkIn = LeaveInfo.getLeave(stuInfo.getStuID().toString(), stuInfo.getLeavePassword(), Constant.URI_CHECK_IN, requireContext());
                         LogUtils.getInstance().d("签到数据：" + checkIn);
 
                         MyCheckIn mySigned = ParseCheckIn.getMySigned(checkIn);

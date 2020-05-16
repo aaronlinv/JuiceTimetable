@@ -23,9 +23,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.juice.timetable.R;
+import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
+import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.dao.ClassNoSignedItemDao;
+import com.juice.timetable.data.dao.StuInfoDao;
 import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseClassNoSignedItem;
 import com.juice.timetable.data.viewmodel.ClassNoSignedItemViewModel;
@@ -60,7 +63,7 @@ public class UnsignedFragment extends Fragment {
         recyclerView.setLayoutManager(gridLayoutManager);
 
          */
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(requireContext());
+        final JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(requireContext());
         classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
         ClassNoSignedItemViewModel classNoSignedItemViewModel = new ViewModelProvider(requireActivity()).get(ClassNoSignedItemViewModel.class);
         LiveData<List<ClassNoSignedItem>> classNoSignedItemLive = classNoSignedItemViewModel.getClassNoSignedItemLive();
@@ -83,7 +86,9 @@ public class UnsignedFragment extends Fragment {
                         List<ClassNoSignedItem> unsignedList;
                         if (isNetworkConnected(requireContext())) {
                             try {
-                                String unsigned = LeaveInfo.getUnsignedList(requireContext());
+                                StuInfoDao stuInfoDao = juiceDatabase.getStuInfoDao();
+                                StuInfo stuInfo = stuInfoDao.getStuInfo();
+                                String unsigned = LeaveInfo.getLeave(stuInfo.getStuID().toString(), stuInfo.getLeavePassword(), Constant.URI_UNSIGNED_LIST, requireContext());
                                 unsignedList = ParseClassNoSignedItem.getClassUnSigned(unsigned);
                                 // 删除数据库
                                 classNoSignedItemDao.deleteNoSignedItem();
