@@ -51,9 +51,10 @@ public class LeaveHttp {
 
         StringBuffer cookieStr = new StringBuffer();
         for (String cookie : cookies) {
-            cookieStr.append(cookieStr);
+            cookieStr.append(cookie);
             cookieStr.append(";");
         }
+        LogUtils.getInstance().d("Cookie String:" + cookieStr);
         return cookieStr.toString();
     }
 
