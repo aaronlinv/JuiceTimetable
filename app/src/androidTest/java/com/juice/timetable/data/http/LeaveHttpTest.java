@@ -6,13 +6,14 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.juice.timetable.utils.UserInfoUtils;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * <pre>
  *     author : Aaron
  *     time   : 2020/05/15
- *     desc   :
+ *     desc   : 自动化测试 模拟登录请假系统
  *     version: 1.0
  * </pre>
  */
@@ -21,12 +22,36 @@ public class LeaveHttpTest {
         return InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 
+    /**
+     * 测试获取Cookie
+     * 信息正确，获取Cookie不为空
+     *
+     * @throws Exception
+     */
     @Test
-    public void getCookie2() throws Exception {
-
+    public void getCookieSuccess() throws Exception {
         UserInfoUtils instant = UserInfoUtils.getINSTANT(getContext());
+        String cookie = LeaveHttp.getCookie(instant.getID(), instant.getLeavePasswd());
+        Assert.assertNotEquals("", cookie);
 
-        LeaveHttp.getCookie(instant.getID(), instant.getLeavePasswd());
+    }
+
+    /**
+     * 测试获取Cookie
+     * 信息错误，应该抛出异常
+     *
+     * @throws Exception
+     */
+    @Test
+    public void getCookieFail() throws Exception {
+
+
+        try {
+            UserInfoUtils instant = UserInfoUtils.getINSTANT(getContext());
+            LeaveHttp.getCookie("211700119", "211700119");
+        } catch (Exception e) {
+            Assert.assertEquals(null, "您输入的请假系统用户名或是密码有误", e.getMessage());
+        }
 
     }
 }
