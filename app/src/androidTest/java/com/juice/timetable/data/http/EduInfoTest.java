@@ -10,6 +10,7 @@ import com.juice.timetable.data.parse.ParseOneWeek;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.UserInfoUtils;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -61,9 +62,6 @@ public class EduInfoTest {
 
     }
 
-    @Test
-    public void parse() {
-    }
 
     /**
      * 测试获取第10周周课表并解析
@@ -115,5 +113,37 @@ public class EduInfoTest {
 
         }
         LogUtils.getInstance().d("解析本周、上两周、下两周的周课表 结束");
+    }
+
+    /**
+     * 使用cookie登录教务系统获取周课表
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testParse() throws Exception {
+
+        String cookie = EduHttp.getCookie(getID(), getEduPasswd(), getContext());
+        String parse = EduInfo.parse(cookie, Constant.URI_ONE_WEEK);
+        LogUtils.getInstance().d("周课表：" + parse);
+
+    }
+
+    /**
+     * 使用失效cookie登录教务系统获取周课表
+     * 抛出异常
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testParseFail() {
+
+        String parse = null;
+        try {
+            parse = EduInfo.parse("", Constant.URI_ONE_WEEK);
+        } catch (Exception e) {
+            Assert.assertEquals(null, "登录失败，需要重新获取Cookie", e.getMessage());
+        }
+
     }
 }

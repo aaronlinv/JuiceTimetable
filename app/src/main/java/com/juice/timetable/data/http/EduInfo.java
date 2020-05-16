@@ -8,8 +8,9 @@ import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * <pre>
@@ -20,6 +21,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
  * </pre>
  */
 public class EduInfo {
+    private static OkHttpClient client = HttpUtils.getHttpClient();
 
     // 保存Cookie，以减少获取Cookie的次数
     static boolean enableSaveCookie = true;
@@ -94,25 +96,24 @@ public class EduInfo {
      * @return
      */
     public static String parse(String cookies, String uri) throws Exception {
+        Request request = new Request.Builder()
+                .addHeader("Referer", "http://jwb.fdzcxy.com/default.asp")
+                .addHeader("Host", "jwb.fdzcxy.com")
+                .addHeader("Cookie", cookies)
+                .get()
+                .url(uri)
+                .build();
 
-        HttpClient httpClient = new HttpClient();
-        GetMethod getMethod2 = new GetMethod(uri);
-        getMethod2.setRequestHeader("referer", "http://jwb.fdzcxy.com/default.asp");
-        getMethod2.setRequestHeader("host", "jwb.fdzcxy.com");
-        getMethod2.setRequestHeader("cookie", cookies.toString());
-
-        httpClient.executeMethod(getMethod2);
-
-        byte[] b = getMethod2.getResponseBody();
-        String info = new String(b, "utf-8");
-        LogUtils.getInstance().d("根据Cookie获取到的教务网信息：" + info);
-
-        if (info.contains("出错提示")) {
+        Response response = client.newCall(request).execute();
+        String result = response.body().string();
+        LogUtils.getInstance().d("根据Cookie获取到的教务网信息：" + result);
+        if (result.contains("出错提示")) {
             throw new Exception("登录失败，需要重新获取Cookie");
-        } else if (info.contains("New Document")) {
+        } else if (result.contains("New Document")) {
             throw new Exception("登录失败，需要重新获取Cookie");
         }
-        return info;
+
+        return result;
     }
 
 }
