@@ -11,9 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import kotlin.Pair;
 import okhttp3.FormBody;
-import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -103,11 +101,7 @@ public class EduHttp {
                 .build();
 
         Response response = client.newCall(request).execute();
-        Headers headers = response.headers();
-        for (Pair<? extends String, ? extends String> header : headers) {
-            LogUtils.getInstance().d("header:" + header.toString());
 
-        }
 //        okHttp似乎不会返回302，直接返回登录成功的200
 //        int statusCode = response.code();
 //        LogUtils.getInstance().d("模拟登录状态码：" + statusCode);
