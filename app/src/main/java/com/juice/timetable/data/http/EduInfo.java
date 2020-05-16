@@ -3,8 +3,6 @@ package com.juice.timetable.data.http;
 import android.content.Context;
 
 import com.juice.timetable.app.Constant;
-import com.juice.timetable.data.JuiceDatabase;
-import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
 
@@ -25,43 +23,6 @@ public class EduInfo {
 
     // 保存Cookie，以减少获取Cookie的次数
     static boolean enableSaveCookie = true;
-
-    /**
-     * 读取数据库 用户账户密码 获取完整课表
-     *
-     * @param context
-     * @return
-     */
-    public static String getAllCourse(Context context) throws Exception {
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
-        StuInfo stu = juiceDatabase.getStuInfoDao().getStuInfo();
-
-        return getTimeTable(stu.getStuID().toString(), stu.getEduPassword(),
-                Constant.URI_WHOLE_COURSE, context);
-/*        UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(context);
-        return getTimeTable(userInfoUtils.getID(), userInfoUtils.getEduPasswd(),
-                Constant.URI_WHOLE_COURSE, context);*/
-    }
-
-
-    /**
-     * 读取数据库 用户账户密码 获取某一周的课表课表
-     *
-     * @param week    需要获取课表的周
-     * @param context
-     * @return
-     * @throws Exception
-     */
-    public static String getOneWeekCourse(Integer week, Context context) throws Exception {
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
-        StuInfo stu = juiceDatabase.getStuInfoDao().getStuInfo();
-
-        return getTimeTable(stu.getStuID().toString(), stu.getEduPassword(),
-                Constant.URI_ONE_WEEK + week.toString(), context);
-/*        UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(context);
-        return getTimeTable(userInfoUtils.getID(), userInfoUtils.getEduPasswd(),
-                Constant.URI_WHOLE_COURSE, context);*/
-    }
 
     public static String getTimeTable(String stuID, String stuPassword, String uri, Context context) throws Exception {
         PreferencesUtils.init(context.getApplicationContext());

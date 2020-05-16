@@ -273,8 +273,11 @@ public class CourseFragment extends Fragment {
 //                        allWeekCourseDao.deleteAllWeekCourse();
                 LogUtils.getInstance().d("setOnRefreshListener:删除数据库");
                 String allCourse = null;
+                StuInfoDao stuInfoDao = database.getStuInfoDao();
+                StuInfo stuInfo = stuInfoDao.getStuInfo();
+
                 try {
-                    allCourse = EduInfo.getAllCourse(requireContext().getApplicationContext());
+                    allCourse = EduInfo.getTimeTable(stuInfo.getStuID().toString(), stuInfo.getEduPassword(), Constant.URI_WHOLE_COURSE, requireContext());
                 } catch (Exception e) {
                     LogUtils.getInstance().d("setOnRefreshListener：" + e.getMessage());
                 }
@@ -462,6 +465,9 @@ public class CourseFragment extends Fragment {
      * 解析课表 获取本周、上两周、下两周的周课表
      */
     private void getOneWeekCou() throws Exception {
+        // 获取用户数据
+        StuInfoDao stuInfoDao = database.getStuInfoDao();
+        StuInfo stuInfo = stuInfoDao.getStuInfo();
         // 解析的周课表的List
         ArrayList<OneWeekCourse> couList = new ArrayList<>();
         // 要获取的周课表，0为当前周
@@ -480,7 +486,7 @@ public class CourseFragment extends Fragment {
         }
         // 模拟登录获取课表数据
         for (; week <= 2; week++) {
-            String oneWeekCourse = EduInfo.getOneWeekCourse(Constant.CUR_WEEK + week, requireContext());
+            String oneWeekCourse = EduInfo.getTimeTable(stuInfo.getStuID().toString(), stuInfo.getEduPassword(), Constant.URI_ONE_WEEK + (Constant.CUR_WEEK + week), requireContext());
             List<OneWeekCourse> oneWeekCourses = ParseOneWeek.parseCourse(oneWeekCourse);
             LogUtils.getInstance().d("获取第 <" + (Constant.CUR_WEEK + week) + "> 周课表");
             LogUtils.getInstance().d("获取第 <" + (Constant.CUR_WEEK + week) + "> 周课表 获取前List:" + oneWeekCourses);
