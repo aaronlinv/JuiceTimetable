@@ -39,21 +39,27 @@ public class MainActivity extends AppCompatActivity {
             this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         setContentView(R.layout.activity_main);
+        //toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        //主界面layoutID
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
 
+        //侧边栏
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        //课表
         courseView = findViewById(R.id.course_view);
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+        //app bar与nav元素、navView绑定
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_course, R.id.nav_unsigned, R.id.nav_login)
+                R.id.nav_course, R.id.nav_unsigned, R.id.nav_login, R.id.nav_about)
                 .setDrawerLayout(drawer)
                 .build();
+        //NavController与界面绑定
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        //控制器与app bar绑定
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 

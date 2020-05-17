@@ -17,6 +17,7 @@ public class UnsignedItemDecoration extends RecyclerView.ItemDecoration {
         mDivider = context.getResources().getDrawable(R.drawable.line_divider);
     }
 
+    //绘制后
     public void onDrawOver(@NonNull Canvas c, RecyclerView parent, @NonNull RecyclerView.State state) {
         int rLeft = parent.getPaddingLeft();
         int rRight = parent.getWidth() - parent.getPaddingRight();
@@ -24,7 +25,7 @@ public class UnsignedItemDecoration extends RecyclerView.ItemDecoration {
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View child = parent.getChildAt(i);
-
+            //控件布局
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
 
             int top = child.getBottom() + params.bottomMargin;

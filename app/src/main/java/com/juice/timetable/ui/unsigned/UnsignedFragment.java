@@ -44,12 +44,14 @@ public class UnsignedFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        //寻找layout
         View root = inflater.inflate(R.layout.fragment_unsigned, container, false);
         findID(root);
         handler();
         // 隐藏Toolbar的下拉菜单按钮
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, false);
+        //布局管理器
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         unsignedAdapter = new UnsignedAdapter();
         recyclerView.setAdapter(unsignedAdapter);
