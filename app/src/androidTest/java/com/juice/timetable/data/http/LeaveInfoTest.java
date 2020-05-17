@@ -4,77 +4,75 @@ import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.juice.timetable.data.JuiceDatabase;
-import com.juice.timetable.data.bean.MyCheckIn;
-import com.juice.timetable.data.bean.StuInfo;
-import com.juice.timetable.data.dao.AllWeekCourseDao;
-import com.juice.timetable.data.dao.ClassNoSignedItemDao;
-import com.juice.timetable.data.dao.MyCheckInDao;
-import com.juice.timetable.data.dao.OneWeekCourseDao;
-import com.juice.timetable.data.dao.StuInfoDao;
-import com.juice.timetable.data.parse.ParseCheckIn;
-import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.app.Constant;
 import com.juice.timetable.utils.UserInfoUtils;
 
-import org.junit.Before;
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.IOException;
 
 /**
  * <pre>
  *     author : Aaron
  *     time   : 2020/05/07
- *     desc   :
+ *     desc   : 自动化测试 获取请假系统信息
  *     version: 1.0
  * </pre>
  */
 public class LeaveInfoTest {
 
-    private com.juice.timetable.data.dao.OneWeekCourseDao CourseDao;
-    private ClassNoSignedItemDao classNoSignedItemDao;
-    private MyCheckInDao myCheckInDao;
-    private StuInfoDao stuInfoDao;
-    private AllWeekCourseDao allWeekCourseDao;
-    private OneWeekCourseDao OneWeekCourseDao;
-
-    @Before
-    public void initDataBase() {
-        // 初始化
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        //生成数据库，如果数据库已有，则调用
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(appContext);
-        //生成对应的Dao
-        CourseDao = juiceDatabase.getOneWeekCourseDao();
-        classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
-        myCheckInDao = juiceDatabase.getMyCheckInDao();
-        stuInfoDao = juiceDatabase.getStuInfoDao();
-        allWeekCourseDao = juiceDatabase.getAllWeekCourseDao();
-        OneWeekCourseDao = juiceDatabase.getOneWeekCourseDao();
-    }
-
     public Context getContext() {
         return InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 
+    /**
+     * 测试签到
+     */
     @Test
-    public void getCheckIn() throws Exception {
-        // 先写入账号密码信息
-        StuInfo stu = new StuInfo();
-        UserInfoUtils user = UserInfoUtils.getINSTANT(getContext());
-        stu.setStuID(Integer.valueOf(user.getID()));
-        stu.setEduPassword(user.getEduPasswd());
-        stu.setLeavePassword(user.getLeavePasswd());
+    public void getLeave() throws Exception {
+        UserInfoUtils instant = UserInfoUtils.getINSTANT(getContext());
 
-        // 更新数据库
-        stuInfoDao.deleteStuInfo();
-        stuInfoDao.insertStuInfo(stu);
+        String leave = LeaveInfo.getLeave(instant.getID(), instant.getLeavePasswd(), Constant.URI_CHECK_IN, getContext());
 
-        StuInfo stuInfo = stuInfoDao.getStuInfo();
-        LogUtils.getInstance().d("User数据：" + stuInfo);
-        String checkIn = LeaveInfo.getCheckIn(getContext());
-        if (checkIn != null) {
-            MyCheckIn mySigned = ParseCheckIn.getMySigned(checkIn);
-            LogUtils.getInstance().d(mySigned.toString());
+        System.out.println(leave);
+        Assert.assertTrue(leave.contains("签到记录"));
+    }
 
+    /**
+     * Cookie有效情况测试
+     * 得到签到详情界面
+     *
+     * @throws Exception
+     */
+    @Test
+    public void parseSuccess() throws Exception {
+        UserInfoUtils instant = UserInfoUtils.getINSTANT(getContext());
+
+        // 获取Cookie
+        String cookie = LeaveHttp.getCookie(instant.getID(), instant.getLeavePasswd());
+        // 测试使用Cookie登录
+        String parse = LeaveInfo.parse(cookie, Constant.URI_CHECK_IN);
+        System.out.println(parse);
+        Assert.assertTrue(parse.contains("签到记录"));
+
+    }
+
+    /**
+     * Cookie无效情况测试
+     * 跳转到主页
+     *
+     * @throws Exception
+     */
+    @Test
+    public void parseFail() throws IOException {
+        try {
+            String parse = LeaveInfo.parse("", Constant.URI_CHECK_IN);
+            System.out.println(parse);
+        } catch (Exception e) {
+            Assert.assertEquals(null, "Cookie无效,登录失败", e.getMessage());
         }
     }
+
+
 }

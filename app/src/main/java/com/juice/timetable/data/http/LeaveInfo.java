@@ -3,15 +3,14 @@ package com.juice.timetable.data.http;
 import android.content.Context;
 
 import com.juice.timetable.app.Constant;
-import com.juice.timetable.data.JuiceDatabase;
-import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
-
 import java.io.IOException;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * <pre>
@@ -23,34 +22,7 @@ import java.io.IOException;
  */
 public class LeaveInfo {
     // 保存Cookie，以减少获取Cookie的次数
-    static boolean enableSaveCookie = true;
-
-    /**
-     * 读取数据库 用户账户密码 获取自己的签到情况(直接访问请假系统获取)，需要已存在请假系统密码
-     *
-     * @return
-     */
-    public static String getCheckIn(Context context) throws Exception {
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
-        StuInfo stu = juiceDatabase.getStuInfoDao().getStuInfo();
-
-        // 存在请假系统密码，则可以开始获取
-        return getLeave(stu.getStuID().toString(), stu.getLeavePassword(),
-                Constant.URI_CHECK_IN, context);
-    }
-
-    /**
-     * 读取数据库 用户账户密码 获取班级未签(直接访问请假系统获取)，需要已存在请假系统密码
-     *
-     * @param context
-     * @return
-     */
-    public static String getUnsignedList(Context context) throws Exception {
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
-        StuInfo stu = juiceDatabase.getStuInfoDao().getStuInfo();
-        return getLeave(stu.getStuID().toString(), stu.getLeavePassword(),
-                Constant.URI_UNSIGNED_LIST, context);
-    }
+    private static boolean enableSaveCookie = true;
 
     /**
      * 获取请假信息的主函数
@@ -71,6 +43,7 @@ public class LeaveInfo {
                 // 成功直接返回
                 return parse(prefLeaveCookie, uri);
             } catch (Exception e) {
+                // 存在异常，重新获取cookie
                 LogUtils.getInstance().d("本地Cookie不可用，开始模拟登录获取Cookie");
             }
         }
@@ -89,32 +62,28 @@ public class LeaveInfo {
     /**
      * 根据cookie 爬取请假系统信息
      *
-     * @param tmpCookies
+     * @param cookies
      * @return
      */
-    public static String parse(String tmpCookies, String uri) {
+    public static String parse(String cookies, String uri) throws Exception {
 
+        OkHttpClient client = HttpUtils.getHttpClient();
 
-        HttpClient httpClient = new HttpClient();
-        GetMethod getMethod2 = new GetMethod(uri);
-        getMethod2.setRequestHeader("referer", "http://mis.fdzcxy.com/index.php?n=login");
-        getMethod2.setRequestHeader("host", "mis.fdzcxy.com");
-        getMethod2.setRequestHeader("cookie", tmpCookies.toString());
-        getMethod2.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36");
-        try {
-            httpClient.executeMethod(getMethod2);
-        } catch (IOException e) {
-            LogUtils.getInstance().e("executeMethod异常");
+        Request request = new Request.Builder()
+                .addHeader("Referer", "http://mis.fdzcxy.com/index.php?n=login")
+                .addHeader("Host", "mis.fdzcxy.com")
+                .addHeader("Cookie", cookies)
+                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36")
+                .get()
+                .url(uri)
+                .build();
+
+        Response response = client.newCall(request).execute();
+        String result = response.body().string();
+        if (result.contains("欢迎登录至诚信息管理系统")) {
+            throw new Exception("Cookie无效,登录失败");
         }
-        try {
-            byte[] b = getMethod2.getResponseBody();
-            LogUtils.getInstance().d("获取请假系统信息成功");
-            String leaveInfo = new String(b, "utf-8");
-            LogUtils.getInstance().d(leaveInfo);
-            return leaveInfo;
-        } catch (IOException e) {
-            LogUtils.getInstance().e("getResponseBodyAsString异常！！");
-        }
-        return null;
+
+        return result;
     }
 }

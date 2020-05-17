@@ -6,15 +6,14 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.OneWeekCourse;
-import com.juice.timetable.data.parse.ParseOneWeek;
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.UserInfoUtils;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 
 /**
  * <pre>
@@ -31,89 +30,67 @@ public class EduInfoTest {
         return InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 
-    public String getUserInfo(String info) {
-        return UserInfoUtils.getINSTANT(getContext()).getProperty(info);
-    }
 
-    public String getID() {
-        return getUserInfo("id");
-    }
-
-    public String getEduPasswd() {
-        return getUserInfo("eduPasswd");
-    }
-
-    public String getLeavePasswd() {
-        return getUserInfo("leavePasswd");
-    }
-
-
+    /**
+     * 测试获取周课表
+     * 包括 有cookie和无cookie情况
+     */
     @Test
-    public void getTimeTable() {
-        // 周课表
-        String uri = "http://jwb.fdzcxy.com/kb/zkb_xs.asp";
+    public void testGetTimeTable() {
+        // 清除Cookie缓存
+        PreferencesUtils.init(getContext());
+        PreferencesUtils.clear(Constant.PREF_EDU_COOKIE);
+        // 1.无cookie获取课表
+        getTimetable();
+        // 判断是否缓存cookie
+        Assert.assertNotNull(PreferencesUtils.getString(Constant.PREF_EDU_COOKIE, null));
+
+        // 1.有cookie获取课表
+        getTimetable();
+
+    }
+
+    public void getTimetable() {
+        UserInfoUtils instant = UserInfoUtils.getINSTANT(getContext());
         try {
-            String timeTable = EduInfo.getTimeTable(getID(), getEduPasswd(), uri, getContext());
+            String timeTable = EduInfo.getTimeTable(instant.getID(), instant.getEduPasswd(), Constant.URI_ONE_WEEK, getContext());
             LogUtils.getInstance().d("课表数据：" + timeTable);
+            Assert.assertTrue(timeTable.contains("完整课表"));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-    @Test
-    public void parse() {
-    }
 
     /**
-     * 测试获取第10周周课表并解析
+     * 使用cookie登录教务系统获取周课表
      *
      * @throws Exception
      */
     @Test
-    public void getOneWeekCourse() throws Exception {
+    public void testParse() throws Exception {
+        UserInfoUtils instant = UserInfoUtils.getINSTANT(getContext());
+        String cookie = EduHttp.getCookie(instant.getID(), instant.getEduPasswd(), getContext());
+        String parse = EduInfo.parse(cookie, Constant.URI_ONE_WEEK);
+        LogUtils.getInstance().d("周课表：" + parse);
 
-        String oneWeekCourse = EduInfo.getOneWeekCourse(10, getContext());
-        List<OneWeekCourse> oneWeekCourses = ParseOneWeek.parseCourse(oneWeekCourse);
-        for (OneWeekCourse oneWeekCours : oneWeekCourses) {
-            System.out.println(oneWeekCours);
-        }
-        System.out.println(oneWeekCourse);
     }
 
+    /**
+     * 使用失效cookie登录教务系统获取周课表
+     * 抛出异常
+     *
+     * @throws Exception
+     */
     @Test
-    public void getWeekCourse() throws Exception {
-        List<OneWeekCourse> tempList = new ArrayList<>();
-        int week = 0;
+    public void testParseFail() {
 
-//        oneWeekCourseDao.deleteCourse();
-//        List<Integer> inWeek = oneWeekCourseDao.getInWeek();
-        // 获取数据库中存了哪些周的周课表
-        HashSet<Integer> set = new HashSet<>();
-        LogUtils.getInstance().d("周课表set:" + set);
-        // 数据库为空 需要爬取上两周课程
-        if (set.isEmpty()) {
-            week = -2;
+        String parse = null;
+        try {
+            parse = EduInfo.parse("", Constant.URI_ONE_WEEK);
+        } catch (Exception e) {
+            Assert.assertEquals(null, "登录失败，需要重新获取Cookie", e.getMessage());
         }
-        // 模拟登录获取课表数据
-        for (; week <= 2; week++) {
-            String oneWeekCourse = EduInfo.getOneWeekCourse(Constant.CUR_WEEK + week, getContext());
-            List<OneWeekCourse> oneWeekCourses = ParseOneWeek.parseCourse(oneWeekCourse);
-            LogUtils.getInstance().d("获取第 <" + (Constant.CUR_WEEK + week) + "> 周课表");
-            LogUtils.getInstance().d("获取第 <" + (Constant.CUR_WEEK + week) + "> 周课表 获取前List:" + oneWeekCourses);
-            for (OneWeekCourse oneWeekCours : oneWeekCourses) {
-                LogUtils.getInstance().d("获取第 <" + (Constant.CUR_WEEK + week) + "> 周课表:" + oneWeekCours);
-            }
-            couList.addAll(oneWeekCourses);
-            // 删除该数据库中周的课表，避免冲突
 
-        }
-        for (OneWeekCourse oneWeekCourse : couList) {
-            LogUtils.getInstance().d(oneWeekCourse.toString());
-            // 插入数据库
-//            oneWeekCourseDao.insertCourse(oneWeekCourse);
-
-        }
-        LogUtils.getInstance().d("解析本周、上两周、下两周的周课表 结束");
     }
 }

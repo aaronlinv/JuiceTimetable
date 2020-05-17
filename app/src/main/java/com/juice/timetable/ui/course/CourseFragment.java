@@ -57,7 +57,7 @@ public class CourseFragment extends Fragment {
     private int WEEK_TEXT_SIZE = 12;
     private int NODE_TEXT_SIZE = 11;
     private int NODE_WIDTH = 28;
-    private Integer mCurrentMonth = 4;
+    private Integer mCurrentMonth = 5;
 
     private TextView mMonthTextView;
 
@@ -74,17 +74,39 @@ public class CourseFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         // dataBinding 用viewBinding的方式初始化也没问题
         binding = FragmentCourseBinding.inflate(getLayoutInflater());
-
+        initCurrentWeek();
         init();
         initDatabase();
 
         return binding.getRoot();
     }
 
+    /**
+     * 初始化当前周
+     */
+    private void initCurrentWeek() {
+
+        Constant.CUR_WEEK = Utils.getCurrentWeek();
+        // 也要给CourseView也设置上
+        binding.courseView.setCurrentIndex(Constant.CUR_WEEK);
+    }
+
     @SuppressLint("HandlerLeak")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // 调式模式：注入自己的账号密码，用于免登录调式
+        if (Constant.DEBUG_MODE) {
+            final UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
+            stuInfoDao.deleteStuInfo();
+            StuInfo stuInfo = new StuInfo();
+            stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
+            stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
+            stuInfo.setLeavePassword(userInfoUtils.getLeavePasswd());
+            stuInfoDao.insertStuInfo(stuInfo);
+            LogUtils.getInstance().d("调试模式：注入学号密码结束");
+        }
 
         StuInfo stu = stuInfoDao.getStuInfo();
         // 在调试模式 或者是数据库中没有用户数据  进入首次登录界面
@@ -94,17 +116,6 @@ public class CourseFragment extends Fragment {
             handler();
             menuListener();
             refreshListener();
-
-            // 调式模式：注入自己的账号密码，用于免登录调式
-            if (Constant.DEBUG_MODE) {
-                final UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
-                stuInfoDao.deleteStuInfo();
-                StuInfo stuInfo = new StuInfo();
-                stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
-                stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
-                stuInfo.setLeavePassword(userInfoUtils.getLeavePasswd());
-                stuInfoDao.insertStuInfo(stuInfo);
-            }
 
 
             // 首次登录，获取数据并刷新界面
@@ -262,8 +273,11 @@ public class CourseFragment extends Fragment {
 //                        allWeekCourseDao.deleteAllWeekCourse();
                 LogUtils.getInstance().d("setOnRefreshListener:删除数据库");
                 String allCourse = null;
+                StuInfoDao stuInfoDao = database.getStuInfoDao();
+                StuInfo stuInfo = stuInfoDao.getStuInfo();
+
                 try {
-                    allCourse = EduInfo.getAllCourse(requireContext().getApplicationContext());
+                    allCourse = EduInfo.getTimeTable(stuInfo.getStuID().toString(), stuInfo.getEduPassword(), Constant.URI_WHOLE_COURSE, requireContext());
                 } catch (Exception e) {
                     LogUtils.getInstance().d("setOnRefreshListener：" + e.getMessage());
                 }
@@ -414,13 +428,14 @@ public class CourseFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                LogUtils.getInstance().d("用户数据库信息：" + stuInfoDao.getStuInfo());
-                boolean hasLeavePwd = (stuInfoDao.getStuInfo().getEduPassword() != null);
+                StuInfo stuInfo = stuInfoDao.getStuInfo();
+                LogUtils.getInstance().d("用户数据库信息：" + stuInfo);
+                boolean hasLeavePwd = (stuInfo.getEduPassword() != null);
                 // (签到时间或者调试模式)且数据库有请假系统密码  初始化签到信息
                 LogUtils.getInstance().d("有请假系统密码则开始获取签到信息");
                 if ((Utils.isCheckInTime() || Constant.DEBUG_CHECK_IN_TEXTVIEW) && hasLeavePwd) {
                     try {
-                        String checkIn = LeaveInfo.getCheckIn(requireContext());
+                        String checkIn = LeaveInfo.getLeave(stuInfo.getStuID().toString(), stuInfo.getLeavePassword(), Constant.URI_CHECK_IN, requireContext());
                         LogUtils.getInstance().d("签到数据：" + checkIn);
 
                         MyCheckIn mySigned = ParseCheckIn.getMySigned(checkIn);
@@ -450,6 +465,9 @@ public class CourseFragment extends Fragment {
      * 解析课表 获取本周、上两周、下两周的周课表
      */
     private void getOneWeekCou() throws Exception {
+        // 获取用户数据
+        StuInfoDao stuInfoDao = database.getStuInfoDao();
+        StuInfo stuInfo = stuInfoDao.getStuInfo();
         // 解析的周课表的List
         ArrayList<OneWeekCourse> couList = new ArrayList<>();
         // 要获取的周课表，0为当前周
@@ -468,7 +486,7 @@ public class CourseFragment extends Fragment {
         }
         // 模拟登录获取课表数据
         for (; week <= 2; week++) {
-            String oneWeekCourse = EduInfo.getOneWeekCourse(Constant.CUR_WEEK + week, requireContext());
+            String oneWeekCourse = EduInfo.getTimeTable(stuInfo.getStuID().toString(), stuInfo.getEduPassword(), Constant.URI_ONE_WEEK + (Constant.CUR_WEEK + week), requireContext());
             List<OneWeekCourse> oneWeekCourses = ParseOneWeek.parseCourse(oneWeekCourse);
             LogUtils.getInstance().d("获取第 <" + (Constant.CUR_WEEK + week) + "> 周课表");
             LogUtils.getInstance().d("获取第 <" + (Constant.CUR_WEEK + week) + "> 周课表 获取前List:" + oneWeekCourses);

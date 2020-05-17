@@ -21,6 +21,8 @@ public class Constant {
     public static final String URI_CHECK_IN = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-record-student&c=dormcheckrecordstudent";
     // 班级未签
     public static final String URI_UNSIGNED_LIST = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-unsignin-cls&c=dormcheckclassunsignin";
+    // 请假系统登录入口
+    public static final String URI_LEAVE_LOGIN = "http://mis.fdzcxy.com/index.php?n=login&s=1001";
 
     // 登录成功
     public static final int MSG_LOGIN_SUCCESS = 2020;
@@ -39,18 +41,19 @@ public class Constant {
 
     // TODO: 2020/5/6 判断当前周
     // 当前学校周
-    public static final int CUR_WEEK = 12;
+    public static int CUR_WEEK = 0;
 
     //
     public static final String PREF_EDU_COOKIE = "PREF_EDU_COOKIE";
     public static final String PREF_LEAVE_COOKIE = "PREF_LEAVE_COOKIE";
+    public static final String PREF_FIRST_WEEK_MONDAY = "PREF_FIRST_WEEK_MONDAY";
 
     // 注入自己的账号密码，用于免登录调式
     public static boolean DEBUG_MODE = false;
     // 调式Init界面，用于调试登录界面
     public static boolean DEBUG_INIT_FRAGMENT = false;
     // 调式签到提示栏
-    public static boolean DEBUG_CHECK_IN_TEXTVIEW = false;
+    public static boolean DEBUG_CHECK_IN_TEXTVIEW = true;
 
     // 首次登录
     public static boolean FIRST_LOGIN = false;

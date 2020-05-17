@@ -1,82 +1,61 @@
 package com.juice.timetable.data.http;
 
+import com.juice.timetable.app.Constant;
 import com.juice.timetable.utils.FileUtils;
 import com.juice.timetable.utils.LogUtils;
 
-import org.apache.commons.httpclient.Cookie;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.cookie.CookiePolicy;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
+import java.util.List;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * <pre>
  *     author : Aaron
  *     time   : 2020/04/29
  *     desc   :
- *     version: 1.0
+ *     version: 2.0
  * </pre>
  */
 public class LeaveHttp {
+
     public static String getCookie(String stuID, String stuPassword) throws Exception {
 
         String userId = FileUtils.hex_md5(stuID);
         String passWd = FileUtils.hex_md5(stuPassword);
-        String cookies = "";
 
-        // 请假系统主页url
-        // 使用：http://mis.fdzcxy.com/index.php 报错：Circular redirect
-        String mainURL = "http://mis.fdzcxy.com";
+        // okHttp
+        FormBody formBody = new FormBody.Builder()
+                .add("user", userId)
+                .add("passwd", passWd)
+                .build();
+        OkHttpClient client = HttpUtils.getHttpClient();
+        Request request = new Request.Builder()
+                .post(formBody)
+                .url(Constant.URI_LEAVE_LOGIN)
+                .build();
 
-        // 登录入口url
-        String loginURL = "http://mis.fdzcxy.com/index.php?n=login&s=1001";
+        Response response = client.newCall(request).execute();
+        String result = response.body().string();
 
-        //创建浏览器对象
-        HttpClient httpClient = new HttpClient();
-
-        // 访问主页获取PHPSESSID
-        GetMethod getMethod = new GetMethod(mainURL);
-
-        //设置HttpClient接收Cookie
-        httpClient.getParams().setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
-        httpClient.executeMethod(getMethod);
-
-        //获取访问后得到的Cookie
-        Cookie[] cookiesArr = httpClient.getState().getCookies();
-        StringBuffer tmpCookies = new StringBuffer();
-        for (Cookie c1 : cookiesArr) {
-            tmpCookies.append(c1.toString() + ";");
-        }
-        cookies = tmpCookies.toString();
-
-        LogUtils.getInstance().d("从请假系统登录页获取的cookie:" + cookies);
-
-        //模拟登录
-        PostMethod postMethod = new PostMethod(loginURL);
-        //设置cookie
-        postMethod.setRequestHeader("cookie", cookies);
-        //设置登录时需要的信息，用户名和密码
-        NameValuePair[] data = {
-                new NameValuePair("user", userId),
-                new NameValuePair("passwd", passWd),
-        };
-        postMethod.setRequestBody(data);
-
-        int statusCode = httpClient.executeMethod(postMethod);
-        // 无论密码正误都是返回200
-        LogUtils.getInstance().d("发送账号密码返回的状态码：" + statusCode);
-
-        byte[] b = postMethod.getResponseBody();
-        String responseBody = new String(b, "utf-8");
-
-        LogUtils.getInstance().d("响应体：" + responseBody);
-
-        if (responseBody.contains("{\"result\":false}")) {
+        if (result.contains("{\"result\":false}")) {
             throw new Exception("您输入的请假系统用户名或是密码有误");
         }
 
-        // 登录成功后当前cookie将能够访问系统
-        return cookies;
+        // cookie持久化
+        List<String> cookies = response.headers("Set-Cookie");
+        LogUtils.getInstance().d("响应：" + result);
+        LogUtils.getInstance().d("cookie：" + cookies);
+
+        StringBuffer cookieStr = new StringBuffer();
+        for (String cookie : cookies) {
+            cookieStr.append(cookie);
+            cookieStr.append(";");
+        }
+        LogUtils.getInstance().d("Cookie String:" + cookieStr);
+        return cookieStr.toString();
     }
+
 }
