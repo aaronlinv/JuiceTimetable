@@ -9,8 +9,11 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="com.juice.timetable"
-            android:targetClass="com.juice.timetable.MainActivity" />
-        <categories android:name="android.shortcut.conversation" />
+            android:targetClass="com.juice.timetable.MainActivity">
+            <extra
+                android:name="luanchFragment"
+                android:value="UnsignedFragment" />
+        </intent>
     </shortcut>
     <!-- Specify more shortcuts here. -->
 </shortcuts>

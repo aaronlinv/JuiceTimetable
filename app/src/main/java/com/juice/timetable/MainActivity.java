@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -27,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private CourseView courseView;
+    FragmentManager fragmentManager;
+    FragmentTransaction transaction;
 
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
@@ -65,8 +70,17 @@ public class MainActivity extends AppCompatActivity {
 
         // 初始化PreferencesUtils
         PreferencesUtils.init(getApplicationContext());
-
+        String luanchFragment = getIntent().getStringExtra("luanchFragment");
+        fragmentManager = this.getSupportFragmentManager();
+        if (luanchFragment == null) {
+            Toast.makeText(MainActivity.this, "null", Toast.LENGTH_SHORT);
+        } else if (luanchFragment.equals("UnsignedFragment")) {
+            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_unsigned);
+        } else {
+            Toast.makeText(MainActivity.this, "else", Toast.LENGTH_SHORT);
+        }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
