@@ -3,12 +3,17 @@ package com.juice.timetable.ui.about;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +25,7 @@ import com.juice.timetable.R;
 public class AboutFragment extends Fragment {
     private Toolbar toolbar;
     private ImageButton imageButton;
+    private TextView githubLink, blogLink;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_about, container, false);
@@ -33,12 +39,21 @@ public class AboutFragment extends Fragment {
                 joinQQGroup("NP5EqyF94Aiyi5CQoNr4-yZYyv5SynLZ");
             }
         });
+        NoUnderlineSpan mNoUnderlineSpan = new NoUnderlineSpan();
+        if (githubLink.getText() instanceof Spannable) {
+            Spannable github = (Spannable) githubLink.getText();
+            Spannable blog = (Spannable) blogLink.getText();
+            github.setSpan(mNoUnderlineSpan, 0, github.length(), Spanned.SPAN_MARK_MARK);
+            blog.setSpan(mNoUnderlineSpan, 0, blog.length(), Spanned.SPAN_MARK_MARK);
+        }
         return root;
     }
 
     private void findID(View root) {
         toolbar = requireActivity().findViewById(R.id.toolbar);
         imageButton = root.findViewById(R.id.QQfeedback);
+        githubLink = root.findViewById(R.id.tv_github);
+        blogLink = root.findViewById(R.id.blogLink);
     }
 
     /****************
@@ -63,4 +78,15 @@ public class AboutFragment extends Fragment {
         }
     }
 
+    /*******
+     * 去除下划线
+     */
+    public class NoUnderlineSpan extends UnderlineSpan {
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            ds.setColor(ds.linkColor);
+            ds.setUnderlineText(false);
+        }
+    }
 }
