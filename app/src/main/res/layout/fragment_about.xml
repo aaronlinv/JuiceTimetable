@@ -5,11 +5,10 @@
     android:layout_height="match_parent">
 
     <com.juice.timetable.ui.about.RippleLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingTop="15dp"
-        android:paddingBottom="140dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -34,7 +33,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/textView4"
@@ -153,9 +152,9 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/QQ_feedback"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/QQfeedback"
+                android:layout_width="80dp"
+                android:layout_height="67dp"
                 android:src="@drawable/ic_launcher_foreground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
