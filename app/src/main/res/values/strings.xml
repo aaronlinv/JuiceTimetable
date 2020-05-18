@@ -38,4 +38,6 @@
     <string name="team_name">开发团队：happy_tree_friends</string>
     <string name="openSource">以下开源项目</string>
     <string name="team_blog">团队博客：https://www.cnblogs.com/1148059038tean/</string>
+    <string name="compose_shortcut_short_label1">test</string>
+    <string name="compose_shortcut_long_label1">test</string>
 </resources>

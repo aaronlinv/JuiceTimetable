@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="unsignd"
+        android:enabled="true"
+        android:icon="@drawable/logo"
+        android:shortcutShortLabel="@string/compose_shortcut_short_label1"
+        android:shortcutLongLabel="@string/compose_shortcut_long_label1">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.juice.timetable"
+            android:targetClass="com.juice.timetable.MainActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <!-- Specify more shortcuts here. -->
+</shortcuts>
