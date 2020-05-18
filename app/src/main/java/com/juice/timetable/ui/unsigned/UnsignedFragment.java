@@ -84,7 +84,7 @@ public class UnsignedFragment extends Fragment {
     private void findID(View root) {
         toolbar = requireActivity().findViewById(R.id.toolbar);
         recyclerView = root.findViewById(R.id.recyclerview);
-        swipeRefreshLayout = root.findViewById(R.id.swiperefreshlayout);
+        swipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
     }
 
     private void getTable() {
