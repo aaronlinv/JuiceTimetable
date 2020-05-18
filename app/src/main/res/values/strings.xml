@@ -25,4 +25,9 @@
     <string name="textView3">姓名</string>
     <string name="menu_about">关于</string>
     <string name="todo">TODO</string>
+    <string name="github_lib">org.jsoup:jsoup:1.11.3
+        \norg.mockito:mockito-core:1.10.19
+        \ncom.squareup.okhttp3:okhttp:4.6.0
+        \njunit:junit:4.12
+    </string>
 </resources>
