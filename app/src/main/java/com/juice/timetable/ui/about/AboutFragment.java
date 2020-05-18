@@ -26,6 +26,7 @@ public class AboutFragment extends Fragment {
         findID(root);
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, false);
+        imageButton.getBackground().setAlpha(200);
         imageButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -30,7 +30,7 @@ public class RippleLayout extends LinearLayout {
     /**
      * 圆圈的个数
      */
-    private int mCircleMax = 20;
+    private int mCircleMax = 30;
 
     public RippleLayout(Context context) {
         super(context);
