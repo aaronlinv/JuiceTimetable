@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
-        android:shortcutId="unsignd"
+        android:shortcutId="unsigned"
         android:enabled="true"
-        android:icon="@drawable/logo"
-        android:shortcutShortLabel="@string/compose_shortcut_short_label1"
-        android:shortcutLongLabel="@string/compose_shortcut_long_label1">
+        android:icon="@drawable/sign"
+        android:shortcutShortLabel="@string/shortcuts_unsigned">
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="com.juice.timetable"
@@ -13,6 +12,34 @@
             <extra
                 android:name="luanchFragment"
                 android:value="UnsignedFragment" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="edit"
+        android:enabled="true"
+        android:icon="@drawable/edit"
+        android:shortcutShortLabel="@string/shortcuts_edit">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.juice.timetable"
+            android:targetClass="com.juice.timetable.MainActivity">
+            <extra
+                android:name="luanchFragment"
+                android:value="EditFragment" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="feedback"
+        android:enabled="true"
+        android:icon="@drawable/ic_about"
+        android:shortcutShortLabel="@string/shortcuts_feedback">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.juice.timetable"
+            android:targetClass="com.juice.timetable.MainActivity">
+            <extra
+                android:name="luanchFragment"
+                android:value="AboutFragment" />
         </intent>
     </shortcut>
     <!-- Specify more shortcuts here. -->

@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
 
-    @SuppressLint("SourceLockedOrientationActivity")
+    @SuppressLint({"SourceLockedOrientationActivity", "ShowToast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,9 +75,12 @@ public class MainActivity extends AppCompatActivity {
         if (luanchFragment == null) {
             Toast.makeText(MainActivity.this, "null", Toast.LENGTH_SHORT);
         } else if (luanchFragment.equals("UnsignedFragment")) {
+            Toast.makeText(MainActivity.this, "test", Toast.LENGTH_SHORT).show();
             Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_unsigned);
-        } else {
-            Toast.makeText(MainActivity.this, "else", Toast.LENGTH_SHORT);
+        } else if (luanchFragment.equals("UnsignedFragment")) {
+            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_login);
+        } else if (luanchFragment.equals("AboutFragment")) {
+            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_about);
         }
     }
 
