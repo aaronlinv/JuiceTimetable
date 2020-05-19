@@ -12,14 +12,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.juice.timetable.data.JuiceDatabase;
+import com.juice.timetable.data.bean.StuInfo;
+import com.juice.timetable.data.dao.StuInfoDao;
 import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.ui.course.CourseView;
 import com.juice.timetable.utils.LogUtils;
@@ -29,9 +30,6 @@ import com.juice.timetable.utils.UserInfoUtils;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private CourseView courseView;
-    FragmentManager fragmentManager;
-    FragmentTransaction transaction;
 
     @SuppressLint({"SourceLockedOrientationActivity", "ShowToast"})
     @Override
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         //侧边栏
         NavigationView navigationView = findViewById(R.id.nav_view);
         //课表
-        courseView = findViewById(R.id.course_view);
+        CourseView courseView = findViewById(R.id.course_view);
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -71,16 +69,21 @@ public class MainActivity extends AppCompatActivity {
         // 初始化PreferencesUtils
         PreferencesUtils.init(getApplicationContext());
         String luanchFragment = getIntent().getStringExtra("luanchFragment");
-        fragmentManager = this.getSupportFragmentManager();
-        if (luanchFragment == null) {
-            Toast.makeText(MainActivity.this, "null", Toast.LENGTH_SHORT);
-        } else if (luanchFragment.equals("UnsignedFragment")) {
-            Toast.makeText(MainActivity.this, "test", Toast.LENGTH_SHORT).show();
-            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_unsigned);
-        } else if (luanchFragment.equals("UnsignedFragment")) {
-            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_login);
-        } else if (luanchFragment.equals("AboutFragment")) {
-            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_about);
+        JuiceDatabase database = JuiceDatabase.getDatabase(this.getApplicationContext());
+        StuInfoDao stuInfoDao = database.getStuInfoDao();
+        StuInfo stu = stuInfoDao.getStuInfo();
+        if (stu == null) {
+            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_nav_course_to_initFragment);
+        } else {
+            if (luanchFragment == null) {
+                Toast.makeText(MainActivity.this, "null", Toast.LENGTH_SHORT);
+            } else if (luanchFragment.equals("UnsignedFragment")) {
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_unsigned);
+            } else if (luanchFragment.equals("EditFragment")) {
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_login);
+            } else if (luanchFragment.equals("AboutFragment")) {
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_about);
+            }
         }
     }
 

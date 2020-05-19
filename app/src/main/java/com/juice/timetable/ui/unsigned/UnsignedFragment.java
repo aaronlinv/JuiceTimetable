@@ -43,7 +43,8 @@ public class UnsignedFragment extends Fragment {
     private Handler mHandler;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
-
+    private StuInfoDao stuInfoDao;
+    private JuiceDatabase database;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         //寻找layout

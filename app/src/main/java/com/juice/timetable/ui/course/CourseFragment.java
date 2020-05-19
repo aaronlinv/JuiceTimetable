@@ -110,7 +110,7 @@ public class CourseFragment extends Fragment {
 
         StuInfo stu = stuInfoDao.getStuInfo();
         // 在调试模式 或者是数据库中没有用户数据  进入首次登录界面
-        if (Constant.DEBUG_INIT_FRAGMENT || stu == null) {
+        if (Constant.DEBUG_INIT_FRAGMENT) {
             Navigation.findNavController(requireView()).navigate(R.id.action_nav_course_to_initFragment);
         } else {
             handler();
