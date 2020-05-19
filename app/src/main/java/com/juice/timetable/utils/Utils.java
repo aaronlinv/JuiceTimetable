@@ -1,5 +1,6 @@
 package com.juice.timetable.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.GradientDrawable;
@@ -200,6 +201,7 @@ public class Utils {
      */
     private static Toast toast;
 
+    @SuppressLint("ShowToast")
     public static void showToast(Context context, String content) {
         if (toast == null) {
             toast = Toast.makeText(context, content, Toast.LENGTH_SHORT);
