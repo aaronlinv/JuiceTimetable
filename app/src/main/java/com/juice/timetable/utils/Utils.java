@@ -193,9 +193,4 @@ public class Utils {
     public static int getColor(Resources resources, int colorId) {
         return resources.getColor(colorId);
     }
-
-    /*public static int dip2px(Context context, float dpValue) {
-        return (int) (0.5f + dpValue * context.getResources().getDisplayMetrics().density);
-    }
-     */
 }

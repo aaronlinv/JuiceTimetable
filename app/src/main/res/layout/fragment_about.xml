@@ -19,12 +19,12 @@
         app:layout_constraintVertical_bias="0.0">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="93dp"
+            android:layout_height="84dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
-            android:src="@mipmap/ic_launcher_round"
-            android:contentDescription="@string/todo" />
+            android:contentDescription="@string/todo"
+            android:src="@drawable/ic_launcher_round" />
 
         <TextView
             android:layout_width="wrap_content"
