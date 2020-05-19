@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -33,6 +32,7 @@ import com.juice.timetable.data.dao.StuInfoDao;
 import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseClassNoSignedItem;
 import com.juice.timetable.data.viewmodel.ClassNoSignedItemViewModel;
+import com.juice.timetable.utils.Utils;
 
 import java.util.List;
 
@@ -157,11 +157,11 @@ public class UnsignedFragment extends Fragment {
                 super.handleMessage(msg);
                 String msgStr = (String) msg.obj;
                 if ("success".equals(msgStr)) {
-                    Toast.makeText(requireActivity(), "未签名单更新成功", Toast.LENGTH_SHORT).show();
+                    Utils.showToast(requireActivity(), "未签名单更新成功");
                 } else if ("passwd".equals(msgStr)) {
-                    Toast.makeText(requireActivity(), "未输入请假系统密码", Toast.LENGTH_SHORT).show();
+                    Utils.showToast(requireActivity(), "未输入请假系统密码");
                 } else if ("network".equals(msgStr)) {
-                    Toast.makeText(requireActivity(), "设备未联网", Toast.LENGTH_SHORT).show();
+                    Utils.showToast(requireActivity(), "设备未联网");
                 }
                 swipeRefreshLayout.setRefreshing(false);
             }

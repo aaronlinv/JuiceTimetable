@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.widget.Toast;
 
 import com.juice.timetable.app.Constant;
 
@@ -193,4 +194,20 @@ public class Utils {
     public static int getColor(Resources resources, int colorId) {
         return resources.getColor(colorId);
     }
+
+    /**
+     * toast接口
+     */
+    private static Toast toast;
+
+    public static void showToast(Context context, String content) {
+        if (toast == null) {
+            toast = Toast.makeText(context, content, Toast.LENGTH_SHORT);
+        } else {
+            toast.setText(content);
+        }
+        toast.show();
+    }
+
+
 }

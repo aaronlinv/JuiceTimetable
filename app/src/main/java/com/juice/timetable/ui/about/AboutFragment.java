@@ -14,13 +14,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.juice.timetable.R;
+import com.juice.timetable.utils.Utils;
 
 public class AboutFragment extends Fragment {
     private Toolbar toolbar;
@@ -69,7 +69,7 @@ public class AboutFragment extends Fragment {
         try {
             startActivity(intent);
         } catch (Exception e) {
-            Toast.makeText(requireActivity(), "您还没有安装QQ，请先安装软件", Toast.LENGTH_SHORT).show();
+            Utils.showToast(requireActivity(), "您还没有安装QQ，请先安装软件");
             // 未安装手Q或安装的版本不支持
         }
     }
