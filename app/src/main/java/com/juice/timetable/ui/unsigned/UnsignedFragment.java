@@ -4,7 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Network;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -103,18 +105,21 @@ public class UnsignedFragment extends Fragment {
             }
         });
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private static boolean isNetworkConnected(Context context) {
         if (context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             assert mConnectivityManager != null;
-            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-            return mNetworkInfo != null;
+            Network network = mConnectivityManager.getActiveNetwork();
+            return network != null;
         }
         return false;
     }
 
     private void fresh() {
         new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @SuppressLint("ShowToast")
             @Override
             public void run() {

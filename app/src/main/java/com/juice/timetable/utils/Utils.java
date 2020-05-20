@@ -80,7 +80,7 @@ public class Utils {
     阿发功能
      */
     private static int[] colorList = new int[]{
-            0xFF8AD297,
+            /*0xFF8AD297,
             0xFFF9A883,
             0xFF88CFCC,
             0xFFF19C99,
@@ -93,7 +93,7 @@ public class Utils {
             0xFFE2C38A,
             0xFFB29FD2,
             0xFFE2C490,
-            0xFFE2C490,
+            0xFFE2C490,*/
     };
 
     private static int[] darkColorList = new int[]{
@@ -110,7 +110,18 @@ public class Utils {
             0xFFD6A858,
             0xFF997FC3,
             0xFFDDB97B,
-            0xFFd3dEe5};
+            0xFFd3dEe5
+            /*0xFF1744,
+            0xfa6278,
+            0x2979ff,
+            0x1DE9B6,
+            0xffea00,
+            0xa375ff,
+            0xff9100,
+            0xff3d00,
+            0x2196f3,
+            0x005caf*/
+    };
 
     public static GradientDrawable
     getDrawable(Context context, int rgb,
@@ -140,7 +151,7 @@ public class Utils {
     }
 
     public static int getDarkRandomColor() {
-        return darkColorList[random.nextInt(20) % colorList.length];
+        return darkColorList[random.nextInt(20) % darkColorList.length];
     }
     /**
      * 设置第一周星期一到Preference
