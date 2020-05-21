@@ -73,9 +73,6 @@ public class Utils {
         return now.after(beginTime) && now.before(endTime);
     }
 
-    /*
-    阿发功能
-     */
     private static int[] darkColorList = new int[]{
             0xFF5ABF6C,
             0xFFF79060,
