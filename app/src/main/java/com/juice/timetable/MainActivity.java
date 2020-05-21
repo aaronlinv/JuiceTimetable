@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -76,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
             Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_nav_course_to_initFragment);
         } else {
             if (luanchFragment == null) {
-                Toast.makeText(MainActivity.this, "null", Toast.LENGTH_SHORT);
             } else if (luanchFragment.equals("UnsignedFragment")) {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_unsigned);
             } else if (luanchFragment.equals("EditFragment")) {
