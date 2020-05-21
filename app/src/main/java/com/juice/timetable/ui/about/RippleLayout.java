@@ -15,10 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * xxyangyoulin
- * 2018年10月06日13:37:22
- */
 public class RippleLayout extends LinearLayout {
 
     private Paint mPaint;
