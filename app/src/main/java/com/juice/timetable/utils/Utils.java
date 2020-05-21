@@ -79,23 +79,6 @@ public class Utils {
     /*
     阿发功能
      */
-    private static int[] colorList = new int[]{
-            /*0xFF8AD297,
-            0xFFF9A883,
-            0xFF88CFCC,
-            0xFFF19C99,
-            0xFFF7C56B,
-            0xFFD2A596,
-            0xFF67BDDE,
-            0xFF9CCF5A,
-            0xFF9AB4CF,
-            0xFFE593AD,
-            0xFFE2C38A,
-            0xFFB29FD2,
-            0xFFE2C490,
-            0xFFE2C490,*/
-    };
-
     private static int[] darkColorList = new int[]{
             0xFF5ABF6C,
             0xFFF79060,
@@ -111,16 +94,6 @@ public class Utils {
             0xFF997FC3,
             0xFFDDB97B,
             0xFFd3dEe5
-            /*0xFF1744,
-            0xfa6278,
-            0x2979ff,
-            0x1DE9B6,
-            0xffea00,
-            0xa375ff,
-            0xff9100,
-            0xff3d00,
-            0x2196f3,
-            0x005caf*/
     };
 
     public static GradientDrawable
@@ -145,10 +118,6 @@ public class Utils {
     }
 
     private static Random random = new Random();
-
-    public static int getRandomColor() {
-        return colorList[random.nextInt(20) % colorList.length];
-    }
 
     public static int getDarkRandomColor() {
         return darkColorList[random.nextInt(20) % darkColorList.length];
