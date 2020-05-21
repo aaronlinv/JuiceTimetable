@@ -31,7 +31,7 @@
     <shortcut
         android:shortcutId="feedback"
         android:enabled="true"
-        android:icon="@drawable/ic_about"
+        android:icon="@drawable/about"
         android:shortcutShortLabel="@string/shortcuts_feedback">
         <intent
             android:action="android.intent.action.VIEW"
