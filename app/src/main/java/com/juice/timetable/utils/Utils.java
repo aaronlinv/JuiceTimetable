@@ -2,9 +2,6 @@ package com.juice.timetable.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.widget.Toast;
 
 import com.juice.timetable.app.Constant;
@@ -96,27 +93,6 @@ public class Utils {
             0xFFd3dEe5
     };
 
-    public static GradientDrawable
-    getDrawable(Context context, int rgb,
-                float radius, int stroke, int strokeColor) {
-        GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setColor(rgb);
-        gradientDrawable.setCornerRadius(dip2px(context, radius));
-        gradientDrawable.setStroke(dip2px(context, stroke), strokeColor);
-        return gradientDrawable;
-    }
-
-    public static StateListDrawable
-    getPressedSelector(Context context, int color, int pressedColor, float radius) {
-        GradientDrawable normalD = getDrawable(context, color, radius, 0, 0);
-        GradientDrawable pressedD = getDrawable(context, pressedColor, radius, 0, 0);
-
-        StateListDrawable drawable = new StateListDrawable();
-        drawable.addState(new int[]{android.R.attr.state_pressed}, pressedD);
-        drawable.addState(new int[]{}, normalD);
-        return drawable;
-    }
-
     private static Random random = new Random();
 
     public static int getDarkRandomColor() {
@@ -171,9 +147,6 @@ public class Utils {
      */
     public static int getWeekGap(long weekBeginMillis, long endMillis) {
         return (int) (((endMillis - weekBeginMillis) / (1000 * 3600 * 24)) / 7);
-    }
-    public static int getColor(Resources resources, int colorId) {
-        return resources.getColor(colorId);
     }
 
     /**
