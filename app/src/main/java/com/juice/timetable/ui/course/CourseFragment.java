@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
@@ -69,16 +70,28 @@ public class CourseFragment extends Fragment {
     private List<Course> allWeekCourse;
     private HashSet<Integer> weekSet;
     private List<OneWeekCourse> oneWeekCourse;
+    private ViewPager2 mVpCourse;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         // dataBinding 用viewBinding的方式初始化也没问题
         binding = FragmentCourseBinding.inflate(getLayoutInflater());
+        mVpCourse = binding.vpCourse;
+
         initCurrentWeek();
         init();
         initDatabase();
-
+        initCourse();
         return binding.getRoot();
+    }
+
+    private void initCourse() {
+        CourseViewListAdapter courseViewListAdapter = new CourseViewListAdapter();
+        List<CourseView> courseViewList = new ArrayList<>();
+        CourseView courseView = new CourseView(requireContext());
+        courseViewList.add(courseView);
+        courseViewListAdapter.submitList(courseViewList);
+        mVpCourse.setAdapter(courseViewListAdapter);
     }
 
     /**
