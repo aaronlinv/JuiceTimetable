@@ -88,34 +88,25 @@ public class CourseViewListAdapter extends ListAdapter<CourseView, CourseViewHol
             //添加这个视图
             week.addView(textView, params);
         }
+        LinearLayout node = holder.itemView.findViewById(R.id.ll_node);
+        //  课程节数栏
+        int nodeItemHeight = Utils.dip2px(holder.itemView.getContext().getApplicationContext(), 55);
+        for (int i = 1; i <= 11; i++) {
+            TextView textView = new TextView(holder.itemView.getContext().getApplicationContext());
+            textView.setTextSize(NODE_TEXT_SIZE);
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(Color.GRAY);
+            textView.setText(String.valueOf(i));
 
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, nodeItemHeight);
+            node.addView(textView, params);
+        }
+
+        // TODO: 2020/5/23 初始化标题栏
 //        courseView.resetView();
     }
 
-//    private void init() {
-//
-//
-//        //  课程节数栏
-//        int nodeItemHeight = Utils.dip2px(requireContext().getApplicationContext(), 55);
-//        for (int i = 1; i <= 11; i++) {
-//            TextView textView = new TextView(requireContext().getApplicationContext());
-//            textView.setTextSize(NODE_TEXT_SIZE);
-//            textView.setGravity(Gravity.CENTER);
-//            textView.setTextColor(Color.GRAY);
-//            textView.setText(String.valueOf(i));
-//
-//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-//                    ViewGroup.LayoutParams.MATCH_PARENT, nodeItemHeight);
-//            binding.llNode.addView(textView, params);
-//        }
-//        // 初始化标题栏
-//        toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
-//
-//        // 不在签到时间并且不在调试模式 隐藏签到提示栏
-//        if (!Utils.isCheckInTime() && !Constant.DEBUG_CHECK_IN_TEXTVIEW) {
-//            binding.tvCheckIn.setVisibility(TextView.GONE);
-//        }
-//    }
 }
 
 class CourseViewHolder extends RecyclerView.ViewHolder {
