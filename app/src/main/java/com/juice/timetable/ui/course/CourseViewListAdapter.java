@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
+import com.juice.timetable.data.bean.CourseViewBean;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.Utils;
 
@@ -26,21 +27,21 @@ import com.juice.timetable.utils.Utils;
  *     version: 1.0
  * </pre>
  */
-public class CourseViewListAdapter extends ListAdapter<CourseView, CourseViewHolder> {
+public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseViewHolder> {
     private int NODE_WIDTH = 28;
     private int WEEK_TEXT_SIZE = 12;
     private int NODE_TEXT_SIZE = 11;
     private Integer mCurrentMonth = 5;
 
     protected CourseViewListAdapter() {
-        super(new DiffUtil.ItemCallback<CourseView>() {
+        super(new DiffUtil.ItemCallback<CourseViewBean>() {
             @Override
-            public boolean areItemsTheSame(@NonNull CourseView oldItem, @NonNull CourseView newItem) {
+            public boolean areItemsTheSame(@NonNull CourseViewBean oldItem, @NonNull CourseViewBean newItem) {
                 return oldItem == newItem;
             }
 
             @Override
-            public boolean areContentsTheSame(@NonNull CourseView oldItem, @NonNull CourseView newItem) {
+            public boolean areContentsTheSame(@NonNull CourseViewBean oldItem, @NonNull CourseViewBean newItem) {
                 return oldItem.getCurrentIndex() == newItem.getCurrentIndex();
             }
         });
@@ -50,13 +51,20 @@ public class CourseViewListAdapter extends ListAdapter<CourseView, CourseViewHol
     @Override
     public CourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         CourseViewHolder holder = new CourseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.pager_course_view, parent, false));
-
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
         CourseView courseView = holder.itemView.findViewById(R.id.course_view_pager);
+        CourseViewBean item = getItem(position);
+        LogUtils.getInstance().d("onBindViewHolder item -- > " + item);
+        courseView.setCurrentIndex(item.getCurrentIndex());
+        courseView.setSet(item.getWeekSet());
+        courseView.setCourses(item.getAllWeekCourse());
+        courseView.setOneWeekCourses(item.getOneWeekCourse());
+        courseView.resetView();
+
         // 星期栏
         LinearLayout week = holder.itemView.findViewById(R.id.ll_week);
         week.removeAllViews();

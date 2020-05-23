@@ -29,6 +29,7 @@ import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.Course;
+import com.juice.timetable.data.bean.CourseViewBean;
 import com.juice.timetable.data.bean.MyCheckIn;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.bean.StuInfo;
@@ -87,10 +88,20 @@ public class CourseFragment extends Fragment {
 
     private void initCourse() {
         CourseViewListAdapter courseViewListAdapter = new CourseViewListAdapter();
-        List<CourseView> courseViewList = new ArrayList<>();
-        CourseView courseView = new CourseView(requireContext());
-        courseViewList.add(courseView);
-        courseViewListAdapter.submitList(courseViewList);
+        List<CourseViewBean> courseViewBeanList = new ArrayList<>();
+        List<Course> allWeekCourse = allWeekCourseDao.getAllWeekCourse();
+        List<OneWeekCourse> oneWeekCourse = oneWeekCourseDao.getOneWeekCourse();
+        for (int i = 1; i <= 25; i++) {
+            CourseViewBean courseViewBean = new CourseViewBean();
+            courseViewBean.setAllWeekCourse(allWeekCourse);
+            courseViewBean.setCurrentIndex(i);
+            courseViewBean.setOneWeekCourse(oneWeekCourse);
+//            courseViewBean.setWeekSet(weekSet);
+            courseViewBean.setWeekSet(new HashSet<Integer>());
+
+            courseViewBeanList.add(courseViewBean);
+        }
+        courseViewListAdapter.submitList(courseViewBeanList);
         mVpCourse.setAdapter(courseViewListAdapter);
     }
 
