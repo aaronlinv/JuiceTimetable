@@ -56,7 +56,7 @@ public class ListViewService extends RemoteViewsService {
             OneWeekCourseRepository repository = new OneWeekCourseRepository(mContext);
             oneWeekCourses = repository.getOneWeekCourse();
             for (OneWeekCourse oneWeekCours : oneWeekCourses) {
-                if (oneWeekCours.getInWeek().equals(Constant.CUR_WEEK) && oneWeekCours.getDayOfWeek() == (getWeekday() - 5)) {
+                if (oneWeekCours.getInWeek().equals(Constant.CUR_WEEK) && oneWeekCours.getDayOfWeek() == (getWeekday())) {
                     mList.add(oneWeekCours);
                 }
             }
