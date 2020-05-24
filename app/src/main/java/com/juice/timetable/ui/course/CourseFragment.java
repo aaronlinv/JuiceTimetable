@@ -103,18 +103,15 @@ public class CourseFragment extends Fragment {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                int week = item.getItemId() + 1;
+                LogUtils.getInstance().d("MenuItem <" + week + "> onMenuItemClick");
 
-                LogUtils.getInstance().d("MenuItem <" + item.getItemId() + "> onMenuItemClick");
-
-                if (item.getItemId() != Constant.CUR_WEEK) {
-
-                    toolbar.setTitle("第" + item.getItemId() + "周 (非本周)");
+                if (week != Constant.CUR_WEEK) {
+                    toolbar.setTitle("第" + week + "周 (非本周)");
                 } else {
                     toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
-
                 }
 
-                // 切换周
                 mVpCourse.setCurrentItem(item.getItemId(), true);
 
                 return false;
@@ -127,6 +124,20 @@ public class CourseFragment extends Fragment {
             public void onRefresh() {
                 refreshData();
 
+            }
+        });
+
+        // 翻页显示 当前周
+        mVpCourse.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                int week = position + 1;
+                if (week != Constant.CUR_WEEK) {
+                    toolbar.setTitle("第" + week + "周 (非本周)");
+                } else {
+                    toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
+                }
             }
         });
 
@@ -160,6 +171,9 @@ public class CourseFragment extends Fragment {
         }
         mCourseViewListAdapter.submitList(courseViewBeanList);
         mCourseViewListAdapter.notifyDataSetChanged();
+        int currentItem = mVpCourse.getCurrentItem();
+        LogUtils.getInstance().d("updateCourse currentItem -- > " + currentItem);
+
     }
 
     /**
