@@ -7,6 +7,9 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.juice.timetable.R;
+import com.juice.timetable.data.bean.OneWeekCourse;
+import com.juice.timetable.data.repository.OneWeekCourseRepository;
+import com.juice.timetable.utils.LogUtils;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -14,6 +17,8 @@ import java.util.List;
 
 
 public class ListViewService extends RemoteViewsService {
+
+    private List<OneWeekCourse> mList;
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -23,8 +28,9 @@ public class ListViewService extends RemoteViewsService {
     private class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
         private Context mContext;
+        private List<OneWeekCourse> oneWeekCourses;
 
-        private List<String> mList = new ArrayList<>();
+        private List<OneWeekCourse> mList = new ArrayList<>();
 
         /**
          * 构造函数
@@ -38,7 +44,15 @@ public class ListViewService extends RemoteViewsService {
 
         @Override
         public void onCreate() {
-
+            mList = new ArrayList<>();
+            OneWeekCourseRepository repository = new OneWeekCourseRepository(mContext);
+            oneWeekCourses = repository.getOneWeekCourse();
+            for (OneWeekCourse oneWeekCours : oneWeekCourses) {
+                if (oneWeekCours.getInWeek().equals(12) && oneWeekCours.getDayOfWeek() == 1) {
+                    LogUtils.getInstance().d("oneWeekCours -- >" + oneWeekCours.toString());
+                    mList.add(oneWeekCours);
+                }
+            }
         }
 
         @Override
@@ -59,7 +73,7 @@ public class ListViewService extends RemoteViewsService {
          */
         @Override
         public int getCount() {
-            return 1;
+            return mList.size();
         }
 
         /**
@@ -72,12 +86,13 @@ public class ListViewService extends RemoteViewsService {
             if (position < 0) {
                 return null;
             }
+            OneWeekCourse oneWeekCourse = mList.get(position);
             RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.item_today_widget);
-            views.setTextViewText(R.id.widget_name, "软件工程");
-            views.setTextViewText(R.id.widget_room, "化工304");
+            views.setTextViewText(R.id.widget_name, oneWeekCourse.getCouName());
+            views.setTextViewText(R.id.widget_room, oneWeekCourse.getCouRoom());
             views.setTextViewText(R.id.widget_teacher, "张栋");
-            views.setTextViewText(R.id.tv_start, "1");
-            views.setTextViewText(R.id.tv_end, "3");
+            views.setTextViewText(R.id.tv_start, String.valueOf(oneWeekCourse.getStartNode()));
+            views.setTextViewText(R.id.tv_end, String.valueOf(oneWeekCourse.getEndNode()));
             // 填充Intent，填充在AppWdigetProvider中创建的PendingIntent
             return views;
 
