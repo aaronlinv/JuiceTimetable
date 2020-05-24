@@ -7,7 +7,6 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.juice.timetable.R;
-import com.juice.timetable.data.bean.OneWeekCourse;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -19,13 +18,6 @@ import java.util.List;
 
 public class ListViewService extends RemoteViewsService {
 
-    private String[] startList = {"08:00", "09:00", "10:10", "11:10", "13:30", "14:30", "15:40", "16:40", "18:30", "19:30", "20:30"};
-    private String[] endList = {"08:50", "09:50", "11:00", "12:00", "14:20", "15:20", "16:30", "17:30", "19:20", "20:20", "21:20"};
-
-    static String str_time;
-    static int chooseSchool;
-    static List<String> timeList, end_timeList;
-
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new ListRemoteViewsFactory(this.getApplicationContext(), intent);
@@ -35,50 +27,63 @@ public class ListViewService extends RemoteViewsService {
 
         private Context mContext;
 
-        private List<OneWeekCourse> mList = new ArrayList<>();
+        private List<String> mList = new ArrayList<>();
 
+        /**
+         * 构造函数
+         *
+         * @param context
+         * @param intent
+         */
         public ListRemoteViewsFactory(Context context, Intent intent) {
             mContext = context;
         }
 
         @Override
         public void onCreate() {
-//            try {
-//                getDayCourse();
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
+
         }
 
         @Override
         public void onDataSetChanged() {
-            try {
-                getDayCourse(mContext);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+
         }
 
+        /**
+         * 清理资源，释放内存
+         */
         @Override
         public void onDestroy() {
-            mList.clear();
         }
 
+        /**
+         * 返回集合视图数量
+         * @return
+         */
         @Override
         public int getCount() {
-            return mList.size();
+            return 1;
         }
 
+        /**
+         * 创建并且填充，在指定索引位置显示的View
+         * @param position
+         * @return
+         */
         @Override
         public RemoteViews getViewAt(int position) {
+            if (position < 0) {
+                return null;
+            }
             RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.item_today_widget);
-            views.setTextViewText(R.id.tv_startTime, "08:00");
-            views.setTextViewText(R.id.tv_endTime, "08:50");
             views.setTextViewText(R.id.widget_name, "软件工程");
             views.setTextViewText(R.id.widget_room, "化工304");
             views.setTextViewText(R.id.widget_teacher, "张栋");
             views.setTextViewText(R.id.tv_start, "1");
             views.setTextViewText(R.id.tv_end, "3");
+            // 填充Intent，填充在AppWdigetProvider中创建的PendingIntent
+            return views;
+
 
             //str_time = SharedPreferencesUtils.getStringFromSP(mContext, "timeList", "");
             //timeList = gson.fromJson(str_time, new TypeToken<List<String>>(){}.getType());
@@ -104,7 +109,6 @@ public class ListViewService extends RemoteViewsService {
 
             Intent intent = new Intent(ScheduleWidget.ITEM_CLICK);
             views.setOnClickFillInIntent(R.id.ll_course, intent);*/
-            return views;
         }
 
         /* 在更新界面的时候如果耗时就会显示 正在加载... 的默认字样，但是你可以更改这个界面

@@ -47,25 +47,6 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_startTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:alpha="0.5"
-            android:text="08:00"
-            android:textColor="@color/widgetText"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/tv_endTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:alpha="0.5"
-            android:text="08:50"
-            android:textColor="@color/widgetText"
-            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout

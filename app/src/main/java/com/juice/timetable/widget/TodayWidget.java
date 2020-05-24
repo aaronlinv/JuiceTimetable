@@ -1,23 +1,43 @@
 package com.juice.timetable.widget;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.juice.timetable.R;
+import com.juice.timetable.service.ListViewService;
 
 public class TodayWidget extends AppWidgetProvider {
-    public static final String ITEM_CLICK = "day.TYPE_LIST";
     private RemoteViews mRemoteViews;
+
+    public void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+        //创建一个remoteView
+        mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.today_widget);
+        mRemoteViews.setTextViewText(R.id.widget_week, getWeekday());
+        //把这个widget绑定到RemoteViewService
+        Intent intent = new Intent(context, ListViewService.class);
+        //设置适配器
+        mRemoteViews.setRemoteAdapter(R.id.lv_test, intent);
+        //设置列表点击触发事件
+        Intent clickIntent = new Intent(context, TodayWidget.class);
+        clickIntent.setAction("clickAction");
+        clickIntent.putExtra(appWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        clickIntent.setData(Uri.parse(clickIntent.toUri(Intent.URI_INTENT_SCHEME)));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mRemoteViews.setPendingIntentTemplate(R.id.lv_test, pendingIntent);
+        appWidgetManager.updateAppWidget(appWidgetId, mRemoteViews);
+    }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.today_widget);
-        mRemoteViews.setTextViewText(R.id.widget_week, getWeekday());
-        appWidgetManager.updateAppWidget(appWidgetIds, mRemoteViews);
-
+        for (int appWidgetId : appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId);
+        }
     }
 
     public String getWeekday() {
@@ -55,6 +75,12 @@ public class TodayWidget extends AppWidgetProvider {
     }
 
     @Override
+    public void onEnabled(Context context) {
+        super.onEnabled(context);
+        Toast.makeText(context, "可以添加Widget", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
     }
@@ -62,6 +88,10 @@ public class TodayWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
+        String action = intent.getAction();
+        if (action.equals("clickAction")) {
+            Toast.makeText(context, "click", Toast.LENGTH_SHORT).show();
+        }
         mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.today_widget);
         mRemoteViews.setTextViewText(R.id.widget_week, getWeekday());
     }
