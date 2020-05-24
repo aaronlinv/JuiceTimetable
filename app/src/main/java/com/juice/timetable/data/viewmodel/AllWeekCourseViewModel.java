@@ -4,7 +4,6 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
 import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.data.repository.AllWeekCourseRepository;
@@ -29,7 +28,16 @@ public class AllWeekCourseViewModel extends AndroidViewModel {
         repository = new AllWeekCourseRepository(application);
     }
 
-    public LiveData<List<Course>> getAllWeekCourseLive() {
-        return repository.getAllWeekCourseLive();
+    public void insertAllWeekCourse(Course... courses) {
+        repository.insertAllWeekCourse(courses);
     }
+
+    public void deleteAllWeekCourse(Void... Voids) {
+        repository.deleteAllWeekCourse();
+    }
+
+    public List<Course> getAllWeekCourse(Void... voids) {
+        return repository.getAllWeekCourse();
+    }
+
 }

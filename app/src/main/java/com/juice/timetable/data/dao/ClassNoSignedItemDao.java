@@ -29,4 +29,7 @@ public interface ClassNoSignedItemDao {
 
     @Query("Select * from ClassNoSignedItem")
     LiveData<List<ClassNoSignedItem>> getClassNoSignedItemLive();
+
+    @Query("Select * from ClassNoSignedItem")
+    List<ClassNoSignedItem> getClassNoSignedItem();
 }

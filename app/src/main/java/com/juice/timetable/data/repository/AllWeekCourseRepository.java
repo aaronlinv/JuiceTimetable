@@ -3,13 +3,12 @@ package com.juice.timetable.data.repository;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import androidx.lifecycle.LiveData;
-
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.data.dao.AllWeekCourseDao;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * <pre>
@@ -22,17 +21,12 @@ import java.util.List;
  * </pre>
  */
 public class AllWeekCourseRepository {
-    private LiveData<List<Course>> allWeekCourseLive;
+
     private AllWeekCourseDao allWeekCourseDao;
 
     public AllWeekCourseRepository(Context context) {
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
         allWeekCourseDao = juiceDatabase.getAllWeekCourseDao();
-        allWeekCourseLive = allWeekCourseDao.getAllWeekCourseLive();
-    }
-
-    public LiveData<List<Course>> getAllWeekCourseLive() {
-        return allWeekCourseLive;
     }
 
 
@@ -42,6 +36,19 @@ public class AllWeekCourseRepository {
 
     public void deleteAllWeekCourse(Void... Voids) {
         new DeleteAsyncTask(allWeekCourseDao).execute();
+    }
+
+    public List<Course> getAllWeekCourse(Void... voids) {
+        List<Course> courses = null;
+        AsyncTask<Void, Void, List<Course>> execute = new SelectAsyncTask(allWeekCourseDao).execute();
+        try {
+            courses = execute.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return courses;
     }
 
 
@@ -75,4 +82,19 @@ public class AllWeekCourseRepository {
             return null;
         }
     }
+
+    //查询
+    static class SelectAsyncTask extends AsyncTask<Void, Void, List<Course>> {
+        private AllWeekCourseDao allWeekCourseDao;
+
+        SelectAsyncTask(AllWeekCourseDao allWeekCourseDao) {
+            this.allWeekCourseDao = allWeekCourseDao;
+        }
+
+        @Override
+        protected List<Course> doInBackground(Void... Voids) {
+            return allWeekCourseDao.getAllWeekCourse();
+        }
+    }
+
 }

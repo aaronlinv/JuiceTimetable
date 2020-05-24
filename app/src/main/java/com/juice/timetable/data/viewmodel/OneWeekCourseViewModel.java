@@ -4,11 +4,11 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.repository.OneWeekCourseRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,12 +30,24 @@ public class OneWeekCourseViewModel extends AndroidViewModel {
         repository = new OneWeekCourseRepository(application);
     }
 
-    public LiveData<List<OneWeekCourse>> getOneWeekCourseLive() {
-        return repository.getOneWeekCourseLive();
+    public void insertOneWeekCourse(OneWeekCourse... courses) {
+        repository.insertOneWeekCourse();
     }
 
-    public LiveData<List<Integer>> getInWeekLive() {
-        return repository.getInWeekLive();
+    public void deleteOneWeekCourse(Void... Voids) {
+        repository.deleteOneWeekCourse();
+    }
+
+    public List<OneWeekCourse> getOneWeekCourse() {
+        return repository.getOneWeekCourse();
+    }
+
+    public List<Integer> getWeek() {
+        return repository.getWeek();
+    }
+
+    public void deleteWeek(ArrayList<Integer>... arrayLists) {
+        repository.deleteWeek(arrayLists[0]);
     }
 
 

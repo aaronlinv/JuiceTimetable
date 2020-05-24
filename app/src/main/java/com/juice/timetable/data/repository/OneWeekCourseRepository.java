@@ -9,7 +9,9 @@ import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.dao.OneWeekCourseDao;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * <pre>
@@ -33,14 +35,6 @@ public class OneWeekCourseRepository {
         inWeekLive = oneWeekCourseDao.getInWeekLive();
     }
 
-    public LiveData<List<OneWeekCourse>> getOneWeekCourseLive() {
-        return oneWeekCourseLive;
-    }
-
-    public LiveData<List<Integer>> getInWeekLive() {
-        return inWeekLive;
-    }
-
     public void insertOneWeekCourse(OneWeekCourse... courses) {
         new InsertAsyncTask(oneWeekCourseDao).execute(courses);
     }
@@ -49,6 +43,35 @@ public class OneWeekCourseRepository {
         new DeleteAsyncTask(oneWeekCourseDao).execute();
     }
 
+    public List<OneWeekCourse> getOneWeekCourse() {
+        List<OneWeekCourse> oneWeekCourses = null;
+        AsyncTask<Void, Void, List<OneWeekCourse>> asyncTask = new SelectAsyncTask(oneWeekCourseDao).execute();
+        try {
+            oneWeekCourses = asyncTask.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return oneWeekCourses;
+    }
+
+    public List<Integer> getWeek() {
+        List<Integer> integers = null;
+        AsyncTask<Void, Void, List<Integer>> asyncTask = new SelectWeekAsyncTask(oneWeekCourseDao).execute();
+        try {
+            integers = asyncTask.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return integers;
+    }
+
+    public void deleteWeek(ArrayList<Integer>... arrayLists) {
+        new DeleteWeekAsyncTask(oneWeekCourseDao).execute(arrayLists[0]);
+    }
 
     //插入
     static class InsertAsyncTask extends AsyncTask<OneWeekCourse, Void, Void> {
@@ -79,5 +102,50 @@ public class OneWeekCourseRepository {
             oneWeekCourseDao.deleteCourse();
             return null;
         }
+    }
+
+    //查询
+    static class SelectAsyncTask extends AsyncTask<Void, Void, List<OneWeekCourse>> {
+        private OneWeekCourseDao oneWeekCourseDao;
+
+        SelectAsyncTask(OneWeekCourseDao oneWeekCourseDao) {
+            this.oneWeekCourseDao = oneWeekCourseDao;
+        }
+
+        @Override
+        protected List<OneWeekCourse> doInBackground(Void... Voids) {
+            return oneWeekCourseDao.getOneWeekCourse();
+        }
+    }
+
+    //查询周数
+    static class SelectWeekAsyncTask extends AsyncTask<Void, Void, List<Integer>> {
+        private OneWeekCourseDao oneWeekCourseDao;
+
+        SelectWeekAsyncTask(OneWeekCourseDao oneWeekCourseDao) {
+            this.oneWeekCourseDao = oneWeekCourseDao;
+        }
+
+        @Override
+        protected List<Integer> doInBackground(Void... Voids) {
+            return oneWeekCourseDao.getInWeek();
+        }
+    }
+
+    //删除指定周
+    static class DeleteWeekAsyncTask extends AsyncTask<ArrayList<Integer>, Void, Void> {
+        private OneWeekCourseDao oneWeekCourseDao;
+
+        DeleteWeekAsyncTask(OneWeekCourseDao oneWeekCourseDao) {
+            this.oneWeekCourseDao = oneWeekCourseDao;
+        }
+
+
+        @Override
+        protected Void doInBackground(ArrayList<Integer>... arrayLists) {
+            oneWeekCourseDao.deleteCourseByWeek(arrayLists[0]);
+            return null;
+        }
+
     }
 }
