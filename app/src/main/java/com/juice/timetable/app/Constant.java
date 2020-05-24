@@ -50,7 +50,7 @@ public class Constant {
     // 注入自己的账号密码，用于免登录调式
     public static boolean DEBUG_MODE = true;
     // 调式Init界面，用于调试登录界面
-    public static boolean DEBUG_INIT_FRAGMENT = false;
+    public static boolean DEBUG_INIT_FRAGMENT = true;
     // 调式签到提示栏
     public static boolean DEBUG_CHECK_IN_TEXTVIEW = true;
 

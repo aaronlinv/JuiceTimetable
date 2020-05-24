@@ -58,6 +58,8 @@ public class CourseFragment extends Fragment {
     private SwipeRefreshLayout mSlRefresh;
     private TextView mTvCheckIn;
     private CourseViewListAdapter mCourseViewListAdapter;
+    private List<CourseViewBean> mCourseViewBeanList = new ArrayList<>();
+    private int mCurViewPagerNum;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -72,7 +74,7 @@ public class CourseFragment extends Fragment {
         List<Course> allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
         LogUtils.getInstance().d("mAllWeekCourseViewModel.getAllWeekCourse() -- > " + allWeekCourse);
 
-//        initCurrentWeek();
+        initCurrentWeek();
         initView();
         initCourse();
         return binding.getRoot();
@@ -103,18 +105,15 @@ public class CourseFragment extends Fragment {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                int week = item.getItemId() + 1;
+                LogUtils.getInstance().d("MenuItem <" + week + "> onMenuItemClick");
 
-                LogUtils.getInstance().d("MenuItem <" + item.getItemId() + "> onMenuItemClick");
-
-                if (item.getItemId() != Constant.CUR_WEEK) {
-
-                    toolbar.setTitle("第" + item.getItemId() + "周 (非本周)");
+                if (week != Constant.CUR_WEEK) {
+                    toolbar.setTitle("第" + week + "周 (非本周)");
                 } else {
                     toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
-
                 }
 
-                // 切换周
                 mVpCourse.setCurrentItem(item.getItemId(), true);
 
                 return false;
@@ -130,6 +129,21 @@ public class CourseFragment extends Fragment {
             }
         });
 
+        // 翻页显示 当前周
+        mVpCourse.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                mCurViewPagerNum = position;
+                super.onPageSelected(position);
+                int week = position + 1;
+                if (week != Constant.CUR_WEEK) {
+                    toolbar.setTitle("第" + week + "周 (非本周)");
+                } else {
+                    toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
+                }
+            }
+        });
+
     }
 
     /**
@@ -137,15 +151,17 @@ public class CourseFragment extends Fragment {
      */
     private void initCourse() {
         mCourseViewListAdapter = new CourseViewListAdapter();
+        mCourseViewListAdapter.submitList(mCourseViewBeanList);
         updateCourse();
         mVpCourse.setAdapter(mCourseViewListAdapter);
+        // 打开主页 跳转当前周
+        mVpCourse.setCurrentItem(Constant.CUR_WEEK - 1, false);
     }
 
     /**
      * 读取数据库 完整课表和周课表 更新到适配器
      */
     private void updateCourse() {
-        List<CourseViewBean> courseViewBeanList = new ArrayList<>();
         List<Course> allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
         List<OneWeekCourse> oneWeekCourse = mOneWeekCourseViewModel.getOneWeekCourse();
         for (int i = 1; i <= 25; i++) {
@@ -155,18 +171,25 @@ public class CourseFragment extends Fragment {
             courseViewBean.setOneWeekCourse(oneWeekCourse);
 //            courseViewBean.setWeekSet(weekSet);
             courseViewBean.setWeekSet(new HashSet<Integer>());
-
-            courseViewBeanList.add(courseViewBean);
+            mCourseViewBeanList.add(courseViewBean);
         }
-        mCourseViewListAdapter.submitList(courseViewBeanList);
+        LogUtils.getInstance().d("updateCourse  mVpCourse.getCurrentItem() before-- > " + mVpCourse.getCurrentItem());
+        // 原来的思路是每次从数据库获取 到新的BeanList 直接submitList
+        // mCourseViewListAdapter.submitList(mCourseViewBeanList);
+        // 这样带来的问题，每次下拉刷新，ViewPager都会强制跳到第一页，无论怎么etCurrentItem
+
+        // 通知数据已经修改
         mCourseViewListAdapter.notifyDataSetChanged();
+        // 跳到刷新之前所在的周，不然会跳转到第一周
+        mVpCourse.setCurrentItem(mCurViewPagerNum, false);
     }
 
     /**
      * 初始化当前周
      */
     private void initCurrentWeek() {
-        Constant.CUR_WEEK = Utils.getCurrentWeek();
+//        Constant.CUR_WEEK = Utils.getCurrentWeek();
+        mCurViewPagerNum = Constant.CUR_WEEK - 1;
     }
 
     /**
@@ -271,8 +294,6 @@ public class CourseFragment extends Fragment {
                             mSlRefresh.setRefreshing(false);
 
                         }
-                        // TODO: 2020/5/24 刷新课程
-//                        binding.courseView.resetView();
                         break;
                     case Constant.MSG_CHECK_IN_SUCCESS:
                         String checkInTime = (String) msg.obj;

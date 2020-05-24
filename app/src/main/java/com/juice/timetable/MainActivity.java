@@ -5,7 +5,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -102,9 +101,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         // 添加周的显示
-        for (int i = 1; i <= 25; i++) {
-            MenuItem add = menu.add(0, i, i - 1, "第" + i + "周");
-            int itemId = add.getItemId();
+        for (int i = 0; i < 25; i++) {
+            menu.add(0, i, i, "第" + (i + 1) + "周");
         }
 
         getMenuInflater().inflate(R.menu.main, menu);
