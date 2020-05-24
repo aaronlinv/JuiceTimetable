@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -40,7 +39,6 @@ import com.juice.timetable.data.parse.ParseCheckIn;
 import com.juice.timetable.data.parse.ParseOneWeek;
 import com.juice.timetable.databinding.FragmentCourseBinding;
 import com.juice.timetable.utils.LogUtils;
-import com.juice.timetable.utils.UserInfoUtils;
 import com.juice.timetable.utils.Utils;
 
 import java.util.ArrayList;
@@ -53,12 +51,6 @@ public class CourseFragment extends Fragment {
     private CourseViewModel homeViewModel;
     private FragmentCourseBinding binding;
     private Toolbar toolbar;
-    private int WEEK_TEXT_SIZE = 12;
-    private int NODE_TEXT_SIZE = 11;
-    private int NODE_WIDTH = 28;
-    private Integer mCurrentMonth = 5;
-
-    private TextView mMonthTextView;
 
     private Handler mHandler;
     private JuiceDatabase database;
@@ -72,7 +64,6 @@ public class CourseFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        // dataBinding 用viewBinding的方式初始化也没问题
         binding = FragmentCourseBinding.inflate(getLayoutInflater());
         mVpCourse = binding.vpCourse;
 
@@ -121,48 +112,30 @@ public class CourseFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // 调式模式：注入自己的账号密码，用于免登录调式
-        if (Constant.DEBUG_MODE) {
-            final UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(requireContext());
-            stuInfoDao.deleteStuInfo();
-            StuInfo stuInfo = new StuInfo();
-            stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
-            stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
-            stuInfo.setLeavePassword(userInfoUtils.getLeavePasswd());
-            stuInfoDao.insertStuInfo(stuInfo);
-            LogUtils.getInstance().d("调试模式：注入学号密码结束");
-        }
 
-        StuInfo stu = stuInfoDao.getStuInfo();
-        // 在调试模式 或者是数据库中没有用户数据  进入首次登录界面
-        if (Constant.DEBUG_INIT_FRAGMENT) {
-            Navigation.findNavController(requireView()).navigate(R.id.action_nav_course_to_initFragment);
+        handler();
+        menuListener();
+        refreshListener();
+
+
+        // 首次登录，获取数据并刷新界面
+        if (Constant.FIRST_LOGIN) {
+            // 刷新动画
+            // 通过调用控件的引用调用post方法，在run方法中更新ui界面
+            binding.slRefresh.post(new Runnable() {
+                @Override
+                public void run() {
+                    binding.slRefresh.setRefreshing(true);
+                }
+            });
+            refreshData();
+            // 设置首次登录为false
+            Constant.FIRST_LOGIN = false;
         } else {
-            handler();
-            menuListener();
-            refreshListener();
-
-
-            // 首次登录，获取数据并刷新界面
-            if (Constant.FIRST_LOGIN) {
-                // 刷新动画
-                // 通过调用控件的引用调用post方法，在run方法中更新ui界面
-                binding.slRefresh.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        binding.slRefresh.setRefreshing(true);
-                    }
-                });
-                refreshData();
-                // 设置首次登录为false
-                Constant.FIRST_LOGIN = false;
-            } else {
-                initTimetable();
-            }
-
-            getCheckIn();
+            initTimetable();
         }
 
+        getCheckIn();
     }
 
 
