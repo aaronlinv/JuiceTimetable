@@ -7,6 +7,8 @@ import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.MyCheckIn;
 import com.juice.timetable.data.dao.MyCheckInDao;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * <pre>
  *     author : soreak
@@ -27,10 +29,6 @@ public class MyCheckInRepository {
         myCheckIn = myCheckInDao.getMyCheckIn();
     }
 
-    public MyCheckIn getMyCheckIn() {
-        return myCheckIn;
-    }
-
 
     public void insertMyCheckIn(MyCheckIn... myCheckIns) {
         new InsertAsyncTask(myCheckInDao).execute(myCheckIns);
@@ -38,6 +36,19 @@ public class MyCheckInRepository {
 
     public void deleteMyCheckIn(Void... Voids) {
         new DeleteAsyncTask(myCheckInDao).execute();
+    }
+
+    public MyCheckIn getMyCheckIn(Void... voids) {
+        MyCheckIn myCheckIn = null;
+        AsyncTask<Void, Void, MyCheckIn> execute = new SelectAsyncTask(myCheckInDao).execute();
+        try {
+            myCheckIn = execute.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return myCheckIn;
     }
 
 
@@ -69,6 +80,20 @@ public class MyCheckInRepository {
         protected Void doInBackground(Void... Voids) {
             myCheckInDao.deleteMyCheckIn();
             return null;
+        }
+    }
+
+    //查询
+    static class SelectAsyncTask extends AsyncTask<Void, Void, MyCheckIn> {
+        private MyCheckInDao myCheckInDao;
+
+        SelectAsyncTask(MyCheckInDao myCheckInDao) {
+            this.myCheckInDao = myCheckInDao;
+        }
+
+        @Override
+        protected MyCheckIn doInBackground(Void... Voids) {
+            return myCheckInDao.getMyCheckIn();
         }
     }
 }

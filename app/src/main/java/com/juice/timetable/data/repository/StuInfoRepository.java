@@ -8,6 +8,8 @@ import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.dao.StuInfoDao;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * <pre>
  *     author : soreak
@@ -25,10 +27,18 @@ public class StuInfoRepository {
     public StuInfoRepository(Context context) {
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
         stuInfoDao = juiceDatabase.getStuInfoDao();
-        stuInfo = stuInfoDao.getStuInfo();
     }
 
-    public StuInfo getStuInfo() {
+    public StuInfo getStuInfo(Void... voids) {
+        StuInfo stuInfo = null;
+        AsyncTask<Void, Void, StuInfo> asyncTask = new SelectAsyncTask(stuInfoDao).execute();
+        try {
+            stuInfo = asyncTask.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return stuInfo;
     }
 
@@ -70,6 +80,20 @@ public class StuInfoRepository {
         protected Void doInBackground(Void... Voids) {
             stuInfoDao.deleteStuInfo();
             return null;
+        }
+    }
+
+    //查询
+    static class SelectAsyncTask extends AsyncTask<Void, Void, StuInfo> {
+        private StuInfoDao stuInfoDao;
+
+        SelectAsyncTask(StuInfoDao stuInfoDao) {
+            this.stuInfoDao = stuInfoDao;
+        }
+
+        @Override
+        protected StuInfo doInBackground(Void... Voids) {
+            return stuInfoDao.getStuInfo();
         }
     }
 }

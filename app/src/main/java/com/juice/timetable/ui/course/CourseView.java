@@ -54,6 +54,11 @@ public class CourseView extends FrameLayout {
      * 行item的宽度根据view的总宽度自动平均分配
      */
     private boolean mRowItemWidthAuto = true;
+
+    public int getCurrentIndex() {
+        return mCurrentIndex;
+    }
+
     private int mCurrentIndex = Constant.CUR_WEEK;
 
     public List<Course> getCourses() {

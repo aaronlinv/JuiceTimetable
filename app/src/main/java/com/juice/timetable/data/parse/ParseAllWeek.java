@@ -111,10 +111,10 @@ public class ParseAllWeek {
             }
         }
 
-        for (Course cou : couList) {
+        /*for (Course cou : couList) {
             System.out.println(cou);
-        }
-        //将table左边的表格标签里的内容提取（）
+        }*/
+        //将table右边的表格标签里的内容提取（）
         Elements rightTable = document.getElementsByTag("tbody").eq(3);
 
         for (Element element1 : rightTable) {

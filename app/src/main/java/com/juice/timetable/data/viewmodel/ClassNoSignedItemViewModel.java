@@ -29,7 +29,16 @@ public class ClassNoSignedItemViewModel extends AndroidViewModel {
         repository = new ClassNoSignedItemRepositroy(application);
     }
 
-    public LiveData<List<ClassNoSignedItem>> getClassNoSignedItemLive() {
+    public void insertClassNoSignedItem(ClassNoSignedItem... classNoSignedItems) {
+        repository.insertClassNoSignedItem(classNoSignedItems);
+    }
+
+    public void deleteClassNoSignedItem(Void... Voids) {
+        repository.deleteClassNoSignedItem();
+    }
+
+    public LiveData<List<ClassNoSignedItem>> getClassNoSignedItemLive(Void... Voids) {
         return repository.getClassNoSignedItemLive();
+
     }
 }

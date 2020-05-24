@@ -10,6 +10,7 @@ import com.juice.timetable.data.bean.ClassNoSignedItem;
 import com.juice.timetable.data.dao.ClassNoSignedItemDao;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * <pre>
@@ -22,18 +23,13 @@ import java.util.List;
  * </pre>
  */
 public class ClassNoSignedItemRepositroy {
-    private LiveData<List<ClassNoSignedItem>> classNoSignedItemsLive;
     private ClassNoSignedItemDao classNoSignedItemDao;
 
     public ClassNoSignedItemRepositroy(Context context) {
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
         classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
-        classNoSignedItemsLive = classNoSignedItemDao.getClassNoSignedItemLive();
     }
 
-    public LiveData<List<ClassNoSignedItem>> getClassNoSignedItemLive() {
-        return classNoSignedItemsLive;
-    }
 
 
     public void insertClassNoSignedItem(ClassNoSignedItem... classNoSignedItems) {
@@ -44,8 +40,30 @@ public class ClassNoSignedItemRepositroy {
         new DeleteAsyncTask(classNoSignedItemDao).execute();
     }
 
-    public void selectClassNoSignedItem(Void... Voids) {
-        new SelectAsyncTask(classNoSignedItemDao).execute();
+    public LiveData<List<ClassNoSignedItem>> getClassNoSignedItemLive(Void... Voids) {
+        LiveData<List<ClassNoSignedItem>> cnsi = null;
+        AsyncTask<Void, Void, LiveData<List<ClassNoSignedItem>>> execute = new SelectLiveDataAsyncTask(classNoSignedItemDao).execute();
+        try {
+            cnsi = execute.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return cnsi;
+    }
+
+    public List<ClassNoSignedItem> getClassNoSignedItem(Void... Voids) {
+        List<ClassNoSignedItem> cnsi = null;
+        AsyncTask<Void, Void, List<ClassNoSignedItem>> execute = new SelectListAsyncTask(classNoSignedItemDao).execute();
+        try {
+            cnsi = execute.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return cnsi;
     }
 
     //插入
@@ -64,21 +82,38 @@ public class ClassNoSignedItemRepositroy {
         }
     }
 
-    //查询
-    static class SelectAsyncTask extends AsyncTask<Void, Void, Void> {
+    //查询(LiveData)
+    static class SelectLiveDataAsyncTask extends AsyncTask<Void, Void, LiveData<List<ClassNoSignedItem>>> {
         private ClassNoSignedItemDao classNoSignedItemDao;
 
 
-        SelectAsyncTask(ClassNoSignedItemDao classNoSignedItemDao) {
+        SelectLiveDataAsyncTask(ClassNoSignedItemDao classNoSignedItemDao) {
             this.classNoSignedItemDao = classNoSignedItemDao;
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
-            classNoSignedItemDao.getClassNoSignedItemLive();
-            return null;
+        protected LiveData<List<ClassNoSignedItem>> doInBackground(Void... voids) {
+            return classNoSignedItemDao.getClassNoSignedItemLive();
+
         }
     }
+
+    //查询(List)
+    static class SelectListAsyncTask extends AsyncTask<Void, Void, List<ClassNoSignedItem>> {
+        private ClassNoSignedItemDao classNoSignedItemDao;
+
+
+        SelectListAsyncTask(ClassNoSignedItemDao classNoSignedItemDao) {
+            this.classNoSignedItemDao = classNoSignedItemDao;
+        }
+
+        @Override
+        protected List<ClassNoSignedItem> doInBackground(Void... voids) {
+            return classNoSignedItemDao.getClassNoSignedItem();
+
+        }
+    }
+
     //删除
     static class DeleteAsyncTask extends AsyncTask<Void, Void, Void> {
         private ClassNoSignedItemDao classNoSignedItemDao;

@@ -11,17 +11,16 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
-import com.juice.timetable.data.JuiceDatabase;
+import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.StuInfo;
-import com.juice.timetable.data.dao.StuInfoDao;
-import com.juice.timetable.data.http.EduInfo;
-import com.juice.timetable.ui.course.CourseView;
+import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.UserInfoUtils;
@@ -50,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         //侧边栏
         NavigationView navigationView = findViewById(R.id.nav_view);
         //课表
-        CourseView courseView = findViewById(R.id.course_view);
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -68,10 +66,25 @@ public class MainActivity extends AppCompatActivity {
         // 初始化PreferencesUtils
         PreferencesUtils.init(getApplicationContext());
         String luanchFragment = getIntent().getStringExtra("luanchFragment");
-        JuiceDatabase database = JuiceDatabase.getDatabase(this.getApplicationContext());
-        StuInfoDao stuInfoDao = database.getStuInfoDao();
-        StuInfo stu = stuInfoDao.getStuInfo();
-        if (stu == null) {
+
+        // 调式模式：注入自己的账号密码，用于免登录调式
+        StuInfoViewModel stuInfoViewModel = new ViewModelProvider(this).get(StuInfoViewModel.class);
+        if (Constant.DEBUG_MODE) {
+            final UserInfoUtils userInfoUtils = UserInfoUtils.getINSTANT(getApplicationContext());
+            stuInfoViewModel.deleteStuInfo();
+            StuInfo stuInfo = new StuInfo();
+            stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
+            stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
+            stuInfo.setLeavePassword(userInfoUtils.getLeavePasswd());
+            stuInfoViewModel.insertStuInfo(stuInfo);
+            LogUtils.getInstance().d("调试模式：注入学号密码结束");
+        }
+        // 用户校验 无用户进入初次登录界面
+
+        StuInfo stu = stuInfoViewModel.selectStuInfo();
+
+        // 在调试模式 或者是数据库中没有用户数据  进入首次登录界面
+        if (stu == null || Constant.DEBUG_INIT_FRAGMENT) {
             Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_nav_course_to_initFragment);
         } else {
             if (luanchFragment == null) {
@@ -104,33 +117,4 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-
-
-    public void getTimeTable() {
-        // 周课表
-        String uri = "http://jwb.fdzcxy.com/kb/zkb_xs.asp";
-        try {
-            String timeTable = EduInfo.getTimeTable(getID(), getEduPasswd(), uri, getApplicationContext());
-            LogUtils.getInstance().d("课表数据：" + timeTable);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String getID() {
-        return getUserInfo("id");
-    }
-
-    public String getEduPasswd() {
-        return getUserInfo("eduPasswd");
-    }
-
-    public String getLeavePasswd() {
-        return getUserInfo("leavePasswd");
-    }
-
-    public String getUserInfo(String info) {
-        return UserInfoUtils.getINSTANT(getApplication()).getProperty(info);
-    }
-
 }
