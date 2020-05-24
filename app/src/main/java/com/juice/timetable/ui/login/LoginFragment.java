@@ -25,11 +25,10 @@ import androidx.navigation.Navigation;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
-import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.StuInfo;
-import com.juice.timetable.data.dao.StuInfoDao;
 import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.data.http.LeaveInfo;
+import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.databinding.FragmentLoginBinding;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
@@ -41,24 +40,21 @@ import java.util.Objects;
  */
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding;
-    private LoginViewModel loginViewModel;
     private DrawerLayout drawer;
     private String sno;
     private String edu;
     private String leave;
-    private StuInfo stuInfo;
-    private JuiceDatabase juiceDatabase;
-    private StuInfoDao stuInfoDao;
     private Handler mHandler;
+    private StuInfoViewModel mStuInfoViewModel;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         binding = FragmentLoginBinding.inflate(getLayoutInflater());//binding初始化
 //        binding = DataBindingUtil.setContentView(requireActivity(), R.layout.fragment_login);
         drawer = requireActivity().findViewById(R.id.drawer_layout);
+        mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
 
         // 隐藏Toolbar的下拉菜单按钮
         Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
@@ -72,11 +68,8 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
-        stuInfoDao = juiceDatabase.getStuInfoDao();
         // 为输入框填充学号
-        StuInfo stuInfo = stuInfoDao.getStuInfo();
+        StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
         String sno = stuInfo.getStuID().toString();
         binding.etSno.setText(sno);
 
@@ -219,12 +212,14 @@ public class LoginFragment extends Fragment {
      * 更新用户账户密码数据
      */
     private void updateUser() {
+        // 先删除用户信息
+        mStuInfoViewModel.deleteStuInfo();
         Integer snoStr = Integer.parseInt(sno);
-        StuInfo stuInfo1 = new StuInfo();
-        stuInfo1.setStuID(snoStr);
-        stuInfo1.setEduPassword(edu);
-        stuInfo1.setEduPassword(leave);
-        stuInfoDao.updateStuInfo(stuInfo1);
+        StuInfo stuInfo = new StuInfo();
+        stuInfo.setStuID(snoStr);
+        stuInfo.setEduPassword(edu);
+        stuInfo.setEduPassword(leave);
+        mStuInfoViewModel.insertStuInfo(stuInfo);
     }
 
     /**
@@ -250,7 +245,7 @@ public class LoginFragment extends Fragment {
                     case Constant.MSG_LOGIN_SUCCESS:
                         LogUtils.getInstance().d("接受消息：开始写入数据库");
                         updateUser();
-                        LogUtils.getInstance().d("查询数据库：" + stuInfoDao.getStuInfo());
+                        LogUtils.getInstance().d("查询数据库：" + mStuInfoViewModel.selectStuInfo());
 
                         // 成功就导航到课表页面
                         Navigation.findNavController(requireView()).popBackStack(R.id.nav_login, true);

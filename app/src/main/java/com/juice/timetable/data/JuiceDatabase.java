@@ -35,7 +35,6 @@ public abstract class JuiceDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(), JuiceDatabase.class, "juice_Database")
                     .fallbackToDestructiveMigration()
-                    .allowMainThreadQueries()
                     .build();
         }
         return INSTANCE;

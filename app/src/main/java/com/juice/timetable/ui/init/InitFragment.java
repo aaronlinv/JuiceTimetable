@@ -20,17 +20,17 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
-import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.bean.StuInfo;
-import com.juice.timetable.data.dao.StuInfoDao;
 import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseOneWeek;
+import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.databinding.FragmentInitBinding;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.Utils;
@@ -46,11 +46,10 @@ public class InitFragment extends Fragment {
     private String sno;
     private String edu;
     private String leave;
-    private StuInfo stuInfo;
-    private JuiceDatabase juiceDatabase;
-    private StuInfoDao stuInfoDao;
+
     private Handler mHandler;
     private DrawerLayout drawer;
+    private StuInfoViewModel mStuInfoViewModel;
 
     public InitFragment() {
         // Required empty public constructor
@@ -64,6 +63,7 @@ public class InitFragment extends Fragment {
         // 禁止侧滑打开抽屉
         drawer = requireActivity().findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
 
         return binding.getRoot();
     }
@@ -71,11 +71,8 @@ public class InitFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // 初始化数据库和Dao
-        juiceDatabase = JuiceDatabase.getDatabase(requireContext());
-        stuInfoDao = juiceDatabase.getStuInfoDao();
         // 删除数据库原有账号密码
-        stuInfoDao.deleteStuInfo();
+        mStuInfoViewModel.deleteStuInfo();
 
         btnDialogClick();
         binding.btnGo.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +126,7 @@ public class InitFragment extends Fragment {
                         // TODO 跳转页面，并调用写入数据库的方法writeAllData()
                         LogUtils.getInstance().d("接受消息：开始写入数据库");
                         writeUser();
-                        LogUtils.getInstance().d("查询数据库：" + stuInfoDao.getStuInfo());
+                        LogUtils.getInstance().d("查询数据库：" + mStuInfoViewModel.selectStuInfo());
                         // 跳转结束后将debugInit置为false否则死循环
                         Constant.DEBUG_INIT_FRAGMENT = false;
                         Navigation.findNavController(requireView()).popBackStack(R.id.initFragment, true);
@@ -223,17 +220,13 @@ public class InitFragment extends Fragment {
 
 
     private void writeUser() {
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
-        stuInfoDao = juiceDatabase.getStuInfoDao();
 
         Integer snoStr = Integer.parseInt(sno);
-
-        StuInfo stuInfo1 = new StuInfo();
-        stuInfo1.setStuID(snoStr);
-        stuInfo1.setEduPassword(edu);
-        stuInfo1.setLeavePassword(leave);
-
-        stuInfoDao.insertStuInfo(stuInfo1);
+        StuInfo stuInfo = new StuInfo();
+        stuInfo.setStuID(snoStr);
+        stuInfo.setEduPassword(edu);
+        stuInfo.setLeavePassword(leave);
+        mStuInfoViewModel.insertStuInfo(stuInfo);
     }
 
     /**
