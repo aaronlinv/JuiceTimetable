@@ -3,17 +3,14 @@ package com.juice.timetable.ui.course;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,6 +83,9 @@ public class CourseFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * 初始化课程数据
+     */
     private void initCourse() {
         CourseViewListAdapter courseViewListAdapter = new CourseViewListAdapter();
         List<CourseViewBean> courseViewBeanList = new ArrayList<>();
@@ -112,7 +112,8 @@ public class CourseFragment extends Fragment {
 
         Constant.CUR_WEEK = Utils.getCurrentWeek();
         // 也要给CourseView也设置上
-        binding.courseView.setCurrentIndex(Constant.CUR_WEEK);
+        // TODO: 2020/5/24 设置当前周
+//        binding.courseView.setCurrentIndex(Constant.CUR_WEEK);
     }
 
     @SuppressLint("HandlerLeak")
@@ -169,9 +170,6 @@ public class CourseFragment extends Fragment {
      * 初始化界面
      */
     private void init() {
-        // 星期栏
-        // 清除所有View
-        binding.llWeek.removeAllViews();
         toolbar = requireActivity().findViewById(R.id.toolbar);
 
         // 显示Toolbar的下拉菜单按钮
@@ -179,48 +177,6 @@ public class CourseFragment extends Fragment {
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, true);
 
-        // -1 ：星期栏   0-6：星期 一 ...日
-        for (int i = -1; i < 7; i++) {
-            TextView textView = new TextView(requireContext().getApplicationContext());
-            textView.setGravity(Gravity.CENTER);
-            textView.setTextColor(Color.GRAY);
-            textView.setWidth(0);
-            LinearLayout.LayoutParams params;
-
-            if (i == -1) {
-                // 初始化月份
-                params = new LinearLayout.LayoutParams(Utils.dip2px(requireContext().getApplicationContext(), NODE_WIDTH),
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-
-                textView.setTextSize(NODE_TEXT_SIZE);
-                textView.setText(mCurrentMonth + "\n月");
-
-                mMonthTextView = textView;
-            } else {
-                // 初始化课程星期栏
-                params = new LinearLayout.LayoutParams(10, ViewGroup.LayoutParams.MATCH_PARENT);
-                params.weight = 10;
-                textView.setTextSize(WEEK_TEXT_SIZE);
-                textView.setText(Constant.WEEK_SINGLE[i]);
-                LogUtils.getInstance().d("星期：" + i);
-            }
-            //添加这个视图
-            binding.llWeek.addView(textView, params);
-        }
-
-        //  课程节数栏
-        int nodeItemHeight = Utils.dip2px(requireContext().getApplicationContext(), 55);
-        for (int i = 1; i <= 11; i++) {
-            TextView textView = new TextView(requireContext().getApplicationContext());
-            textView.setTextSize(NODE_TEXT_SIZE);
-            textView.setGravity(Gravity.CENTER);
-            textView.setTextColor(Color.GRAY);
-            textView.setText(String.valueOf(i));
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, nodeItemHeight);
-            binding.llNode.addView(textView, params);
-        }
         // 初始化标题栏
         toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
 
@@ -260,8 +216,7 @@ public class CourseFragment extends Fragment {
                 }
 
 
-                binding.courseView.setCurrentIndex(item.getItemId());
-                binding.courseView.resetView();
+                // TODO: 2020/5/24 切换周
                 return false;
             }
         });
@@ -399,15 +354,17 @@ public class CourseFragment extends Fragment {
                             Toast.makeText(getActivity(), msgStr, Toast.LENGTH_SHORT).show();
                             binding.slRefresh.setRefreshing(false);
                         } else {
-                            binding.courseView.setCourses(allWeekCourse);
-                            binding.courseView.setSet(weekSet);
-                            binding.courseView.setOneWeekCourses(oneWeekCourse);
+                            // TODO: 2020/5/24 刷新课程
+//                            binding.courseView.setCourses(allWeekCourse);
+//                            binding.courseView.setSet(weekSet);
+//                            binding.courseView.setOneWeekCourses(oneWeekCourse);
 
                             Toast.makeText(requireActivity(), "课表刷新成功", Toast.LENGTH_SHORT).show();
                             binding.slRefresh.setRefreshing(false);
 
                         }
-                        binding.courseView.resetView();
+                        // TODO: 2020/5/24 刷新课程
+//                        binding.courseView.resetView();
                         break;
                     case Constant.MSG_CHECK_IN_SUCCESS:
                         String checkInTime = (String) msg.obj;
@@ -433,10 +390,11 @@ public class CourseFragment extends Fragment {
                         break;
 
                     case Constant.LOAD_DATA_SUCCESS:
-                        binding.courseView.setCourses(allWeekCourse);
-                        binding.courseView.setOneWeekCourses(oneWeekCourse);
-                        binding.courseView.setSet(weekSet);
-                        binding.courseView.resetView();
+                        // TODO: 2020/5/24 刷新课程
+//                        binding.courseView.setCourses(allWeekCourse);
+//                        binding.courseView.setOneWeekCourses(oneWeekCourse);
+//                        binding.courseView.setSet(weekSet);
+//                        binding.courseView.resetView();
                         break;
                 }
 
@@ -550,7 +508,9 @@ public class CourseFragment extends Fragment {
                 }
                 // 没有找到 可能是一些考试的显示
                 // 取当前的完整课表的课数目为随机数
-                oneWeekCourse.setColor(Utils.getColor(binding.courseView.getCourses().size() + colorNum));
+
+                //todo 获取颜色
+//                oneWeekCourse.setColor(Utils.getColor(binding.courseView.getCourses().size() + colorNum));
                 colorNum++;
             }
             // 插入数据库

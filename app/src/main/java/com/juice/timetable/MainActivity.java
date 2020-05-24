@@ -22,7 +22,6 @@ import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.dao.StuInfoDao;
 import com.juice.timetable.data.http.EduInfo;
-import com.juice.timetable.ui.course.CourseView;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.UserInfoUtils;
@@ -51,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         //侧边栏
         NavigationView navigationView = findViewById(R.id.nav_view);
         //课表
-        CourseView courseView = findViewById(R.id.course_view);
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
