@@ -74,6 +74,67 @@ public class CourseFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @SuppressLint("HandlerLeak")
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        initEvent();
+        handler();
+
+        // 首次登录，获取数据并刷新界面
+        if (Constant.FIRST_LOGIN) {
+            // 刷新动画
+            // 通过调用控件的引用调用post方法，在run方法中更新ui界面
+            binding.slRefresh.post(new Runnable() {
+                @Override
+                public void run() {
+                    binding.slRefresh.setRefreshing(true);
+                }
+            });
+            refreshData();
+            // 设置首次登录为false
+            Constant.FIRST_LOGIN = false;
+        } else {
+            initTimetable();
+        }
+
+        getCheckIn();
+    }
+
+    private void initEvent() {
+        // 下拉菜单 获取点击的周
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                LogUtils.getInstance().d("MenuItem <" + item.getItemId() + "> onMenuItemClick");
+
+                if (item.getItemId() != Constant.CUR_WEEK) {
+
+                    toolbar.setTitle("第" + item.getItemId() + "周 (非本周)");
+                } else {
+                    toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
+
+                }
+
+
+                // TODO: 2020/5/24 切换周
+                return false;
+            }
+        });
+
+        // 下拉刷新监听
+        binding.slRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshData();
+
+            }
+        });
+
+    }
+
     /**
      * 初始化课程数据
      */
@@ -107,38 +168,6 @@ public class CourseFragment extends Fragment {
 //        binding.courseView.setCurrentIndex(Constant.CUR_WEEK);
     }
 
-    @SuppressLint("HandlerLeak")
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-        handler();
-        menuListener();
-        refreshListener();
-
-
-        // 首次登录，获取数据并刷新界面
-        if (Constant.FIRST_LOGIN) {
-            // 刷新动画
-            // 通过调用控件的引用调用post方法，在run方法中更新ui界面
-            binding.slRefresh.post(new Runnable() {
-                @Override
-                public void run() {
-                    binding.slRefresh.setRefreshing(true);
-                }
-            });
-            refreshData();
-            // 设置首次登录为false
-            Constant.FIRST_LOGIN = false;
-        } else {
-            initTimetable();
-        }
-
-        getCheckIn();
-    }
-
-
     /**
      * 初始化界面
      */
@@ -169,44 +198,6 @@ public class CourseFragment extends Fragment {
         stuInfoDao = database.getStuInfoDao();
     }
 
-    /**
-     * 下拉菜单监听
-     */
-    private void menuListener() {
-        // 获取点击的周
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-
-                LogUtils.getInstance().d("MenuItem <" + item.getItemId() + "> onMenuItemClick");
-
-                if (item.getItemId() != Constant.CUR_WEEK) {
-
-                    toolbar.setTitle("第" + item.getItemId() + "周 (非本周)");
-                } else {
-                    toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
-
-                }
-
-
-                // TODO: 2020/5/24 切换周
-                return false;
-            }
-        });
-    }
-
-    /**
-     * 下拉刷新监听
-     */
-    private void refreshListener() {
-        binding.slRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshData();
-
-            }
-        });
-    }
 
     /**
      * 开始刷新数据，结束刷新动画
