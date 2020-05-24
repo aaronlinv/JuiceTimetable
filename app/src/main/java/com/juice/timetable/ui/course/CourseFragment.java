@@ -83,7 +83,6 @@ public class CourseFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initEvent();
         handler();
 
         // 首次登录，获取数据并刷新界面
@@ -93,11 +92,10 @@ public class CourseFragment extends Fragment {
             refreshData();
             // 设置首次登录为false
             Constant.FIRST_LOGIN = false;
-        } else {
-            initTimetable();
         }
 
         getCheckIn();
+        initEvent();
     }
 
     private void initEvent() {
@@ -268,29 +266,6 @@ public class CourseFragment extends Fragment {
         }.start();
     }
 
-    /**
-     * 初始化课表（完整课表和周课表）
-     */
-    private void initTimetable() {
-        new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        // TODO: 2020/5/8 这里使用成员变量，刷新数据也是用成员变量，可能冲突
-                        allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
-
-                        oneWeekCourse = mOneWeekCourseViewModel.getOneWeekCourse();
-                        List<Integer> inWeek = mOneWeekCourseViewModel.getWeek();
-                        weekSet = new HashSet<Integer>(inWeek);
-
-                        Message loadDataSuccess = new Message();
-                        loadDataSuccess.what = Constant.LOAD_DATA_SUCCESS;
-                        mHandler.sendMessage(loadDataSuccess);
-
-                    }
-                }
-        ).start();
-    }
 
     /**
      * Handler接受message
@@ -343,13 +318,7 @@ public class CourseFragment extends Fragment {
                         mSlRefresh.setRefreshing(false);
                         break;
 
-                    case Constant.LOAD_DATA_SUCCESS:
-                        // TODO: 2020/5/24 刷新课程
-//                        binding.courseView.setCourses(allWeekCourse);
-//                        binding.courseView.setOneWeekCourses(oneWeekCourse);
-//                        binding.courseView.setSet(weekSet);
-//                        binding.courseView.resetView();
-                        break;
+
                 }
 
             }
