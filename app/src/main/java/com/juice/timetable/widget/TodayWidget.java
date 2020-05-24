@@ -9,11 +9,13 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.juice.timetable.MainActivity;
 import com.juice.timetable.R;
 import com.juice.timetable.service.ListViewService;
 
 public class TodayWidget extends AppWidgetProvider {
     private RemoteViews mRemoteViews;
+    public static final String ITEM_CLICK = "day.TYPE_LIST";
 
     public void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         //创建一个remoteView
@@ -23,13 +25,16 @@ public class TodayWidget extends AppWidgetProvider {
         Intent intent = new Intent(context, ListViewService.class);
         //设置适配器
         mRemoteViews.setRemoteAdapter(R.id.lv_test, intent);
+
         //设置列表点击触发事件
-        Intent clickIntent = new Intent(context, TodayWidget.class);
+        Intent clickIntent = new Intent(context, MainActivity.class);
         clickIntent.setAction("clickAction");
         clickIntent.putExtra(appWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         clickIntent.setData(Uri.parse(clickIntent.toUri(Intent.URI_INTENT_SCHEME)));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mRemoteViews.setOnClickPendingIntent(R.id.sv_course, pendingIntent);
         mRemoteViews.setPendingIntentTemplate(R.id.lv_test, pendingIntent);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.lv_test);
         appWidgetManager.updateAppWidget(appWidgetId, mRemoteViews);
     }
 
