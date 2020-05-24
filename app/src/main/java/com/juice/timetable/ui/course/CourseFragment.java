@@ -18,25 +18,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
-import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.data.bean.CourseViewBean;
 import com.juice.timetable.data.bean.MyCheckIn;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.bean.StuInfo;
-import com.juice.timetable.data.dao.AllWeekCourseDao;
-import com.juice.timetable.data.dao.OneWeekCourseDao;
-import com.juice.timetable.data.dao.StuInfoDao;
 import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseAllWeek;
 import com.juice.timetable.data.parse.ParseCheckIn;
 import com.juice.timetable.data.parse.ParseOneWeek;
+import com.juice.timetable.data.viewmodel.AllWeekCourseViewModel;
+import com.juice.timetable.data.viewmodel.OneWeekCourseViewModel;
+import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.databinding.FragmentCourseBinding;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.Utils;
@@ -52,23 +52,26 @@ public class CourseFragment extends Fragment {
     private Toolbar toolbar;
 
     private Handler mHandler;
-    private JuiceDatabase database;
-    private AllWeekCourseDao allWeekCourseDao;
-    private OneWeekCourseDao oneWeekCourseDao;
-    private StuInfoDao stuInfoDao;
     private List<Course> allWeekCourse;
     private HashSet<Integer> weekSet;
     private List<OneWeekCourse> oneWeekCourse;
     private ViewPager2 mVpCourse;
+    private AllWeekCourseViewModel mAllWeekCourseViewModel;
+    private OneWeekCourseViewModel mOneWeekCourseViewModel;
+    private StuInfoViewModel mStuInfoViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentCourseBinding.inflate(getLayoutInflater());
         mVpCourse = binding.vpCourse;
+        mAllWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(AllWeekCourseViewModel.class);
+        mOneWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(OneWeekCourseViewModel.class);
+        mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
+        List<Course> allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
+        LogUtils.getInstance().d("mAllWeekCourseViewModel.getAllWeekCourse() -- > " + allWeekCourse);
 
         initCurrentWeek();
         init();
-        initDatabase();
         initCourse();
         return binding.getRoot();
     }
@@ -140,8 +143,8 @@ public class CourseFragment extends Fragment {
     private void initCourse() {
         CourseViewListAdapter courseViewListAdapter = new CourseViewListAdapter();
         List<CourseViewBean> courseViewBeanList = new ArrayList<>();
-        List<Course> allWeekCourse = allWeekCourseDao.getAllWeekCourse();
-        List<OneWeekCourse> oneWeekCourse = oneWeekCourseDao.getOneWeekCourse();
+        List<Course> allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
+        List<OneWeekCourse> oneWeekCourse = mOneWeekCourseViewModel.getOneWeekCourse();
         for (int i = 1; i <= 25; i++) {
             CourseViewBean courseViewBean = new CourseViewBean();
             courseViewBean.setAllWeekCourse(allWeekCourse);
@@ -187,16 +190,6 @@ public class CourseFragment extends Fragment {
         }
     }
 
-    /**
-     * 初始化数据库
-     */
-    private void initDatabase() {
-        database = JuiceDatabase.getDatabase(requireContext().getApplicationContext());
-        allWeekCourseDao = database.getAllWeekCourseDao();
-        oneWeekCourseDao = database.getOneWeekCourseDao();
-        stuInfoDao = database.getStuInfoDao();
-    }
-
 
     /**
      * 开始刷新数据，结束刷新动画
@@ -215,8 +208,7 @@ public class CourseFragment extends Fragment {
 //                        allWeekCourseDao.deleteAllWeekCourse();
                 LogUtils.getInstance().d("setOnRefreshListener:删除数据库");
                 String allCourse = null;
-                StuInfoDao stuInfoDao = database.getStuInfoDao();
-                StuInfo stuInfo = stuInfoDao.getStuInfo();
+                StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
 
                 try {
                     allCourse = EduInfo.getTimeTable(stuInfo.getStuID().toString(), stuInfo.getEduPassword(), Constant.URI_WHOLE_COURSE, requireContext());
@@ -235,7 +227,7 @@ public class CourseFragment extends Fragment {
 
                     // TODO: 2020/5/6  非初次登录，更新数据没有写
                     // 首次登录，完整课表为空 加载数据填充颜色；数据库不为空，就使用数据库数据
-                    allWeekCourse = allWeekCourseDao.getAllWeekCourse();
+                    allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
                     if (allWeekCourse.isEmpty()) {
                         for (Course cours : courses) {
                             if (cours.getCouColor() == null) {
@@ -243,7 +235,7 @@ public class CourseFragment extends Fragment {
                                 // 这里的courses是模拟登录获取的，所有color为null，所以每次都刷新颜色
                                 cours.setCouColor(Utils.getColor(cours.getCouID().intValue()));
                             }
-                            allWeekCourseDao.insertAllWeekCourse(cours);
+                            mAllWeekCourseViewModel.insertAllWeekCourse(cours);
                             // 测试单双周显示
 /*
                                     if (cours.getCouID() == 1) {
@@ -264,11 +256,13 @@ public class CourseFragment extends Fragment {
                         e.printStackTrace();
                     }
                     // 数据库有哪些周的周课表
-                    List<Integer> inWeek = oneWeekCourseDao.getInWeek();
+
+                    List<Integer> inWeek = mOneWeekCourseViewModel.getWeek();
                     weekSet = new HashSet<>(inWeek);
 
                     // 设置周课表List
-                    oneWeekCourse = oneWeekCourseDao.getOneWeekCourse();
+
+                    oneWeekCourse = mOneWeekCourseViewModel.getOneWeekCourse();
 
                     LogUtils.getInstance().d("setOnRefreshListener:周课表写入数据库表结束");
                     message.obj = "ok";
@@ -287,9 +281,10 @@ public class CourseFragment extends Fragment {
                     @Override
                     public void run() {
                         // TODO: 2020/5/8 这里使用成员变量，刷新数据也是用成员变量，可能冲突
-                        allWeekCourse = allWeekCourseDao.getAllWeekCourse();
-                        oneWeekCourse = oneWeekCourseDao.getOneWeekCourse();
-                        List<Integer> inWeek = oneWeekCourseDao.getInWeek();
+                        allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
+
+                        oneWeekCourse = mOneWeekCourseViewModel.getOneWeekCourse();
+                        List<Integer> inWeek = mOneWeekCourseViewModel.getWeek();
                         weekSet = new HashSet<Integer>(inWeek);
 
                         Message loadDataSuccess = new Message();
@@ -373,7 +368,7 @@ public class CourseFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                StuInfo stuInfo = stuInfoDao.getStuInfo();
+                StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
                 LogUtils.getInstance().d("用户数据库信息：" + stuInfo);
                 boolean hasLeavePwd = (stuInfo.getEduPassword() != null);
                 // (签到时间或者调试模式)且数据库有请假系统密码  初始化签到信息
@@ -411,8 +406,7 @@ public class CourseFragment extends Fragment {
      */
     private void getOneWeekCou() throws Exception {
         // 获取用户数据
-        StuInfoDao stuInfoDao = database.getStuInfoDao();
-        StuInfo stuInfo = stuInfoDao.getStuInfo();
+        StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
         // 解析的周课表的List
         ArrayList<OneWeekCourse> couList = new ArrayList<>();
         // 要获取的周课表，0为当前周
@@ -421,7 +415,7 @@ public class CourseFragment extends Fragment {
         ArrayList<Integer> delList = new ArrayList<>();
 // TODO: 2020/5/6 删除数据库
 //        oneWeekCourseDao.deleteCourse();
-        List<Integer> inWeek = oneWeekCourseDao.getInWeek();
+        List<Integer> inWeek = mOneWeekCourseViewModel.getWeek();
         // 获取数据库中存了哪些周的周课表
         HashSet<Integer> set = new HashSet<>(inWeek);
         LogUtils.getInstance().d("周课表set:" + set);
@@ -446,12 +440,10 @@ public class CourseFragment extends Fragment {
         }
 
         // 执行删除
-        oneWeekCourseDao.deleteCourseByWeek(delList);
+        mOneWeekCourseViewModel.deleteWeek(delList);
+
         LogUtils.getInstance().d("删除周：" + delList);
-        List<OneWeekCourse> oneWeekCourse1 = oneWeekCourseDao.getOneWeekCourse();
-/*        for (OneWeekCourse oneWeekCourse : oneWeekCourse1) {
-            LogUtils.getInstance().d("数据库删除后的情况：" + oneWeekCourse.toString());
-        }*/
+
         // 颜色的随机数
         int colorNum = 0;
         for (OneWeekCourse oneWeekCourse : couList) {
@@ -477,7 +469,7 @@ public class CourseFragment extends Fragment {
                 colorNum++;
             }
             // 插入数据库
-            oneWeekCourseDao.insertCourse(oneWeekCourse);
+            mOneWeekCourseViewModel.insertOneWeekCourse(oneWeekCourse);
         }
         LogUtils.getInstance().d("解析本周、上两周、下两周的周课表 结束");
     }
