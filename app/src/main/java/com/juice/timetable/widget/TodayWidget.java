@@ -5,7 +5,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -27,10 +26,11 @@ public class TodayWidget extends AppWidgetProvider {
         mRemoteViews.setRemoteAdapter(R.id.lv_test, intent);
         //设置列表点击触发事件
         Intent clickIntent = new Intent(context, MainActivity.class);
-        clickIntent.setAction("clickAction");
-        clickIntent.putExtra(appWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        clickIntent.setData(Uri.parse(clickIntent.toUri(Intent.URI_INTENT_SCHEME)));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        clickIntent.setAction("clickAction");
+//        clickIntent.putExtra(appWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+//        clickIntent.setData(Uri.parse(clickIntent.toUri(Intent.URI_INTENT_SCHEME)));
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, clickIntent, 0);
         mRemoteViews.setOnClickPendingIntent(R.id.sv_course, pendingIntent);
         mRemoteViews.setPendingIntentTemplate(R.id.lv_test, pendingIntent);
         appWidgetManager.updateAppWidget(appWidgetId, mRemoteViews);
