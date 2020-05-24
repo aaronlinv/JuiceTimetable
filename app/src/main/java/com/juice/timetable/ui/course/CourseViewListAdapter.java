@@ -63,12 +63,11 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
         courseView.setSet(item.getWeekSet());
         courseView.setCourses(item.getAllWeekCourse());
         courseView.setOneWeekCourses(item.getOneWeekCourse());
-        courseView.resetView();
+//        courseView.resetView();
 
         // 星期栏
         LinearLayout week = holder.itemView.findViewById(R.id.ll_week);
         week.removeAllViews();
-        // TODO: 2020/5/23 显示Toolbar的下拉菜单按钮
         // -1 ：星期栏   0-6：星期 一 ...日
         for (int i = -1; i < 7; i++) {
             TextView textView = new TextView(holder.itemView.getContext());
@@ -97,6 +96,8 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
             week.addView(textView, params);
         }
         LinearLayout node = holder.itemView.findViewById(R.id.ll_node);
+        // 清除已有View 否则会导致切换时一直叠加新的View
+        node.removeAllViews();
         //  课程节数栏
         int nodeItemHeight = Utils.dip2px(holder.itemView.getContext().getApplicationContext(), 55);
         for (int i = 1; i <= 11; i++) {
@@ -111,8 +112,6 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
             node.addView(textView, params);
         }
 
-        // TODO: 2020/5/23 初始化标题栏
-//        courseView.resetView();
     }
 
 }

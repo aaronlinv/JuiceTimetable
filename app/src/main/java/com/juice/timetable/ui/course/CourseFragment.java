@@ -60,12 +60,15 @@ public class CourseFragment extends Fragment {
     private OneWeekCourseViewModel mOneWeekCourseViewModel;
     private StuInfoViewModel mStuInfoViewModel;
     private SwipeRefreshLayout mSlRefresh;
+    private TextView mTvCheckIn;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentCourseBinding.inflate(getLayoutInflater());
         mVpCourse = binding.vpCourse;
         mSlRefresh = binding.slRefresh;
+        mTvCheckIn = binding.tvCheckIn;
+
         mAllWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(AllWeekCourseViewModel.class);
         mOneWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(OneWeekCourseViewModel.class);
         mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
@@ -73,7 +76,7 @@ public class CourseFragment extends Fragment {
         LogUtils.getInstance().d("mAllWeekCourseViewModel.getAllWeekCourse() -- > " + allWeekCourse);
 
         initCurrentWeek();
-        init();
+        initView();
         initCourse();
         return binding.getRoot();
     }
@@ -114,8 +117,9 @@ public class CourseFragment extends Fragment {
 
                 }
 
+                // 切换周
+                mVpCourse.setCurrentItem(item.getItemId(), true);
 
-                // TODO: 2020/5/24 切换周
                 return false;
             }
         });
@@ -157,17 +161,13 @@ public class CourseFragment extends Fragment {
      * 初始化当前周
      */
     private void initCurrentWeek() {
-
         Constant.CUR_WEEK = Utils.getCurrentWeek();
-        // 也要给CourseView也设置上
-        // TODO: 2020/5/24 设置当前周
-//        binding.courseView.setCurrentIndex(Constant.CUR_WEEK);
     }
 
     /**
      * 初始化界面
      */
-    private void init() {
+    private void initView() {
         toolbar = requireActivity().findViewById(R.id.toolbar);
 
         // 显示Toolbar的下拉菜单按钮
@@ -180,7 +180,7 @@ public class CourseFragment extends Fragment {
 
         // 不在签到时间并且不在调试模式 隐藏签到提示栏
         if (!Utils.isCheckInTime() && !Constant.DEBUG_CHECK_IN_TEXTVIEW) {
-            binding.tvCheckIn.setVisibility(TextView.GONE);
+            mTvCheckIn.setVisibility(TextView.GONE);
         }
     }
 
@@ -299,18 +299,18 @@ public class CourseFragment extends Fragment {
                         String checkInTime = (String) msg.obj;
                         final String checkInStr = "今天 " + checkInTime + " 已签到";
 
-//                        binding.tvCheckIn.setBackgroundColor(0xFFe6e6e6);
-                        ObjectAnimator backgroundColor = ofObject(binding.tvCheckIn, "backgroundColor", new ArgbEvaluator(), 0xFFec6b6b, 0xFFe6e6e6);
+//                        mTvCheckIn.setBackgroundColor(0xFFe6e6e6);
+                        ObjectAnimator backgroundColor = ofObject(mTvCheckIn, "backgroundColor", new ArgbEvaluator(), 0xFFec6b6b, 0xFFe6e6e6);
                         backgroundColor.setDuration(1000);
                         backgroundColor.start();
-                        ObjectAnimator textColor = ofObject(binding.tvCheckIn, "textColor", new ArgbEvaluator(), 0xFFFFFFFF, 0xFF101010);
+                        ObjectAnimator textColor = ofObject(mTvCheckIn, "textColor", new ArgbEvaluator(), 0xFFFFFFFF, 0xFF101010);
                         textColor.setDuration(1000);
                         textColor.start();
 
                         mHandler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                binding.tvCheckIn.setText(checkInStr);
+                                mTvCheckIn.setText(checkInStr);
                             }
                         }, 500);
                         break;
