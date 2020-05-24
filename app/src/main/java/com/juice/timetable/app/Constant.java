@@ -40,7 +40,7 @@ public class Constant {
 
     // TODO: 2020/5/6 判断当前周
     // 当前学校周
-    public static int CUR_WEEK = 0;
+    public static int CUR_WEEK = 14;
 
     //
     public static final String PREF_EDU_COOKIE = "PREF_EDU_COOKIE";
@@ -48,7 +48,7 @@ public class Constant {
     public static final String PREF_FIRST_WEEK_MONDAY = "PREF_FIRST_WEEK_MONDAY";
 
     // 注入自己的账号密码，用于免登录调式
-    public static boolean DEBUG_MODE = true;
+    public static boolean DEBUG_MODE = false;
     // 调式Init界面，用于调试登录界面
     public static boolean DEBUG_INIT_FRAGMENT = false;
     // 调式签到提示栏

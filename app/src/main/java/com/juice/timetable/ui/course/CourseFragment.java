@@ -75,7 +75,7 @@ public class CourseFragment extends Fragment {
         List<Course> allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
         LogUtils.getInstance().d("mAllWeekCourseViewModel.getAllWeekCourse() -- > " + allWeekCourse);
 
-        initCurrentWeek();
+        //initCurrentWeek();
         initView();
         initCourse();
         return binding.getRoot();

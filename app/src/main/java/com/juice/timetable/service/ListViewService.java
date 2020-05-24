@@ -7,6 +7,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.juice.timetable.R;
+import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.repository.OneWeekCourseRepository;
 import com.juice.timetable.utils.LogUtils;
@@ -44,20 +45,20 @@ public class ListViewService extends RemoteViewsService {
 
         @Override
         public void onCreate() {
-            mList = new ArrayList<>();
-            OneWeekCourseRepository repository = new OneWeekCourseRepository(mContext);
-            oneWeekCourses = repository.getOneWeekCourse();
-            for (OneWeekCourse oneWeekCours : oneWeekCourses) {
-                if (oneWeekCours.getInWeek().equals(12) && oneWeekCours.getDayOfWeek() == 1) {
-                    LogUtils.getInstance().d("oneWeekCours -- >" + oneWeekCours.toString());
-                    mList.add(oneWeekCours);
-                }
-            }
+
         }
 
         @Override
         public void onDataSetChanged() {
-
+            mList = new ArrayList<>();
+            OneWeekCourseRepository repository = new OneWeekCourseRepository(mContext);
+            oneWeekCourses = repository.getOneWeekCourse();
+            for (OneWeekCourse oneWeekCours : oneWeekCourses) {
+                if (oneWeekCours.getInWeek().equals(Constant.CUR_WEEK) && oneWeekCours.getDayOfWeek() == (getWeekday() - 4)) {
+                    LogUtils.getInstance().d("oneWeekCours -- >" + oneWeekCours.toString());
+                    mList.add(oneWeekCours);
+                }
+            }
         }
 
         /**
