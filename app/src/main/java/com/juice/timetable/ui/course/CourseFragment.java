@@ -59,11 +59,13 @@ public class CourseFragment extends Fragment {
     private AllWeekCourseViewModel mAllWeekCourseViewModel;
     private OneWeekCourseViewModel mOneWeekCourseViewModel;
     private StuInfoViewModel mStuInfoViewModel;
+    private SwipeRefreshLayout mSlRefresh;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentCourseBinding.inflate(getLayoutInflater());
         mVpCourse = binding.vpCourse;
+        mSlRefresh = binding.slRefresh;
         mAllWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(AllWeekCourseViewModel.class);
         mOneWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(OneWeekCourseViewModel.class);
         mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
@@ -87,13 +89,7 @@ public class CourseFragment extends Fragment {
         // 首次登录，获取数据并刷新界面
         if (Constant.FIRST_LOGIN) {
             // 刷新动画
-            // 通过调用控件的引用调用post方法，在run方法中更新ui界面
-            binding.slRefresh.post(new Runnable() {
-                @Override
-                public void run() {
-                    binding.slRefresh.setRefreshing(true);
-                }
-            });
+            mSlRefresh.setRefreshing(true);
             refreshData();
             // 设置首次登录为false
             Constant.FIRST_LOGIN = false;
@@ -127,7 +123,7 @@ public class CourseFragment extends Fragment {
         });
 
         // 下拉刷新监听
-        binding.slRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mSlRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refreshData();
@@ -310,7 +306,7 @@ public class CourseFragment extends Fragment {
                         String msgStr = (String) msg.obj;
                         if (!"ok".equals(msgStr)) {
                             Toast.makeText(getActivity(), msgStr, Toast.LENGTH_SHORT).show();
-                            binding.slRefresh.setRefreshing(false);
+                            mSlRefresh.setRefreshing(false);
                         } else {
                             // TODO: 2020/5/24 刷新课程
 //                            binding.courseView.setCourses(allWeekCourse);
@@ -318,7 +314,7 @@ public class CourseFragment extends Fragment {
 //                            binding.courseView.setOneWeekCourses(oneWeekCourse);
 
                             Toast.makeText(requireActivity(), "课表刷新成功", Toast.LENGTH_SHORT).show();
-                            binding.slRefresh.setRefreshing(false);
+                            mSlRefresh.setRefreshing(false);
 
                         }
                         // TODO: 2020/5/24 刷新课程
@@ -344,7 +340,7 @@ public class CourseFragment extends Fragment {
                         }, 500);
                         break;
                     case Constant.STOP_REFRESH:
-                        binding.slRefresh.setRefreshing(false);
+                        mSlRefresh.setRefreshing(false);
                         break;
 
                     case Constant.LOAD_DATA_SUCCESS:

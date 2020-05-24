@@ -27,7 +27,6 @@ public class StuInfoRepository {
     public StuInfoRepository(Context context) {
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
         stuInfoDao = juiceDatabase.getStuInfoDao();
-        stuInfo = stuInfoDao.getStuInfo();
     }
 
     public StuInfo getStuInfo(Void... voids) {
