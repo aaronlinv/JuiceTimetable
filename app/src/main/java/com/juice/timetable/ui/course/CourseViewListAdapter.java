@@ -91,7 +91,6 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
                 params.weight = 10;
                 textView.setTextSize(WEEK_TEXT_SIZE);
                 textView.setText(Constant.WEEK_SINGLE[i]);
-                LogUtils.getInstance().d("星期：" + i);
             }
             //添加这个视图
             week.addView(textView, params);
