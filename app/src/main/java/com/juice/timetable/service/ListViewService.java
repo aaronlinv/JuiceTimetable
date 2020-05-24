@@ -12,9 +12,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by YZune on 2017/9/10.
- */
 
 public class ListViewService extends RemoteViewsService {
 
