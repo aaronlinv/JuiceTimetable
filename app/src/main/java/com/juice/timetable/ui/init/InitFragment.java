@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.OneWeekCourse;
@@ -32,9 +33,12 @@ import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseOneWeek;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.databinding.FragmentInitBinding;
+import com.juice.timetable.utils.AesCryptUtil;
+import com.juice.timetable.utils.CustomLoadingFactory;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.Utils;
 
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Objects;
 
@@ -109,6 +113,11 @@ public class InitFragment extends Fragment {
                     // 开始后端校验
                     // 禁止登录界面点击
                     binding.btnGo.setClickable(false);
+                    //设置登录按钮和用户条款按钮不可见
+                    binding.btnGo.setVisibility(View.GONE);
+                    binding.btnUserItem.setVisibility(View.GONE);
+                    //loading显示
+                    showColor(binding.btnGo);
 
                     checkPassword();
                 }
@@ -143,6 +152,11 @@ public class InitFragment extends Fragment {
                     case Constant.MSG_LOGIN_FAIL:
                         // 恢复登录界面点击
                         binding.btnGo.setClickable(true);
+                        //关闭loading
+                        LoadingBar.cancel(binding.btnGo);
+                        //设置登录按钮和用户条款按钮可见
+                        binding.btnGo.setVisibility(View.VISIBLE);
+                        binding.btnUserItem.setVisibility(View.VISIBLE);
                         String errorStr = (String) msg.obj;
                         Toast.makeText(getActivity(), errorStr, Toast.LENGTH_SHORT).show();
                         break;
@@ -193,7 +207,6 @@ public class InitFragment extends Fragment {
                 }
                 LogUtils.getInstance().d("教务网和请假系统密码验证结束");
                 // 跳转到课表首页
-
                 Message message = new Message();
                 assert errorStr != null;
                 if (errorStr.isEmpty()) {
@@ -227,6 +240,27 @@ public class InitFragment extends Fragment {
         stuInfo.setEduPassword(edu);
         stuInfo.setLeavePassword(leave);
         mStuInfoViewModel.insertStuInfo(stuInfo);
+        try {
+            //AES加密
+            String edupw = AesCryptUtil.encrypt("橙子app", edu);
+            String leavepw = AesCryptUtil.encrypt("abc", leave);
+            //AES解密
+            String educy = AesCryptUtil.decrypt("橙子app", edupw);
+            String leavecy = AesCryptUtil.decrypt("abc", leavepw);
+            LogUtils.getInstance().d(educy);
+            LogUtils.getInstance().d(leavecy);
+            LogUtils.getInstance().d(edupw);
+            LogUtils.getInstance().d(leavepw);
+            StuInfo stuInfo1 = new StuInfo();
+            stuInfo1.setEduPassword(edupw);
+            stuInfo1.setLeavePassword(leavepw);
+            stuInfo1.setStuID(snoStr);
+            stuInfoDao.insertStuInfo(stuInfo1);
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     /**
@@ -336,4 +370,8 @@ public class InitFragment extends Fragment {
         super.onStop();
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }*/
+    public void showColor(View v) {
+        CustomLoadingFactory factory = new CustomLoadingFactory();
+        LoadingBar.make(binding.btnGo, factory).show();
+    }
 }
