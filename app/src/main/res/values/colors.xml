@@ -8,4 +8,8 @@
     <color name="about_text_background">#FFFFFF</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
+    <color name="widgetFont">#2f88ff</color>
+    <color name="white">#ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="widgetText">#000000</color>
 </resources>
