@@ -40,7 +40,7 @@ public class Constant {
 
     // TODO: 2020/5/6 判断当前周
     // 当前学校周
-    public static int CUR_WEEK = 15;
+    public static int CUR_WEEK = 14;
 
     //
     public static final String PREF_EDU_COOKIE = "PREF_EDU_COOKIE";

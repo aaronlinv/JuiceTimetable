@@ -63,7 +63,8 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
         courseView.setSet(item.getWeekSet());
         courseView.setCourses(item.getAllWeekCourse());
         courseView.setOneWeekCourses(item.getOneWeekCourse());
-//        courseView.resetView();
+        // 不重置，在切换不同周 会出现重叠情况
+        courseView.resetView();
 
         // 星期栏
         LinearLayout week = holder.itemView.findViewById(R.id.ll_week);
