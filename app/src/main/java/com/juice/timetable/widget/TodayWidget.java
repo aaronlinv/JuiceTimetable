@@ -25,7 +25,6 @@ public class TodayWidget extends AppWidgetProvider {
         Intent intent = new Intent(context, ListViewService.class);
         //设置适配器
         mRemoteViews.setRemoteAdapter(R.id.lv_test, intent);
-
         //设置列表点击触发事件
         Intent clickIntent = new Intent(context, MainActivity.class);
         clickIntent.setAction("clickAction");
@@ -34,7 +33,6 @@ public class TodayWidget extends AppWidgetProvider {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mRemoteViews.setOnClickPendingIntent(R.id.sv_course, pendingIntent);
         mRemoteViews.setPendingIntentTemplate(R.id.lv_test, pendingIntent);
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.lv_test);
         appWidgetManager.updateAppWidget(appWidgetId, mRemoteViews);
     }
 
