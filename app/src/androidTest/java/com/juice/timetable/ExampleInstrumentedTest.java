@@ -1,26 +1,8 @@
 package com.juice.timetable;
 
-import android.content.Context;
-import android.util.Log;
-
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.juice.timetable.data.bean.ClassNoSignedItem;
-import com.juice.timetable.data.bean.Course;
-import com.juice.timetable.data.bean.MyCheckIn;
-import com.juice.timetable.data.bean.OneWeekCourse;
-import com.juice.timetable.data.bean.StuInfo;
-import com.juice.timetable.data.repository.AllWeekCourseRepository;
-import com.juice.timetable.data.repository.ClassNoSignedItemRepositroy;
-import com.juice.timetable.data.repository.MyCheckInRepository;
-import com.juice.timetable.data.repository.OneWeekCourseRepository;
-import com.juice.timetable.data.repository.StuInfoRepository;
-
-import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.List;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -1107,51 +1089,5 @@ public class ExampleInstrumentedTest {
                 "</body>\n" +
                 "</html>\n" +
                 "\n";
-    }
-
-    @Test
-    public void AllWeekCourseTest() {
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        AllWeekCourseRepository repository = new AllWeekCourseRepository(appContext);
-        List<Course> courses = repository.getAllWeekCourse();
-        for (Course cours : courses) {
-            Log.d("allweekcourseTest", cours.toString());
-        }
-    }
-
-    @Test
-    public void ClassNoSignedItemTest() {
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        ClassNoSignedItemRepositroy repositroy = new ClassNoSignedItemRepositroy(appContext);
-        List<ClassNoSignedItem> classNoSignedItems = repositroy.getClassNoSignedItem();
-        for (ClassNoSignedItem classNoSignedItem : classNoSignedItems) {
-            Log.d("classNosignedItemTest", classNoSignedItem.toString());
-        }
-    }
-
-    @Test
-    public void MyCheckInTest() {
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        MyCheckInRepository repository = new MyCheckInRepository(appContext);
-        MyCheckIn myCheckIn = repository.getMyCheckIn();
-        Log.d("MyCheckInTest", myCheckIn.toString());
-    }
-
-    @Test
-    public void OneWeekCourseTest() {
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        OneWeekCourseRepository repository = new OneWeekCourseRepository(appContext);
-        List<OneWeekCourse> oneWeekCourses = repository.getOneWeekCourse();
-        for (OneWeekCourse oneWeekCours : oneWeekCourses) {
-            Log.d("oneweekcourseTest", oneWeekCours.toString());
-        }
-    }
-
-    @Test
-    public void StuInfoTest() {
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        StuInfoRepository repository = new StuInfoRepository(appContext);
-        StuInfo stuInfo = repository.getStuInfo();
-        Log.d("StuInfoTest", stuInfo.toString());
     }
 }
