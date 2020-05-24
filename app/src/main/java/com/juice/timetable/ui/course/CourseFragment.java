@@ -48,7 +48,6 @@ import java.util.List;
 import static android.animation.ObjectAnimator.ofObject;
 
 public class CourseFragment extends Fragment {
-    private CourseViewModel homeViewModel;
     private FragmentCourseBinding binding;
     private Toolbar toolbar;
 
