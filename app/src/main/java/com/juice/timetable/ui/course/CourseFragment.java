@@ -164,6 +164,7 @@ public class CourseFragment extends Fragment {
     private void updateCourse() {
         List<Course> allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
         List<OneWeekCourse> oneWeekCourse = mOneWeekCourseViewModel.getOneWeekCourse();
+        List<CourseViewBean> tempList = new ArrayList<>();
         for (int i = 1; i <= 25; i++) {
             CourseViewBean courseViewBean = new CourseViewBean();
             courseViewBean.setAllWeekCourse(allWeekCourse);
@@ -171,15 +172,19 @@ public class CourseFragment extends Fragment {
             courseViewBean.setOneWeekCourse(oneWeekCourse);
 //            courseViewBean.setWeekSet(weekSet);
             courseViewBean.setWeekSet(new HashSet<Integer>());
-            mCourseViewBeanList.add(courseViewBean);
+            tempList.add(courseViewBean);
+            LogUtils.getInstance().d("mCourseViewBeanList size -- > " + mCourseViewBeanList.size());
         }
-        LogUtils.getInstance().d("updateCourse  mVpCourse.getCurrentItem() before-- > " + mVpCourse.getCurrentItem());
+        // 先清空原有的数据 再写入新数据
+        mCourseViewBeanList.clear();
+        mCourseViewBeanList.addAll(tempList);
+
         // 原来的思路是每次从数据库获取 到新的BeanList 直接submitList
         // mCourseViewListAdapter.submitList(mCourseViewBeanList);
         // 这样带来的问题，每次下拉刷新，ViewPager都会强制跳到第一页，无论怎么etCurrentItem
 
         // 通知数据已经修改
-        mCourseViewListAdapter.notifyDataSetChanged();
+//        mCourseViewListAdapter.notifyDataSetChanged();
         // 跳到刷新之前所在的周，不然会跳转到第一周
         mVpCourse.setCurrentItem(mCurViewPagerNum, false);
     }

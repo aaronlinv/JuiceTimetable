@@ -114,6 +114,10 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
 
     }
 
+    @Override
+    public int getItemCount() {
+        return getCurrentList().size();
+    }
 }
 
 class CourseViewHolder extends RecyclerView.ViewHolder {
