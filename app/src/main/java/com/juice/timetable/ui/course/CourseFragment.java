@@ -57,6 +57,7 @@ public class CourseFragment extends Fragment {
     private StuInfoViewModel mStuInfoViewModel;
     private SwipeRefreshLayout mSlRefresh;
     private TextView mTvCheckIn;
+    private CourseViewListAdapter mCourseViewListAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class CourseFragment extends Fragment {
         List<Course> allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
         LogUtils.getInstance().d("mAllWeekCourseViewModel.getAllWeekCourse() -- > " + allWeekCourse);
 
-        initCurrentWeek();
+//        initCurrentWeek();
         initView();
         initCourse();
         return binding.getRoot();
@@ -135,7 +136,15 @@ public class CourseFragment extends Fragment {
      * 初始化课程数据
      */
     private void initCourse() {
-        CourseViewListAdapter courseViewListAdapter = new CourseViewListAdapter();
+        mCourseViewListAdapter = new CourseViewListAdapter();
+        updateCourse();
+        mVpCourse.setAdapter(mCourseViewListAdapter);
+    }
+
+    /**
+     * 读取数据库 完整课表和周课表 更新到适配器
+     */
+    private void updateCourse() {
         List<CourseViewBean> courseViewBeanList = new ArrayList<>();
         List<Course> allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
         List<OneWeekCourse> oneWeekCourse = mOneWeekCourseViewModel.getOneWeekCourse();
@@ -149,8 +158,8 @@ public class CourseFragment extends Fragment {
 
             courseViewBeanList.add(courseViewBean);
         }
-        courseViewListAdapter.submitList(courseViewBeanList);
-        mVpCourse.setAdapter(courseViewListAdapter);
+        mCourseViewListAdapter.submitList(courseViewBeanList);
+        mCourseViewListAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -257,11 +266,7 @@ public class CourseFragment extends Fragment {
                             Toast.makeText(getActivity(), msgStr, Toast.LENGTH_SHORT).show();
                             mSlRefresh.setRefreshing(false);
                         } else {
-                            // TODO: 2020/5/24 刷新课程
-//                            binding.courseView.setCourses(allWeekCourse);
-//                            binding.courseView.setSet(weekSet);
-//                            binding.courseView.setOneWeekCourses(oneWeekCourse);
-
+                            updateCourse();
                             Toast.makeText(requireActivity(), "课表刷新成功", Toast.LENGTH_SHORT).show();
                             mSlRefresh.setRefreshing(false);
 
