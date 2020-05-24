@@ -239,7 +239,6 @@ public class InitFragment extends Fragment {
         stuInfo.setStuID(snoStr);
         stuInfo.setEduPassword(edu);
         stuInfo.setLeavePassword(leave);
-        mStuInfoViewModel.insertStuInfo(stuInfo);
         try {
             //AES加密
             String edupw = AesCryptUtil.encrypt("橙子app", edu);
@@ -255,7 +254,7 @@ public class InitFragment extends Fragment {
             stuInfo1.setEduPassword(edupw);
             stuInfo1.setLeavePassword(leavepw);
             stuInfo1.setStuID(snoStr);
-            stuInfoDao.insertStuInfo(stuInfo1);
+            mStuInfoViewModel.insertStuInfo(stuInfo);
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
         }
