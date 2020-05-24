@@ -8,9 +8,10 @@ import android.widget.RemoteViewsService;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
+import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.data.bean.OneWeekCourse;
+import com.juice.timetable.data.repository.AllWeekCourseRepository;
 import com.juice.timetable.data.repository.OneWeekCourseRepository;
-import com.juice.timetable.utils.LogUtils;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class ListViewService extends RemoteViewsService {
 
         private Context mContext;
         private List<OneWeekCourse> oneWeekCourses;
+        private List<Course> courses;
 
         private List<OneWeekCourse> mList = new ArrayList<>();
 
@@ -54,11 +56,12 @@ public class ListViewService extends RemoteViewsService {
             OneWeekCourseRepository repository = new OneWeekCourseRepository(mContext);
             oneWeekCourses = repository.getOneWeekCourse();
             for (OneWeekCourse oneWeekCours : oneWeekCourses) {
-                if (oneWeekCours.getInWeek().equals(Constant.CUR_WEEK) && oneWeekCours.getDayOfWeek() == (getWeekday() - 4)) {
-                    LogUtils.getInstance().d("oneWeekCours -- >" + oneWeekCours.toString());
+                if (oneWeekCours.getInWeek().equals(Constant.CUR_WEEK) && oneWeekCours.getDayOfWeek() == (getWeekday() - 5)) {
                     mList.add(oneWeekCours);
                 }
             }
+            AllWeekCourseRepository allWeekCourseRepository = new AllWeekCourseRepository(mContext);
+            courses = allWeekCourseRepository.getAllWeekCourse();
         }
 
         /**
@@ -87,11 +90,16 @@ public class ListViewService extends RemoteViewsService {
             if (position < 0) {
                 return null;
             }
-            OneWeekCourse oneWeekCourse = mList.get(position);
             RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.item_today_widget);
+            OneWeekCourse oneWeekCourse = mList.get(position);
+            for (Course cours : courses) {
+                if (oneWeekCourse.getCouName().replace(" ", "").equals(cours.getCouName().replace(" ", ""))) {
+                    views.setTextViewText(R.id.widget_teacher, cours.getCouTeacher());
+                    break;
+                }
+            }
             views.setTextViewText(R.id.widget_name, oneWeekCourse.getCouName());
             views.setTextViewText(R.id.widget_room, oneWeekCourse.getCouRoom());
-            views.setTextViewText(R.id.widget_teacher, "张栋");
             views.setTextViewText(R.id.tv_start, String.valueOf(oneWeekCourse.getStartNode()));
             views.setTextViewText(R.id.tv_end, String.valueOf(oneWeekCourse.getEndNode()));
             // 填充Intent，填充在AppWdigetProvider中创建的PendingIntent

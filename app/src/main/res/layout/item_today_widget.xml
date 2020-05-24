@@ -61,7 +61,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:text="数据结构"
             android:textColor="@color/widgetText"
             android:textSize="14sp" />
 
@@ -82,7 +81,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="16dp"
                 android:alpha="0.5"
-                android:text="理工楼二楼"
                 android:textColor="@color/widgetText"
                 android:textSize="12sp" />
 
@@ -99,7 +97,6 @@
                 android:alpha="0.5"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="唐自立"
                 android:textColor="@color/widgetText"
                 android:textSize="12sp" />
 
