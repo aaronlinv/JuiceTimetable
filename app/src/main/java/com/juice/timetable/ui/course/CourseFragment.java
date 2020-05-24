@@ -50,11 +50,7 @@ import static android.animation.ObjectAnimator.ofObject;
 public class CourseFragment extends Fragment {
     private FragmentCourseBinding binding;
     private Toolbar toolbar;
-
     private Handler mHandler;
-    private List<Course> allWeekCourse;
-    private HashSet<Integer> weekSet;
-    private List<OneWeekCourse> oneWeekCourse;
     private ViewPager2 mVpCourse;
     private AllWeekCourseViewModel mAllWeekCourseViewModel;
     private OneWeekCourseViewModel mOneWeekCourseViewModel;
@@ -197,13 +193,8 @@ public class CourseFragment extends Fragment {
                 message.what = Constant.MSG_REFRESH;
 
                 LogUtils.getInstance().d("setOnRefreshListener:开始刷新");
-                // 更新数据
-                // TODO: 2020/5/6
-//                        allWeekCourseDao.deleteAllWeekCourse();
-                LogUtils.getInstance().d("setOnRefreshListener:删除数据库");
                 String allCourse = null;
                 StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
-
                 try {
                     allCourse = EduInfo.getTimeTable(stuInfo.getStuID().toString(), stuInfo.getEduPassword(), Constant.URI_WHOLE_COURSE, requireContext());
                 } catch (Exception e) {
@@ -216,49 +207,32 @@ public class CourseFragment extends Fragment {
 
                 } else {
                     List<Course> courses = ParseAllWeek.parseAllCourse(allCourse);
-                    // TODO: 2020/5/6 处理获取的完成课表 颜色
                     LogUtils.getInstance().d("setOnRefreshListener:解析完整课表结束");
-
-                    // TODO: 2020/5/6  非初次登录，更新数据没有写
-                    // 首次登录，完整课表为空 加载数据填充颜色；数据库不为空，就使用数据库数据
-                    allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
-                    if (allWeekCourse.isEmpty()) {
-                        for (Course cours : courses) {
-                            if (cours.getCouColor() == null) {
-
-                                // 这里的courses是模拟登录获取的，所有color为null，所以每次都刷新颜色
-                                cours.setCouColor(Utils.getColor(cours.getCouID().intValue()));
-                            }
-                            mAllWeekCourseViewModel.insertAllWeekCourse(cours);
-                            // 测试单双周显示
-/*
-                                    if (cours.getCouID() == 1) {
-                                        cours.setCouWeekType(1);
-                                    }
-                                    if (cours.getCouID() == 2) {
-                                        cours.setCouWeekType(2);
-                                    }
-*/
-                        }
-                        // 填充完颜色将课程装回 allWeekCourse
-                        allWeekCourse = courses;
-                        LogUtils.getInstance().d("setOnRefreshListener:完整课写入数据库表结束");
+                    if (courses.isEmpty()) {
+                        message.obj = "解析完整课表失败";
+                        mHandler.sendMessage(message);
+                        return;
                     }
+                    // 先删除数据库 完整课表
+                    mAllWeekCourseViewModel.deleteAllWeekCourse();
+                    // 加载完整课表填充颜色
+                    for (Course cours : courses) {
+                        if (cours.getCouColor() == null) {
+                            // 这里的courses是模拟登录获取的，所有color为null，所以每次都刷新颜色
+                            cours.setCouColor(Utils.getColor(cours.getCouID().intValue()));
+                        }
+                        // 填充完颜色将课程写入数据库
+                        mAllWeekCourseViewModel.insertAllWeekCourse(cours);
+                    }
+
+
                     try {
-                        getOneWeekCou();
+                        // 传入完整课表 用来匹配颜色和课程信息
+                        getOneWeekCou(courses);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    // 数据库有哪些周的周课表
-
-                    List<Integer> inWeek = mOneWeekCourseViewModel.getWeek();
-                    weekSet = new HashSet<>(inWeek);
-
-                    // 设置周课表List
-
-                    oneWeekCourse = mOneWeekCourseViewModel.getOneWeekCourse();
-
-                    LogUtils.getInstance().d("setOnRefreshListener:周课表写入数据库表结束");
+                    LogUtils.getInstance().d("setOnRefreshListener:获取完整课表和周课表 写入数据库结束");
                     message.obj = "ok";
                     mHandler.sendMessage(message);
                 }
@@ -368,8 +342,10 @@ public class CourseFragment extends Fragment {
 
     /**
      * 解析课表 获取本周、上两周、下两周的周课表
+     *
+     * @param allWeekCourse
      */
-    private void getOneWeekCou() throws Exception {
+    private void getOneWeekCou(List<Course> allWeekCourse) throws Exception {
         // 获取用户数据
         StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
         // 解析的周课表的List
@@ -378,12 +354,11 @@ public class CourseFragment extends Fragment {
         int week = 0;
         // 要删除数据库中的周
         ArrayList<Integer> delList = new ArrayList<>();
-// TODO: 2020/5/6 删除数据库
-//        oneWeekCourseDao.deleteCourse();
-        List<Integer> inWeek = mOneWeekCourseViewModel.getWeek();
+
         // 获取数据库中存了哪些周的周课表
+        List<Integer> inWeek = mOneWeekCourseViewModel.getWeek();
         HashSet<Integer> set = new HashSet<>(inWeek);
-        LogUtils.getInstance().d("周课表set:" + set);
+        LogUtils.getInstance().d("数据库周课表已存在的周 -- > " + set);
         // 数据库为空 需要爬取上两周课程
         if (set.isEmpty()) {
             week = -2;
@@ -392,13 +367,9 @@ public class CourseFragment extends Fragment {
         for (; week <= 2; week++) {
             String oneWeekCourse = EduInfo.getTimeTable(stuInfo.getStuID().toString(), stuInfo.getEduPassword(), Constant.URI_ONE_WEEK + (Constant.CUR_WEEK + week), requireContext());
             List<OneWeekCourse> oneWeekCourses = ParseOneWeek.parseCourse(oneWeekCourse);
-            LogUtils.getInstance().d("获取第 <" + (Constant.CUR_WEEK + week) + "> 周课表");
-            LogUtils.getInstance().d("获取第 <" + (Constant.CUR_WEEK + week) + "> 周课表 获取前List:" + oneWeekCourses);
-            for (OneWeekCourse oneWeekCours : oneWeekCourses) {
-                LogUtils.getInstance().d("获取第 <" + (Constant.CUR_WEEK + week) + "> 周课表:" + oneWeekCours);
-            }
+            LogUtils.getInstance().d("获取第 <" + (Constant.CUR_WEEK + week) + "> 周课表 -- > " + oneWeekCourses);
             couList.addAll(oneWeekCourses);
-            // 删除该数据库中 但前周和后两周的课表，避免冲突
+            // 删除该数据库中 单前周和后两周的课表，避免冲突
             if (week >= 0) {
                 delList.add((Constant.CUR_WEEK + week));
             }
@@ -406,15 +377,12 @@ public class CourseFragment extends Fragment {
 
         // 执行删除
         mOneWeekCourseViewModel.deleteWeek(delList);
+        LogUtils.getInstance().d("删除周课表的周 -- > " + delList);
 
-        LogUtils.getInstance().d("删除周：" + delList);
-
-        // 颜色的随机数
-        int colorNum = 0;
+        // 颜色的随机数(从完整课表总课程数开始)
+        int colorNum = allWeekCourse.size();
+        // 周课表课程存在完整课表中，就赋值上完整课表id
         for (OneWeekCourse oneWeekCourse : couList) {
-//            LogUtils.getInstance().d("整理后的周课表插入数据库" + oneWeekCourse.toString());
-
-            // 周课表课程存在完整课表中，就赋值上完整课表id
             for (Course cou : allWeekCourse) {
                 // 去除空格
                 String wholeCouName = cou.getCouName().replace(" ", "");
@@ -425,13 +393,12 @@ public class CourseFragment extends Fragment {
                     oneWeekCourse.setColor(cou.getCouColor());
                     LogUtils.getInstance().d("在完整课表中找到了该课程并修改：" + oneWeekCourse);
                     break;
-                }
-                // 没有找到 可能是一些考试的显示
-                // 取当前的完整课表的课数目为随机数
+                } else {
+                    // 没有找到 可能是一些考试的显示
+                    // 取当前的完整课表的课数目为随机数
+                    oneWeekCourse.setColor(Utils.getColor(colorNum++));
 
-                //todo 获取颜色
-//                oneWeekCourse.setColor(Utils.getColor(binding.courseView.getCourses().size() + colorNum));
-                colorNum++;
+                }
             }
             // 插入数据库
             mOneWeekCourseViewModel.insertOneWeekCourse(oneWeekCourse);
