@@ -31,7 +31,7 @@ public class OneWeekCourseViewModel extends AndroidViewModel {
     }
 
     public void insertOneWeekCourse(OneWeekCourse... courses) {
-        repository.insertOneWeekCourse();
+        repository.insertOneWeekCourse(courses);
     }
 
     public void deleteOneWeekCourse(Void... Voids) {
