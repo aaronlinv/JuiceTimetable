@@ -3,8 +3,10 @@ package com.juice.timetable.widget;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -15,6 +17,19 @@ import com.juice.timetable.service.ListViewService;
 public class TodayWidget extends AppWidgetProvider {
     private RemoteViews mRemoteViews;
     public static final String ITEM_CLICK = "day.TYPE_LIST";
+
+    private int[] getAppwidgetIds(Context context) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        ComponentName componentName = new ComponentName(context, TodayWidget.class);
+        return appWidgetManager.getAppWidgetIds(componentName);
+    }
+
+    public void triggerUpdate(Context context) {
+        Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, getAppwidgetIds(context));
+        context.sendBroadcast(intent);
+    }
+
 
     public void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         //创建一个remoteView
@@ -34,9 +49,28 @@ public class TodayWidget extends AppWidgetProvider {
         //PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, clickIntent, 0);
         mRemoteViews.setPendingIntentTemplate(R.id.lv_test, pendingIntent);
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.lv_test);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_week);
         appWidgetManager.updateAppWidget(appWidgetId, mRemoteViews);
     }
 
+    @Override
+    public void onEnabled(Context context) {
+        super.onEnabled(context);
+        onUpdate(context);
+        Toast.makeText(context, "可以添加Widget", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        onUpdate(context, appWidgetManager, new int[]{appWidgetId});
+    }
+
+    private void onUpdate(Context context) {
+        AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
+        int[] widgetIds = getAppwidgetIds(context);
+        onUpdate(context, widgetManager, widgetIds);
+    }
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
@@ -78,11 +112,6 @@ public class TodayWidget extends AppWidgetProvider {
         return str;
     }
 
-    @Override
-    public void onEnabled(Context context) {
-        super.onEnabled(context);
-        Toast.makeText(context, "可以添加Widget", Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
