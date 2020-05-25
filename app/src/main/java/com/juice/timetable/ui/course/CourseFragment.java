@@ -101,7 +101,7 @@ public class CourseFragment extends Fragment {
     }
 
     private void initEvent() {
-        // 下拉菜单 获取点击的周
+        // 下拉菜单 获取点击的周 设置标题栏
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -139,7 +139,7 @@ public class CourseFragment extends Fragment {
                 if (week != Constant.CUR_WEEK) {
                     toolbar.setTitle("第" + week + "周 (非本周)");
                 } else {
-                    toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
+                    toolbar.setTitle("第" + week + "周");
                 }
             }
         });
@@ -214,8 +214,7 @@ public class CourseFragment extends Fragment {
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, true);
 
-        // 初始化标题栏
-        toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
+        // 初始化标题栏 在 registerOnPageChangeCallback 中初始化
 
         // 不在签到时间并且不在调试模式 隐藏签到提示栏
         if (!Utils.isCheckInTime() && !Constant.DEBUG_CHECK_IN_TEXTVIEW) {
