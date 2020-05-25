@@ -172,14 +172,15 @@ public class CourseFragment extends Fragment {
     private void updateCourse() {
         List<Course> allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
         List<OneWeekCourse> oneWeekCourse = mOneWeekCourseViewModel.getOneWeekCourse();
+        List<Integer> week = mOneWeekCourseViewModel.getWeek();
+        HashSet<Integer> weekSet = new HashSet<>(week);
         List<CourseViewBean> tempList = new ArrayList<>();
         for (int i = 1; i <= 25; i++) {
             CourseViewBean courseViewBean = new CourseViewBean();
             courseViewBean.setAllWeekCourse(allWeekCourse);
             courseViewBean.setCurrentIndex(i);
             courseViewBean.setOneWeekCourse(oneWeekCourse);
-//            courseViewBean.setWeekSet(weekSet);
-            courseViewBean.setWeekSet(new HashSet<Integer>());
+            courseViewBean.setWeekSet(weekSet);
             tempList.add(courseViewBean);
             LogUtils.getInstance().d("mCourseViewBeanList size -- > " + mCourseViewBeanList.size());
         }
