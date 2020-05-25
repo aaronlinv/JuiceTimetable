@@ -13,6 +13,7 @@
         android:translationZ="4dp">
 
         <LinearLayout
+            android:id="@+id/week"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/widget_titleshape"
@@ -34,14 +35,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="right">
-
-                <ImageView
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingRight="16dp"
-                    android:background="@drawable/widget_titleshape"
-                    android:src="@android:drawable/stat_notify_sync" />
             </LinearLayout>
         </LinearLayout>
 

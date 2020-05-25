@@ -142,39 +142,6 @@ public class ListViewService extends RemoteViewsService {
             return weekDay;
         }
 
-        public String getWeekday() {
-            String str = "";
-            int weekDay = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
-            if (weekDay == 1) {
-                weekDay = 7;
-            } else {
-                weekDay = weekDay - 1;
-            }
-            switch (weekDay) {
-                case 1:
-                    str = "周一";
-                    break;
-                case 2:
-                    str = "周二";
-                    break;
-                case 3:
-                    str = "周三";
-                    break;
-                case 4:
-                    str = "周四";
-                    break;
-                case 5:
-                    str = "周五";
-                    break;
-                case 6:
-                    str = "周六";
-                    break;
-                case 7:
-                    str = "周日";
-                    break;
-            }
-            return str;
-        }
         public void getDayCourse(Context context) throws ParseException {
 
         }
