@@ -1,5 +1,6 @@
 package com.juice.timetable.data.parse;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -13,20 +14,18 @@ import org.junit.Test;
  * </pre>
  */
 public class ParseCheckInTest {
-    String s = getMyCheckInStr();
 
     @Test
     public void getMySigned() {
-        String question = ParseCheckIn.getMySigned(s).toString();
-        String answer = "MyCheckIn{Cno=null, isCheckIn=false, checkTime='未签'}";
-        if (answer.equals(question)) {
-            System.out.println("签到状态解析结果正确");
-        } else {
-            System.out.println("签到状态解析结果错误");
-        }
+        String question = ParseCheckIn.getMySigned(getMyCheckInStr()).toString();
+        String answer = getMyCheckInAnswer();
+        boolean isCheck = answer.equals(question);
+
+        Assert.assertTrue(isCheck);
+
     }
 
-    public static String getMyCheckInStr() {
+    private static String getMyCheckInStr() {
         return "<!doctype html public '-//w3c//dtd html 4.01 transitional//en' 'http://www.w3.org/tr/html4/loose.dtd' >\n" +
                 "<html >\n" +
                 "\t<head >\n" +
@@ -118,6 +117,10 @@ public class ParseCheckInTest {
                 "\t\t</div>\n" +
                 "\t</body>\n" +
                 "</html>\n";
+    }
+
+    private static String getMyCheckInAnswer() {
+        return "MyCheckIn{Cno=null, isCheckIn=false, checkTime='未签'}";
     }
 
 

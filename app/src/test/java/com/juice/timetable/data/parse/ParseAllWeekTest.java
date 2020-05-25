@@ -1,5 +1,6 @@
 package com.juice.timetable.data.parse;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -20,11 +21,9 @@ public class ParseAllWeekTest {
 
         String answer = getAllCourseAnswer();
 
-        if (answer.equals(question)) {
-            System.out.println("完整课表解析结果正确");
-        } else {
-            System.out.println("完整课表解析结果错误");
-        }
+        boolean isCheck = answer.equals(question);
+
+        Assert.assertTrue(isCheck);
     }
 
     private static String getAllCourseStr() {

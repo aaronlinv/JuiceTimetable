@@ -1,5 +1,6 @@
 package com.juice.timetable.data.parse;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -17,30 +18,11 @@ public class ParseClassNoSignedItemTest {
     @Test
     public void getClassUnSigned() {
         String question = ParseClassNoSignedItem.getClassUnSigned(getNoSignedItemStr()).toString();
-        String answer = "[ClassNoSignrdItem{, sno='211606173', sname='王震豪'}, ClassNoSignrdItem{, sno='211706219', sname='郑达'}, ClassNoSignrdItem{, sno='211706218', sname='赵帅'}, " +
-                "ClassNoSignrdItem{, sno='211706217', sname='张宇'}, ClassNoSignrdItem{, sno='211706216', sname='张体杰'}, ClassNoSignrdItem{, sno='211706215', sname='曾伟奇'}, " +
-                "ClassNoSignrdItem{, sno='211706214', sname='俞伟建'}, ClassNoSignrdItem{, sno='211706213', sname='于佳宁'}, ClassNoSignrdItem{, sno='211706212', sname='杨银泉'}, " +
-                "ClassNoSignrdItem{, sno='211706211', sname='谢文基'}, ClassNoSignrdItem{, sno='211706210', sname='肖俊贤'}, ClassNoSignrdItem{, sno='211706208', sname='吴伟凯'}, " +
-                "ClassNoSignrdItem{, sno='211706207', sname='吴婷婷'}, ClassNoSignrdItem{, sno='211706206', sname='吴秋悦'}, ClassNoSignrdItem{, sno='211706205', sname='吴娉婷'}, " +
-                "ClassNoSignrdItem{, sno='211706204', sname='吴佳卉'}, ClassNoSignrdItem{, sno='211706203', sname='魏忠杰'}, ClassNoSignrdItem{, sno='211706202', sname='魏鹏辉'}, " +
-                "ClassNoSignrdItem{, sno='211706201', sname='王永乐'}, ClassNoSignrdItem{, sno='211706200', sname='王彤烨'}, ClassNoSignrdItem{, sno='211706199', sname='王力杰'}, " +
-                "ClassNoSignrdItem{, sno='211706197', sname='汪钰莹'}, ClassNoSignrdItem{, sno='211706196', sname='陶佳杰'}, ClassNoSignrdItem{, sno='211706194', sname='苏滨涛'}, " +
-                "ClassNoSignrdItem{, sno='211706192', sname='卢健霖'}, ClassNoSignrdItem{, sno='211706191', sname='刘雨昂'}, ClassNoSignrdItem{, sno='211706190', sname='林涛'}, " +
-                "ClassNoSignrdItem{, sno='211706188', sname='林铭智'}, ClassNoSignrdItem{, sno='211706187', sname='林连坤'}, ClassNoSignrdItem{, sno='211706185', sname='梁梓银'}, " +
-                "ClassNoSignrdItem{, sno='211706184', sname='连辛集'}, ClassNoSignrdItem{, sno='211706183', sname='连捷'}, ClassNoSignrdItem{, sno='211706181', sname='李英梦'}, " +
-                "ClassNoSignrdItem{, sno='211706180', sname='李晓宇'}, ClassNoSignrdItem{, sno='211706179', sname='李思锦'}, ClassNoSignrdItem{, sno='211706178', sname='江李悦'}, " +
-                "ClassNoSignrdItem{, sno='211706177', sname='黄希敏'}, ClassNoSignrdItem{, sno='211706176', sname='黄婷婷'}, ClassNoSignrdItem{, sno='211706174', sname='洪成龙'}, " +
-                "ClassNoSignrdItem{, sno='211706173', sname='何子聪'}, ClassNoSignrdItem{, sno='211706172', sname='何鑫'}, ClassNoSignrdItem{, sno='211706171', sname='郭文昱'}, " +
-                "ClassNoSignrdItem{, sno='211706170', sname='冯志成'}, ClassNoSignrdItem{, sno='211706169', sname='方介斌'}, ClassNoSignrdItem{, sno='211706168', sname='邓慧'}, " +
-                "ClassNoSignrdItem{, sno='211706167', sname='程昱'}, ClassNoSignrdItem{, sno='211706166', sname='程顺明'}, ClassNoSignrdItem{, sno='211706165', sname='陈仙杰'}, " +
-                "ClassNoSignrdItem{, sno='211706164', sname='陈德渠'}, ClassNoSignrdItem{, sno='211706163', sname='曹淦淇'}, ClassNoSignrdItem{, sno='211706162', sname='蔡泽华'}, " +
-                "ClassNoSignrdItem{, sno='211706161', sname='蔡雨婷'}]";
+        String answer = getNoSignedItemAnswer();
 
-        if (answer.equals(question)) {
-            System.out.println("班级未签解析结果正确");
-        } else {
-            System.out.println("班级未签解析结果错误");
-        }
+        boolean isCheck = answer.equals(question);
+
+        Assert.assertTrue(isCheck);
     }
 
     private static String getNoSignedItemStr() {
@@ -524,5 +506,26 @@ public class ParseClassNoSignedItemTest {
                 "\t\t</div>\n" +
                 "\t</body>\n" +
                 "</html>\n";
+    }
+
+    private static String getNoSignedItemAnswer() {
+        return "[ClassNoSignrdItem{, sno='211606173', sname='王震豪'}, ClassNoSignrdItem{, sno='211706219', sname='郑达'}, ClassNoSignrdItem{, sno='211706218', sname='赵帅'}, " +
+                "ClassNoSignrdItem{, sno='211706217', sname='张宇'}, ClassNoSignrdItem{, sno='211706216', sname='张体杰'}, ClassNoSignrdItem{, sno='211706215', sname='曾伟奇'}, " +
+                "ClassNoSignrdItem{, sno='211706214', sname='俞伟建'}, ClassNoSignrdItem{, sno='211706213', sname='于佳宁'}, ClassNoSignrdItem{, sno='211706212', sname='杨银泉'}, " +
+                "ClassNoSignrdItem{, sno='211706211', sname='谢文基'}, ClassNoSignrdItem{, sno='211706210', sname='肖俊贤'}, ClassNoSignrdItem{, sno='211706208', sname='吴伟凯'}, " +
+                "ClassNoSignrdItem{, sno='211706207', sname='吴婷婷'}, ClassNoSignrdItem{, sno='211706206', sname='吴秋悦'}, ClassNoSignrdItem{, sno='211706205', sname='吴娉婷'}, " +
+                "ClassNoSignrdItem{, sno='211706204', sname='吴佳卉'}, ClassNoSignrdItem{, sno='211706203', sname='魏忠杰'}, ClassNoSignrdItem{, sno='211706202', sname='魏鹏辉'}, " +
+                "ClassNoSignrdItem{, sno='211706201', sname='王永乐'}, ClassNoSignrdItem{, sno='211706200', sname='王彤烨'}, ClassNoSignrdItem{, sno='211706199', sname='王力杰'}, " +
+                "ClassNoSignrdItem{, sno='211706197', sname='汪钰莹'}, ClassNoSignrdItem{, sno='211706196', sname='陶佳杰'}, ClassNoSignrdItem{, sno='211706194', sname='苏滨涛'}, " +
+                "ClassNoSignrdItem{, sno='211706192', sname='卢健霖'}, ClassNoSignrdItem{, sno='211706191', sname='刘雨昂'}, ClassNoSignrdItem{, sno='211706190', sname='林涛'}, " +
+                "ClassNoSignrdItem{, sno='211706188', sname='林铭智'}, ClassNoSignrdItem{, sno='211706187', sname='林连坤'}, ClassNoSignrdItem{, sno='211706185', sname='梁梓银'}, " +
+                "ClassNoSignrdItem{, sno='211706184', sname='连辛集'}, ClassNoSignrdItem{, sno='211706183', sname='连捷'}, ClassNoSignrdItem{, sno='211706181', sname='李英梦'}, " +
+                "ClassNoSignrdItem{, sno='211706180', sname='李晓宇'}, ClassNoSignrdItem{, sno='211706179', sname='李思锦'}, ClassNoSignrdItem{, sno='211706178', sname='江李悦'}, " +
+                "ClassNoSignrdItem{, sno='211706177', sname='黄希敏'}, ClassNoSignrdItem{, sno='211706176', sname='黄婷婷'}, ClassNoSignrdItem{, sno='211706174', sname='洪成龙'}, " +
+                "ClassNoSignrdItem{, sno='211706173', sname='何子聪'}, ClassNoSignrdItem{, sno='211706172', sname='何鑫'}, ClassNoSignrdItem{, sno='211706171', sname='郭文昱'}, " +
+                "ClassNoSignrdItem{, sno='211706170', sname='冯志成'}, ClassNoSignrdItem{, sno='211706169', sname='方介斌'}, ClassNoSignrdItem{, sno='211706168', sname='邓慧'}, " +
+                "ClassNoSignrdItem{, sno='211706167', sname='程昱'}, ClassNoSignrdItem{, sno='211706166', sname='程顺明'}, ClassNoSignrdItem{, sno='211706165', sname='陈仙杰'}, " +
+                "ClassNoSignrdItem{, sno='211706164', sname='陈德渠'}, ClassNoSignrdItem{, sno='211706163', sname='曹淦淇'}, ClassNoSignrdItem{, sno='211706162', sname='蔡泽华'}, " +
+                "ClassNoSignrdItem{, sno='211706161', sname='蔡雨婷'}]";
     }
 }

@@ -1,5 +1,6 @@
 package com.juice.timetable.data.parse;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -15,21 +16,14 @@ import org.junit.Test;
 public class ParseOneWeekTest {
     @Test
     public void parseCourse() {
-        String question = ParseOneWeek.parseCourse(getStr()).toString();
-        String answer = "[OneWeekCourse{couID=null, onlyID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=1, typeOfWeek=0, startNode=1, endNode=4, InWeek=11, Color=null}, " +
-                "OneWeekCourse{couID=null, onlyID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=3, typeOfWeek=0, startNode=1, endNode=4, InWeek=11, Color=null}, " +
-                "OneWeekCourse{couID=null, onlyID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=2, typeOfWeek=1, startNode=3, endNode=4, InWeek=11, Color=null}, " +
-                "OneWeekCourse{couID=null, onlyID=null, couName='软件工程(1)班', couRoom='网络教学', dayOfWeek=1, typeOfWeek=2, startNode=5, endNode=6, InWeek=11, Color=null}, " +
-                "OneWeekCourse{couID=null, onlyID=null, couName='大数据应用开发实践(1)班', couRoom='网络教学', dayOfWeek=2, typeOfWeek=0, startNode=5, endNode=8, InWeek=11, Color=null}, " +
-                "OneWeekCourse{couID=null, onlyID=null, couName='大数据综合应用案例实训(1)班', couRoom='网络教学', dayOfWeek=4, typeOfWeek=0, startNode=5, endNode=8, InWeek=11, Color=null}]";
-        if (answer.equals(question)) {
-            System.out.println("周课表解析结果正确");
-        } else {
-            System.out.println("周课表解析结果错误");
-        }
+        String question = ParseOneWeek.parseCourse(getOneWeekStr()).toString();
+        String answer = getOneWeekAnswer();
+        boolean isCheck = answer.equals(question);
+
+        Assert.assertTrue(isCheck);
     }
 
-    public static String getStr() {
+    private static String getOneWeekStr() {
         return "\n" +
                 "<META NAME=\"ROBOTS\" CONTENT=\"NOINDEX,NOFOLLOW\">\n" +
                 "<META HTTP-EQUIV=\"pragma\" CONTENT=\"no-cache\">\n" +
@@ -219,5 +213,14 @@ public class ParseOneWeekTest {
                 "</body>\n" +
                 "</html>\n" +
                 "\n";
+    }
+
+    private static String getOneWeekAnswer() {
+        return "[OneWeekCourse{couID=null, onlyID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=1, typeOfWeek=0, startNode=1, endNode=4, InWeek=11, Color=null}, " +
+                "OneWeekCourse{couID=null, onlyID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=3, typeOfWeek=0, startNode=1, endNode=4, InWeek=11, Color=null}, " +
+                "OneWeekCourse{couID=null, onlyID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=2, typeOfWeek=1, startNode=3, endNode=4, InWeek=11, Color=null}, " +
+                "OneWeekCourse{couID=null, onlyID=null, couName='软件工程(1)班', couRoom='网络教学', dayOfWeek=1, typeOfWeek=2, startNode=5, endNode=6, InWeek=11, Color=null}, " +
+                "OneWeekCourse{couID=null, onlyID=null, couName='大数据应用开发实践(1)班', couRoom='网络教学', dayOfWeek=2, typeOfWeek=0, startNode=5, endNode=8, InWeek=11, Color=null}, " +
+                "OneWeekCourse{couID=null, onlyID=null, couName='大数据综合应用案例实训(1)班', couRoom='网络教学', dayOfWeek=4, typeOfWeek=0, startNode=5, endNode=8, InWeek=11, Color=null}]";
     }
 }
