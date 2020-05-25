@@ -187,6 +187,10 @@ public class InitFragment extends Fragment {
                     }
                 } catch (Exception e) {
                     errorStr = e.getMessage();
+                    // 网络异常，包装一下
+                    if (errorStr.contains("Unable to resolve host")) {
+                        errorStr = "网络不太好，检查一下网络吧";
+                    }
                     LogUtils.getInstance().d("errorText:" + errorStr);
                 }
                 LogUtils.getInstance().d("教务网密码验证结束");
