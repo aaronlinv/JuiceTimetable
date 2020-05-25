@@ -3,8 +3,8 @@ package com.juice.timetable.data.http;
 import android.content.Context;
 
 import com.juice.timetable.app.Constant;
+import com.juice.timetable.utils.CookieUtils;
 import com.juice.timetable.utils.LogUtils;
-import com.juice.timetable.utils.PreferencesUtils;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -25,8 +25,10 @@ public class EduInfo {
     static boolean enableSaveCookie = true;
 
     public static String getTimeTable(String stuID, String stuPassword, String uri, Context context) throws Exception {
-        PreferencesUtils.init(context.getApplicationContext());
-        String prefEduCookie = PreferencesUtils.getString(Constant.PREF_EDU_COOKIE, null);
+//        String prefEduCookie = PreferencesUtils.getString(Constant.PREF_EDU_COOKIE, null);
+        // 加解密Cookie
+        String prefEduCookie = CookieUtils.getCookie(Constant.PREF_EDU_COOKIE);
+
         LogUtils.getInstance().d("PREF_EDU_COOKIE:" + prefEduCookie);
         // 本地存在Cookie先用本地Cookie 尝试登录
         if ((prefEduCookie != null) && enableSaveCookie) {
@@ -40,10 +42,12 @@ public class EduInfo {
         }
         // 本地Cookie 不可用，获取新的Cookie 更新Cookie 并返回得到的数据
         String cookie = EduHttp.getCookie(stuID, stuPassword, context);
-        PreferencesUtils.putString(Constant.PREF_EDU_COOKIE, cookie);
-
-        prefEduCookie = PreferencesUtils.getString(Constant.PREF_EDU_COOKIE, null);
-        LogUtils.getInstance().d("PREF_EDU_COOKIE 设置后:" + prefEduCookie);
+//        PreferencesUtils.putString(Constant.PREF_EDU_COOKIE, cookie);
+        CookieUtils.setCookie(Constant.PREF_EDU_COOKIE, cookie);
+        LogUtils.getInstance().d("重新获取教务Cookie结束 Cookie -- > " + cookie);
+//
+//        prefEduCookie = PreferencesUtils.getString(Constant.PREF_EDU_COOKIE, null);
+//        LogUtils.getInstance().d("PREF_EDU_COOKIE 设置后:" + prefEduCookie);
 
         // 开始根据Cookie 解析数据
         return EduInfo.parse(cookie, uri);
