@@ -56,7 +56,7 @@ public class ListViewService extends RemoteViewsService {
             OneWeekCourseRepository repository = new OneWeekCourseRepository(mContext);
             oneWeekCourses = repository.getOneWeekCourse();
             for (OneWeekCourse oneWeekCours : oneWeekCourses) {
-                if (oneWeekCours.getInWeek().equals(Constant.CUR_WEEK) && oneWeekCours.getDayOfWeek() == (getWeekday())) {
+                if (oneWeekCours.getInWeek().equals(Constant.CUR_WEEK) && oneWeekCours.getDayOfWeek() == (getWeekdayNumber())) {
                     mList.add(oneWeekCours);
                 }
             }
@@ -105,31 +105,6 @@ public class ListViewService extends RemoteViewsService {
             // 填充Intent，填充在AppWdigetProvider中创建的PendingIntent
             return views;
 
-
-            //str_time = SharedPreferencesUtils.getStringFromSP(mContext, "timeList", "");
-            //timeList = gson.fromJson(str_time, new TypeToken<List<String>>(){}.getType());
-            //end_timeList = gson.fromJson(SharedPreferencesUtils.getStringFromSP(mContext,"endTimeList",""), new TypeToken<List<String>>(){}.getType());
-            //chooseSchool = SharedPreferencesUtils.getIntFromSP(mContext, "chooseSchool");
-
-            /*if (chooseSchool == 1){
-                views.setTextViewText(R.id.tv_startTime, startList[mList.get(position).getStart() - 1]);
-                views.setTextViewText(R.id.tv_endTime, endList[mList.get(position).getStart() + mList.get(position).getStep() - 2]);
-                //holder.timeDetail.setText(startList[course.getStart() - 1] + " - " + endList[course.getStart() + course.getStep() - 2]);
-            }
-            else {
-                if (str_time.equals("")){
-                    //holder.timeDetail.setText("还未设置课程时间");
-                    views.setTextViewText(R.id.tv_startTime, "00:00");
-                    views.setTextViewText(R.id.tv_endTime, "00:00");
-                }else {
-                    views.setTextViewText(R.id.tv_startTime, timeList.get(mList.get(position).getStart() - 1));
-                    views.setTextViewText(R.id.tv_endTime, end_timeList.get(mList.get(position).getStart() + mList.get(position).getStep() - 2));
-                    // holder.timeDetail.setText(timeList.get(course.getStart() - 1) + " - " + end_timeList.get(course.getStart() + course.getStep() - 2));
-                }
-            }
-
-            Intent intent = new Intent(ScheduleWidget.ITEM_CLICK);
-            views.setOnClickFillInIntent(R.id.ll_course, intent);*/
         }
 
         /* 在更新界面的时候如果耗时就会显示 正在加载... 的默认字样，但是你可以更改这个界面
@@ -156,7 +131,7 @@ public class ListViewService extends RemoteViewsService {
             return false;
         }
 
-        public int getWeekday() {
+        public int getWeekdayNumber() {
             int weekDay = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
             if (weekDay == 1) {
                 weekDay = 7;
@@ -167,6 +142,39 @@ public class ListViewService extends RemoteViewsService {
             return weekDay;
         }
 
+        public String getWeekday() {
+            String str = "";
+            int weekDay = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
+            if (weekDay == 1) {
+                weekDay = 7;
+            } else {
+                weekDay = weekDay - 1;
+            }
+            switch (weekDay) {
+                case 1:
+                    str = "周一";
+                    break;
+                case 2:
+                    str = "周二";
+                    break;
+                case 3:
+                    str = "周三";
+                    break;
+                case 4:
+                    str = "周四";
+                    break;
+                case 5:
+                    str = "周五";
+                    break;
+                case 6:
+                    str = "周六";
+                    break;
+                case 7:
+                    str = "周日";
+                    break;
+            }
+            return str;
+        }
         public void getDayCourse(Context context) throws ParseException {
 
         }

@@ -34,7 +34,6 @@ public class TodayWidget extends AppWidgetProvider {
     public void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         //创建一个remoteView
         mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.today_widget);
-        mRemoteViews.setTextViewText(R.id.widget_week, getWeekday());
         //把这个widget绑定到RemoteViewService
         Intent intent = new Intent(context, ListViewService.class);
         //设置适配器
@@ -78,40 +77,6 @@ public class TodayWidget extends AppWidgetProvider {
         }
     }
 
-    public String getWeekday() {
-        String str = "";
-        int weekDay = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
-        if (weekDay == 1) {
-            weekDay = 7;
-        } else {
-            weekDay = weekDay - 1;
-        }
-        switch (weekDay) {
-            case 1:
-                str = "周一";
-                break;
-            case 2:
-                str = "周二";
-                break;
-            case 3:
-                str = "周三";
-                break;
-            case 4:
-                str = "周四";
-                break;
-            case 5:
-                str = "周五";
-                break;
-            case 6:
-                str = "周六";
-                break;
-            case 7:
-                str = "周日";
-                break;
-        }
-        return str;
-    }
-
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
@@ -125,9 +90,7 @@ public class TodayWidget extends AppWidgetProvider {
         if (action.equals("clickAction")) {
             Toast.makeText(context, "click", Toast.LENGTH_SHORT).show();
         }
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.today_widget);
-        mRemoteViews.setTextViewText(R.id.widget_week, getWeekday());
         Intent intent2 = new Intent(context, ListViewService.class);
         //设置适配器
         mRemoteViews.setRemoteAdapter(R.id.lv_test, intent2);
