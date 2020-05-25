@@ -222,7 +222,7 @@ public class LoginFragment extends Fragment {
         StuInfo stuInfo = new StuInfo();
         stuInfo.setStuID(snoStr);
         stuInfo.setEduPassword(edu);
-        stuInfo.setEduPassword(leave);
+        stuInfo.setLeavePassword(leave);
         mStuInfoViewModel.insertStuInfo(stuInfo);
     }
 

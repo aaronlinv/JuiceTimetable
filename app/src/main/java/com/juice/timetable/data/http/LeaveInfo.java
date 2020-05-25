@@ -3,8 +3,8 @@ package com.juice.timetable.data.http;
 import android.content.Context;
 
 import com.juice.timetable.app.Constant;
+import com.juice.timetable.utils.CookieUtils;
 import com.juice.timetable.utils.LogUtils;
-import com.juice.timetable.utils.PreferencesUtils;
 
 import java.io.IOException;
 
@@ -33,8 +33,9 @@ public class LeaveInfo {
      * @throws IOException
      */
     public static String getLeave(String stuID, String stuPassword, String uri, Context context) throws Exception {
-        PreferencesUtils.init(context.getApplicationContext());
-        String prefLeaveCookie = PreferencesUtils.getString(Constant.PREF_LEAVE_COOKIE, null);
+
+//        String prefLeaveCookie = PreferencesUtils.getString(Constant.PREF_LEAVE_COOKIE, null);
+        String prefLeaveCookie = CookieUtils.getCookie("Constant.PREF_LEAVE_COOKIE");
         LogUtils.getInstance().d("PREF_LEAVE_COOKIE:" + prefLeaveCookie);
         // 本地存在Cookie先用本地Cookie 尝试登录
         if ((prefLeaveCookie != null) && enableSaveCookie) {
@@ -49,11 +50,13 @@ public class LeaveInfo {
         }
         // 本地Cookie 不可用，获取新的Cookie 更新Cookie 并返回得到的数据
         String cookie = LeaveHttp.getCookie(stuID, stuPassword);
-        PreferencesUtils.putString(Constant.PREF_LEAVE_COOKIE, cookie);
+//        PreferencesUtils.putString(Constant.PREF_LEAVE_COOKIE, cookie);
+        CookieUtils.setCookie(Constant.PREF_LEAVE_COOKIE, cookie);
 
-        prefLeaveCookie = PreferencesUtils.getString(Constant.PREF_LEAVE_COOKIE, null);
-        LogUtils.getInstance().d("PREF_LEAVE_COOKIE 设置后:" + prefLeaveCookie);
+//        prefLeaveCookie = PreferencesUtils.getString(Constant.PREF_LEAVE_COOKIE, null);
+//        LogUtils.getInstance().d("PREF_LEAVE_COOKIE 设置后:" + prefLeaveCookie);
 
+        LogUtils.getInstance().d("重新获取请假系统Cookie结束 Cookie -- > " + cookie);
         // 开始根据Cookie 解析数据
         return LeaveInfo.parse(cookie, uri);
 
