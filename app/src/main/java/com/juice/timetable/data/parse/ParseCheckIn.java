@@ -40,14 +40,14 @@ public class ParseCheckIn {
             for (Element el : ele) {
                 //tr标签中td的数量
                 Integer len_Td = el.getElementsByTag("td").size();
-
-                String checkTime = el.getElementsByTag("td").eq(1).text();
-                myCheckIn.setCheckTime(checkTime);
-                if ("未签".equals(el.getElementsByTag("td").eq(2).text())) {
+                String check_status = el.getElementsByTag("td").eq(2).text().trim();
+                if ("未签".equals(check_status)) {
                     myCheckIn.setCheckIn(false);
+                    myCheckIn.setCheckTime(check_status);
 
                 } else {
                     myCheckIn.setCheckIn(true);
+                    myCheckIn.setCheckTime(check_status);
                 }
 
 
