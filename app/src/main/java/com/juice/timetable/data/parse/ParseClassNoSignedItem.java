@@ -45,9 +45,9 @@ public class ParseClassNoSignedItem {
                 Elements ele = element.getElementsByTag("tr").eq(a);
                 for (Element el : ele) {
                     //tr标签中td的数量
-                    String sno = el.getElementsByTag("td").eq(2).text();
+                    String sno = el.getElementsByTag("td").eq(2).text().trim();
                     casi.setSno(sno);
-                    String Sname = el.getElementsByTag("td").eq(3).text();
+                    String Sname = el.getElementsByTag("td").eq(3).text().trim();
                     casi.setSname(Sname);
                     noSignedList.add(casi);
                 }
