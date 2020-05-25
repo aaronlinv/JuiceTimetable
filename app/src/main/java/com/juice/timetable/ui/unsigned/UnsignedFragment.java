@@ -34,10 +34,10 @@ import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
 import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.dao.ClassNoSignedItemDao;
-import com.juice.timetable.data.dao.StuInfoDao;
 import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseClassNoSignedItem;
 import com.juice.timetable.data.viewmodel.ClassNoSignedItemViewModel;
+import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.utils.Utils;
 
 import java.util.List;
@@ -49,6 +49,8 @@ public class UnsignedFragment extends Fragment {
     private Handler mHandler;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
+    private StuInfoViewModel mStuInfoViewModel;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         //寻找layout
@@ -96,6 +98,9 @@ public class UnsignedFragment extends Fragment {
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(requireContext());
         classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
         ClassNoSignedItemViewModel classNoSignedItemViewModel = new ViewModelProvider(requireActivity()).get(ClassNoSignedItemViewModel.class);
+        mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
+
+
         LiveData<List<ClassNoSignedItem>> classNoSignedItemLive = classNoSignedItemViewModel.getClassNoSignedItemLive();
         classNoSignedItemLive.observe(requireActivity(), new Observer<List<ClassNoSignedItem>>() {
             @Override
@@ -129,9 +134,7 @@ public class UnsignedFragment extends Fragment {
                 if (isNetworkConnected(requireContext())) {
                     try {
                         // 从数据库获取个人用户
-                        JuiceDatabase database = JuiceDatabase.getDatabase(requireContext());
-                        StuInfoDao stuInfoDao = database.getStuInfoDao();
-                        StuInfo stuInfo = stuInfoDao.getStuInfo();
+                        StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
 //
                         String unsigned = LeaveInfo.getLeave(stuInfo.getStuID().toString(), stuInfo.getLeavePassword(), Constant.URI_UNSIGNED_LIST, requireContext());
                         unsignedList = ParseClassNoSignedItem.getClassUnSigned(unsigned);
