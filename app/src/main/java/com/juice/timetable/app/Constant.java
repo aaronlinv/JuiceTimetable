@@ -38,9 +38,10 @@ public class Constant {
     public static final int STOP_REFRESH = 2024;
 
 
-    // TODO: 2020/5/6 判断当前周
     // 当前学校周
-    public static int CUR_WEEK = 14;
+    public static int CUR_WEEK = -1;
+    // 最大周 默认25周
+    public static final int MAX_WEEK = 25;
 
     //
     public static final String PREF_EDU_COOKIE = "PREF_EDU_COOKIE";
@@ -52,7 +53,7 @@ public class Constant {
     // 调式Init界面，用于调试登录界面
     public static boolean DEBUG_INIT_FRAGMENT = false;
     // 调式签到提示栏
-    public static boolean DEBUG_CHECK_IN_TEXTVIEW = true;
+    public static boolean DEBUG_CHECK_IN_TEXTVIEW = false;
 
     // 首次登录
     public static boolean FIRST_LOGIN = false;

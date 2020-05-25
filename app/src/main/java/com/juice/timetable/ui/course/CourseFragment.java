@@ -193,8 +193,14 @@ public class CourseFragment extends Fragment {
      * 初始化当前周
      */
     private void initCurrentWeek() {
+        // 本地不存在 会返回-1
         Constant.CUR_WEEK = Utils.getCurrentWeek();
-        mCurViewPagerNum = Constant.CUR_WEEK - 1;
+        int curWeek = Constant.CUR_WEEK;
+        LogUtils.getInstance().d("initCurrentWeek -- > " + curWeek);
+        // 不在周范围 显示第一周
+        if (curWeek < 0 || curWeek >= Constant.MAX_WEEK) {
+            mCurViewPagerNum = Constant.CUR_WEEK - 1;
+        }
     }
 
     /**
