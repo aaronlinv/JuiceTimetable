@@ -38,7 +38,7 @@ public class Constant {
     public static final int STOP_REFRESH = 2024;
 
 
-    // 当前学校周
+    // 当前学校周 从1开始计数 1代表第一周
     public static int CUR_WEEK = -1;
     // 最大周 默认25周
     public static final int MAX_WEEK = 25;

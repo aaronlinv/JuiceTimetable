@@ -157,6 +157,13 @@ public class CourseFragment extends Fragment {
         mVpCourse.setAdapter(mCourseViewListAdapter);
         // 打开主页 跳转当前周
         mVpCourse.setCurrentItem(Constant.CUR_WEEK - 1, false);
+        // 显示标题栏
+
+        if ((mCurViewPagerNum + 1) != Constant.CUR_WEEK) {
+            toolbar.setTitle("第" + Constant.CUR_WEEK + "周 (非本周)");
+        } else {
+            toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
+        }
     }
 
     /**
@@ -199,7 +206,9 @@ public class CourseFragment extends Fragment {
         int curWeek = Constant.CUR_WEEK;
         LogUtils.getInstance().d("initCurrentWeek -- > " + curWeek);
         // 不在周范围 显示第一周
-        if (curWeek < 0 || curWeek >= Constant.MAX_WEEK) {
+        if (curWeek < 1 || curWeek > Constant.MAX_WEEK) {
+            mCurViewPagerNum = 0;
+        } else {
             mCurViewPagerNum = Constant.CUR_WEEK - 1;
         }
     }
@@ -215,7 +224,8 @@ public class CourseFragment extends Fragment {
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, true);
 
-        // 初始化标题栏 在 registerOnPageChangeCallback 中初始化
+        // 初始化标题栏 只在 registerOnPageChangeCallback 中初始化 从后台切回标题栏不会显示周
+        // 在 updateCourse 中初始
 
         // 不在签到时间并且不在调试模式 隐藏签到提示栏
         if (!Utils.isCheckInTime() && !Constant.DEBUG_CHECK_IN_TEXTVIEW) {
