@@ -56,12 +56,12 @@ public class ParseAllWeek {
                     if (ele.getElementsByTag("td").size() < 3) {
                         break;
                     }
-                    String couName = ele.getElementsByTag("td").eq(0).text();
+                    String couName = ele.getElementsByTag("td").eq(0).text().trim();
 
                     course.setCouName(couName);
                     //
                     if (!"".equals(ele.getElementsByTag("td").eq(2).text())) {
-                        String couTeacher = ele.getElementsByTag("td").eq(2).text();
+                        String couTeacher = ele.getElementsByTag("td").eq(2).text().trim();
                         course.setCouTeacher(couTeacher);
                     }
                     // 解析 起讫时间周序(星期)
@@ -70,7 +70,7 @@ public class ParseAllWeek {
                     if (!"".equals(ele.getElementsByTag("td").eq(10).text())) {
                         // System.out.println(ele.getElementsByTag("td").eq(10).text());
                         // 01～01 03～03
-                        String startEndNode = ele.getElementsByTag("td").eq(10).text();
+                        String startEndNode = ele.getElementsByTag("td").eq(10).text().trim();
 //                        System.out.println(startEndNode.split("\\s+").length);
                         // 一般情况: 01～17
                         if ((startEndNode.split("\\s+").length) == 1) {
@@ -158,34 +158,34 @@ public class ParseAllWeek {
                                     if (tr.split("<br>")[a + 1].contains("[单]")) {
                                         course.setCouWeekType(1);
                                         //使用list后，对是否已经输入过教室进行判断，无则输入，有则重新开一个list存储
-                                        String couRoom = tr.split("<br>")[a + 1].substring(4, tr.split("<br>")[a + 1].length() - 1);
+                                        String couRoom = tr.split("<br>")[a + 1].substring(4, tr.split("<br>")[a + 1].length() - 1).trim();
                                         course.setCouRoom(couRoom);
                                     } else if (tr.split("<br>")[a + 1].contains("[双]")) {
                                         course.setCouWeekType(2);
-                                        String couRoom = tr.split("<br>")[a + 1].substring(4, tr.split("<br>")[a + 1].length() - 1);
+                                        String couRoom = tr.split("<br>")[a + 1].substring(4, tr.split("<br>")[a + 1].length() - 1).trim();
                                         course.setCouRoom(couRoom);
                                     } else {
                                         course.setCouWeekType(0);
-                                        String couRoom = tr.split("<br>")[a + 1].substring(1, tr.split("<br>")[a + 1].length() - 1);
+                                        String couRoom = tr.split("<br>")[a + 1].substring(1, tr.split("<br>")[a + 1].length() - 1).trim();
                                         course.setCouRoom(couRoom);
                                     }
                                     //判断是否在右边表格中有起始结束周
                                     String[] trArr = tr.split("<br>");
                                     if (trArr.length - 1 >= a + 2) {
                                         if (tr.split("<br>")[a + 2].contains("周")) {
-                                            String newWeek = tr.split("<br>")[a + 2].substring(1, tr.split("<br>")[a + 2].length() - 2);
+                                            String newWeek = tr.split("<br>")[a + 2].substring(1, tr.split("<br>")[a + 2].length() - 2).trim();
                                             //System.out.println(newWeek);
                                             course.setCouStartWeek(Integer.valueOf(newWeek.split("-")[0]));
                                             course.setCouEndWeek(Integer.valueOf(newWeek.split("-")[1]));
                                         }
                                     }
-                                    String id = el1.getElementsByTag("td").eq(j).attr("id");
+                                    String id = el1.getElementsByTag("td").eq(j).attr("id").trim();
                                     Integer couWeek = Integer.valueOf(id.substring(id.length() - 1));
                                     course.setCouWeek(couWeek);
                                     Integer couStartNode = Integer.valueOf(id.substring(0, id.length() - 1));
                                     course.setCouStartNode(couStartNode);
 
-                                    Integer time = Integer.valueOf(el1.getElementsByTag("td").eq(j).attr("rowspan"));
+                                    Integer time = Integer.valueOf(el1.getElementsByTag("td").eq(j).attr("rowspan").trim());
                                     Integer couEndNode = couStartNode + time - 1;
                                     course.setCouEndNode(couEndNode);
                                     courseList.add(course);
