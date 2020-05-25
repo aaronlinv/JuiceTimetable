@@ -236,10 +236,12 @@ public class CourseFragment extends Fragment {
                     allCourse = EduInfo.getTimeTable(stuInfo.getStuID().toString(), stuInfo.getEduPassword(), Constant.URI_WHOLE_COURSE, requireContext());
                 } catch (Exception e) {
                     LogUtils.getInstance().d("setOnRefreshListener：" + e.getMessage());
+                    // 可能密码错误
+                    message.obj = e.getMessage();
                 }
                 LogUtils.getInstance().d("setOnRefreshListener:模拟登录获取完整课表结束");
                 if (allCourse == null) {
-                    message.obj = "网络好像不太好，再试一次";
+//                    message.obj = "网络好像不太好，再试一次";
                     mHandler.sendMessage(message);
 
                 } else {
