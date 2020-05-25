@@ -6,6 +6,8 @@ import android.widget.Toast;
 
 import com.juice.timetable.app.Constant;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -95,33 +97,55 @@ public class Utils {
     public static int getDarkRandomColor() {
         return darkColorList[random.nextInt(20) % darkColorList.length];
     }
+
     /**
      * 设置第一周星期一到Preference
      *
      * @param week 当前周
      */
     public static void setFirstWeekPref(int week) {
+        Calendar cal = getFirstWeekMon(week, new Date());
+        PreferencesUtils.putLong(Constant.PREF_FIRST_WEEK_MONDAY, cal.getTimeInMillis());
+
+    }
+
+    @NotNull
+    public static Calendar getFirstWeekMon(int week, Date date) {
         // 当前时间
         Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
+        cal.setTime(date);
+        LogUtils.getInstance().d("cal now time -- > " + cal.getTime());
 
         // 获得当前日期是一个星期的第几天
         int dayWeek = cal.get(Calendar.DAY_OF_WEEK);
-        // 周日实际上是上一周
-        if (1 == dayWeek) {
-            cal.add(Calendar.DAY_OF_MONTH, -1);
+        // 周日为:1 周一:2 周二:3 ....
+        if (dayWeek == 1) {
+            dayWeek = 7;
+        } else {
+            dayWeek--;
         }
+        LogUtils.getInstance().d("dayWeek -- > " + dayWeek);
         // 设置一个星期的第一天，按中国的习惯一个星期的第一天是星期一
-        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        //使用下面这个无效！
+//        cal.setFirstDayOfWeek(Calendar.MONDAY);
         // 获得当前日期是一个星期的第几天
-        int day = cal.get(Calendar.DAY_OF_WEEK);
+
+
         // 根据日历的规则，给当前日期减去 周差值
-        cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - week * 7);
-
+        int dTime = -(week - 1) * 7 - dayWeek + 1;
+        LogUtils.getInstance().d("dTime -- > " + dTime);
+        cal.add(Calendar.DATE, dTime);
+        // 设置0点
+        // 时
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        // 分
+        cal.set(Calendar.MINUTE, 0);
+        // 秒
+        cal.set(Calendar.SECOND, 0);
+        // 毫秒
+        cal.set(Calendar.MILLISECOND, 0);
         LogUtils.getInstance().d("第一周星期一：" + cal.getTime());
-
-        PreferencesUtils.putLong(Constant.PREF_FIRST_WEEK_MONDAY, cal.getTimeInMillis());
-
+        return cal;
     }
 
     /**
