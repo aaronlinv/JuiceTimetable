@@ -58,30 +58,32 @@ public class ParseOneWeek {
                         //System.out.println(ele1.html());
                         OneWeekCourse owc = new OneWeekCourse();
                         //去除为空的课程
-                        String title = doc.getElementsByClass("td3").text();
+                        String title = doc.getElementsByClass("td3").text().trim();
                         Integer week = Integer.valueOf(title.substring(title.indexOf("第") + 1, title.indexOf("周")));
                         owc.setInWeek(week);
-                        if (!"".equals(el.getElementsByTag("td").eq(b).text())) {
+                        String couContent = el.getElementsByTag("td").eq(b).text();
+                        if (!"".equals(couContent)) {
                             //couName,couRoom,单双周的判断
-                            if (el.getElementsByTag("td").eq(b).text().contains("[单]")) {
-                                String couName = el.getElementsByTag("td").eq(b).html().split("<br>")[0];
+                            String[] weekType = el.getElementsByTag("td").eq(b).html().split("<br>");
+                            if (couContent.contains("[单]")) {
+                                String couName = weekType[0];
                                 owc.setCouName(couName);
                                 owc.setTypeOfWeek(1);
-                                String s1 = el.getElementsByTag("td").eq(b).html().split("<br>")[1];
+                                String s1 = weekType[1];
                                 String couRoom = s1.substring(4, s1.length() - 1);
                                 owc.setCouRoom(couRoom);
-                            } else if (el.getElementsByTag("td").eq(b).text().contains("[双]")) {
-                                String couName = el.getElementsByTag("td").eq(b).html().split("<br>")[0];
+                            } else if (couContent.contains("[双]")) {
+                                String couName = weekType[0];
                                 owc.setCouName(couName);
                                 owc.setTypeOfWeek(2);
-                                String s1 = el.getElementsByTag("td").eq(b).html().split("<br>")[1];
+                                String s1 = weekType[1];
                                 String couRoom = s1.substring(4, s1.length() - 1);
                                 owc.setCouRoom(couRoom);
                             } else {
-                                String couName = el.getElementsByTag("td").eq(b).html().split("<br>")[0];
+                                String couName = weekType[0];
                                 owc.setCouName(couName);
                                 owc.setTypeOfWeek(0);
-                                String s1 = el.getElementsByTag("td").eq(b).html().split("<br>")[1];
+                                String s1 = weekType[1];
                                 String couRoom = s1.substring(1, s1.length() - 1);
                                 owc.setCouRoom(couRoom);
                             }
@@ -89,7 +91,6 @@ public class ParseOneWeek {
                             String id = el.getElementsByTag("td").eq(b).attr("id");
                             Integer dayOfWeek = Integer.valueOf(id.substring(id.length() - 1));
                             owc.setDayOfWeek(dayOfWeek);
-
                             Integer startNode = Integer.valueOf(id.substring(0, id.length() - 1));
                             owc.setStartNode(startNode);
                             Integer time = Integer.valueOf(el.getElementsByTag("td").eq(b).attr("rowspan"));
