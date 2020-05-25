@@ -14,8 +14,8 @@
             android:type="sweep"
             android:useLevel="false"
             android:startColor="#FFFFFF"
-            android:centerColor="#FFDC35"
+            android:centerColor="#FEB03A"
             android:centerY="0.50"
-            android:endColor="#CE0000" />
+            android:endColor="#FECF8B" />
     </shape>
 </rotate>

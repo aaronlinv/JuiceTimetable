@@ -47,6 +47,7 @@ import java.util.List;
 
 import static android.animation.ObjectAnimator.ofObject;
 
+@SuppressWarnings("unchecked")
 public class CourseFragment extends Fragment {
     private FragmentCourseBinding binding;
     private Toolbar toolbar;
@@ -101,7 +102,7 @@ public class CourseFragment extends Fragment {
     }
 
     private void initEvent() {
-        // 下拉菜单 获取点击的周
+        // 下拉菜单 获取点击的周 设置标题栏
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -139,7 +140,7 @@ public class CourseFragment extends Fragment {
                 if (week != Constant.CUR_WEEK) {
                     toolbar.setTitle("第" + week + "周 (非本周)");
                 } else {
-                    toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
+                    toolbar.setTitle("第" + week + "周");
                 }
             }
         });
@@ -156,6 +157,13 @@ public class CourseFragment extends Fragment {
         mVpCourse.setAdapter(mCourseViewListAdapter);
         // 打开主页 跳转当前周
         mVpCourse.setCurrentItem(Constant.CUR_WEEK - 1, false);
+        // 显示标题栏
+
+        if ((mCurViewPagerNum + 1) != Constant.CUR_WEEK) {
+            toolbar.setTitle("第" + Constant.CUR_WEEK + "周 (非本周)");
+        } else {
+            toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
+        }
     }
 
     /**
@@ -164,16 +172,22 @@ public class CourseFragment extends Fragment {
     private void updateCourse() {
         List<Course> allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
         List<OneWeekCourse> oneWeekCourse = mOneWeekCourseViewModel.getOneWeekCourse();
+        List<Integer> week = mOneWeekCourseViewModel.getWeek();
+        HashSet<Integer> weekSet = new HashSet<>(week);
+        List<CourseViewBean> tempList = new ArrayList<>();
         for (int i = 1; i <= 25; i++) {
             CourseViewBean courseViewBean = new CourseViewBean();
             courseViewBean.setAllWeekCourse(allWeekCourse);
             courseViewBean.setCurrentIndex(i);
             courseViewBean.setOneWeekCourse(oneWeekCourse);
-//            courseViewBean.setWeekSet(weekSet);
-            courseViewBean.setWeekSet(new HashSet<Integer>());
-            mCourseViewBeanList.add(courseViewBean);
+            courseViewBean.setWeekSet(weekSet);
+            tempList.add(courseViewBean);
+            LogUtils.getInstance().d("mCourseViewBeanList size -- > " + mCourseViewBeanList.size());
         }
-        LogUtils.getInstance().d("updateCourse  mVpCourse.getCurrentItem() before-- > " + mVpCourse.getCurrentItem());
+        // 先清空原有的数据 再写入新数据
+        mCourseViewBeanList.clear();
+        mCourseViewBeanList.addAll(tempList);
+
         // 原来的思路是每次从数据库获取 到新的BeanList 直接submitList
         // mCourseViewListAdapter.submitList(mCourseViewBeanList);
         // 这样带来的问题，每次下拉刷新，ViewPager都会强制跳到第一页，无论怎么etCurrentItem
@@ -188,8 +202,16 @@ public class CourseFragment extends Fragment {
      * 初始化当前周
      */
     private void initCurrentWeek() {
-//        Constant.CUR_WEEK = Utils.getCurrentWeek();
-        mCurViewPagerNum = Constant.CUR_WEEK - 1;
+        // 本地不存在 会返回-1
+        Constant.CUR_WEEK = Utils.getCurrentWeek();
+        int curWeek = Constant.CUR_WEEK;
+        LogUtils.getInstance().d("initCurrentWeek -- > " + curWeek);
+        // 不在周范围 显示第一周
+        if (curWeek < 1 || curWeek > Constant.MAX_WEEK) {
+            mCurViewPagerNum = 0;
+        } else {
+            mCurViewPagerNum = Constant.CUR_WEEK - 1;
+        }
     }
 
     /**
@@ -203,8 +225,8 @@ public class CourseFragment extends Fragment {
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, true);
 
-        // 初始化标题栏
-        toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
+        // 初始化标题栏 只在 registerOnPageChangeCallback 中初始化 从后台切回标题栏不会显示周
+        // 在 updateCourse 中初始
 
         // 不在签到时间并且不在调试模式 隐藏签到提示栏
         if (!Utils.isCheckInTime() && !Constant.DEBUG_CHECK_IN_TEXTVIEW) {
@@ -231,10 +253,12 @@ public class CourseFragment extends Fragment {
                     allCourse = EduInfo.getTimeTable(stuInfo.getStuID().toString(), stuInfo.getEduPassword(), Constant.URI_WHOLE_COURSE, requireContext());
                 } catch (Exception e) {
                     LogUtils.getInstance().d("setOnRefreshListener：" + e.getMessage());
+                    // 可能密码错误
+                    message.obj = e.getMessage();
                 }
                 LogUtils.getInstance().d("setOnRefreshListener:模拟登录获取完整课表结束");
                 if (allCourse == null) {
-                    message.obj = "网络好像不太好，再试一次";
+//                    message.obj = "网络好像不太好，再试一次";
                     mHandler.sendMessage(message);
 
                 } else {
@@ -262,7 +286,7 @@ public class CourseFragment extends Fragment {
                         // 传入完整课表 用来匹配颜色和课程信息
                         getOneWeekCou(courses);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        message.obj = e.getMessage();
                     }
                     LogUtils.getInstance().d("setOnRefreshListener:获取完整课表和周课表 写入数据库结束");
                     message.obj = "ok";
@@ -367,7 +391,7 @@ public class CourseFragment extends Fragment {
 
 
     /**
-     * 解析课表 获取本周、上两周、下两周的周课表
+     * 解析课表 获取本周、上两周、下两周的周课表 同时设置当前周
      *
      * @param allWeekCourse
      */
@@ -375,32 +399,66 @@ public class CourseFragment extends Fragment {
         // 获取用户数据
         StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
         // 解析的周课表的List
-        ArrayList<OneWeekCourse> couList = new ArrayList<>();
-        // 要获取的周课表，0为当前周
-        int week = 0;
-        // 要删除数据库中的周
-        ArrayList<Integer> delList = new ArrayList<>();
+        List<OneWeekCourse> oneWeekCourList;
+
+        // 先获取当前周课课程
+        String oneWeekCouStr = EduInfo.getTimeTable(stuInfo.getStuID().toString(), stuInfo.getEduPassword(), Constant.URI_CUR_WEEK, requireContext());
+        if (oneWeekCouStr.contains("只能查最近几周的课表")) {
+            throw new Exception("没有查询到周课表信息");
+        }
+        oneWeekCourList = ParseOneWeek.parseCourse(oneWeekCouStr);
+        if (oneWeekCouStr.isEmpty()) {
+            throw new Exception("没有查询到周课表信息");
+        }
+        // 当前周 第13周 curWeek就是13
+        int curWeek = oneWeekCourList.get(0).getInWeek();
+        LogUtils.getInstance().d("获取第 <" + curWeek + "> 周课表 -- > " + oneWeekCourList);
+        // 存储所有周课表
+        List<OneWeekCourse> couList = new ArrayList<>(oneWeekCourList);
+
+        // 设置当前周
+        Utils.setFirstWeekPref(curWeek);
+        LogUtils.getInstance().d("设置当前周为 -- > " + curWeek);
 
         // 获取数据库中存了哪些周的周课表
         List<Integer> inWeek = mOneWeekCourseViewModel.getWeek();
         HashSet<Integer> set = new HashSet<>(inWeek);
         LogUtils.getInstance().d("数据库周课表已存在的周 -- > " + set);
-        // 数据库为空 需要爬取上两周课程
-        if (set.isEmpty()) {
+
+
+        // 要获取的周课表，0为当前周
+        int week = 1;
+
+        // 数据库不包含上两周就解析上两周
+        if (!set.contains(curWeek - 1) || !set.contains(curWeek - 2)) {
             week = -2;
         }
+
+        // 要删除数据库中的周
+        ArrayList<Integer> delList = new ArrayList<>();
+
         // 模拟登录获取课表数据
         for (; week <= 2; week++) {
-            String oneWeekCourse = EduInfo.getTimeTable(stuInfo.getStuID().toString(), stuInfo.getEduPassword(), Constant.URI_ONE_WEEK + (Constant.CUR_WEEK + week), requireContext());
-            List<OneWeekCourse> oneWeekCourses = ParseOneWeek.parseCourse(oneWeekCourse);
-            LogUtils.getInstance().d("获取第 <" + (Constant.CUR_WEEK + week) + "> 周课表 -- > " + oneWeekCourses);
-            couList.addAll(oneWeekCourses);
+            // 当前周跳过
+            if (week == 0) {
+                continue;
+            }
+            oneWeekCouStr = EduInfo.getTimeTable(
+                    stuInfo.getStuID().toString(),
+                    stuInfo.getEduPassword(),
+                    Constant.URI_ONE_WEEK + (curWeek + week),
+                    requireContext());
+
+            oneWeekCourList = ParseOneWeek.parseCourse(oneWeekCouStr);
+            LogUtils.getInstance().d("获取第 <" + (curWeek + week) + "> 周课表 -- > " + oneWeekCourList);
+            couList.addAll(oneWeekCourList);
             // 删除该数据库中 单前周和后两周的课表，避免冲突
-            if (week >= 0) {
-                delList.add((Constant.CUR_WEEK + week));
+            if (week > 0) {
+                delList.add((curWeek + week));
             }
         }
-
+        // 添加当前周
+        delList.add(curWeek);
         // 执行删除
         mOneWeekCourseViewModel.deleteWeek(delList);
         LogUtils.getInstance().d("删除周课表的周 -- > " + delList);

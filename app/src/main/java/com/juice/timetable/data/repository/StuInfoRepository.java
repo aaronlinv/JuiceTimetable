@@ -7,8 +7,10 @@ import android.os.AsyncTask;
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.dao.StuInfoDao;
+import com.juice.timetable.utils.AesCryptUtil;
+import com.juice.timetable.utils.LogUtils;
 
-import java.util.concurrent.ExecutionException;
+import java.security.GeneralSecurityException;
 
 /**
  * <pre>
@@ -21,8 +23,9 @@ import java.util.concurrent.ExecutionException;
  * </pre>
  */
 public class StuInfoRepository {
-    private StuInfo stuInfo;
     private StuInfoDao stuInfoDao;
+    // 测试环境密匙
+    private String secret = "G3YnGIaJ@A%4e945M2CxhIHwU*3@BC*o";
 
     public StuInfoRepository(Context context) {
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
@@ -34,9 +37,21 @@ public class StuInfoRepository {
         AsyncTask<Void, Void, StuInfo> asyncTask = new SelectAsyncTask(stuInfoDao).execute();
         try {
             stuInfo = asyncTask.get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+            // 解密
+            LogUtils.getInstance().d("StuInfoRepository中解密前 -- > " + stuInfo);
+            String eduPassword = null;
+            String leavePassword = null;
+            if (stuInfo.getEduPassword() != null) {
+                eduPassword = AesCryptUtil.decrypt(secret, stuInfo.getEduPassword());
+            }
+            if (stuInfo.getLeavePassword() != null) {
+                leavePassword = AesCryptUtil.decrypt(secret, stuInfo.getLeavePassword());
+            }
+
+            stuInfo.setEduPassword(eduPassword);
+            stuInfo.setLeavePassword(leavePassword);
+            LogUtils.getInstance().d("StuInfoRepository中进行解密 -- > " + stuInfo);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return stuInfo;
@@ -44,7 +59,27 @@ public class StuInfoRepository {
 
 
     public void insertStuInfo(StuInfo... stuInfo) {
-        new InsertAsyncTask(stuInfoDao).execute(stuInfo);
+        // 加密
+        String eduPassword = null;
+        String leavePassword = null;
+        StuInfo stu = stuInfo[0];
+        LogUtils.getInstance().d("StuInfoRepository中加密前 -- > " + stu);
+
+        try {
+            if (stu.getEduPassword() != null) {
+                eduPassword = AesCryptUtil.encrypt(secret, stu.getEduPassword());
+            }
+            if (stu.getLeavePassword() != null) {
+                leavePassword = AesCryptUtil.encrypt(secret, stu.getLeavePassword());
+            }
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        }
+        stu.setEduPassword(eduPassword);
+        stu.setLeavePassword(leavePassword);
+
+        LogUtils.getInstance().d("StuInfoRepository中进行加密 -- > " + stu);
+        new InsertAsyncTask(stuInfoDao).execute(stu);
     }
 
     public void deleteStuInfo(Void... Voids) {

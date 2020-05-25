@@ -23,7 +23,7 @@ public class PreferencesUtils {
         context.getSharedPreferences(configFileName, Context.MODE_PRIVATE)
                 .edit()
                 .putBoolean(key, value)
-                .commit();
+                .apply();
     }
 
     public static boolean getBoolean(String key, boolean defValue) {
@@ -35,7 +35,7 @@ public class PreferencesUtils {
         context.getSharedPreferences(configFileName, Context.MODE_PRIVATE)
                 .edit()
                 .putString(key, value)
-                .commit();
+                .apply();
     }
 
     public static String getString(String key, String defValue) {
@@ -48,7 +48,7 @@ public class PreferencesUtils {
         context.getSharedPreferences(configFileName, Context.MODE_PRIVATE)
                 .edit()
                 .putFloat(key, value)
-                .commit();
+                .apply();
     }
 
     public static float getFloat(String key, float defValue) {
@@ -60,7 +60,7 @@ public class PreferencesUtils {
         context.getSharedPreferences(configFileName, Context.MODE_PRIVATE)
                 .edit()
                 .putInt(key, value)
-                .commit();
+                .apply();
     }
 
     public static int getInt(String key, int defValue) {
@@ -72,7 +72,7 @@ public class PreferencesUtils {
         context.getSharedPreferences(configFileName, Context.MODE_PRIVATE)
                 .edit()
                 .putLong(key, value)
-                .commit();
+                .apply();
     }
 
     public static long getLong(String key, long defValue) {

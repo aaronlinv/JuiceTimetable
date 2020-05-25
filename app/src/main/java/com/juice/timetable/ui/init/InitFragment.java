@@ -33,12 +33,10 @@ import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseOneWeek;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.databinding.FragmentInitBinding;
-import com.juice.timetable.utils.AesCryptUtil;
 import com.juice.timetable.utils.CustomLoadingFactory;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.Utils;
 
-import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Objects;
 
@@ -187,6 +185,10 @@ public class InitFragment extends Fragment {
                     }
                 } catch (Exception e) {
                     errorStr = e.getMessage();
+                    // 网络异常，包装一下
+                    if (errorStr.contains("Unable to resolve host")) {
+                        errorStr = "网络不太好，检查一下网络吧";
+                    }
                     LogUtils.getInstance().d("errorText:" + errorStr);
                 }
                 LogUtils.getInstance().d("教务网密码验证结束");
@@ -239,27 +241,7 @@ public class InitFragment extends Fragment {
         stuInfo.setStuID(snoStr);
         stuInfo.setEduPassword(edu);
         stuInfo.setLeavePassword(leave);
-        try {
-            //AES加密
-            String edupw = AesCryptUtil.encrypt("橙子app", edu);
-            String leavepw = AesCryptUtil.encrypt("abc", leave);
-            //AES解密
-            String educy = AesCryptUtil.decrypt("橙子app", edupw);
-            String leavecy = AesCryptUtil.decrypt("abc", leavepw);
-            LogUtils.getInstance().d(educy);
-            LogUtils.getInstance().d(leavecy);
-            LogUtils.getInstance().d(edupw);
-            LogUtils.getInstance().d(leavepw);
-            StuInfo stuInfo1 = new StuInfo();
-            stuInfo1.setEduPassword(edupw);
-            stuInfo1.setLeavePassword(leavepw);
-            stuInfo1.setStuID(snoStr);
-            mStuInfoViewModel.insertStuInfo(stuInfo);
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        }
-
-
+        mStuInfoViewModel.insertStuInfo(stuInfo);
     }
 
     /**

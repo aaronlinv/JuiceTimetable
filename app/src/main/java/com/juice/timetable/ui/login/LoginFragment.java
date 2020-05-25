@@ -162,6 +162,10 @@ public class LoginFragment extends Fragment {
                     EduInfo.getTimeTable(sno, edu, Constant.URI_CUR_WEEK, getContext().getApplicationContext());
                 } catch (Exception e) {
                     errorStr = e.getMessage();
+                    // 网络异常，包装一下
+                    if (errorStr.contains("Unable to resolve host")) {
+                        errorStr = "网络不太好，检查一下网络吧";
+                    }
                     LogUtils.getInstance().d("errorText:" + errorStr);
                 }
                 LogUtils.getInstance().d("教务网密码验证结束");
@@ -218,7 +222,7 @@ public class LoginFragment extends Fragment {
         StuInfo stuInfo = new StuInfo();
         stuInfo.setStuID(snoStr);
         stuInfo.setEduPassword(edu);
-        stuInfo.setEduPassword(leave);
+        stuInfo.setLeavePassword(leave);
         mStuInfoViewModel.insertStuInfo(stuInfo);
     }
 
