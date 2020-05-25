@@ -29,10 +29,11 @@ public class TodayWidget extends AppWidgetProvider {
 //        clickIntent.setAction("clickAction");
 //        clickIntent.putExtra(appWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 //        clickIntent.setData(Uri.parse(clickIntent.toUri(Intent.URI_INTENT_SCHEME)));
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, clickIntent, 0);
-        mRemoteViews.setOnClickPendingIntent(R.id.sv_course, pendingIntent);
+        Intent intent1 = new Intent(ITEM_CLICK);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        //PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, clickIntent, 0);
         mRemoteViews.setPendingIntentTemplate(R.id.lv_test, pendingIntent);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.lv_test);
         appWidgetManager.updateAppWidget(appWidgetId, mRemoteViews);
     }
 
@@ -95,7 +96,20 @@ public class TodayWidget extends AppWidgetProvider {
         if (action.equals("clickAction")) {
             Toast.makeText(context, "click", Toast.LENGTH_SHORT).show();
         }
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.today_widget);
         mRemoteViews.setTextViewText(R.id.widget_week, getWeekday());
+        Intent intent2 = new Intent(context, ListViewService.class);
+        //设置适配器
+        mRemoteViews.setRemoteAdapter(R.id.lv_test, intent2);
+        //设置列表点击触发事件
+        Intent clickIntent = new Intent(context, MainActivity.class);
+//        clickIntent.setAction("clickAction");
+//        clickIntent.putExtra(appWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+//        clickIntent.setData(Uri.parse(clickIntent.toUri(Intent.URI_INTENT_SCHEME)));
+        Intent intent1 = new Intent(ITEM_CLICK);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        //PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, clickIntent, 0);
+        mRemoteViews.setPendingIntentTemplate(R.id.lv_test, pendingIntent);
     }
 }
