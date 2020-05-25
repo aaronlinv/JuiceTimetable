@@ -184,7 +184,7 @@ public class CourseFragment extends Fragment {
         // 这样带来的问题，每次下拉刷新，ViewPager都会强制跳到第一页，无论怎么etCurrentItem
 
         // 通知数据已经修改
-//        mCourseViewListAdapter.notifyDataSetChanged();
+        mCourseViewListAdapter.notifyDataSetChanged();
         // 跳到刷新之前所在的周，不然会跳转到第一周
         mVpCourse.setCurrentItem(mCurViewPagerNum, false);
     }
