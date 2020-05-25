@@ -47,6 +47,7 @@ import java.util.List;
 
 import static android.animation.ObjectAnimator.ofObject;
 
+@SuppressWarnings("unchecked")
 public class CourseFragment extends Fragment {
     private FragmentCourseBinding binding;
     private Toolbar toolbar;
@@ -379,7 +380,7 @@ public class CourseFragment extends Fragment {
 
 
     /**
-     * 解析课表 获取本周、上两周、下两周的周课表
+     * 解析课表 获取本周、上两周、下两周的周课表 同时设置当前周
      *
      * @param allWeekCourse
      */
@@ -387,32 +388,66 @@ public class CourseFragment extends Fragment {
         // 获取用户数据
         StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
         // 解析的周课表的List
-        ArrayList<OneWeekCourse> couList = new ArrayList<>();
-        // 要获取的周课表，0为当前周
-        int week = 0;
-        // 要删除数据库中的周
-        ArrayList<Integer> delList = new ArrayList<>();
+        List<OneWeekCourse> oneWeekCourList;
+
+        // 先获取当前周课课程
+        String oneWeekCouStr = EduInfo.getTimeTable(stuInfo.getStuID().toString(), stuInfo.getEduPassword(), Constant.URI_CUR_WEEK, requireContext());
+        if (oneWeekCouStr.contains("只能查最近几周的课表")) {
+            throw new Exception("没有查询到周课表信息");
+        }
+        oneWeekCourList = ParseOneWeek.parseCourse(oneWeekCouStr);
+        if (oneWeekCouStr.isEmpty()) {
+            throw new Exception("没有查询到周课表信息");
+        }
+        // 当前周 第13周 curWeek就是13
+        int curWeek = oneWeekCourList.get(0).getInWeek();
+        LogUtils.getInstance().d("获取第 <" + curWeek + "> 周课表 -- > " + oneWeekCourList);
+        // 存储所有周课表
+        List<OneWeekCourse> couList = new ArrayList<>(oneWeekCourList);
+
+        // 设置当前周
+        Utils.setFirstWeekPref(curWeek);
+        LogUtils.getInstance().d("设置当前周为 -- > " + curWeek);
 
         // 获取数据库中存了哪些周的周课表
         List<Integer> inWeek = mOneWeekCourseViewModel.getWeek();
         HashSet<Integer> set = new HashSet<>(inWeek);
         LogUtils.getInstance().d("数据库周课表已存在的周 -- > " + set);
-        // 数据库为空 需要爬取上两周课程
-        if (set.isEmpty()) {
+
+
+        // 要获取的周课表，0为当前周
+        int week = 1;
+
+        // 数据库不包含上两周就解析上两周
+        if (!set.contains(curWeek - 1) || !set.contains(curWeek - 2)) {
             week = -2;
         }
+
+        // 要删除数据库中的周
+        ArrayList<Integer> delList = new ArrayList<>();
+
         // 模拟登录获取课表数据
         for (; week <= 2; week++) {
-            String oneWeekCourse = EduInfo.getTimeTable(stuInfo.getStuID().toString(), stuInfo.getEduPassword(), Constant.URI_ONE_WEEK + (Constant.CUR_WEEK + week), requireContext());
-            List<OneWeekCourse> oneWeekCourses = ParseOneWeek.parseCourse(oneWeekCourse);
-            LogUtils.getInstance().d("获取第 <" + (Constant.CUR_WEEK + week) + "> 周课表 -- > " + oneWeekCourses);
-            couList.addAll(oneWeekCourses);
+            // 当前周跳过
+            if (week == 0) {
+                continue;
+            }
+            oneWeekCouStr = EduInfo.getTimeTable(
+                    stuInfo.getStuID().toString(),
+                    stuInfo.getEduPassword(),
+                    Constant.URI_ONE_WEEK + (curWeek + week),
+                    requireContext());
+
+            oneWeekCourList = ParseOneWeek.parseCourse(oneWeekCouStr);
+            LogUtils.getInstance().d("获取第 <" + (curWeek + week) + "> 周课表 -- > " + oneWeekCourList);
+            couList.addAll(oneWeekCourList);
             // 删除该数据库中 单前周和后两周的课表，避免冲突
-            if (week >= 0) {
-                delList.add((Constant.CUR_WEEK + week));
+            if (week > 0) {
+                delList.add((curWeek + week));
             }
         }
-
+        // 添加当前周
+        delList.add(curWeek);
         // 执行删除
         mOneWeekCourseViewModel.deleteWeek(delList);
         LogUtils.getInstance().d("删除周课表的周 -- > " + delList);
