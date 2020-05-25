@@ -32,4 +32,9 @@
         android:id="@+id/initFragment"
         android:name="com.juice.timetable.ui.init.InitFragment"
         android:label="InitFragment" />
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.juice.timetable.ui.about.AboutFragment"
+        android:label="@string/menu_about"
+        android:layout="@layout/fragment_about" />
 </navigation>

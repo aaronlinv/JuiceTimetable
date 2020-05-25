@@ -20,21 +20,25 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
-import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.bean.StuInfo;
-import com.juice.timetable.data.dao.StuInfoDao;
 import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseOneWeek;
+import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.databinding.FragmentInitBinding;
+import com.juice.timetable.utils.AesCryptUtil;
+import com.juice.timetable.utils.CustomLoadingFactory;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.Utils;
 
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,11 +50,10 @@ public class InitFragment extends Fragment {
     private String sno;
     private String edu;
     private String leave;
-    private StuInfo stuInfo;
-    private JuiceDatabase juiceDatabase;
-    private StuInfoDao stuInfoDao;
+
     private Handler mHandler;
     private DrawerLayout drawer;
+    private StuInfoViewModel mStuInfoViewModel;
 
     public InitFragment() {
         // Required empty public constructor
@@ -64,6 +67,7 @@ public class InitFragment extends Fragment {
         // 禁止侧滑打开抽屉
         drawer = requireActivity().findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
 
         return binding.getRoot();
     }
@@ -71,11 +75,8 @@ public class InitFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // 初始化数据库和Dao
-        juiceDatabase = JuiceDatabase.getDatabase(requireContext());
-        stuInfoDao = juiceDatabase.getStuInfoDao();
         // 删除数据库原有账号密码
-        stuInfoDao.deleteStuInfo();
+        mStuInfoViewModel.deleteStuInfo();
 
         btnDialogClick();
         binding.btnGo.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +113,11 @@ public class InitFragment extends Fragment {
                     // 开始后端校验
                     // 禁止登录界面点击
                     binding.btnGo.setClickable(false);
+                    //设置登录按钮和用户条款按钮不可见
+                    binding.btnGo.setVisibility(View.GONE);
+                    binding.btnUserItem.setVisibility(View.GONE);
+                    //loading显示
+                    showColor(binding.btnGo);
 
                     checkPassword();
                 }
@@ -129,7 +135,7 @@ public class InitFragment extends Fragment {
                         // TODO 跳转页面，并调用写入数据库的方法writeAllData()
                         LogUtils.getInstance().d("接受消息：开始写入数据库");
                         writeUser();
-                        LogUtils.getInstance().d("查询数据库：" + stuInfoDao.getStuInfo());
+                        LogUtils.getInstance().d("查询数据库：" + mStuInfoViewModel.selectStuInfo());
                         // 跳转结束后将debugInit置为false否则死循环
                         Constant.DEBUG_INIT_FRAGMENT = false;
                         Navigation.findNavController(requireView()).popBackStack(R.id.initFragment, true);
@@ -146,6 +152,11 @@ public class InitFragment extends Fragment {
                     case Constant.MSG_LOGIN_FAIL:
                         // 恢复登录界面点击
                         binding.btnGo.setClickable(true);
+                        //关闭loading
+                        LoadingBar.cancel(binding.btnGo);
+                        //设置登录按钮和用户条款按钮可见
+                        binding.btnGo.setVisibility(View.VISIBLE);
+                        binding.btnUserItem.setVisibility(View.VISIBLE);
                         String errorStr = (String) msg.obj;
                         Toast.makeText(getActivity(), errorStr, Toast.LENGTH_SHORT).show();
                         break;
@@ -196,7 +207,6 @@ public class InitFragment extends Fragment {
                 }
                 LogUtils.getInstance().d("教务网和请假系统密码验证结束");
                 // 跳转到课表首页
-
                 Message message = new Message();
                 assert errorStr != null;
                 if (errorStr.isEmpty()) {
@@ -223,17 +233,33 @@ public class InitFragment extends Fragment {
 
 
     private void writeUser() {
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
-        stuInfoDao = juiceDatabase.getStuInfoDao();
 
         Integer snoStr = Integer.parseInt(sno);
+        StuInfo stuInfo = new StuInfo();
+        stuInfo.setStuID(snoStr);
+        stuInfo.setEduPassword(edu);
+        stuInfo.setLeavePassword(leave);
+        try {
+            //AES加密
+            String edupw = AesCryptUtil.encrypt("橙子app", edu);
+            String leavepw = AesCryptUtil.encrypt("abc", leave);
+            //AES解密
+            String educy = AesCryptUtil.decrypt("橙子app", edupw);
+            String leavecy = AesCryptUtil.decrypt("abc", leavepw);
+            LogUtils.getInstance().d(educy);
+            LogUtils.getInstance().d(leavecy);
+            LogUtils.getInstance().d(edupw);
+            LogUtils.getInstance().d(leavepw);
+            StuInfo stuInfo1 = new StuInfo();
+            stuInfo1.setEduPassword(edupw);
+            stuInfo1.setLeavePassword(leavepw);
+            stuInfo1.setStuID(snoStr);
+            mStuInfoViewModel.insertStuInfo(stuInfo);
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        }
 
-        StuInfo stuInfo1 = new StuInfo();
-        stuInfo1.setStuID(snoStr);
-        stuInfo1.setEduPassword(edu);
-        stuInfo1.setLeavePassword(leave);
 
-        stuInfoDao.insertStuInfo(stuInfo1);
     }
 
     /**
@@ -343,4 +369,8 @@ public class InitFragment extends Fragment {
         super.onStop();
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }*/
+    public void showColor(View v) {
+        CustomLoadingFactory factory = new CustomLoadingFactory();
+        LoadingBar.make(binding.btnGo, factory).show();
+    }
 }

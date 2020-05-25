@@ -2,27 +2,32 @@ package com.juice.timetable.ui.unsigned;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Network;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.JuiceDatabase;
@@ -33,6 +38,7 @@ import com.juice.timetable.data.dao.StuInfoDao;
 import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseClassNoSignedItem;
 import com.juice.timetable.data.viewmodel.ClassNoSignedItemViewModel;
+import com.juice.timetable.utils.Utils;
 
 import java.util.List;
 
@@ -43,20 +49,34 @@ public class UnsignedFragment extends Fragment {
     private Handler mHandler;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        //寻找layout
         View root = inflater.inflate(R.layout.fragment_unsigned, container, false);
         findID(root);
         handler();
         // 隐藏Toolbar的下拉菜单按钮
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, false);
+        //布局管理器
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         unsignedAdapter = new UnsignedAdapter();
         recyclerView.setAdapter(unsignedAdapter);
         recyclerView.addItemDecoration(new UnsignedItemDecoration(requireContext()));
         getTable();
+        if (Constant.FIRST_IN) {
+            // 刷新动画
+            // 通过调用控件的引用调用post方法，在run方法中更新ui界面
+            swipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    swipeRefreshLayout.setRefreshing(true);
+                }
+            });
+            fresh();
+            // 设置首次登录为false
+            Constant.FIRST_IN = false;
+        }
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -69,7 +89,7 @@ public class UnsignedFragment extends Fragment {
     private void findID(View root) {
         toolbar = requireActivity().findViewById(R.id.toolbar);
         recyclerView = root.findViewById(R.id.recyclerview);
-        swipeRefreshLayout = root.findViewById(R.id.swiperefreshlayout);
+        swipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout);
     }
 
     private void getTable() {
@@ -85,18 +105,21 @@ public class UnsignedFragment extends Fragment {
             }
         });
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private static boolean isNetworkConnected(Context context) {
         if (context != null) {
             ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             assert mConnectivityManager != null;
-            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-            return mNetworkInfo != null;
+            Network network = mConnectivityManager.getActiveNetwork();
+            return network != null;
         }
         return false;
     }
 
     private void fresh() {
         new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @SuppressLint("ShowToast")
             @Override
             public void run() {
@@ -143,11 +166,24 @@ public class UnsignedFragment extends Fragment {
                 super.handleMessage(msg);
                 String msgStr = (String) msg.obj;
                 if ("success".equals(msgStr)) {
-                    Toast.makeText(requireActivity(), "未签名单更新成功", Toast.LENGTH_SHORT).show();
+                    Utils.showToast(requireActivity(), "未签名单更新成功");
                 } else if ("passwd".equals(msgStr)) {
-                    Toast.makeText(requireActivity(), "未输入请假系统密码", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), "未输入请假系统密码", Snackbar.LENGTH_SHORT)
+                            .setAction("去加密码", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.nav_login);
+                                }
+                            }).show();
                 } else if ("network".equals(msgStr)) {
-                    Toast.makeText(requireActivity(), "设备未联网", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), "设备未联网", Snackbar.LENGTH_SHORT)
+                            .setAction("去联网", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS);
+                                    startActivity(intent);
+                                }
+                            }).show();
                 }
                 swipeRefreshLayout.setRefreshing(false);
             }
