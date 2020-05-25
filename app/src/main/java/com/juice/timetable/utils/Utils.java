@@ -150,16 +150,21 @@ public class Utils {
 
     /**
      * 获取当前周
-     *
+     * 不存在return -1
      * @return
      */
     public static int getCurrentWeek() {
         // 获取第一周星期一
-        long first_week_monday = PreferencesUtils.getLong(Constant.PREF_FIRST_WEEK_MONDAY, System.currentTimeMillis());
-        return getWeekGap(first_week_monday, System.currentTimeMillis()) + 1;
+        long firstWeekMonday = PreferencesUtils.getLong(Constant.PREF_FIRST_WEEK_MONDAY, 0);
+        // 不存在return -1
+        if (firstWeekMonday == 0) {
+            return -1;
+        }
+        return getWeekGap(firstWeekMonday, System.currentTimeMillis()) + 1;
     }
 
     /**
+     * 从0开始计数
      * 返回某一周的第一周距离现在的实际周数
      *
      * @param weekBeginMillis

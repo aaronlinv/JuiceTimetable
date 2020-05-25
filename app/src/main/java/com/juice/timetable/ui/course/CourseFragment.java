@@ -193,7 +193,7 @@ public class CourseFragment extends Fragment {
      * 初始化当前周
      */
     private void initCurrentWeek() {
-//        Constant.CUR_WEEK = Utils.getCurrentWeek();
+        Constant.CUR_WEEK = Utils.getCurrentWeek();
         mCurViewPagerNum = Constant.CUR_WEEK - 1;
     }
 
