@@ -31,25 +31,14 @@ public class ParseCheckIn {
         Document doc = Jsoup.parse(parseStr);
         //提取表格
         Elements elements = doc.getElementsByTag("tbody");
-        //System.out.println(elements.html());
         for (Element element : elements) {
-            //计算tr标签的数量
-            Integer len_Tr = element.getElementsByTag("tr").size();
-
+            //ele->element中第一个tr标签
             Elements ele = element.getElementsByTag("tr").eq(0);
             for (Element el : ele) {
-                //tr标签中td的数量
-                Integer len_Td = el.getElementsByTag("td").size();
                 String check_status = el.getElementsByTag("td").eq(2).text().trim();
-                if ("未签".equals(check_status)) {
-                    myCheckIn.setCheckIn(false);
-                    myCheckIn.setCheckTime(check_status);
-
-                } else {
-                    myCheckIn.setCheckIn(true);
-                    myCheckIn.setCheckTime(check_status);
-                }
-
+                boolean isCheckIn = !"未签".equals(check_status);
+                myCheckIn.setCheckIn(isCheckIn);
+                myCheckIn.setCheckTime(check_status);
 
             }
 
