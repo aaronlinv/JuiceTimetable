@@ -7,7 +7,7 @@ import org.junit.Test;
  * <pre>
  *     author : soreak
  *     e-mail : sorea1k@163.com
- *     time   : 2020/05/25
+ *     time   : 2020/05/26
  *     desc   : nothing
  *     item   : juice
  *     version: 1.0
@@ -25,6 +25,11 @@ public class ParseClassNoSignedItemTest {
         Assert.assertTrue(isCheck);
     }
 
+    /**
+     * 计算机科学与技术2班签到情况
+     *
+     * @return
+     */
     private static String getNoSignedItemStr() {
         return "<!doctype html public '-//w3c//dtd html 4.01 transitional//en' 'http://www.w3.org/tr/html4/loose.dtd' >\n" +
                 "<html >\n" +
@@ -508,6 +513,11 @@ public class ParseClassNoSignedItemTest {
                 "</html>\n";
     }
 
+    /**
+     * 计科2班签到情况answer
+     *
+     * @return
+     */
     private static String getNoSignedItemAnswer() {
         return "[ClassNoSignrdItem{, sno='211606173', sname='王震豪'}, ClassNoSignrdItem{, sno='211706219', sname='郑达'}, ClassNoSignrdItem{, sno='211706218', sname='赵帅'}, " +
                 "ClassNoSignrdItem{, sno='211706217', sname='张宇'}, ClassNoSignrdItem{, sno='211706216', sname='张体杰'}, ClassNoSignrdItem{, sno='211706215', sname='曾伟奇'}, " +

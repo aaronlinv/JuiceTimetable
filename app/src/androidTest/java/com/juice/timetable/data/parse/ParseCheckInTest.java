@@ -7,7 +7,7 @@ import org.junit.Test;
  * <pre>
  *     author : soreak
  *     e-mail : sorea1k@163.com
- *     time   : 2020/05/24
+ *     time   : 2020/05/26
  *     desc   : nothing
  *     item   : juice
  *     version: 1.0
@@ -25,6 +25,11 @@ public class ParseCheckInTest {
 
     }
 
+    /**
+     * 学生自身签到情况
+     *
+     * @return
+     */
     private static String getMyCheckInStr() {
         return "<!doctype html public '-//w3c//dtd html 4.01 transitional//en' 'http://www.w3.org/tr/html4/loose.dtd' >\n" +
                 "<html >\n" +
@@ -119,6 +124,11 @@ public class ParseCheckInTest {
                 "</html>\n";
     }
 
+    /**
+     * 自签answer
+     *
+     * @return
+     */
     private static String getMyCheckInAnswer() {
         return "MyCheckIn{Cno=null, isCheckIn=false, checkTime='未签'}";
     }
