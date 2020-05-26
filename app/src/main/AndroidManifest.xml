@@ -31,7 +31,11 @@
             android:name=".service.ListViewService"
             android:enabled="true"
             android:exported="false"
-            android:permission="android.permission.BIND_REMOTEVIEWS"></service>
+            android:permission="android.permission.BIND_REMOTEVIEWS">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APP_WIDGET_SERVICE" />
+            </intent-filter>
+        </service>
         <receiver
             android:name=".widget.TodayWidget"
             android:label="当天">

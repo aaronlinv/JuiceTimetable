@@ -23,6 +23,7 @@ import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.UserInfoUtils;
+import com.juice.timetable.widget.TodayWidget;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -114,5 +115,11 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    protected void onDestroy() {
+        TodayWidget.triggerUpdate(getApplicationContext());
+        super.onDestroy();
     }
 }
