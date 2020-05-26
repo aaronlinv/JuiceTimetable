@@ -28,8 +28,6 @@ public class OneWeekCourse {
 
     private Integer dayOfWeek;
 
-    private Integer typeOfWeek;
-
     private Integer startNode;
 
     private Integer endNode;
@@ -57,12 +55,11 @@ public class OneWeekCourse {
     @Override
     public String toString() {
         return "OneWeekCourse{" +
-                "couID=" + couID +
-                ", onlyID=" + onlyID +
+                "onlyID=" + onlyID +
+                ", couID=" + couID +
                 ", couName='" + couName + '\'' +
                 ", couRoom='" + couRoom + '\'' +
                 ", dayOfWeek=" + dayOfWeek +
-                ", typeOfWeek=" + typeOfWeek +
                 ", startNode=" + startNode +
                 ", endNode=" + endNode +
                 ", InWeek=" + InWeek +
@@ -100,14 +97,6 @@ public class OneWeekCourse {
 
     public void setDayOfWeek(Integer dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
-    }
-
-    public Integer getTypeOfWeek() {
-        return typeOfWeek;
-    }
-
-    public void setTypeOfWeek(Integer typeOfWeek) {
-        this.typeOfWeek = typeOfWeek;
     }
 
     public Integer getStartNode() {
