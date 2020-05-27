@@ -145,6 +145,13 @@ public class CourseFragment extends Fragment {
             }
         });
 
+        // ViewPager 课程被点击事件
+        mCourseViewListAdapter.setItemClickListener(new CourseViewListAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int onlyId) {
+                LogUtils.getInstance().d("课程被点击 onlyId -- > " + onlyId);
+            }
+        });
     }
 
     /**

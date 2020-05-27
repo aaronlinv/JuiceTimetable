@@ -3,6 +3,9 @@ package com.juice.timetable.ui.course;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -50,10 +53,59 @@ public class CourseView extends FrameLayout {
 
     private boolean mFirstDraw = false;
 
-    /**
-     * 行item的宽度根据view的总宽度自动平均分配
-     */
+    // 行item的宽度根据view的总宽度自动平均分配
     private boolean mRowItemWidthAuto = true;
+
+    // 显示分割线
+    private boolean mShowVerticalLine = true;
+    private boolean mShowHorizontalLine = true;
+    private OnItemClickListener mItemClickListener;
+
+
+    private Paint mLinePaint;
+    private Path mLinePath = new Path();
+
+    public CourseView(@NonNull Context context) {
+        super(context);
+    }
+
+    public CourseView(@NonNull Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        initView();
+    }
+
+    /**
+     * 初始化 分割线
+     */
+    private void initView() {
+        mLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mLinePaint.setColor(Color.LTGRAY);
+        mLinePaint.setStrokeWidth(1);
+        mLinePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        mLinePaint.setPathEffect(new DashPathEffect(new float[]{5, 10}, 0));
+    }
+
+    private void drawLine(Canvas canvas) {
+        //横线
+        if (mShowHorizontalLine) {
+            for (int i = 1; i < mColCount; i++) {
+                mLinePath.reset();
+                mLinePath.moveTo(0, i * mColItemHeight);
+                mLinePath.lineTo(mWidth, i * mColItemHeight);
+                canvas.drawPath(mLinePath, mLinePaint);
+            }
+        }
+
+        //竖线
+        if (mShowVerticalLine) {
+            for (int i = 1; i < mRowCount; i++) {
+                mLinePath.reset();
+                mLinePath.moveTo(i * mRowItemWidth, 0);
+                mLinePath.lineTo(i * mRowItemWidth, mHeight);
+                canvas.drawPath(mLinePath, mLinePaint);
+            }
+        }
+    }
 
     public int getCurrentIndex() {
         return mCurrentIndex;
@@ -86,13 +138,6 @@ public class CourseView extends FrameLayout {
         this.set = set;
     }
 
-    public CourseView(@NonNull Context context) {
-        super(context);
-    }
-
-    public CourseView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
 
     public void addCourse(Course course) {
         // 课为空 return回去 不显示
@@ -165,11 +210,29 @@ public class CourseView extends FrameLayout {
         // 背景图层
         backgroundView.addView(tv);
 //        setItemViewBackground(course, tv);
-        //
-//        itemEvent(course, bgLayout, tv);
-
+        // 点击事件
+        initEvent(tv, course);
         return backgroundView;
 
+
+    }
+
+    /**
+     * 课程点击事件
+     *
+     * @param tv
+     * @param course
+     */
+    private void initEvent(TextView tv, final Course course) {
+        tv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 通知ViewPager
+                if (mItemClickListener != null) {
+                    mItemClickListener.onClick(course.getOnlyID());
+                }
+            }
+        });
 
     }
 
@@ -197,6 +260,7 @@ public class CourseView extends FrameLayout {
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
+        drawLine(canvas);
         super.dispatchDraw(canvas);
 
 
@@ -231,6 +295,7 @@ public class CourseView extends FrameLayout {
                     course.setCouEndNode(oneCou.getEndNode());
                     course.setCouColor(oneCou.getColor());
                     course.setCouWeek(oneCou.getDayOfWeek());
+                    course.setOnlyID(oneCou.getOnlyID());
                     addCourse(course);
                 }
             }
@@ -287,4 +352,15 @@ public class CourseView extends FrameLayout {
         this.courses = courses;
     }
 
+    interface OnItemClickListener {
+        void onClick(int onlyId);
+    }
+
+    public OnItemClickListener getItemClickListener() {
+        return mItemClickListener;
+    }
+
+    public void setItemClickListener(OnItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
+    }
 }
