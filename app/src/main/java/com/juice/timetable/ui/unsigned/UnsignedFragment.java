@@ -30,10 +30,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
-import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
 import com.juice.timetable.data.bean.StuInfo;
-import com.juice.timetable.data.dao.ClassNoSignedItemDao;
 import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseClassNoSignedItem;
 import com.juice.timetable.data.viewmodel.ClassNoSignedItemViewModel;
@@ -44,12 +42,12 @@ import java.util.List;
 
 public class UnsignedFragment extends Fragment {
     private UnsignedAdapter unsignedAdapter;
-    private ClassNoSignedItemDao classNoSignedItemDao;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Handler mHandler;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private StuInfoViewModel mStuInfoViewModel;
+    private ClassNoSignedItemViewModel classNoSignedItemViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -95,12 +93,8 @@ public class UnsignedFragment extends Fragment {
     }
 
     private void getTable() {
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(requireContext());
-        classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
-        ClassNoSignedItemViewModel classNoSignedItemViewModel = new ViewModelProvider(requireActivity()).get(ClassNoSignedItemViewModel.class);
+        classNoSignedItemViewModel = new ViewModelProvider(requireActivity()).get(ClassNoSignedItemViewModel.class);
         mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
-
-
         LiveData<List<ClassNoSignedItem>> classNoSignedItemLive = classNoSignedItemViewModel.getClassNoSignedItemLive();
         classNoSignedItemLive.observe(requireActivity(), new Observer<List<ClassNoSignedItem>>() {
             @Override
@@ -139,11 +133,11 @@ public class UnsignedFragment extends Fragment {
                         String unsigned = LeaveInfo.getLeave(stuInfo.getStuID().toString(), stuInfo.getLeavePassword(), Constant.URI_UNSIGNED_LIST, requireContext());
                         unsignedList = ParseClassNoSignedItem.getClassUnSigned(unsigned);
                         // 删除数据库
-                        classNoSignedItemDao.deleteNoSignedItem();
+                        classNoSignedItemViewModel.deleteClassNoSignedItem();
 
                         // 插入数据
                         for (ClassNoSignedItem classNoSignedItem : unsignedList) {
-                            classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
+                            classNoSignedItemViewModel.insertClassNoSignedItem(classNoSignedItem);
                         }
                         message.obj = "success";
                         mHandler.sendMessage(message);
