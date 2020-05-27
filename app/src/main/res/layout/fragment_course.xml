@@ -6,7 +6,7 @@
 
     </data>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <com.juice.timetable.ui.course.MySwipeRefreshLayout
         android:id="@+id/sl_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -31,12 +31,13 @@
 
 
             <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/vp_course"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                android:id="@+id/vp_course"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
 
         </LinearLayout>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </com.juice.timetable.ui.course.MySwipeRefreshLayout>
+
 
 </layout>
