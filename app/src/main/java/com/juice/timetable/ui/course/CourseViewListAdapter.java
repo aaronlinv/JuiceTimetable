@@ -17,7 +17,10 @@ import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.CourseViewBean;
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.Utils;
+
+import java.util.Calendar;
 
 /**
  * <pre>
@@ -65,6 +68,20 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
         courseView.setOneWeekCourses(item.getOneWeekCourse());
         // 不重置，在切换不同周 会出现重叠情况
         courseView.resetView();
+        // 获取第一周星期一的时间
+        long firstWeekMondayTime = PreferencesUtils.getLong(Constant.PREF_FIRST_WEEK_MONDAY, -1);
+        // 计算时间
+        Calendar calendar = Calendar.getInstance();
+        // 获取今天的日
+        int curDay = calendar.get(Calendar.DATE);
+
+        calendar.setTimeInMillis(firstWeekMondayTime);
+        // 加上相隔的周
+        calendar.add(Calendar.DATE, (item.getCurrentIndex() - 1) * 7);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DATE);
+        LogUtils.getInstance().d("第" + item.getCurrentIndex() + "周 周一为 -- > " + month + "." + day);
+
 
         // 星期栏
         LinearLayout week = holder.itemView.findViewById(R.id.ll_week);
@@ -83,14 +100,25 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
                         ViewGroup.LayoutParams.MATCH_PARENT);
 
                 textView.setTextSize(NODE_TEXT_SIZE);
-                textView.setText(mCurrentMonth + "\n月");
+
+                StringBuilder monthStr = new StringBuilder();
+                monthStr.append(month).append("\n月");
+                textView.setText(monthStr);
 
             } else {
                 // 初始化课程星期栏
                 params = new LinearLayout.LayoutParams(10, ViewGroup.LayoutParams.MATCH_PARENT);
                 params.weight = 10;
                 textView.setTextSize(WEEK_TEXT_SIZE);
-                textView.setText(Constant.WEEK_SINGLE[i]);
+
+                StringBuilder weekStr = new StringBuilder();
+                weekStr.append(Constant.WEEK_SINGLE[i]).append("\n").append(day + i);
+
+                textView.setText(weekStr);
+                // 给今天 加深背景色 本周且为当日
+                if (Constant.CUR_WEEK == item.getCurrentIndex() && (day + i) == curDay) {
+                    textView.setBackgroundColor(0xFFf0f0f0);
+                }
             }
             //添加这个视图
             week.addView(textView, params);
