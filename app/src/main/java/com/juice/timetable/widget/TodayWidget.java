@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.juice.timetable.MainActivity;
 import com.juice.timetable.R;
@@ -45,23 +46,21 @@ public class TodayWidget extends AppWidgetProvider {
 
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
-        onUpdate(context, appWidgetManager, new int[]{appWidgetId});
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        onUpdate(context, appWidgetManager, new int[]{appWidgetId});
     }
 
     @Override
     public void onEnabled(Context context) {
-        onUpdate(context);
         super.onEnabled(context);
+        Toast.makeText(context, "请允许橙汁后台运行和自启权限\n否则定制系统可能出现不显示或不更新课程的情况", Toast.LENGTH_LONG).show();
+        onUpdate(context);
     }
 
     private void onUpdate(Context context) {
-        //Intent intent = new Intent(context,ListViewService.class);
-        //context.startService(intent);
         AppWidgetManager widgetManager = AppWidgetManager.getInstance(context);
         int[] widgetIds = getAppwidgetIds(context);
         onUpdate(context, widgetManager, widgetIds);
-        //context.stopService(intent);
     }
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -77,9 +76,9 @@ public class TodayWidget extends AppWidgetProvider {
     }
     @Override
     public void onReceive(Context context, Intent intent) {
-        //onUpdate(context);
-        //Intent intent3 = new Intent(context,ListViewService.class);
-        //context.startService(intent3);
+        super.onReceive(context, intent);
+        Intent intent3 = new Intent(context, ListViewService.class);
+        context.startService(intent3);
         mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.today_widget);
         Intent intent2 = new Intent(context, ListViewService.class);
         //设置适配器
@@ -89,8 +88,7 @@ public class TodayWidget extends AppWidgetProvider {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         mRemoteViews.setPendingIntentTemplate(R.id.lv_test, pendingIntent);
         mRemoteViews.setOnClickPendingIntent(R.id.week, getOpenPendingIntent(context));
-        super.onReceive(context, intent);
-        //context.stopService(intent3);
+        context.stopService(intent3);
     }
 
     private PendingIntent getOpenPendingIntent(Context context) {

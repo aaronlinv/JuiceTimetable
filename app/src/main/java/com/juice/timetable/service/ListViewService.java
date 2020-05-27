@@ -13,7 +13,6 @@ import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.repository.AllWeekCourseRepository;
 import com.juice.timetable.data.repository.OneWeekCourseRepository;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +46,6 @@ public class ListViewService extends RemoteViewsService {
 
         @Override
         public void onCreate() {
-
         }
 
         @Override
@@ -142,9 +140,6 @@ public class ListViewService extends RemoteViewsService {
             return weekDay;
         }
 
-        public void getDayCourse(Context context) throws ParseException {
-
-        }
     }
 
 }
