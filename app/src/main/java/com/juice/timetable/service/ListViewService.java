@@ -19,28 +19,22 @@ import java.util.List;
 
 public class ListViewService extends RemoteViewsService {
 
-    private List<OneWeekCourse> mList;
-
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new ListRemoteViewsFactory(this.getApplicationContext(), intent);
+        return new ListRemoteViewsFactory(this.getApplicationContext());
     }
 
-    private class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+    private static class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
         private Context mContext;
-        private List<OneWeekCourse> oneWeekCourses;
         private List<Course> courses;
 
         private List<OneWeekCourse> mList = new ArrayList<>();
 
         /**
          * 构造函数
-         *
-         * @param context
-         * @param intent
          */
-        public ListRemoteViewsFactory(Context context, Intent intent) {
+        private ListRemoteViewsFactory(Context context) {
             mContext = context;
         }
 
@@ -52,7 +46,7 @@ public class ListViewService extends RemoteViewsService {
         public void onDataSetChanged() {
             mList = new ArrayList<>();
             OneWeekCourseRepository repository = new OneWeekCourseRepository(mContext);
-            oneWeekCourses = repository.getOneWeekCourse();
+            List<OneWeekCourse> oneWeekCourses = repository.getOneWeekCourse();
             for (OneWeekCourse oneWeekCours : oneWeekCourses) {
                 if (oneWeekCours.getInWeek().equals(Constant.CUR_WEEK) && oneWeekCours.getDayOfWeek() == (getWeekdayNumber())) {
                     mList.add(oneWeekCours);
@@ -62,16 +56,12 @@ public class ListViewService extends RemoteViewsService {
             courses = allWeekCourseRepository.getAllWeekCourse();
         }
 
-        /**
-         * 清理资源，释放内存
-         */
         @Override
         public void onDestroy() {
         }
 
         /**
          * 返回集合视图数量
-         * @return
          */
         @Override
         public int getCount() {
@@ -80,8 +70,6 @@ public class ListViewService extends RemoteViewsService {
 
         /**
          * 创建并且填充，在指定索引位置显示的View
-         * @param position
-         * @return
          */
         @Override
         public RemoteViews getViewAt(int position) {
@@ -129,7 +117,7 @@ public class ListViewService extends RemoteViewsService {
             return false;
         }
 
-        public int getWeekdayNumber() {
+        int getWeekdayNumber() {
             int weekDay = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
             if (weekDay == 1) {
                 weekDay = 7;
