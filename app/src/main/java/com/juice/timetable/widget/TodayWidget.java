@@ -76,21 +76,15 @@ public class TodayWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         //onUpdate(context);
-        for (int appWidgetId : getAppwidgetIds(context)) {
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.today_widget);
-            Intent intent2 = new Intent(context, ListViewService.class);
-            //设置适配器
-            mRemoteViews.setRemoteAdapter(R.id.lv_test, intent2);
-            mRemoteViews.setTextViewText(R.id.widget_week, getWeekday());
-            Intent intent1 = new Intent(ITEM_CLICK);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
-            mRemoteViews.setPendingIntentTemplate(R.id.lv_test, pendingIntent);
-            mRemoteViews.setOnClickPendingIntent(R.id.week, getOpenPendingIntent(context));
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.lv_test);
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_week);
-            appWidgetManager.updateAppWidget(appWidgetId, mRemoteViews);
-        }
+        mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.today_widget);
+        Intent intent2 = new Intent(context, ListViewService.class);
+        //设置适配器
+        mRemoteViews.setRemoteAdapter(R.id.lv_test, intent2);
+        mRemoteViews.setTextViewText(R.id.widget_week, getWeekday());
+        Intent intent1 = new Intent(ITEM_CLICK);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        mRemoteViews.setPendingIntentTemplate(R.id.lv_test, pendingIntent);
+        mRemoteViews.setOnClickPendingIntent(R.id.week, getOpenPendingIntent(context));
     }
 
     private PendingIntent getOpenPendingIntent(Context context) {
