@@ -37,8 +37,4 @@
         android:name="com.juice.timetable.ui.about.AboutFragment"
         android:label="@string/menu_about"
         android:layout="@layout/fragment_about" />
-    <fragment
-        android:id="@+id/widgetConfigFragment"
-        android:name="com.juice.timetable.ui.widget.WidgetConfigFragment"
-        android:label="WidgetConfigFragment" />
 </navigation>
