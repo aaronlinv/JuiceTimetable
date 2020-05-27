@@ -145,10 +145,12 @@ public class UnsignedFragment extends Fragment {
                     } catch (Exception e) {
                         message.obj = "passwd";
                         mHandler.sendMessage(message);
+                        classNoSignedItemViewModel.deleteClassNoSignedItem();
                         e.printStackTrace();
                     }
                 } else {
                     message.obj = "network";
+                    classNoSignedItemViewModel.deleteClassNoSignedItem();
                     mHandler.sendMessage(message);
                 }
             }
