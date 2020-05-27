@@ -9,8 +9,9 @@
     <ImageView
         android:layout_width="4dp"
         android:layout_height="match_parent"
-        android:layout_marginRight="8dp"
-        android:src="@color/widgetFont" />
+        android:layout_marginEnd="8dp"
+        android:src="@color/widgetFont"
+        android:contentDescription="@string/todo" />
 
     <LinearLayout
         android:layout_width="16dp"
@@ -23,8 +24,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:alpha="0.5"
-            android:text="01"
             android:textColor="@color/widgetText"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -35,24 +34,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:alpha="0.5"
-            android:text="12"
             android:textColor="@color/widgetText"
             android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
-
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
@@ -72,14 +62,15 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginRight="4dp"
-                android:src="@drawable/map" />
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/map"
+                android:contentDescription="@string/todo" />
 
             <TextView
                 android:id="@+id/widget_room"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
                 android:alpha="0.5"
                 android:textColor="@color/widgetText"
                 android:textSize="12sp" />
@@ -87,8 +78,9 @@
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginRight="4dp"
-                android:src="@drawable/man" />
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/man"
+                android:contentDescription="@string/todo" />
 
             <TextView
                 android:id="@+id/widget_teacher"
