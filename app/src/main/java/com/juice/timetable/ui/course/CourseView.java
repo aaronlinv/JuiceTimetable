@@ -45,7 +45,6 @@ public class CourseView extends FrameLayout {
     private int mTextColor = Color.WHITE;
     private int mTextSize = 12;
 
-
     private int mWidth;
     private int mHeight;
 
@@ -206,7 +205,7 @@ public class CourseView extends FrameLayout {
         String showText = course.getCouName() + "\n" + course.getCouRoom();
         tv.setText(showText);
 
-        tv.setBackgroundColor(Utils.getColor(course.getCouColor()));
+        tv.setBackgroundColor(Utils.getColor(course.getCouColor() + Constant.RAINBOW_MODE_NUM));
 
         // 背景图层
         backgroundView.addView(tv);

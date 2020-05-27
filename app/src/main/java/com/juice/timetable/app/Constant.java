@@ -37,6 +37,8 @@ public class Constant {
     // 停止下拉刷新的动画
     public static final int STOP_REFRESH = 2024;
 
+    // 开启彩虹模式Preferences
+    public static final String PREF_RAINBOW_MODE = "PREF_RAINBOW_MODE";
 
     // 当前学校周 从1开始计数 1代表第一周
     public static int CUR_WEEK = -1;
@@ -59,4 +61,10 @@ public class Constant {
     public static boolean FIRST_LOGIN = false;
 
     public static boolean FIRST_IN = true;
+
+    // 彩虹模式的随机数 0 为关闭
+    public static int RAINBOW_MODE_NUM = 10;
+
+    // 彩虹模式开关
+    public static boolean RAINBOW_MODE_ENABLED = true;
 }

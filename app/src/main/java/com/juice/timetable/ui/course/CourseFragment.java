@@ -39,12 +39,14 @@ import com.juice.timetable.data.viewmodel.OneWeekCourseViewModel;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.databinding.FragmentCourseBinding;
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -65,6 +67,7 @@ public class CourseFragment extends Fragment {
     private List<CourseViewBean> mCourseViewBeanList = new ArrayList<>();
     private int mCurViewPagerNum;
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentCourseBinding.inflate(getLayoutInflater());
@@ -77,11 +80,19 @@ public class CourseFragment extends Fragment {
         mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
         List<Course> allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
         LogUtils.getInstance().d("mAllWeekCourseViewModel.getAllWeekCourse() -- > " + allWeekCourse);
-
+        initData();
         initCurrentWeek();
         initView();
         initCourse();
         return binding.getRoot();
+    }
+
+    /**
+     * 初始化数据
+     */
+    private void initData() {
+        // 初始化彩虹模式随机数
+        Constant.RAINBOW_MODE_NUM = PreferencesUtils.getInt(Constant.PREF_RAINBOW_MODE, 0);
     }
 
     @SuppressLint("HandlerLeak")
@@ -346,6 +357,14 @@ public class CourseFragment extends Fragment {
                             Toast.makeText(getActivity(), msgStr, Toast.LENGTH_SHORT).show();
                             mSlRefresh.setRefreshing(false);
                         } else {
+                            // 如果开启了彩虹模式 随机一个数
+                            if (Constant.RAINBOW_MODE_ENABLED) {
+                                Random random = new Random();
+                                int rainbowModeNum = random.nextInt(Utils.getColorCount());
+                                Constant.RAINBOW_MODE_NUM = rainbowModeNum;
+                                // 写入本地Preferences
+                                PreferencesUtils.putInt(Constant.PREF_RAINBOW_MODE, rainbowModeNum);
+                            }
                             updateCourse();
                             Toast.makeText(requireActivity(), "课表刷新成功", Toast.LENGTH_SHORT).show();
                             mSlRefresh.setRefreshing(false);
