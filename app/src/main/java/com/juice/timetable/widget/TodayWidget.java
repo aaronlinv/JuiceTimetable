@@ -77,10 +77,9 @@ public class TodayWidget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        Intent intent3 = new Intent(context, ListViewService.class);
-        context.startService(intent3);
         mRemoteViews = new RemoteViews(context.getPackageName(), R.layout.today_widget);
         Intent intent2 = new Intent(context, ListViewService.class);
+        context.startService(intent2);
         //设置适配器
         mRemoteViews.setRemoteAdapter(R.id.lv_test, intent2);
         mRemoteViews.setTextViewText(R.id.widget_week, getWeekday());
@@ -88,7 +87,7 @@ public class TodayWidget extends AppWidgetProvider {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         mRemoteViews.setPendingIntentTemplate(R.id.lv_test, pendingIntent);
         mRemoteViews.setOnClickPendingIntent(R.id.week, getOpenPendingIntent(context));
-        context.stopService(intent3);
+        context.stopService(intent2);
     }
 
     private PendingIntent getOpenPendingIntent(Context context) {
