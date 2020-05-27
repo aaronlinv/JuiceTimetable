@@ -211,7 +211,7 @@ public class CourseView extends FrameLayout {
         backgroundView.addView(tv);
 //        setItemViewBackground(course, tv);
         // 点击事件
-        initEvent(course);
+        initEvent(tv, course);
         return backgroundView;
 
 
@@ -220,12 +220,20 @@ public class CourseView extends FrameLayout {
     /**
      * 课程点击事件
      *
+     * @param tv
      * @param course
      */
-    private void initEvent(Course course) {
-        if (mItemClickListener != null) {
-            mItemClickListener.onClick(course.getOnlyID());
-        }
+    private void initEvent(TextView tv, final Course course) {
+        tv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 通知ViewPager
+                if (mItemClickListener != null) {
+                    mItemClickListener.onClick(course.getOnlyID());
+                }
+            }
+        });
+
     }
 
     private TextView getCourseTextView(int h, int w) {
@@ -287,6 +295,7 @@ public class CourseView extends FrameLayout {
                     course.setCouEndNode(oneCou.getEndNode());
                     course.setCouColor(oneCou.getColor());
                     course.setCouWeek(oneCou.getDayOfWeek());
+                    course.setOnlyID(oneCou.getOnlyID());
                     addCourse(course);
                 }
             }

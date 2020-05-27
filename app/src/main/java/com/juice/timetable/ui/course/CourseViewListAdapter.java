@@ -35,6 +35,7 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
     private int WEEK_TEXT_SIZE = 12;
     private int NODE_TEXT_SIZE = 11;
     private Integer mCurrentMonth = 5;
+    private OnItemClickListener mItemClickListener;
 
     protected CourseViewListAdapter() {
         super(new DiffUtil.ItemCallback<CourseViewBean>() {
@@ -142,7 +143,19 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
                     ViewGroup.LayoutParams.MATCH_PARENT, nodeItemHeight);
             node.addView(textView, params);
         }
+        initEvent(courseView);
 
+    }
+
+    private void initEvent(CourseView courseView) {
+        courseView.setItemClickListener(new CourseView.OnItemClickListener() {
+            @Override
+            public void onClick(int onlyId) {
+                if (mItemClickListener != null) {
+                    mItemClickListener.onClick(onlyId);
+                }
+            }
+        });
     }
 
     /**
@@ -169,6 +182,21 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
     @Override
     public int getItemCount() {
         return getCurrentList().size();
+    }
+
+    /**
+     * 点击监听器
+     */
+    interface OnItemClickListener {
+        void onClick(int onlyId);
+    }
+
+    public OnItemClickListener getItemClickListener() {
+        return mItemClickListener;
+    }
+
+    public void setItemClickListener(OnItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
     }
 }
 
