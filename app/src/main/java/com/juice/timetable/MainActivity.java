@@ -6,6 +6,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -47,7 +49,14 @@ public class MainActivity extends AppCompatActivity {
 
         //侧边栏
         NavigationView navigationView = findViewById(R.id.nav_view);
-        //课表
+        // 初始化PreferencesUtils
+        PreferencesUtils.init(getApplicationContext());
+
+        // 初始化彩虹模式随机数
+        Constant.RAINBOW_MODE_NUM = PreferencesUtils.getInt(Constant.PREF_RAINBOW_MODE_NUM, 0);
+        // 初始化彩虹模式开关
+        Constant.RAINBOW_MODE_ENABLED = PreferencesUtils.getBoolean(Constant.PREF_RAINBOW_MODE_ENABLED, false);
+
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -62,8 +71,28 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        // 初始化PreferencesUtils
-        PreferencesUtils.init(getApplicationContext());
+        // 侧边栏橙汁图标
+        NavigationView navigation = this.findViewById(R.id.nav_view);
+//        navigation.inflateHeaderView(R.layout.nav_header_main);
+        ImageView juiceIcon = navigationView.getHeaderView(0).findViewById(R.id.imageView);
+
+        // 单击开启/关闭 彩虹模式
+        juiceIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String toastStr = "开启彩虹模式";
+                boolean enableRainbowMode = true;
+                // 如果现在是开启就关闭
+                if (Constant.RAINBOW_MODE_ENABLED) {
+                    toastStr = "关闭彩虹模式";
+                    enableRainbowMode = false;
+                }
+                Constant.RAINBOW_MODE_ENABLED = enableRainbowMode;
+                PreferencesUtils.putBoolean(Constant.PREF_RAINBOW_MODE_ENABLED, enableRainbowMode);
+                Toast.makeText(MainActivity.this, toastStr, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         String luanchFragment = getIntent().getStringExtra("luanchFragment");
 
         // 调式模式：注入自己的账号密码，用于免登录调式

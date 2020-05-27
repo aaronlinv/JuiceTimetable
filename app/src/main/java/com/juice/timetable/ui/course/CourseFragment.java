@@ -79,21 +79,13 @@ public class CourseFragment extends Fragment {
         mOneWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(OneWeekCourseViewModel.class);
         mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
         List<Course> allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
-        LogUtils.getInstance().d("mAllWeekCourseViewModel.getAllWeekCourse() -- > " + allWeekCourse);
-        initData();
+
         initCurrentWeek();
         initView();
         initCourse();
         return binding.getRoot();
     }
 
-    /**
-     * 初始化数据
-     */
-    private void initData() {
-        // 初始化彩虹模式随机数
-        Constant.RAINBOW_MODE_NUM = PreferencesUtils.getInt(Constant.PREF_RAINBOW_MODE, 0);
-    }
 
     @SuppressLint("HandlerLeak")
     @Override
@@ -360,10 +352,11 @@ public class CourseFragment extends Fragment {
                             // 如果开启了彩虹模式 随机一个数
                             if (Constant.RAINBOW_MODE_ENABLED) {
                                 Random random = new Random();
-                                int rainbowModeNum = random.nextInt(Utils.getColorCount());
+                                // 随机一个1开始的数， 0代表关闭彩虹模式
+                                int rainbowModeNum = random.nextInt(Utils.getColorCount() + 1);
                                 Constant.RAINBOW_MODE_NUM = rainbowModeNum;
                                 // 写入本地Preferences
-                                PreferencesUtils.putInt(Constant.PREF_RAINBOW_MODE, rainbowModeNum);
+                                PreferencesUtils.putInt(Constant.PREF_RAINBOW_MODE_NUM, rainbowModeNum);
                             }
                             updateCourse();
                             Toast.makeText(requireActivity(), "课表刷新成功", Toast.LENGTH_SHORT).show();
