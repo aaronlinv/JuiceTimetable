@@ -21,7 +21,6 @@ public class ParseAllWeekTest {
     @Test
     public void parseAllCourse() {
         String question = ParseAllWeek.parseAllCourse(getAllCourseStr()).toString();
-
         String answer = getAllCourseAnswer();
 
         boolean isCheck = answer.equals(question);
@@ -47,7 +46,7 @@ public class ParseAllWeekTest {
     /**
      * 计算机科学与技术完整课表
      *
-     * @return
+     * @return String
      */
     private static String getAllCourseStr() {
         return "\n" +
@@ -452,30 +451,31 @@ public class ParseAllWeekTest {
     /**
      * 计算机科学与技术完整课表answer
      *
-     * @return
+     * @return String
      */
     private static String getAllCourseAnswer() {
-        return "[Course{couID=1, onlyID=0, couName='高级数据库技术 (1)班', couRoom='网络教学', couTeacher='杨雄', couWeek=1, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=14, couColor=null}, " +
-                "Course{couID=2, onlyID=1, couName='数据挖掘与分析 (1)班', couRoom='网络教学', couTeacher='杨雄', couWeek=3, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=8, couColor=null}, " +
-                "Course{couID=10, onlyID=2, couName='数据挖掘应用实践 (1)班', couRoom='网络教学', couTeacher='杨雄', couWeek=3, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=9, couEndWeek=15, couColor=null}, " +
-                "Course{couID=10, onlyID=3, couName='数据挖掘应用实践 (1)班', couRoom='网络教学', couTeacher='杨雄', couWeek=3, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=9, couEndWeek=15, couColor=null}, " +
-                "Course{couID=6, onlyID=4, couName='云计算与数据中心 (1)班', couRoom='网络教学', couTeacher='林庆新', couWeek=5, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=4, couColor=null}, " +
-                "Course{couID=0, onlyID=5, couName='形势与政策（六） (6)班', couRoom='网络教学', couTeacher='韩晞婷', couWeek=2, couStartNode=3, couEndNode=4, couWeekType=0, couStartWeek=11, couEndWeek=14, couColor=null}, " +
-                "Course{couID=4, onlyID=6, couName='软件工程 (1)班', couRoom='网络教学', couTeacher='张栋', couWeek=1, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=1, couEndWeek=13, couColor=null}, " +
-                "Course{couID=3, onlyID=7, couName='大数据应用开发 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=2, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=1, couEndWeek=8, couColor=null}, " +
-                "Course{couID=8, onlyID=8, couName='大数据应用开发实践 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=2, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=9, couEndWeek=16, couColor=null}, " +
-                "Course{couID=8, onlyID=9, couName='大数据应用开发实践 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=2, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=9, couEndWeek=16, couColor=null}, " +
-                "Course{couID=4, onlyID=10, couName='软件工程 (1)班', couRoom='网络教学', couTeacher='张栋', couWeek=3, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=5, couEndWeek=8, couColor=null}, " +
-                "Course{couID=4, onlyID=11, couName='软件工程 (1)班', couRoom='网络教学', couTeacher='张栋', couWeek=3, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=10, couEndWeek=10, couColor=null}, " +
-                "Course{couID=6, onlyID=12, couName='云计算与数据中心 (1)班', couRoom='网络教学', couTeacher='林庆新', couWeek=3, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=1, couEndWeek=4, couColor=null}, " +
-                "Course{couID=9, onlyID=13, couName='大数据综合应用案例实训 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=4, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=5, couEndWeek=11, couColor=null}, " +
-                "Course{couID=9, onlyID=14, couName='大数据综合应用案例实训 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=4, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=5, couEndWeek=11, couColor=null}]";
+        return "[Course{couID=8, onlyID=0, couName='中国古典诗词中的品格与修养 (121)班', couRoom='null', couTeacher='智慧树', couWeek=null, couStartNode=null, couEndNode=null, couWeekType=3, couStartWeek=null, couEndWeek=null, couColor=null}, " +
+                "Course{couID=1, onlyID=1, couName='高级数据库技术 (1)班', couRoom='网络教学', couTeacher='杨雄', couWeek=1, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=14, couColor=null}, " +
+                "Course{couID=2, onlyID=2, couName='数据挖掘与分析 (1)班', couRoom='网络教学', couTeacher='杨雄', couWeek=3, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=8, couColor=null}, " +
+                "Course{couID=11, onlyID=3, couName='数据挖掘应用实践 (1)班', couRoom='网络教学', couTeacher='杨雄', couWeek=3, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=9, couEndWeek=15, couColor=null}, " +
+                "Course{couID=11, onlyID=4, couName='数据挖掘应用实践 (1)班', couRoom='网络教学', couTeacher='杨雄', couWeek=3, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=9, couEndWeek=15, couColor=null}, " +
+                "Course{couID=6, onlyID=5, couName='云计算与数据中心 (1)班', couRoom='网络教学', couTeacher='林庆新', couWeek=5, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=4, couColor=null}, " +
+                "Course{couID=0, onlyID=6, couName='形势与政策（六） (6)班', couRoom='网络教学', couTeacher='韩晞婷', couWeek=2, couStartNode=3, couEndNode=4, couWeekType=0, couStartWeek=11, couEndWeek=14, couColor=null}, " +
+                "Course{couID=4, onlyID=7, couName='软件工程 (1)班', couRoom='网络教学', couTeacher='张栋', couWeek=1, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=1, couEndWeek=13, couColor=null}, " +
+                "Course{couID=3, onlyID=8, couName='大数据应用开发 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=2, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=1, couEndWeek=8, couColor=null}, " +
+                "Course{couID=9, onlyID=9, couName='大数据应用开发实践 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=2, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=9, couEndWeek=16, couColor=null}, " +
+                "Course{couID=9, onlyID=10, couName='大数据应用开发实践 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=2, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=9, couEndWeek=16, couColor=null}, " +
+                "Course{couID=4, onlyID=11, couName='软件工程 (1)班', couRoom='网络教学', couTeacher='张栋', couWeek=3, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=5, couEndWeek=8, couColor=null}, " +
+                "Course{couID=4, onlyID=12, couName='软件工程 (1)班', couRoom='网络教学', couTeacher='张栋', couWeek=3, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=10, couEndWeek=10, couColor=null}, " +
+                "Course{couID=6, onlyID=13, couName='云计算与数据中心 (1)班', couRoom='网络教学', couTeacher='林庆新', couWeek=3, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=1, couEndWeek=4, couColor=null}, " +
+                "Course{couID=10, onlyID=14, couName='大数据综合应用案例实训 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=4, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=5, couEndWeek=11, couColor=null}, " +
+                "Course{couID=10, onlyID=15, couName='大数据综合应用案例实训 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=4, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=5, couEndWeek=11, couColor=null}]";
     }
 
     /**
      * 汉语言完整课表
      *
-     * @return
+     * @return String
      */
     private static String getChineseWholeTimetable() {
         return "<META NAME=\"ROBOTS\" CONTENT=\"NOINDEX,NOFOLLOW\">\n" +
@@ -939,22 +939,23 @@ public class ParseAllWeekTest {
     /**
      * 汉语言完整课表answer
      *
-     * @return
+     * @return String
      */
     private static String getChineseWholeTimetableAnswer() {
-        return "[Course{couID=1, onlyID=0, couName='毛泽东思想和中国特色社会主义理论体系概论 (19)班', couRoom='网络教学', couTeacher='叶钦', couWeek=2, couStartNode=1, couEndNode=2, couWeekType=0, couStartWeek=1, couEndWeek=16, couColor=null}, " +
-                "Course{couID=3, onlyID=2, couName='形势与政策（四） (2)班', couRoom='网络教学', couTeacher='郑声文', couWeek=7, couStartNode=1, couEndNode=2, couWeekType=0, couStartWeek=3, couEndWeek=3, couColor=null}, " +
-                "Course{couID=4, onlyID=3, couName='古代汉语（下） (1)班', couRoom='机北406', couTeacher='宋铁全', couWeek=3, couStartNode=2, couEndNode=4, couWeekType=0, couStartWeek=14, couEndWeek=16, couColor=null}, " +
-                "Course{couID=4, onlyID=4, couName='古代汉语（下） (1)班', couRoom='网络教学', couTeacher='宋铁全', couWeek=3, couStartNode=2, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=16, couColor=null}, " +
-                "Course{couID=11, onlyID=5, couName='学年论文（一） (1)班', couRoom='网络教学', couTeacher='牛康', couWeek=5, couStartNode=2, couEndNode=4, couWeekType=0, couStartWeek=5, couEndWeek=7, couColor=null}, " +
-                "Course{couID=5, onlyID=6, couName='语言学概论 (1)班', couRoom='网络教学', couTeacher='卓星友,韩晞婷', couWeek=1, couStartNode=3, couEndNode=4, couWeekType=0, couStartWeek=8, couEndWeek=15, couColor=null}, " +
-                "Course{couID=0, onlyID=7, couName='大学英语（四） (10)班', couRoom='网络教学', couTeacher='刘伟', couWeek=4, couStartNode=3, couEndNode=4, couWeekType=1, couStartWeek=1, couEndWeek=17, couColor=null}, " +
-                "Course{couID=3, onlyID=9, couName='形势与政策（四） (2)班', couRoom='网络教学', couTeacher='郑声文', couWeek=6, couStartNode=3, couEndNode=4, couWeekType=0, couStartWeek=3, couEndWeek=3, couColor=null}, " +
-                "Course{couID=0, onlyID=10, couName='大学英语（四） (10)班', couRoom='网络教学', couTeacher='刘伟', couWeek=1, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=1, couEndWeek=17, couColor=null}, " +
-                "Course{couID=5, onlyID=11, couName='语言学概论 (1)班', couRoom='网络教学', couTeacher='卓星友,韩晞婷', couWeek=2, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=8, couEndWeek=15, couColor=null}, " +
-                "Course{couID=1, onlyID=12, couName='毛泽东思想和中国特色社会主义理论体系概论 (19)班', couRoom='网络教学', couTeacher='叶钦', couWeek=4, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=1, couEndWeek=16, couColor=null}, " +
-                "Course{couID=7, onlyID=13, couName='中国现当代文学（下） (1)班', couRoom='机北406', couTeacher='牛康', couWeek=1, couStartNode=9, couEndNode=11, couWeekType=0, couStartWeek=14, couEndWeek=16, couColor=null}, " +
-                "Course{couID=7, onlyID=14, couName='中国现当代文学（下） (1)班', couRoom='网络教学', couTeacher='牛康', couWeek=1, couStartNode=9, couEndNode=11, couWeekType=0, couStartWeek=1, couEndWeek=16, couColor=null}, " +
-                "Course{couID=6, onlyID=15, couName='中国古代文学（四） (1)班', couRoom='机北407', couTeacher='苗健青', couWeek=3, couStartNode=9, couEndNode=11, couWeekType=0, couStartWeek=12, couEndWeek=18, couColor=null}]";
+        return "[Course{couID=9, onlyID=0, couName='生命安全与救援 (114)班', couRoom='null', couTeacher='超星尔雅', couWeek=null, couStartNode=null, couEndNode=null, couWeekType=3, couStartWeek=null, couEndWeek=null, couColor=null}, " +
+                "Course{couID=1, onlyID=1, couName='毛泽东思想和中国特色社会主义理论体系概论 (19)班', couRoom='网络教学', couTeacher='叶钦', couWeek=2, couStartNode=1, couEndNode=2, couWeekType=0, couStartWeek=1, couEndWeek=16, couColor=null}, " +
+                "Course{couID=3, onlyID=3, couName='形势与政策（四） (2)班', couRoom='网络教学', couTeacher='郑声文', couWeek=7, couStartNode=1, couEndNode=2, couWeekType=0, couStartWeek=3, couEndWeek=3, couColor=null}, " +
+                "Course{couID=4, onlyID=4, couName='古代汉语（下） (1)班', couRoom='机北406', couTeacher='宋铁全', couWeek=3, couStartNode=2, couEndNode=4, couWeekType=0, couStartWeek=14, couEndWeek=16, couColor=null}, " +
+                "Course{couID=4, onlyID=5, couName='古代汉语（下） (1)班', couRoom='网络教学', couTeacher='宋铁全', couWeek=3, couStartNode=2, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=16, couColor=null}, " +
+                "Course{couID=12, onlyID=6, couName='学年论文（一） (1)班', couRoom='网络教学', couTeacher='牛康', couWeek=5, couStartNode=2, couEndNode=4, couWeekType=0, couStartWeek=5, couEndWeek=7, couColor=null}, " +
+                "Course{couID=5, onlyID=7, couName='语言学概论 (1)班', couRoom='网络教学', couTeacher='卓星友,韩晞婷', couWeek=1, couStartNode=3, couEndNode=4, couWeekType=0, couStartWeek=8, couEndWeek=15, couColor=null}, " +
+                "Course{couID=0, onlyID=8, couName='大学英语（四） (10)班', couRoom='网络教学', couTeacher='刘伟', couWeek=4, couStartNode=3, couEndNode=4, couWeekType=1, couStartWeek=1, couEndWeek=17, couColor=null}, " +
+                "Course{couID=3, onlyID=10, couName='形势与政策（四） (2)班', couRoom='网络教学', couTeacher='郑声文', couWeek=6, couStartNode=3, couEndNode=4, couWeekType=0, couStartWeek=3, couEndWeek=3, couColor=null}, " +
+                "Course{couID=0, onlyID=11, couName='大学英语（四） (10)班', couRoom='网络教学', couTeacher='刘伟', couWeek=1, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=1, couEndWeek=17, couColor=null}, " +
+                "Course{couID=5, onlyID=12, couName='语言学概论 (1)班', couRoom='网络教学', couTeacher='卓星友,韩晞婷', couWeek=2, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=8, couEndWeek=15, couColor=null}, " +
+                "Course{couID=1, onlyID=13, couName='毛泽东思想和中国特色社会主义理论体系概论 (19)班', couRoom='网络教学', couTeacher='叶钦', couWeek=4, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=1, couEndWeek=16, couColor=null}, " +
+                "Course{couID=7, onlyID=14, couName='中国现当代文学（下） (1)班', couRoom='机北406', couTeacher='牛康', couWeek=1, couStartNode=9, couEndNode=11, couWeekType=0, couStartWeek=14, couEndWeek=16, couColor=null}, " +
+                "Course{couID=7, onlyID=15, couName='中国现当代文学（下） (1)班', couRoom='网络教学', couTeacher='牛康', couWeek=1, couStartNode=9, couEndNode=11, couWeekType=0, couStartWeek=1, couEndWeek=16, couColor=null}, " +
+                "Course{couID=6, onlyID=16, couName='中国古代文学（四） (1)班', couRoom='机北407', couTeacher='苗健青', couWeek=3, couStartNode=9, couEndNode=11, couWeekType=0, couStartWeek=12, couEndWeek=18, couColor=null}]";
     }
 }
