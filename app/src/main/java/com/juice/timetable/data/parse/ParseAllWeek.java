@@ -37,12 +37,13 @@ public class ParseAllWeek {
         ///将table左边的表格标签里的内容提取（课程名，老师，起始结束周）
         Element leftTable = document.getElementsByTag("td").eq(1).get(0);
 
-        //这里的for不算是循环，可以理解为是遍历
+
 
         int trSize = leftTable.getElementsByTag("tr").size();
         //循环tr标签内容
         for (int a = 1; a < trSize; a++) {
             Elements tr = leftTable.getElementsByTag("tr").eq(a);
+            //这里的for不算是循环，可以理解为是遍历
             for (Element ele : tr) {
                 Elements td = ele.getElementsByTag("td");
                 //跳过非课程的tr标签
@@ -53,6 +54,17 @@ public class ParseAllWeek {
                     Course course = new Course();
                     String couName = td.eq(0).text().trim();
                     course.setCouName(couName);
+                    if (td.eq(2).text().isEmpty() && "院选课".equals(td.eq(3).text())) {
+                        String couTeacher = td.eq(5).text().substring(3);
+                        course.setCouTeacher(couTeacher);
+                        course.setCouWeekType(3);
+                        course.setCouID(couID);
+                        couID++;
+                        course.setOnlyID(onlyID);
+                        onlyID++;
+                        courseList.add(course);
+                    }
+
                     //老师不为空，设置
                     if (!td.eq(2).text().isEmpty()) {
                         String couTeacher = td.eq(2).text().trim();
