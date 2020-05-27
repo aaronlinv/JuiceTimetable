@@ -111,12 +111,15 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
                 params.weight = 10;
                 textView.setTextSize(WEEK_TEXT_SIZE);
 
+                // 获取当前天的 日（不可直接累加 会出现5月32号的情况）
+                int weekDay = getWeekDay(calendar, day, i);
+
                 StringBuilder weekStr = new StringBuilder();
-                weekStr.append(Constant.WEEK_SINGLE[i]).append("\n").append(day + i);
+                weekStr.append(Constant.WEEK_SINGLE[i]).append("\n").append(weekDay);
 
                 textView.setText(weekStr);
                 // 给今天 加深背景色 本周且为当日
-                if (Constant.CUR_WEEK == item.getCurrentIndex() && (day + i) == curDay) {
+                if (Constant.CUR_WEEK == item.getCurrentIndex() && weekDay == curDay) {
                     textView.setBackgroundColor(0xFFf0f0f0);
                 }
             }
@@ -140,6 +143,27 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
             node.addView(textView, params);
         }
 
+    }
+
+    /**
+     * 获取当前天的 日（不可直接累加 会出现5月32号的情况）
+     *
+     * @param calendar
+     * @param day
+     * @param index
+     * @return
+     */
+    private int getWeekDay(Calendar calendar, int day, int index) {
+        // 大于28 才需要判断
+        if (day + index <= 28) {
+            return day + index;
+        }
+        // 传入的是引用 不能直接用，修改会影响传入的Calendar对象
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(calendar.getTimeInMillis());
+
+        cal.add(Calendar.DATE, index);
+        return cal.get(Calendar.DATE);
     }
 
     @Override
