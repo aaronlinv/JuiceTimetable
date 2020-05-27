@@ -17,8 +17,6 @@ import com.juice.timetable.service.ListViewService;
 public class TodayWidget extends AppWidgetProvider {
     private RemoteViews mRemoteViews;
     public static final String ITEM_CLICK = "day.TYPE_LIST";
-    private final String ACTION_UPDATE_ALL = "com.lyl.widget.UPDATE_ALL";
-    private final Intent EXAMPLE_SERVICE_INTENT = new Intent("android.appwidget.action.EXAMPLE_APP_WIDGET_SERVICE");
 
     private static int[] getAppwidgetIds(Context context) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -94,8 +92,7 @@ public class TodayWidget extends AppWidgetProvider {
         Intent intent = new Intent();
         intent.setClass(context, MainActivity.class);
         intent.putExtra("main", "开始");
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        return pendingIntent;
+        return PendingIntent.getActivity(context, 0, intent, 0);
     }
 
     public String getWeekday() {
