@@ -31,7 +31,7 @@ public class TodayWidget extends AppWidgetProvider {
         clickIntent.putExtra(appWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         clickIntent.setData(Uri.parse(clickIntent.toUri(Intent.URI_INTENT_SCHEME)));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mRemoteViews.setOnClickPendingIntent(R.id.sv_course, pendingIntent);
+//        mRemoteViews.setOnClickPendingIntent(R.id.sv_course, pendingIntent);
         mRemoteViews.setPendingIntentTemplate(R.id.lv_test, pendingIntent);
         appWidgetManager.updateAppWidget(appWidgetId, mRemoteViews);
     }

@@ -30,19 +30,12 @@
                 android:textSize="15sp" />
 
 
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/sv_course"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true">
-
-                <androidx.viewpager2.widget.ViewPager2
+            <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/vp_course"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
 
-            </androidx.core.widget.NestedScrollView>
         </LinearLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
