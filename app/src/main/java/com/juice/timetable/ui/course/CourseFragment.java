@@ -45,6 +45,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 import static android.animation.ObjectAnimator.ofObject;
 
 @SuppressWarnings("unchecked")
@@ -150,6 +152,13 @@ public class CourseFragment extends Fragment {
             @Override
             public void onClick(int onlyId) {
                 LogUtils.getInstance().d("课程被点击 onlyId -- > " + onlyId);
+
+                new SweetAlertDialog(requireActivity(), SweetAlertDialog.NORMAL_TYPE)
+                        .setTitleText("Sweet!")
+                        .setContentText("Here's a custom image.")
+                        .hideConfirmButton()
+                        .show();
+
             }
         });
     }
