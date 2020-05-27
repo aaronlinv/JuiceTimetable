@@ -229,7 +229,7 @@ public class CourseView extends FrameLayout {
             public void onClick(View v) {
                 // 通知ViewPager
                 if (mItemClickListener != null) {
-                    mItemClickListener.onClick(course.getOnlyID());
+                    mItemClickListener.onClick(course);
                 }
             }
         });
@@ -296,6 +296,7 @@ public class CourseView extends FrameLayout {
                     course.setCouColor(oneCou.getColor());
                     course.setCouWeek(oneCou.getDayOfWeek());
                     course.setOnlyID(oneCou.getOnlyID());
+                    course.setCouID(oneCou.getCouID());
                     addCourse(course);
                 }
             }
@@ -353,7 +354,7 @@ public class CourseView extends FrameLayout {
     }
 
     interface OnItemClickListener {
-        void onClick(int onlyId);
+        void onClick(Course cou);
     }
 
     public OnItemClickListener getItemClickListener() {

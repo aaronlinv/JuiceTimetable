@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
+import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.data.bean.CourseViewBean;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
@@ -150,9 +151,9 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
     private void initEvent(CourseView courseView) {
         courseView.setItemClickListener(new CourseView.OnItemClickListener() {
             @Override
-            public void onClick(int onlyId) {
+            public void onClick(Course cou) {
                 if (mItemClickListener != null) {
-                    mItemClickListener.onClick(onlyId);
+                    mItemClickListener.onClick(cou);
                 }
             }
         });
@@ -188,7 +189,7 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
      * 点击监听器
      */
     interface OnItemClickListener {
-        void onClick(int onlyId);
+        void onClick(Course cou);
     }
 
     public OnItemClickListener getItemClickListener() {

@@ -44,6 +44,7 @@ import com.juice.timetable.utils.Utils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -150,15 +151,31 @@ public class CourseFragment extends Fragment {
         // ViewPager 课程被点击事件
         mCourseViewListAdapter.setItemClickListener(new CourseViewListAdapter.OnItemClickListener() {
             @Override
-            public void onClick(int onlyId) {
-                LogUtils.getInstance().d("课程被点击 onlyId -- > " + onlyId);
+            public void onClick(Course cou) {
+                LogUtils.getInstance().d("课程被点击 onlyId -- > " + cou);
+
+                // 周课表可能出现没老师的情况
+                String teach = "";
+                List<Course> allWeekCourse = mCourseViewBeanList.get(0).getAllWeekCourse();
+                for (Course course : allWeekCourse) {
+                    if (Objects.equals(course.getCouID(), cou.getCouID())) {
+                        teach = course.getCouTeacher();
+                        break;
+                    }
+                }
+                // 如果没有匹配到老师 就直接显示空 ""
+                StringBuilder sb = new StringBuilder();
+                sb.append(teach)
+                        .append("<br>")
+                        .append(cou.getCouRoom());
+
 
                 new SweetAlertDialog(requireActivity(), SweetAlertDialog.NORMAL_TYPE)
-                        .setTitleText("Sweet!")
-                        .setContentText("Here's a custom image.")
+                        .setTitleText(cou.getCouName())
+                        .setContentText(sb.toString())
+//                        .setContentTextSize(18)
                         .hideConfirmButton()
                         .show();
-
             }
         });
     }
