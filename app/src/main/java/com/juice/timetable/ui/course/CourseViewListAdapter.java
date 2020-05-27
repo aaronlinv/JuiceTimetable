@@ -59,7 +59,7 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
 
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
-        CourseView courseView = holder.itemView.findViewById(R.id.course_view_pager);
+        CourseView courseView = holder.itemView.findViewById(R.id.course_view);
         CourseViewBean item = getItem(position);
         LogUtils.getInstance().d("onBindViewHolder item -- > " + item);
         courseView.setCurrentIndex(item.getCurrentIndex());

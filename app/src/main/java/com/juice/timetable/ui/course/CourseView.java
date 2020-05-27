@@ -59,6 +59,8 @@ public class CourseView extends FrameLayout {
     // 显示分割线
     private boolean mShowVerticalLine = true;
     private boolean mShowHorizontalLine = true;
+    private OnItemClickListener mItemClickListener;
+
 
     private Paint mLinePaint;
     private Path mLinePath = new Path();
@@ -208,12 +210,22 @@ public class CourseView extends FrameLayout {
         // 背景图层
         backgroundView.addView(tv);
 //        setItemViewBackground(course, tv);
-        //
-//        itemEvent(course, bgLayout, tv);
-
+        // 点击事件
+        initEvent(course);
         return backgroundView;
 
 
+    }
+
+    /**
+     * 课程点击事件
+     *
+     * @param course
+     */
+    private void initEvent(Course course) {
+        if (mItemClickListener != null) {
+            mItemClickListener.onClick(course.getOnlyID());
+        }
     }
 
     private TextView getCourseTextView(int h, int w) {
@@ -331,4 +343,15 @@ public class CourseView extends FrameLayout {
         this.courses = courses;
     }
 
+    interface OnItemClickListener {
+        void onClick(int onlyId);
+    }
+
+    public OnItemClickListener getItemClickListener() {
+        return mItemClickListener;
+    }
+
+    public void setItemClickListener(OnItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
+    }
 }
