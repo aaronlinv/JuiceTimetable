@@ -305,13 +305,13 @@ public class CourseFragment extends Fragment {
                     // 先删除数据库 完整课表
                     mAllWeekCourseViewModel.deleteAllWeekCourse();
                     // 加载完整课表填充颜色
-                    for (Course cours : courses) {
-                        if (cours.getCouColor() == null) {
+                    for (Course cou : courses) {
+                        if (cou.getCouColor() == null) {
                             // 这里的courses是模拟登录获取的，所有color为null，所以每次都刷新颜色
-                            cours.setCouColor(Utils.getColor(cours.getCouID().intValue()));
+                            cou.setCouColor(cou.getCouID().intValue());
                         }
                         // 填充完颜色将课程写入数据库
-                        mAllWeekCourseViewModel.insertAllWeekCourse(cours);
+                        mAllWeekCourseViewModel.insertAllWeekCourse(cou);
                     }
 
 
@@ -513,7 +513,7 @@ public class CourseFragment extends Fragment {
                 } else {
                     // 没有找到 可能是一些考试的显示
                     // 取当前的完整课表的课数目为随机数
-                    oneWeekCourse.setColor(Utils.getColor(colorNum++));
+                    oneWeekCourse.setColor(colorNum++);
 
                 }
             }

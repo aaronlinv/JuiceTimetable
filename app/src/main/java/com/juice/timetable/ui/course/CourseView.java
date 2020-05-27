@@ -21,6 +21,7 @@ import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -204,8 +205,8 @@ public class CourseView extends FrameLayout {
         // 设置tv文本
         String showText = course.getCouName() + "\n" + course.getCouRoom();
         tv.setText(showText);
-        LogUtils.getInstance().d("course.getCouColor():" + course.getCouColor());
-        tv.setBackgroundColor(course.getCouColor());
+
+        tv.setBackgroundColor(Utils.getColor(course.getCouColor()));
 
         // 背景图层
         backgroundView.addView(tv);
@@ -278,7 +279,7 @@ public class CourseView extends FrameLayout {
         // 移除课表界面所有课程
         removeAllViews();
 
-        LogUtils.getInstance().d("initCourseItemView执行了");
+        LogUtils.getInstance().d("initCourseItemView执行");
         // 通过Dao层获取课程数据 添加课程到课程界面
         if (courses == null) {
             courses = new ArrayList<>();
@@ -339,7 +340,7 @@ public class CourseView extends FrameLayout {
     // 设置当前周
     public CourseView setCurrentIndex(int currentIndex) {
         this.mCurrentIndex = currentIndex;
-        LogUtils.getInstance().d("setCurrentIndex:" + currentIndex);
+
         postInvalidate();
         return this;
     }
