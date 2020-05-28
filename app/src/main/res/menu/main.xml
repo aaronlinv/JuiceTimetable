@@ -6,4 +6,9 @@
         android:title="@string/go_current_week"
         android:icon="@drawable/ic_current_week"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/item_more_option"
+        android:title="@string/more_option"
+        android:icon="@drawable/ic_more_vert_black_24dp"
+        app:showAsAction="always" />
 </menu>
