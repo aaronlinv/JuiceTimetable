@@ -1,7 +1,5 @@
 package com.juice.timetable.data.parse;
 
-import com.juice.timetable.utils.LogUtils;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -61,17 +59,17 @@ public class ParseAllWeekTest {
     }
 
     /**
-     * 2019软工
+     * 2019实验班
      */
     @Test
     public void parseAllCourse_SoftwareEngineering() {
         String question = ParseAllWeek.parseAllCourse(get2019SoftwareEngineering()).toString();
-        LogUtils.getInstance().e("123" + question);
-//        String answer = getChineseWholeTimetableAnswer();
-//
-//        boolean isCheck = answer.equals(question);
-//
-//        Assert.assertTrue(isCheck);
+
+        String answer = get2019SoftwareEngineeringAnswer();
+
+        boolean isCheck = answer.equals(question);
+
+        Assert.assertTrue(isCheck);
 
     }
 
@@ -490,18 +488,18 @@ public class ParseAllWeekTest {
                 "Course{couID=1, onlyID=1, couName='高级数据库技术 (1)班', couRoom='网络教学', couTeacher='杨雄', couWeek=1, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=14, couColor=null}, " +
                 "Course{couID=2, onlyID=2, couName='数据挖掘与分析 (1)班', couRoom='网络教学', couTeacher='杨雄', couWeek=3, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=8, couColor=null}, " +
                 "Course{couID=11, onlyID=3, couName='数据挖掘应用实践 (1)班', couRoom='网络教学', couTeacher='杨雄', couWeek=3, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=9, couEndWeek=15, couColor=null}, " +
-                "Course{couID=11, onlyID=4, couName='数据挖掘应用实践 (1)班', couRoom='网络教学', couTeacher='杨雄', couWeek=3, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=9, couEndWeek=15, couColor=null}, " +
+                "Course{couID=11, onlyID=4, couName='数据挖掘应用实践 (1)班', couRoom='网络教学', couTeacher='杨雄', couWeek=3, couStartNode=1, couEndNode=2, couWeekType=0, couStartWeek=16, couEndWeek=16, couColor=null}, " +
                 "Course{couID=6, onlyID=5, couName='云计算与数据中心 (1)班', couRoom='网络教学', couTeacher='林庆新', couWeek=5, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=4, couColor=null}, " +
                 "Course{couID=0, onlyID=6, couName='形势与政策（六） (6)班', couRoom='网络教学', couTeacher='韩晞婷', couWeek=2, couStartNode=3, couEndNode=4, couWeekType=0, couStartWeek=11, couEndWeek=14, couColor=null}, " +
                 "Course{couID=4, onlyID=7, couName='软件工程 (1)班', couRoom='网络教学', couTeacher='张栋', couWeek=1, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=1, couEndWeek=13, couColor=null}, " +
                 "Course{couID=3, onlyID=8, couName='大数据应用开发 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=2, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=1, couEndWeek=8, couColor=null}, " +
                 "Course{couID=9, onlyID=9, couName='大数据应用开发实践 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=2, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=9, couEndWeek=16, couColor=null}, " +
-                "Course{couID=9, onlyID=10, couName='大数据应用开发实践 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=2, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=9, couEndWeek=16, couColor=null}, " +
+                "Course{couID=9, onlyID=10, couName='大数据应用开发实践 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=2, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=17, couEndWeek=17, couColor=null}, " +
                 "Course{couID=4, onlyID=11, couName='软件工程 (1)班', couRoom='网络教学', couTeacher='张栋', couWeek=3, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=5, couEndWeek=8, couColor=null}, " +
                 "Course{couID=4, onlyID=12, couName='软件工程 (1)班', couRoom='网络教学', couTeacher='张栋', couWeek=3, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=10, couEndWeek=10, couColor=null}, " +
                 "Course{couID=6, onlyID=13, couName='云计算与数据中心 (1)班', couRoom='网络教学', couTeacher='林庆新', couWeek=3, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=1, couEndWeek=4, couColor=null}, " +
                 "Course{couID=10, onlyID=14, couName='大数据综合应用案例实训 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=4, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=5, couEndWeek=11, couColor=null}, " +
-                "Course{couID=10, onlyID=15, couName='大数据综合应用案例实训 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=4, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=5, couEndWeek=11, couColor=null}]";
+                "Course{couID=10, onlyID=15, couName='大数据综合应用案例实训 (1)班', couRoom='网络教学', couTeacher='马云莺', couWeek=4, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=13, couEndWeek=13, couColor=null}]";
     }
 
     /**
@@ -1975,30 +1973,30 @@ public class ParseAllWeekTest {
     private static String get2019SoftwareEngineeringAnswer() {
         return "[Course{couID=2, onlyID=0, couName='高级数据库技术 (实验班)班', couRoom='网络教学', couTeacher='杨雄', couWeek=1, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=12, couColor=null}, " +
                 "Course{couID=4, onlyID=1, couName='证券投资学 (实验班)班', couRoom='网络教学', couTeacher='冯玮', couWeek=2, couStartNode=1, couEndNode=2, couWeekType=0, couStartWeek=1, couEndWeek=12, couColor=null}, " +
-                "Course{couID=15, onlyID=2, couName='证券投资模拟实验 (实验班)班', couRoom='网络教学', couTeacher='冯玮', couWeek=2, couStartNode=1, couEndNode=2, couWeekType=0, couStartWeek=0, couEndWeek=0, couColor=null}, " +
+                "Course{couID=15, onlyID=2, couName='证券投资模拟实验 (实验班)班', couRoom='网络教学', couTeacher='冯玮', couWeek=2, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=13, couEndWeek=18, couColor=null}, " +
                 "Course{couID=3, onlyID=3, couName='数据挖掘与分析 (实验班)班', couRoom='网络教学', couTeacher='杨雄', couWeek=3, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=8, couColor=null}, " +
                 "Course{couID=14, onlyID=4, couName='数据挖掘应用实践 (实验班)班', couRoom='网络教学', couTeacher='杨雄', couWeek=3, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=9, couEndWeek=15, couColor=null}, " +
                 "Course{couID=14, onlyID=5, couName='数据挖掘应用实践 (实验班)班', couRoom='网络教学', couTeacher='杨雄', couWeek=3, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=16, couEndWeek=16, couColor=null}, " +
                 "Course{couID=5, onlyID=6, couName='大数据计算 (实验班)班', couRoom='网络教学', couTeacher='马云莺', couWeek=4, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=8, couColor=null}, " +
                 "Course{couID=10, onlyID=7, couName='大数据计算实践 (实验班)班', couRoom='网络教学', couTeacher='马云莺', couWeek=4, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=9, couEndWeek=15, couColor=null}, " +
-                "Course{couID=10, onlyID=8, couName='大数据计算实践 (实验班)班', couRoom='网络教学', couTeacher='马云莺', couWeek=4, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=0, couEndWeek=0, couColor=null}, " +
+                "Course{couID=10, onlyID=8, couName='大数据计算实践 (实验班)班', couRoom='网络教学', couTeacher='马云莺', couWeek=4, couStartNode=1, couEndNode=2, couWeekType=0, couStartWeek=16, couEndWeek=16, couColor=null}, " +
                 "Course{couID=9, onlyID=9, couName='云计算与数据中心 (实验班)班', couRoom='网络教学', couTeacher='林庆新', couWeek=5, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=4, couColor=null}, " +
                 "Course{couID=11, onlyID=10, couName='大数据综合应用案例实训 (实验班)班', couRoom='网络教学', couTeacher='马云莺', couWeek=5, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=5, couEndWeek=12, couColor=null}, " +
-                "Course{couID=11, onlyID=11, couName='大数据综合应用案例实训 (实验班)班', couRoom='3~4节', couTeacher='马云莺', couWeek=5, couStartNode=1, couEndNode=4, couWeekType=0, couStartWeek=0, couEndWeek=0, couColor=null}, " +
+                "Course{couID=11, onlyID=11, couName='大数据综合应用案例实训 (实验班)班', couRoom='网络教学', couTeacher='马云莺', couWeek=5, couStartNode=3, couEndNode=4, couWeekType=0, couStartWeek=14, couEndWeek=14, couColor=null}, " +
                 "Course{couID=8, onlyID=12, couName='数据可视化与可视分析 (实验班)班', couRoom='网络教学', couTeacher='沈炎斌', couWeek=6, couStartNode=1, couEndNode=2, couWeekType=0, couStartWeek=15, couEndWeek=18, couColor=null}, " +
                 "Course{couID=15, onlyID=13, couName='证券投资模拟实验 (实验班)班', couRoom='网络教学', couTeacher='冯玮', couWeek=2, couStartNode=3, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=12, couColor=null}, " +
                 "Course{couID=0, onlyID=14, couName='形势与政策（六） (9)班', couRoom='网络教学', couTeacher='潘曦', couWeek=7, couStartNode=3, couEndNode=4, couWeekType=0, couStartWeek=11, couEndWeek=14, couColor=null}, " +
                 "Course{couID=7, onlyID=15, couName='软件工程 (实验班)班', couRoom='网络教学', couTeacher='张栋', couWeek=1, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=1, couEndWeek=12, couColor=null}, " +
-                "Course{couID=8, onlyID=16, couName='数据可视化与可视分析 (实验班)班', couRoom='网络教学', couTeacher='沈炎斌', couWeek=1, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=0, couEndWeek=0, couColor=null}, " +
+                "Course{couID=8, onlyID=16, couName='数据可视化与可视分析 (实验班)班', couRoom='网络教学', couTeacher='沈炎斌', couWeek=1, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=15, couEndWeek=18, couColor=null}, " +
                 "Course{couID=1, onlyID=17, couName='计算机网络 (实验班)班', couRoom='网络教学', couTeacher='黄巧云', couWeek=2, couStartNode=5, couEndNode=7, couWeekType=0, couStartWeek=1, couEndWeek=6, couColor=null}, " +
-                "Course{couID=1, onlyID=18, couName='计算机网络 (实验班)班', couRoom='网络教学', couTeacher='黄巧云', couWeek=2, couStartNode=5, couEndNode=7, couWeekType=0, couStartWeek=0, couEndWeek=0, couColor=null}, " +
-                "Course{couID=1, onlyID=19, couName='计算机网络 (实验班)班', couRoom='网络教学', couTeacher='黄巧云', couWeek=2, couStartNode=5, couEndNode=7, couWeekType=0, couStartWeek=0, couEndWeek=0, couColor=null}, " +
+                "Course{couID=1, onlyID=18, couName='计算机网络 (实验班)班', couRoom='网络教学', couTeacher='黄巧云', couWeek=2, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=7, couEndWeek=8, couColor=null}, " +
+                "Course{couID=1, onlyID=19, couName='计算机网络 (实验班)班', couRoom='网络教学', couTeacher='黄巧云', couWeek=2, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=9, couEndWeek=13, couColor=null}, " +
                 "Course{couID=7, onlyID=20, couName='软件工程 (实验班)班', couRoom='网络教学', couTeacher='张栋', couWeek=3, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=5, couEndWeek=8, couColor=null}, " +
                 "Course{couID=7, onlyID=21, couName='软件工程 (实验班)班', couRoom='网络教学', couTeacher='张栋', couWeek=3, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=10, couEndWeek=10, couColor=null}, " +
                 "Course{couID=7, onlyID=22, couName='软件工程 (实验班)班', couRoom='网络教学', couTeacher='张栋', couWeek=3, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=13, couEndWeek=13, couColor=null}, " +
                 "Course{couID=9, onlyID=23, couName='云计算与数据中心 (实验班)班', couRoom='网络教学', couTeacher='林庆新', couWeek=3, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=1, couEndWeek=4, couColor=null}, " +
                 "Course{couID=6, onlyID=24, couName='金融风控与大数据 (实验班)班', couRoom='网络教学', couTeacher='张希君', couWeek=4, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=1, couEndWeek=9, couColor=null}, " +
-                "Course{couID=6, onlyID=25, couName='金融风控与大数据 (实验班)班', couRoom='网络教学', couTeacher='张希君', couWeek=4, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=0, couEndWeek=0, couColor=null}, " +
+                "Course{couID=6, onlyID=25, couName='金融风控与大数据 (实验班)班', couRoom='网络教学', couTeacher='张希君', couWeek=4, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=10, couEndWeek=14, couColor=null}, " +
                 "Course{couID=4, onlyID=26, couName='证券投资学 (实验班)班', couRoom='网络教学', couTeacher='冯玮', couWeek=5, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=1, couEndWeek=12, couColor=null}, " +
                 "Course{couID=12, onlyID=27, couName='互联网金融产品运营实践 (实验班)班', couRoom='网络教学', couTeacher='洪防璇', couWeek=6, couStartNode=5, couEndNode=8, couWeekType=0, couStartWeek=11, couEndWeek=20, couColor=null}, " +
                 "Course{couID=1, onlyID=28, couName='计算机网络 (实验班)班', couRoom='网络教学', couTeacher='黄巧云', couWeek=5, couStartNode=7, couEndNode=8, couWeekType=0, couStartWeek=9, couEndWeek=12, couColor=null}, " +
