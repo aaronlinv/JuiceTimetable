@@ -22,7 +22,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
@@ -164,8 +163,11 @@ public class CourseFragment extends Fragment {
         mVpCourse.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
-                mCurViewPagerNum = position;
                 super.onPageSelected(position);
+                mCurViewPagerNum = position;
+                // 设置 toolbar 显示当前周
+                mSpinner.setSelectedIndex(position);
+
 /*                int week = position + 1;
                 if (week != Constant.CUR_WEEK) {
                     toolbar.setTitle("第" + week + "周 (非本周)");
@@ -205,6 +207,16 @@ public class CourseFragment extends Fragment {
                         .show();
             }
         });
+
+        // 第几周的下拉监听
+        mSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                // 跳转到对应周
+                mVpCourse.setCurrentItem(position, true);
+                LogUtils.getInstance().d("点击了 下拉菜单 跳转到对应周索引 -- > " + position);
+            }
+        });
     }
 
     /**
@@ -217,6 +229,8 @@ public class CourseFragment extends Fragment {
         mVpCourse.setAdapter(mCourseViewListAdapter);
         // 打开主页 跳转当前周
         mVpCourse.setCurrentItem(Constant.CUR_WEEK - 1, false);
+        // 设置 toolbar 显示当前周
+        mSpinner.setSelectedIndex(Constant.CUR_WEEK - 1);
 /*        // 显示标题栏
 
         if ((mCurViewPagerNum + 1) != Constant.CUR_WEEK) {
@@ -300,14 +314,6 @@ public class CourseFragment extends Fragment {
         mSpinner.setTextColor(0xFF000000);
         mSpinner.setTextSize(20);
         mSpinner.setDropdownMaxHeight(700);
-        mSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
-
-            @Override
-            public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
-                Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();
-            }
-        });
-
 
         // 初始化标题栏 只在 registerOnPageChangeCallback 中初始化 从后台切回标题栏不会显示周
         // 在 updateCourse 中初始
