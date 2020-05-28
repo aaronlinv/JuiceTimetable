@@ -60,29 +60,39 @@ public class ParseOneWeek {
                 int tdSize = el.getElementsByTag("td").size();
                 for (int b = 1; b < tdSize; b++) {
                     try {
-                        OneWeekCourse cou = new OneWeekCourse();
-                        cou.setInWeek(week);
                         //获取课表单格
+                        Elements td = el.getElementsByTag("td").eq(b);
                         //判断当前单元格不为空
-                        if (!"".equals(el.getElementsByTag("td").eq(b).text())) {
-                            //couName,couRoom,单双周的判断
-                            String[] weekType = el.getElementsByTag("td").eq(b).html().split("<br>");
-                            String couName = weekType[0];
-                            cou.setCouName(couName);
-                            String s1 = weekType[1];
-                            String couRoom = s1.substring(1, s1.length() - 1);
-                            cou.setCouRoom(couRoom);
+                        if (!"".equals(td.text())) {
+                            String[] tdText = td.html().split("<br>");
+                            int brSize = tdText.length;
+                            for (int c = 0; c < brSize; c++) {
+                                if (tdText[c].contains("班") || tdText[c].contains("调课")) {
+                                    //创建一个新的对象
+                                    OneWeekCourse cou = new OneWeekCourse();
+                                    cou.setInWeek(week);
 
-                            //标签中的id，例如id为11，第一个1是指从第1节课开始上课，第二个1为星期一
-                            String id = el.getElementsByTag("td").eq(b).attr("id");
-                            Integer dayOfWeek = Integer.valueOf(id.substring(id.length() - 1));
-                            cou.setDayOfWeek(dayOfWeek);
-                            Integer startNode = Integer.valueOf(id.substring(0, id.length() - 1));
-                            cou.setStartNode(startNode);
-                            Integer time = Integer.valueOf(el.getElementsByTag("td").eq(b).attr("rowspan"));
-                            Integer endNode = startNode + time - 1;
-                            cou.setEndNode(endNode);
-                            couList.add(cou);
+                                    String couName = tdText[c];
+                                    cou.setCouName(couName);
+
+                                    String s1 = tdText[c + 1];
+                                    String couRoom = s1.substring(1, s1.length() - 1);
+                                    cou.setCouRoom(couRoom);
+
+                                    String id = td.attr("id");
+                                    Integer dayOfWeek = Integer.valueOf(id.substring(id.length() - 1));
+                                    cou.setDayOfWeek(dayOfWeek);
+                                    Integer startNode = Integer.valueOf(id.substring(0, id.length() - 1));
+                                    cou.setStartNode(startNode);
+
+                                    Integer time = Integer.valueOf(td.attr("rowspan"));
+                                    Integer endNode = startNode + time - 1;
+                                    cou.setEndNode(endNode);
+
+                                    couList.add(cou);
+                                }
+                            }
+
                         }
                     } catch (Exception e) {
                         LogUtils.getInstance().e("解析当前周课表课程异常--->" + e.getMessage());
