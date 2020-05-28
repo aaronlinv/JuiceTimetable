@@ -294,9 +294,21 @@ public class CourseFragment extends Fragment {
         updateCourse();
         mVpCourse.setAdapter(mCourseViewListAdapter);
         // 打开主页 跳转当前周
-        mVpCourse.setCurrentItem(Constant.CUR_WEEK - 1, false);
+
+
+        // 本地不存在 会返回-1
+        int curWeek = Constant.CUR_WEEK;
+        // 不在周范围 显示第一周
+        if (curWeek < 1 || curWeek > Constant.MAX_WEEK) {
+            curWeek = 1;
+        }
+
+
+        mVpCourse.setCurrentItem(curWeek - 1, false);
         // 设置 toolbar 显示当前周
-        mSpinner.setSelectedIndex(Constant.CUR_WEEK - 1);
+        LogUtils.getInstance().d("spinner 设置当前周 -- > " + curWeek);
+
+        mSpinner.setSelectedIndex(curWeek - 1);
 /*        // 显示标题栏
 
         if ((mCurViewPagerNum + 1) != Constant.CUR_WEEK) {
