@@ -154,7 +154,7 @@ public class ParseAllWeek {
                                     if (course == null) {
                                         continue;
                                     }
-                                    //初步判断 起始结束节，周几
+                                    //初步通过ID属性判断 起始结束节，周几
                                     String id = el1.getElementsByTag("td").eq(j).attr("id").trim();
                                     Integer couWeek = Integer.valueOf(id.substring(id.length() - 1));
                                     course.setCouWeek(couWeek);
@@ -164,12 +164,11 @@ public class ParseAllWeek {
                                     Integer time = Integer.valueOf(el1.getElementsByTag("td").eq(j).attr("rowspan").trim());
                                     Integer couEndNode = couStartNode + time - 1;
                                     course.setCouEndNode(couEndNode);
-                                    //增加教室，判断在课程的后面是否有指定周·指定节·单双周
+                                    //增加教室，通过完整课表右边的课表判断在课程的后面是否有指定周·指定节·单双周
                                     for (int b = 1; b < len_Br - a; b++) {
-                                        LogUtils.getInstance().e("课程内容判断--->" + trArr[a + b]);
+                                        //LogUtils.getInstance().e("课程内容判断--->" + trArr[a + b]);
                                         if (trArr[a + b].contains("[单]")) {
                                             course.setCouWeekType(1);
-                                            //使用list后，对是否已经输入过教室进行判断，无则输入，有则重新开一个list存储
                                             String couRoom = trArr[a + b].substring(4, trArr[a + b].length() - 1).trim();
                                             course.setCouRoom(couRoom);
                                         } else if (trArr[a + b].contains("[双]")) {
