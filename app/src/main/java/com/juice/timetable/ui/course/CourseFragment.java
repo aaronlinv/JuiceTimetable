@@ -112,7 +112,7 @@ public class CourseFragment extends Fragment {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                int week = item.getItemId() + 1;
+/*                int week = item.getItemId() + 1;
                 LogUtils.getInstance().d("MenuItem <" + week + "> onMenuItemClick");
 
                 if (week != Constant.CUR_WEEK) {
@@ -121,11 +121,17 @@ public class CourseFragment extends Fragment {
                     toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
                 }
 
-                mVpCourse.setCurrentItem(item.getItemId(), true);
+                mVpCourse.setCurrentItem(item.getItemId(), true);*/
+                // 跳转当前周 图标监听
+                if (item.getItemId() == R.id.item_go_current_week) {
+                    mVpCourse.setCurrentItem(Constant.CUR_WEEK - 1, true);
+                    LogUtils.getInstance().d("点击了 跳转到当前周图标 -- > " + (Constant.CUR_WEEK - 1));
+                }
 
                 return false;
             }
         });
+
 
         // 下拉刷新监听
         mSlRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

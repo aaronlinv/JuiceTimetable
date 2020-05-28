@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < 25; i++) {
             menu.add(0, i, i, "第" + (i + 1) + "周");
         }
-
+        // 填充toolBar的布局
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
