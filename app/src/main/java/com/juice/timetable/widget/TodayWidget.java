@@ -8,11 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.juice.timetable.MainActivity;
 import com.juice.timetable.R;
 import com.juice.timetable.service.ListViewService;
+
+import es.dmoral.toasty.Toasty;
 
 public class TodayWidget extends AppWidgetProvider {
     private RemoteViews mRemoteViews;
@@ -51,7 +52,11 @@ public class TodayWidget extends AppWidgetProvider {
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-        Toast.makeText(context, "请允许橙汁后台运行和自启权限\n否则定制系统可能出现不显示或不更新课程的情况", Toast.LENGTH_LONG).show();
+        Toasty.info(
+                context,
+                "请允许橙汁后台运行和自启权限\n否则定制系统可能出现不显示或不更新课程的情况",
+                Toasty.LENGTH_LONG,
+                true).show();
         onUpdate(context);
     }
 
