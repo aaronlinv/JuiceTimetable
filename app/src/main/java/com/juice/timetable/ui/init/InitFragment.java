@@ -57,6 +57,7 @@ public class InitFragment extends Fragment {
     private StuInfoDao stuInfoDao;
     private Handler mHandler;
     private DrawerLayout drawer;
+    private LoadingBar mLoadingBar;
 
 
     public InitFragment() {
@@ -126,7 +127,7 @@ public class InitFragment extends Fragment {
                     binding.btnGo.setVisibility(View.GONE);
                     binding.btnUserItem.setVisibility(View.GONE);
                     //loading显示
-                    showColor(binding.btnGo);
+                    showLoading(binding.btnGo);
 
                     checkPassword();
                 }
@@ -141,6 +142,10 @@ public class InitFragment extends Fragment {
                 switch (msg.what) {
                     // 登录成功跳转页面
                     case Constant.MSG_LOGIN_SUCCESS:
+                        //关闭loading
+                        if (mLoadingBar != null) {
+                            mLoadingBar.cancel();
+                        }
                         // TODO 跳转页面，并调用写入数据库的方法writeAllData()
                         LogUtils.getInstance().d("接受消息：开始写入数据库");
                         writeUser();
@@ -162,7 +167,9 @@ public class InitFragment extends Fragment {
                         // 恢复登录界面点击
                         binding.btnGo.setClickable(true);
                         //关闭loading
-                        LoadingBar.cancel(binding.btnGo);
+                        if (mLoadingBar != null) {
+                            mLoadingBar.cancel();
+                        }
                         //设置登录按钮和用户条款按钮可见
                         binding.btnGo.setVisibility(View.VISIBLE);
                         binding.btnUserItem.setVisibility(View.VISIBLE);
@@ -357,11 +364,11 @@ public class InitFragment extends Fragment {
         super.onStop();
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }*/
-    public void showColor(View v) {
+    private void showLoading(View v) {
         CustomLoadingFactory factory = new CustomLoadingFactory();
         factory.setString("正在登录...");
-        LoadingBar.make(binding.btnGo, factory).show();
+        mLoadingBar = LoadingBar.make(v.getRootView(), factory);
+        mLoadingBar.show();
     }
-
 
 }

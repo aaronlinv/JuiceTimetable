@@ -52,6 +52,7 @@ public class LoginFragment extends Fragment {
     private JuiceDatabase juiceDatabase;
     private StuInfoDao stuInfoDao;
     private Handler mHandler;
+    private LoadingBar mLoadingBar;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -147,7 +148,7 @@ public class LoginFragment extends Fragment {
                     binding.btnGo.setVisibility(View.GONE);
                     binding.btnUserItem.setVisibility(View.GONE);
                     //loading显示
-                    showColor(binding.btnGo);
+                    showLoading(binding.btnGo);
                     checkPassword();
                 }
 
@@ -254,6 +255,10 @@ public class LoginFragment extends Fragment {
                 switch (msg.what) {
                     // 登录成功跳转页面
                     case Constant.MSG_LOGIN_SUCCESS:
+                        //关闭loading
+                        if (mLoadingBar != null) {
+                            mLoadingBar.cancel();
+                        }
                         LogUtils.getInstance().d("接受消息：开始写入数据库");
                         updateUser();
                         LogUtils.getInstance().d("查询数据库：" + stuInfoDao.getStuInfo());
@@ -266,10 +271,12 @@ public class LoginFragment extends Fragment {
                         break;
                     // 登录失败
                     case Constant.MSG_LOGIN_FAIL:
-                        // 恢复登录界面点击
+                        // 恢复界面点击
                         binding.btnGo.setClickable(true);
                         //关闭loading
-                        LoadingBar.cancel(binding.btnGo);
+                        if (mLoadingBar != null) {
+                            mLoadingBar.cancel();
+                        }
                         //设置登录按钮和用户条款按钮可见
                         binding.btnGo.setVisibility(View.VISIBLE);
                         binding.btnUserItem.setVisibility(View.VISIBLE);
@@ -310,10 +317,11 @@ public class LoginFragment extends Fragment {
         imm.hideSoftInputFromWindow(Objects.requireNonNull(activity.getCurrentFocus()).getWindowToken(), 0); //强制隐藏键盘
     }
 
-    public void showColor(View v) {
+    private void showLoading(View v) {
         CustomLoadingFactory factory = new CustomLoadingFactory();
         factory.setString("更新中...");
-        LoadingBar.make(binding.btnGo, factory).show();
+        mLoadingBar = LoadingBar.make(v.getRootView(), factory);
+        mLoadingBar.show();
     }
 
 }
