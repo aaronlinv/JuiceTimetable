@@ -51,8 +51,26 @@ public class ParseAllWeek {
                 }
                 try {
                     Course course = new Course();
-                    String couName = td.eq(0).text().trim();
-                    course.setCouName(couName);
+                    String tdCouName = td.eq(0).text().trim();
+                    //判断课程名里是否有特殊情况
+                    //例如 线性代数 (6)班（替代重修:线性代数（一））
+                    int firstBan = tdCouName.indexOf("班");
+                    if (!"班".equals(tdCouName.substring(tdCouName.length() - 1)) && firstBan != -1) {
+                        int couNameSize = tdCouName.length();
+                        for (; firstBan < couNameSize; ) {
+                            if (")".equals(tdCouName.substring(firstBan - 1, firstBan))) {
+                                String couName = tdCouName.substring(0, firstBan + 1).trim();
+                                course.setCouName(couName);
+                                break;
+                            } else {
+                                String partCouName = tdCouName.substring(firstBan + 1);
+                                firstBan = partCouName.indexOf("班");
+                            }
+                        }
+                    } else {
+                        course.setCouName(tdCouName);
+                    }
+                    //慕课提取并存储
                     if (td.eq(2).text().isEmpty() && "院选课".equals(td.eq(3).text())) {
                         String couTeacher = td.eq(5).text().substring(3);
                         course.setCouTeacher(couTeacher);
