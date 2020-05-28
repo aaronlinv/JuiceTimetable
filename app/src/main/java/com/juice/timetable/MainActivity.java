@@ -5,29 +5,29 @@ import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
-import com.juice.timetable.data.JuiceDatabase;
+import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.StuInfo;
-import com.juice.timetable.data.dao.StuInfoDao;
-import com.juice.timetable.data.http.EduInfo;
-import com.juice.timetable.ui.course.CourseView;
+import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.UserInfoUtils;
+import com.juice.timetable.widget.TodayWidget;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
 

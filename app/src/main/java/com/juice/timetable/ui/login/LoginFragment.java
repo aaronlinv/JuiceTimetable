@@ -23,14 +23,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
-import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.StuInfo;
-import com.juice.timetable.data.dao.StuInfoDao;
 import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.data.http.LeaveInfo;
+import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.databinding.FragmentLoginBinding;
+import com.juice.timetable.utils.CustomLoadingFactory;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
 
@@ -41,12 +42,10 @@ import java.util.Objects;
  */
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding;
-    private LoginViewModel loginViewModel;
     private DrawerLayout mDrawerLayout;
     private String mSno;
     private String mEdu;
     private String mLeave;
-    private StuInfo stuInfo;
 
     private Handler mHandler;
     private LoadingBar mLoadingBar;
@@ -233,7 +232,7 @@ public class LoginFragment extends Fragment {
         stuInfo1.setStuID(snoStr);
         stuInfo1.setEduPassword(mEdu);
         stuInfo1.setLeavePassword(mLeave);
-        mStuInfoViewModel.insertStuInfo(stuInfo);
+        mStuInfoViewModel.insertStuInfo(stuInfo1);
     }
 
     /**

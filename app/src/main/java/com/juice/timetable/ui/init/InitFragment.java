@@ -20,25 +20,23 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
-import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.bean.StuInfo;
-import com.juice.timetable.data.dao.StuInfoDao;
 import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseOneWeek;
+import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.databinding.FragmentInitBinding;
-import com.juice.timetable.utils.AesCryptUtil;
 import com.juice.timetable.utils.CustomLoadingFactory;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.Utils;
 
-import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,6 +54,7 @@ public class InitFragment extends Fragment {
     private Handler mHandler;
     private DrawerLayout mDrawerLayout;
     private LoadingBar mLoadingBar;
+    private StuInfoViewModel mStuInfoViewModel;
 
 
     public InitFragment() {
@@ -67,7 +66,7 @@ public class InitFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentInitBinding.inflate(getLayoutInflater());
-
+        mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
         // 禁止侧滑打开抽屉
         mDrawerLayout = requireActivity().findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -249,11 +248,11 @@ public class InitFragment extends Fragment {
 
     private void writeUser() {
 
-        Integer snoStr = Integer.parseInt(sno);
+        Integer snoStr = Integer.parseInt(mSno);
         StuInfo stuInfo = new StuInfo();
         stuInfo.setStuID(snoStr);
-        stuInfo.setEduPassword(edu);
-        stuInfo.setLeavePassword(leave);
+        stuInfo.setEduPassword(mEdu);
+        stuInfo.setLeavePassword(mLeave);
         mStuInfoViewModel.insertStuInfo(stuInfo);
     }
 
