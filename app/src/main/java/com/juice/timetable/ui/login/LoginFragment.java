@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.dyhdyh.widget.loading.bar.LoadingBar;
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.JuiceDatabase;
@@ -31,6 +32,7 @@ import com.juice.timetable.data.dao.StuInfoDao;
 import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.databinding.FragmentLoginBinding;
+import com.juice.timetable.utils.CustomLoadingFactory;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
 
@@ -141,7 +143,11 @@ public class LoginFragment extends Fragment {
                     hideSoftKeyboard(requireActivity());
                     // 禁止登录界面点击
                     binding.btnGo.setClickable(false);
-
+                    //设置登录按钮和用户条款按钮不可见
+                    binding.btnGo.setVisibility(View.GONE);
+                    binding.btnUserItem.setVisibility(View.GONE);
+                    //loading显示
+                    showColor(binding.btnGo);
                     checkPassword();
                 }
 
@@ -262,7 +268,11 @@ public class LoginFragment extends Fragment {
                     case Constant.MSG_LOGIN_FAIL:
                         // 恢复登录界面点击
                         binding.btnGo.setClickable(true);
-
+                        //关闭loading
+                        LoadingBar.cancel(binding.btnGo);
+                        //设置登录按钮和用户条款按钮可见
+                        binding.btnGo.setVisibility(View.VISIBLE);
+                        binding.btnUserItem.setVisibility(View.VISIBLE);
                         String errorStr = (String) msg.obj;
                         Toast.makeText(getActivity(), errorStr, Toast.LENGTH_SHORT).show();
                         break;
@@ -319,6 +329,11 @@ public class LoginFragment extends Fragment {
         imm.hideSoftInputFromWindow(Objects.requireNonNull(activity.getCurrentFocus()).getWindowToken(), 0); //强制隐藏键盘
     }
 
+    public void showColor(View v) {
+        CustomLoadingFactory factory = new CustomLoadingFactory();
+        factory.setString("更新中...");
+        LoadingBar.make(binding.btnGo, factory).show();
+    }
 
 }
 

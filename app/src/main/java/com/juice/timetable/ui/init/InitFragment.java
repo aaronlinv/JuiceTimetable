@@ -42,9 +42,11 @@ import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Objects;
 
+
 /**
  * A simple {@link Fragment} subclass.
  */
+
 public class InitFragment extends Fragment {
     private FragmentInitBinding binding;
     private String sno;
@@ -56,6 +58,7 @@ public class InitFragment extends Fragment {
     private Handler mHandler;
     private DrawerLayout drawer;
 
+
     public InitFragment() {
         // Required empty public constructor
     }
@@ -65,22 +68,24 @@ public class InitFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentInitBinding.inflate(getLayoutInflater());
+
         // 禁止侧滑打开抽屉
         drawer = requireActivity().findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         return binding.getRoot();
+
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         // 初始化数据库和Dao
         juiceDatabase = JuiceDatabase.getDatabase(requireContext());
         stuInfoDao = juiceDatabase.getStuInfoDao();
         // 删除数据库原有账号密码
         stuInfoDao.deleteStuInfo();
-
         btnDialogClick();
         binding.btnGo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +97,7 @@ public class InitFragment extends Fragment {
             }
         });
     }
+
 
     @SuppressLint("HandlerLeak")
     private void judgmentLogic() {
@@ -372,6 +378,9 @@ public class InitFragment extends Fragment {
     }*/
     public void showColor(View v) {
         CustomLoadingFactory factory = new CustomLoadingFactory();
+        factory.setString("正在登录...");
         LoadingBar.make(binding.btnGo, factory).show();
     }
+
+
 }
