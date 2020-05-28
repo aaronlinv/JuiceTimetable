@@ -14,7 +14,9 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.PopupWindow;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -131,6 +133,7 @@ public class CourseFragment extends Fragment {
     private void initEvent() {
         // 下拉菜单 获取点击的周 设置标题栏
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @SuppressLint("RtlHardcoded")
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 /*                int week = item.getItemId() + 1;
@@ -149,31 +152,7 @@ public class CourseFragment extends Fragment {
                     LogUtils.getInstance().d("点击了 跳转到当前周图标 -- > " + (Constant.CUR_WEEK - 1));
                 }
                 if (item.getItemId() == R.id.item_more_option) {
-                    // 必须设置宽度
-                    final PopupWindow popupWindow = new PopupWindow(requireView(),
-                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-                    popupWindow.setAnimationStyle(R.anim.nav_default_pop_enter_anim);
-
-                    // 添加阴影
-                    popupWindow.setElevation(100);
-
-                    // 点击其他区域 PopUpWindow消失
-                    popupWindow.setTouchable(true);
-                    popupWindow.setTouchInterceptor(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            // false 不拦截这个事件
-                            // 拦截了PopUpWindow 的onTouchEvent就不会被调用
-//                            popupWindow.dismiss();
-                            return false;
-                        }
-                    });
-                    popupWindow.setBackgroundDrawable(new ColorDrawable(0xfffafafa));
-                    View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.popupwindow, null);
-                    popupWindow.setContentView(contentView);
-                    popupWindow.showAsDropDown(toolbar, 0, 0, Gravity.RIGHT);
-
-
+                    popupWindowEvent();
                 }
                 return false;
             }
@@ -247,6 +226,63 @@ public class CourseFragment extends Fragment {
                 LogUtils.getInstance().d("点击了 下拉菜单 跳转到对应周索引 -- > " + position);
             }
         });
+    }
+
+    /**
+     * popupWindow的监听事件
+     */
+    private void popupWindowEvent() {
+        // 必须设置宽度
+        final PopupWindow popupWindow = new PopupWindow(requireView(),
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setAnimationStyle(R.anim.nav_default_pop_enter_anim);
+
+        // 添加阴影
+        popupWindow.setElevation(100);
+
+        // 点击其他区域 PopUpWindow消失
+        popupWindow.setTouchable(true);
+        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // false 不拦截这个事件
+                // 拦截了PopUpWindow 的onTouchEvent就不会被调用
+//                            popupWindow.dismiss();
+                return false;
+            }
+        });
+        popupWindow.setBackgroundDrawable(new ColorDrawable(0xfffafafa));
+        View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.popupwindow, null);
+        popupWindow.setContentView(contentView);
+        popupWindow.showAsDropDown(toolbar, 0, 0, Gravity.RIGHT);
+        Switch switchCheckIn = contentView.findViewById(R.id.switch_check_in);
+        Switch switchShowMooc = contentView.findViewById(R.id.switch_show_mooc);
+
+        switchCheckIn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                LogUtils.getInstance().d("签到提示按钮 -- > " + isChecked);
+                if (isChecked) {
+                    Toast.makeText(getActivity(), "签到提示开启，会在签到时间段显示签到情况", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity(), "签到提示已关闭", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        switchShowMooc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                LogUtils.getInstance().d("慕课显示按钮 -- > " + isChecked);
+                if (isChecked) {
+                    Toast.makeText(getActivity(), "慕课显示开启，课表下方会显示所选慕课信息", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity(), "慕课显示已关闭", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
     }
 
     /**
