@@ -25,7 +25,9 @@
     <string name="textView3">姓名</string>
     <string name="menu_about">关于</string>
     <string name="todo">TODO</string>
-    <string name="github_lib">org.jsoup:jsoup:1.11.3
+    <string name="github_lib">github.com/xxyangyoulin/ClassSchedule
+        \ngithub.com/YZune/WakeUpSchedule
+        \norg.jsoup:jsoup:1.11.3
         \norg.mockito:mockito-core:1.10.19
         \ncom.squareup.okhttp3:okhttp:4.6.0
         \njunit:junit:4.12
@@ -36,7 +38,7 @@
     <string name="team">开发者</string>
     <string name="github_Address">https://github.com/aaronlinv/JuiceTimetable</string>
     <string name="team_name">开发团队：happy_tree_friends</string>
-    <string name="openSource">以下开源项目</string>
+    <string name="openSource">感谢以下开源项目</string>
     <string name="team_blog">团队博客：https://www.cnblogs.com/1148059038tean/</string>
     <string name="shortcuts_unsigned">看未签</string>
     <string name="shortcuts_edit">改信息</string>
@@ -46,4 +48,7 @@
     <string name="more_option">更多选项</string>
     <string name="tip_check_in">签到提示</string>
     <string name="tip_show_mook">显示慕课</string>
+    <string name="loading">正在登录…</string>
+    <string name="week">周一</string>
+    <string name="empty">暂无数据</string>
 </resources>

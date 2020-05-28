@@ -13,50 +13,42 @@ import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.repository.AllWeekCourseRepository;
 import com.juice.timetable.data.repository.OneWeekCourseRepository;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ListViewService extends RemoteViewsService {
 
-    private List<OneWeekCourse> mList;
-
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new ListRemoteViewsFactory(this.getApplicationContext(), intent);
+        return new ListRemoteViewsFactory(this.getApplicationContext());
     }
 
-    private class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+    private static class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
         private Context mContext;
-        private List<OneWeekCourse> oneWeekCourses;
         private List<Course> courses;
 
         private List<OneWeekCourse> mList = new ArrayList<>();
 
         /**
          * 构造函数
-         *
-         * @param context
-         * @param intent
          */
-        public ListRemoteViewsFactory(Context context, Intent intent) {
+        private ListRemoteViewsFactory(Context context) {
             mContext = context;
         }
 
         @Override
         public void onCreate() {
-
         }
 
         @Override
         public void onDataSetChanged() {
             mList = new ArrayList<>();
             OneWeekCourseRepository repository = new OneWeekCourseRepository(mContext);
-            oneWeekCourses = repository.getOneWeekCourse();
+            List<OneWeekCourse> oneWeekCourses = repository.getOneWeekCourse();
             for (OneWeekCourse oneWeekCours : oneWeekCourses) {
-                if (oneWeekCours.getInWeek().equals(Constant.CUR_WEEK) && oneWeekCours.getDayOfWeek() == (getWeekday())) {
+                if (oneWeekCours.getInWeek().equals(Constant.CUR_WEEK) && oneWeekCours.getDayOfWeek() == (getWeekdayNumber())) {
                     mList.add(oneWeekCours);
                 }
             }
@@ -64,16 +56,12 @@ public class ListViewService extends RemoteViewsService {
             courses = allWeekCourseRepository.getAllWeekCourse();
         }
 
-        /**
-         * 清理资源，释放内存
-         */
         @Override
         public void onDestroy() {
         }
 
         /**
          * 返回集合视图数量
-         * @return
          */
         @Override
         public int getCount() {
@@ -82,8 +70,6 @@ public class ListViewService extends RemoteViewsService {
 
         /**
          * 创建并且填充，在指定索引位置显示的View
-         * @param position
-         * @return
          */
         @Override
         public RemoteViews getViewAt(int position) {
@@ -92,10 +78,12 @@ public class ListViewService extends RemoteViewsService {
             }
             RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.item_today_widget);
             OneWeekCourse oneWeekCourse = mList.get(position);
-            for (Course cours : courses) {
-                if (oneWeekCourse.getCouName().replace(" ", "").equals(cours.getCouName().replace(" ", ""))) {
-                    views.setTextViewText(R.id.widget_teacher, cours.getCouTeacher());
-                    break;
+            if (courses.size() > 0) {
+                for (Course cours : courses) {
+                    if (oneWeekCourse.getCouName().replace(" ", "").equals(cours.getCouName().replace(" ", ""))) {
+                        views.setTextViewText(R.id.widget_teacher, cours.getCouTeacher());
+                        break;
+                    }
                 }
             }
             views.setTextViewText(R.id.widget_name, oneWeekCourse.getCouName());
@@ -105,31 +93,6 @@ public class ListViewService extends RemoteViewsService {
             // 填充Intent，填充在AppWdigetProvider中创建的PendingIntent
             return views;
 
-
-            //str_time = SharedPreferencesUtils.getStringFromSP(mContext, "timeList", "");
-            //timeList = gson.fromJson(str_time, new TypeToken<List<String>>(){}.getType());
-            //end_timeList = gson.fromJson(SharedPreferencesUtils.getStringFromSP(mContext,"endTimeList",""), new TypeToken<List<String>>(){}.getType());
-            //chooseSchool = SharedPreferencesUtils.getIntFromSP(mContext, "chooseSchool");
-
-            /*if (chooseSchool == 1){
-                views.setTextViewText(R.id.tv_startTime, startList[mList.get(position).getStart() - 1]);
-                views.setTextViewText(R.id.tv_endTime, endList[mList.get(position).getStart() + mList.get(position).getStep() - 2]);
-                //holder.timeDetail.setText(startList[course.getStart() - 1] + " - " + endList[course.getStart() + course.getStep() - 2]);
-            }
-            else {
-                if (str_time.equals("")){
-                    //holder.timeDetail.setText("还未设置课程时间");
-                    views.setTextViewText(R.id.tv_startTime, "00:00");
-                    views.setTextViewText(R.id.tv_endTime, "00:00");
-                }else {
-                    views.setTextViewText(R.id.tv_startTime, timeList.get(mList.get(position).getStart() - 1));
-                    views.setTextViewText(R.id.tv_endTime, end_timeList.get(mList.get(position).getStart() + mList.get(position).getStep() - 2));
-                    // holder.timeDetail.setText(timeList.get(course.getStart() - 1) + " - " + end_timeList.get(course.getStart() + course.getStep() - 2));
-                }
-            }
-
-            Intent intent = new Intent(ScheduleWidget.ITEM_CLICK);
-            views.setOnClickFillInIntent(R.id.ll_course, intent);*/
         }
 
         /* 在更新界面的时候如果耗时就会显示 正在加载... 的默认字样，但是你可以更改这个界面
@@ -156,7 +119,7 @@ public class ListViewService extends RemoteViewsService {
             return false;
         }
 
-        public int getWeekday() {
+        int getWeekdayNumber() {
             int weekDay = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
             if (weekDay == 1) {
                 weekDay = 7;
@@ -167,9 +130,6 @@ public class ListViewService extends RemoteViewsService {
             return weekDay;
         }
 
-        public void getDayCourse(Context context) throws ParseException {
-
-        }
     }
 
 }

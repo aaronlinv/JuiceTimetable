@@ -20,7 +20,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.juice.timetable.R;
-import com.juice.timetable.utils.Utils;
+
+import es.dmoral.toasty.Toasty;
 
 public class AboutFragment extends Fragment {
     private Toolbar toolbar;
@@ -69,7 +70,7 @@ public class AboutFragment extends Fragment {
         try {
             startActivity(intent);
         } catch (Exception e) {
-            Utils.showToast(requireActivity(), "您还没有安装QQ，请先安装软件");
+            Toasty.error(requireActivity(), "您还没有安装QQ，请先安装软件", Toasty.LENGTH_SHORT, true).show();
             // 未安装手Q或安装的版本不支持
         }
     }

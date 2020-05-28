@@ -22,7 +22,9 @@ import java.util.List;
  *     version: 1.0
  * </pre>
  */
-public class UnsignedAdapter extends RecyclerView.Adapter<UnsignedAdapter.MyViewHolder> {
+public class UnsignedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final int VIEW_TYPE_EMPTY = 0;
+    private static final int VIEW_TYPE_ITEM = 1;
     private List<ClassNoSignedItem> Ifs = new ArrayList<>();
     void setIfs(List<ClassNoSignedItem> ifs) {
         this.Ifs = ifs;
@@ -30,22 +32,42 @@ public class UnsignedAdapter extends RecyclerView.Adapter<UnsignedAdapter.MyView
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == VIEW_TYPE_EMPTY) {
+            View emptyView = LayoutInflater.from(parent.getContext()).inflate(R.layout.empty_recyclerview, parent, false);
+            return new RecyclerView.ViewHolder(emptyView) {
+
+            };
+        }
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View item = layoutInflater.inflate(R.layout.fragment_recycler, parent, false);
         return new MyViewHolder(item);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder,final int position) {
-        ClassNoSignedItem classNoSignedItem = Ifs.get(position);
-        holder.textViewID.setText(String.valueOf(classNoSignedItem.getSno()));
-        holder.textViewName.setText(String.valueOf(classNoSignedItem.getSname()));
-        holder.textViewNumber.setText(String.valueOf(position + 1));
+    public int getItemViewType(int position) {
+        if (Ifs.size() == 0) {
+            return VIEW_TYPE_EMPTY;
+        }
+        return VIEW_TYPE_ITEM;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+        if (holder instanceof MyViewHolder) {
+            MyViewHolder myViewHolder = (MyViewHolder) holder;
+            ClassNoSignedItem classNoSignedItem = Ifs.get(position);
+            myViewHolder.textViewID.setText(String.valueOf(classNoSignedItem.getSno()));
+            myViewHolder.textViewName.setText(String.valueOf(classNoSignedItem.getSname()));
+            myViewHolder.textViewNumber.setText(String.valueOf(position + 1));
+        }
     }
 
     @Override
     public int getItemCount() {
+        if (Ifs.size() == 0) {
+            return 1;
+        }
         return Ifs.size();
     }
 

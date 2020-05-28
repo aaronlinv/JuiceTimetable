@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -30,26 +31,25 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
-import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
 import com.juice.timetable.data.bean.StuInfo;
-import com.juice.timetable.data.dao.ClassNoSignedItemDao;
 import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseClassNoSignedItem;
 import com.juice.timetable.data.viewmodel.ClassNoSignedItemViewModel;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
-import com.juice.timetable.utils.Utils;
 
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 public class UnsignedFragment extends Fragment {
     private UnsignedAdapter unsignedAdapter;
-    private ClassNoSignedItemDao classNoSignedItemDao;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Handler mHandler;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private StuInfoViewModel mStuInfoViewModel;
+    private ClassNoSignedItemViewModel classNoSignedItemViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -95,12 +95,8 @@ public class UnsignedFragment extends Fragment {
     }
 
     private void getTable() {
-        JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(requireContext());
-        classNoSignedItemDao = juiceDatabase.getClassNoSignedItemDao();
-        ClassNoSignedItemViewModel classNoSignedItemViewModel = new ViewModelProvider(requireActivity()).get(ClassNoSignedItemViewModel.class);
+        classNoSignedItemViewModel = new ViewModelProvider(requireActivity()).get(ClassNoSignedItemViewModel.class);
         mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
-
-
         LiveData<List<ClassNoSignedItem>> classNoSignedItemLive = classNoSignedItemViewModel.getClassNoSignedItemLive();
         classNoSignedItemLive.observe(requireActivity(), new Observer<List<ClassNoSignedItem>>() {
             @Override
@@ -139,11 +135,11 @@ public class UnsignedFragment extends Fragment {
                         String unsigned = LeaveInfo.getLeave(stuInfo.getStuID().toString(), stuInfo.getLeavePassword(), Constant.URI_UNSIGNED_LIST, requireContext());
                         unsignedList = ParseClassNoSignedItem.getClassUnSigned(unsigned);
                         // 删除数据库
-                        classNoSignedItemDao.deleteNoSignedItem();
+                        classNoSignedItemViewModel.deleteClassNoSignedItem();
 
                         // 插入数据
                         for (ClassNoSignedItem classNoSignedItem : unsignedList) {
-                            classNoSignedItemDao.insertNoSignedItem(classNoSignedItem);
+                            classNoSignedItemViewModel.insertClassNoSignedItem(classNoSignedItem);
                         }
                         message.obj = "success";
                         mHandler.sendMessage(message);
@@ -151,10 +147,12 @@ public class UnsignedFragment extends Fragment {
                     } catch (Exception e) {
                         message.obj = "passwd";
                         mHandler.sendMessage(message);
+                        classNoSignedItemViewModel.deleteClassNoSignedItem();
                         e.printStackTrace();
                     }
                 } else {
                     message.obj = "network";
+                    classNoSignedItemViewModel.deleteClassNoSignedItem();
                     mHandler.sendMessage(message);
                 }
             }
@@ -168,27 +166,34 @@ public class UnsignedFragment extends Fragment {
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 String msgStr = (String) msg.obj;
-                if ("success".equals(msgStr)) {
-                    Utils.showToast(requireActivity(), "未签名单更新成功");
-                } else if ("passwd".equals(msgStr)) {
-                    Snackbar.make(requireView(), "未输入请假系统密码", Snackbar.LENGTH_SHORT)
-                            .setAction("去加密码", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.nav_login);
-                                }
-                            }).show();
-                } else if ("network".equals(msgStr)) {
-                    Snackbar.make(requireView(), "设备未联网", Snackbar.LENGTH_SHORT)
-                            .setAction("去联网", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent intent = new Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS);
-                                    startActivity(intent);
-                                }
-                            }).show();
+                try {
+                    if ("success".equals(msgStr)) {
+                        Toasty.success(requireActivity(), "未签名单更新成功", Toasty.LENGTH_SHORT, true).show();
+                    } else if ("passwd".equals(msgStr)) {
+                        Snackbar.make(requireView(), "未输入请假系统密码", Snackbar.LENGTH_SHORT)
+                                .setAction("去加密码", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.nav_login);
+                                    }
+                                }).show();
+                    } else if ("network".equals(msgStr)) {
+                        Snackbar.make(requireView(), "设备未联网", Snackbar.LENGTH_SHORT)
+                                .setAction("去联网", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS);
+                                        startActivity(intent);
+                                    }
+                                }).show();
+                    }
+                    swipeRefreshLayout.setRefreshing(false);
+                } catch (Exception e) {
+                    Log.w("ERROR", "操作中断");
+                    Toasty.error(requireActivity(), "操作中断", Toasty.LENGTH_SHORT, true).show();
+                    swipeRefreshLayout.setRefreshing(false);
+                    e.printStackTrace();
                 }
-                swipeRefreshLayout.setRefreshing(false);
             }
         };
     }

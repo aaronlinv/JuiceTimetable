@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent">
 
     <LinearLayout
-        android:translationZ="4dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="8dp"
         android:background="@drawable/widget_listshape"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:translationZ="4dp">
 
-        <TextView
-            android:id="@+id/widget_week"
+        <LinearLayout
+            android:id="@+id/week"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/widget_titleshape"
-            android:gravity="center_vertical"
-            android:paddingLeft="16dp"
-            android:text="周一"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/widget_week"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:background="@drawable/widget_titleshape"
+                android:paddingStart="16dp"
+                android:text="@string/week"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:ignore="RtlSymmetry" />
+        </LinearLayout>
 
 
         <ListView
