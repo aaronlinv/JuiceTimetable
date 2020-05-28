@@ -78,10 +78,12 @@ public class ListViewService extends RemoteViewsService {
             }
             RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.item_today_widget);
             OneWeekCourse oneWeekCourse = mList.get(position);
-            for (Course cours : courses) {
-                if (oneWeekCourse.getCouName().replace(" ", "").equals(cours.getCouName().replace(" ", ""))) {
-                    views.setTextViewText(R.id.widget_teacher, cours.getCouTeacher());
-                    break;
+            if (courses.size() > 0) {
+                for (Course cours : courses) {
+                    if (oneWeekCourse.getCouName().replace(" ", "").equals(cours.getCouName().replace(" ", ""))) {
+                        views.setTextViewText(R.id.widget_teacher, cours.getCouTeacher());
+                        break;
+                    }
                 }
             }
             views.setTextViewText(R.id.widget_name, oneWeekCourse.getCouName());
