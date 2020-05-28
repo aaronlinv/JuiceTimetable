@@ -10,10 +10,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -164,27 +166,34 @@ public class UnsignedFragment extends Fragment {
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 String msgStr = (String) msg.obj;
-                if ("success".equals(msgStr)) {
-                    Utils.showToast(requireActivity(), "未签名单更新成功");
-                } else if ("passwd".equals(msgStr)) {
-                    Snackbar.make(requireView(), "未输入请假系统密码", Snackbar.LENGTH_SHORT)
-                            .setAction("去加密码", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.nav_login);
-                                }
-                            }).show();
-                } else if ("network".equals(msgStr)) {
-                    Snackbar.make(requireView(), "设备未联网", Snackbar.LENGTH_SHORT)
-                            .setAction("去联网", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent intent = new Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS);
-                                    startActivity(intent);
-                                }
-                            }).show();
+                try {
+                    if ("success".equals(msgStr)) {
+                        Utils.showToast(requireActivity(), "未签名单更新成功");
+                    } else if ("passwd".equals(msgStr)) {
+                        Snackbar.make(requireView(), "未输入请假系统密码", Snackbar.LENGTH_SHORT)
+                                .setAction("去加密码", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.nav_login);
+                                    }
+                                }).show();
+                    } else if ("network".equals(msgStr)) {
+                        Snackbar.make(requireView(), "设备未联网", Snackbar.LENGTH_SHORT)
+                                .setAction("去联网", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS);
+                                        startActivity(intent);
+                                    }
+                                }).show();
+                    }
+                    swipeRefreshLayout.setRefreshing(false);
+                } catch (Exception e) {
+                    Log.w("ERROR", "操作中断");
+                    Toast.makeText(requireActivity(), "操作中断", Toast.LENGTH_SHORT).show();
+                    swipeRefreshLayout.setRefreshing(false);
+                    e.printStackTrace();
                 }
-                swipeRefreshLayout.setRefreshing(false);
             }
         };
     }
