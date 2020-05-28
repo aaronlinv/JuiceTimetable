@@ -44,4 +44,6 @@
     <string name="loading">正在登录...</string>
     <string name="go_current_week">跳转到当前周</string>
     <string name="more_option">更多选项</string>
+    <string name="tip_check_in">签到提示</string>
+    <string name="tip_show_mook">显示慕课</string>
 </resources>

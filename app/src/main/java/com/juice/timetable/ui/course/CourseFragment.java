@@ -3,14 +3,18 @@ package com.juice.timetable.ui.course;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -144,7 +148,33 @@ public class CourseFragment extends Fragment {
                     mVpCourse.setCurrentItem(Constant.CUR_WEEK - 1, true);
                     LogUtils.getInstance().d("点击了 跳转到当前周图标 -- > " + (Constant.CUR_WEEK - 1));
                 }
+                if (item.getItemId() == R.id.item_more_option) {
+                    // 必须设置宽度
+                    final PopupWindow popupWindow = new PopupWindow(requireView(),
+                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                    popupWindow.setAnimationStyle(R.anim.nav_default_pop_enter_anim);
 
+                    // 添加阴影
+                    popupWindow.setElevation(100);
+
+                    // 点击其他区域 PopUpWindow消失
+                    popupWindow.setTouchable(true);
+                    popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            // false 不拦截这个事件
+                            // 拦截了PopUpWindow 的onTouchEvent就不会被调用
+//                            popupWindow.dismiss();
+                            return false;
+                        }
+                    });
+                    popupWindow.setBackgroundDrawable(new ColorDrawable(0xfffafafa));
+                    View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.popupwindow, null);
+                    popupWindow.setContentView(contentView);
+                    popupWindow.showAsDropDown(toolbar, 0, 0, Gravity.RIGHT);
+
+
+                }
                 return false;
             }
         });
