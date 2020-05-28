@@ -48,7 +48,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginStart="5dp"
             android:gravity="center_vertical"
-            android:text="@string/tip_show_mook"
+            android:text="@string/tip_show_mooc"
             android:textColor="@android:color/black"
             android:textSize="17sp" />
 
