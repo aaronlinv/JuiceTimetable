@@ -1,8 +1,6 @@
 package com.juice.timetable.utils;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.widget.Toast;
 
 import com.juice.timetable.app.Constant;
 
@@ -23,6 +21,7 @@ import java.util.UUID;
  * </pre>
  */
 public class Utils {
+
 
     /**
      * 解决一些布局问题
@@ -165,7 +164,7 @@ public class Utils {
 
     /**
      * 从0开始计数
-     * 返回某一周的第一周距离现在的实际周数
+     * 返回某一第一周距离现在的实际周数
      *
      * @param weekBeginMillis
      * @param endMillis
@@ -174,21 +173,4 @@ public class Utils {
     public static int getWeekGap(long weekBeginMillis, long endMillis) {
         return (int) (((endMillis - weekBeginMillis) / (1000 * 3600 * 24)) / 7);
     }
-
-    /**
-     * toast接口
-     */
-    private static Toast toast;
-
-    @SuppressLint("ShowToast")
-    public static void showToast(Context context, String content) {
-        if (toast == null) {
-            toast = Toast.makeText(context, content, Toast.LENGTH_SHORT);
-        } else {
-            toast.setText(content);
-        }
-        toast.show();
-    }
-
-
 }
