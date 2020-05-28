@@ -372,8 +372,7 @@ public class CourseFragment extends Fragment {
     private void initView() {
         toolbar = requireActivity().findViewById(R.id.toolbar);
 
-        // 显示Toolbar的下拉菜单按钮
-        Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
+//         显示Toolbar的右侧菜单按钮
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, true);
 
@@ -422,7 +421,11 @@ public class CourseFragment extends Fragment {
                 } catch (Exception e) {
                     LogUtils.getInstance().d("setOnRefreshListener：" + e.getMessage());
                     // 可能密码错误
-                    message.obj = e.getMessage();
+                    if (e.getMessage().contains("Unable to resolve host")) {
+                        message.obj = "网络好像不太好，请检查网络";
+                    } else {
+                        message.obj = e.getMessage();
+                    }
                 }
                 LogUtils.getInstance().d("setOnRefreshListener:模拟登录获取完整课表结束");
                 if (allCourse == null) {
