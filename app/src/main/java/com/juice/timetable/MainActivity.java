@@ -128,11 +128,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+/*        // Inflate the menu; this adds items to the action bar if it is present.
         // 添加周的显示
         for (int i = 0; i < 25; i++) {
             menu.add(0, i, i, "第" + (i + 1) + "周");
-        }
+        }*/
         // 填充toolBar的布局
         getMenuInflater().inflate(R.menu.main, menu);
         return true;

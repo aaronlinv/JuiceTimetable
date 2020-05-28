@@ -22,6 +22,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.Course;
@@ -66,6 +68,7 @@ public class CourseFragment extends Fragment {
     private CourseViewListAdapter mCourseViewListAdapter;
     private List<CourseViewBean> mCourseViewBeanList = new ArrayList<>();
     private int mCurViewPagerNum;
+    private MaterialSpinner mSpinner;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -105,6 +108,21 @@ public class CourseFragment extends Fragment {
 
         getCheckIn();
         initEvent();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 设置为可见 切换到其他界面会隐藏，所以这样要设置回可见
+        mSpinner.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        toolbar.hideOverflowMenu();
+        mSpinner.setVisibility(View.INVISIBLE);
+
     }
 
     private void initEvent() {
@@ -148,12 +166,12 @@ public class CourseFragment extends Fragment {
             public void onPageSelected(int position) {
                 mCurViewPagerNum = position;
                 super.onPageSelected(position);
-                int week = position + 1;
+/*                int week = position + 1;
                 if (week != Constant.CUR_WEEK) {
                     toolbar.setTitle("第" + week + "周 (非本周)");
                 } else {
                     toolbar.setTitle("第" + week + "周");
-                }
+                }*/
             }
         });
 
@@ -199,13 +217,13 @@ public class CourseFragment extends Fragment {
         mVpCourse.setAdapter(mCourseViewListAdapter);
         // 打开主页 跳转当前周
         mVpCourse.setCurrentItem(Constant.CUR_WEEK - 1, false);
-        // 显示标题栏
+/*        // 显示标题栏
 
         if ((mCurViewPagerNum + 1) != Constant.CUR_WEEK) {
             toolbar.setTitle("第" + Constant.CUR_WEEK + "周 (非本周)");
         } else {
             toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
-        }
+        }*/
     }
 
     /**
@@ -266,6 +284,30 @@ public class CourseFragment extends Fragment {
         Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, true);
+
+        // 移除原有标题
+        toolbar.setTitle("");
+        // toolbar spinner 下拉菜单
+        mSpinner = toolbar.findViewById(R.id.spinner);
+
+        String[] weekArr = new String[Constant.MAX_WEEK];
+        for (int i = 0; i < Constant.MAX_WEEK; i++) {
+            weekArr[i] = "第 " + (i + 1) + " 周";
+        }
+
+        mSpinner.setItems(weekArr);
+        mSpinner.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        mSpinner.setTextColor(0xFF000000);
+        mSpinner.setTextSize(20);
+        mSpinner.setDropdownMaxHeight(700);
+        mSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();
+            }
+        });
+
 
         // 初始化标题栏 只在 registerOnPageChangeCallback 中初始化 从后台切回标题栏不会显示周
         // 在 updateCourse 中初始
