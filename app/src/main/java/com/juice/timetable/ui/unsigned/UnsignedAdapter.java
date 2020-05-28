@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class UnsignedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_EMPTY = 0;
-    public static final int VIEW_TYPE_ITEM = 1;
+    private static final int VIEW_TYPE_ITEM = 1;
     private List<ClassNoSignedItem> Ifs = new ArrayList<>();
     void setIfs(List<ClassNoSignedItem> ifs) {
         this.Ifs = ifs;
