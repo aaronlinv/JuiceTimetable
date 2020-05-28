@@ -43,6 +43,18 @@ public class ParseAllWeekTest {
 
     }
 
+    @Test
+    public void parseAllCourse_2017() {
+        String question = ParseAllWeek.parseAllCourse(get2017AllWeek()).toString();
+
+        String answer = get2017AllWeekAnswer();
+
+        boolean isCheck = answer.equals(question);
+
+        Assert.assertTrue(isCheck);
+
+    }
+
     /**
      * 计算机科学与技术完整课表
      *
@@ -957,5 +969,483 @@ public class ParseAllWeekTest {
                 "Course{couID=7, onlyID=14, couName='中国现当代文学（下） (1)班', couRoom='机北406', couTeacher='牛康', couWeek=1, couStartNode=9, couEndNode=11, couWeekType=0, couStartWeek=14, couEndWeek=16, couColor=null}, " +
                 "Course{couID=7, onlyID=15, couName='中国现当代文学（下） (1)班', couRoom='网络教学', couTeacher='牛康', couWeek=1, couStartNode=9, couEndNode=11, couWeekType=0, couStartWeek=1, couEndWeek=16, couColor=null}, " +
                 "Course{couID=6, onlyID=16, couName='中国古代文学（四） (1)班', couRoom='机北407', couTeacher='苗健青', couWeek=3, couStartNode=9, couEndNode=11, couWeekType=0, couStartWeek=12, couEndWeek=18, couColor=null}]";
+    }
+
+    /**
+     * 2017计科完整课表
+     *
+     * @return String
+     */
+    private static String get2017AllWeek() {
+        return "\n" +
+                "\n" +
+                "\n" +
+                "<META NAME=\"ROBOTS\" CONTENT=\"NOINDEX,NOFOLLOW\">\n" +
+                "  <META HTTP-EQUIV=\"pragma\" CONTENT=\"no-cache\">\n" +
+                "  <META http-equiv=\"cache-control\" content=\"no-cache\">\n" +
+                "  <META HTTP-EQUIV=\"expires\" CONTENT=\"0\">\n" +
+                "  <META http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+                "   \n" +
+                "  \n" +
+                "  <html>\n" +
+                "  <head>\n" +
+                "  <title>福州大学至诚学院课程表</title>\n" +
+                "  <meta http-equiv=\"Content-Type\" content=\"text/html; Charset=UTF-8\">\n" +
+                "  <style media=print>\n" +
+                "  .Noprint{display:none;}\n" +
+                "  .PageNext{page-break-after: always;}\n" +
+                "  </style>\n" +
+                "  \n" +
+                "  <style>\n" +
+                "  <!-- \n" +
+                "  table {\n" +
+                "    font-size: 10pt;\n" +
+                "  }\n" +
+                "  td {\n" +
+                "    font-size: 9pt;\n" +
+                "  }\n" +
+                "  .button {font-family: \"宋体\";font-size: 9pt;color: #00006a; height: 19}\n" +
+                "  -->\n" +
+                "  </style>\n" +
+                "  \n" +
+                "  <link href=\"../inc/style.css\" rel=\"stylesheet\" type=\"text/css\">\n" +
+                "  </head>\n" +
+                "  \n" +
+                "  <BODY onbeforeprint=\"w.style.display='none';\"  onafterprint=\"w.style.display='';\">\n" +
+                "    <table width=\"100%\" border=\"0\" cellspacing=\"0\" id=\"w\" class=\"Noprint\">\n" +
+                "    <tr><td align=\"center\">\n" +
+                "  <form name=\"form\" method=\"post\" action=\"kb_xs.asp\">\n" +
+                "     <input name=\"menu_no\" type=\"hidden\" value=\"\">\n" +
+                "     \n" +
+                "  &nbsp;查询学期：<input name=\"xn\" type=\"text\" size=\"4\" value=\"2017\">学年 \n" +
+                "      <select name=\"xq\">\n" +
+                "        <option value=\"下\">下</option> \n" +
+                "        <option value=\"\"></option>  \t\n" +
+                "        <option value=\"上\">上</option>\n" +
+                "        <option value=\"下\">下</option>\n" +
+                "      </select>\n" +
+                "      学期 <input type=\"submit\" name=\"Submit\" value=\"查询\" class=\"button\">\n" +
+                "      &nbsp;&nbsp;<input name=\"print\" type=\"button\" value=\" 打印 \" onClick=\"javascript:window.print();\" class=\"button\">\t\t\t \n" +
+                "  </form>\n" +
+                "  </td></tr></table>\t\n" +
+                "  \n" +
+                "  <div align=\"center\"><strong>福州大学至诚学院 2017下学期张三同学课程表</strong>(2020-5-28 10:17:40)</div>\n" +
+                "  <table width=\"880\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" border=\"0\" bordercolor=\"#111111\">\n" +
+                "    <tr> \n" +
+                "  <!--      <td valign=\"top\"><table width=\"440\" height=\"400\" cellspacing=\"0\" cellpadding=\"1\" align=\"center\" style=\"border-collapse: collapse\" border=\"1\" bordercolor=\"#111111\">-->\n" +
+                "      <td valign=\"top\"><table width=\"100%\" height=\"400\" cellspacing=\"0\" cellpadding=\"1\" align=\"center\" style=\"border-collapse: collapse\" border=\"1\" bordercolor=\"#111111\">\n" +
+                "          <tr  height=\"30\"> \n" +
+                "            <td align=\"center\">课程名称</td>\n" +
+                "            <td align=\"center\">大纲/进度表</td>\n" +
+                "            <td align=\"center\">任课教师</td>\n" +
+                "        <td align=\"center\">选修类型</td>\n" +
+                "        <td align=\"center\">考试类别</td>\t\t  \n" +
+                "        <td align=\"center\">班级</td>\t\t  \n" +
+                "        <td align=\"center\">学分</td>\n" +
+                "            <td align=\"center\">总<br>学<br>时 </td>\n" +
+                "            <td align=\"center\">周<br>学<br>时 </td>\n" +
+                "            <td align=\"center\">实<br>验<br>学<br>时 </td>\n" +
+                "            <td align=\"center\">起讫时间<br>周序<br>(星期)</td>\n" +
+                "          </tr>\n" +
+                "          \n" +
+                "          <tr> \n" +
+                "            <td  >&nbsp;大学物理（上） (9)班</td>\n" +
+                "            <td align=\"center\"><a href=\"../kkgl/kcjd/dgjdb.asp?lx=dg&kkxq=2017%E4%B8%8B&kcdm=06000118&kkhm=2017%E4%B8%8B06000118009\" target=\"_blank\">大纲</a>\n" +
+                "        /<a href=\"../kkgl/kcjd/dgjdb.asp?lx=jdb&kkxq=2017%E4%B8%8B&kcdm=06000118&kkhm=2017%E4%B8%8B06000118009\" target=\"_blank\">进度表</a></td>\t\t\t\n" +
+                "            <td align=\"center\">孙磊</td>\n" +
+                "        <td align=\"center\">公共必修</td>\t\t  \n" +
+                "        <td align=\"center\">正常考考试</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">9班</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">1.5</td>\n" +
+                "            <td align=\"center\">30</td>\n" +
+                "            <td align=\"center\">2</td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\">02～17</td>\t\n" +
+                "          </tr>\n" +
+                "         \n" +
+                "          <tr> \n" +
+                "            <td  >&nbsp;大学英语（二） (20)班</td>\n" +
+                "            <td align=\"center\"><a href=\"../kkgl/kcjd/dgjdb.asp?lx=dg&kkxq=2017%E4%B8%8B&kcdm=08000104&kkhm=2017%E4%B8%8B08000104020\" target=\"_blank\">大纲</a>\n" +
+                "        /<a href=\"../kkgl/kcjd/dgjdb.asp?lx=jdb&kkxq=2017%E4%B8%8B&kcdm=08000104&kkhm=2017%E4%B8%8B08000104020\" target=\"_blank\">进度表</a></td>\t\t\t\n" +
+                "            <td align=\"center\">庄星来</td>\n" +
+                "        <td align=\"center\">公共必修</td>\t\t  \n" +
+                "        <td align=\"center\">正常考考试</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">20班</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">3</td>\n" +
+                "            <td align=\"center\">48</td>\n" +
+                "            <td align=\"center\">3</td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\">01～17</td>\t\n" +
+                "          </tr>\n" +
+                "         \n" +
+                "          <tr> \n" +
+                "            <td  >&nbsp;高等数学（一）下 (7)班</td>\n" +
+                "            <td align=\"center\"><a href=\"../kkgl/kcjd/dgjdb.asp?lx=dg&kkxq=2017%E4%B8%8B&kcdm=08000102&kkhm=2017%E4%B8%8B08000102007\" target=\"_blank\">大纲</a>\n" +
+                "        /<a href=\"../kkgl/kcjd/dgjdb.asp?lx=jdb&kkxq=2017%E4%B8%8B&kcdm=08000102&kkhm=2017%E4%B8%8B08000102007\" target=\"_blank\">进度表</a></td>\t\t\t\n" +
+                "            <td align=\"center\">侯远</td>\n" +
+                "        <td align=\"center\">公共必修</td>\t\t  \n" +
+                "        <td align=\"center\">正常考考试</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">7班</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">4</td>\n" +
+                "            <td align=\"center\">80</td>\n" +
+                "            <td align=\"center\">5</td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\">01～17</td>\t\n" +
+                "          </tr>\n" +
+                "         \n" +
+                "          <tr> \n" +
+                "            <td  >&nbsp;高级语言程序设计(C语言) (1)班</td>\n" +
+                "            <td align=\"center\"><a href=\"../kkgl/kcjd/dgjdb.asp?lx=dg&kkxq=2017%E4%B8%8B&kcdm=14000101&kkhm=2017%E4%B8%8B14000101001\" target=\"_blank\">大纲</a>\n" +
+                "        /<a href=\"../kkgl/kcjd/dgjdb.asp?lx=jdb&kkxq=2017%E4%B8%8B&kcdm=14000101&kkhm=2017%E4%B8%8B14000101001\" target=\"_blank\">进度表</a></td>\t\t\t\n" +
+                "            <td align=\"center\">冯新</td>\n" +
+                "        <td align=\"center\">公共必修</td>\t\t  \n" +
+                "        <td align=\"center\">正常考考试</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">1班</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">2.5</td>\n" +
+                "            <td align=\"center\">44</td>\n" +
+                "            <td align=\"center\">6</td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\">01～16</td>\t\n" +
+                "          </tr>\n" +
+                "         \n" +
+                "          <tr> \n" +
+                "            <td  >&nbsp;体育（二） (16)班</td>\n" +
+                "            <td align=\"center\"><a href=\"../kkgl/kcjd/dgjdb.asp?lx=dg&kkxq=2017%E4%B8%8B&kcdm=06000123&kkhm=2017%E4%B8%8B06000123016\" target=\"_blank\">大纲</a>\n" +
+                "        /<a href=\"../kkgl/kcjd/dgjdb.asp?lx=jdb&kkxq=2017%E4%B8%8B&kcdm=06000123&kkhm=2017%E4%B8%8B06000123016\" target=\"_blank\">进度表</a></td>\t\t\t\n" +
+                "            <td align=\"center\">卞贞坤</td>\n" +
+                "        <td align=\"center\">公共必修</td>\t\t  \n" +
+                "        <td align=\"center\">正常考考试</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">16班,周二5、6节  男</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">1</td>\n" +
+                "            <td align=\"center\">36</td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\">02～15</td>\t\n" +
+                "          </tr>\n" +
+                "         \n" +
+                "          <tr> \n" +
+                "            <td  >&nbsp;形势与政策（上） (16)班</td>\n" +
+                "            <td align=\"center\"><a href=\"../kkgl/kcjd/dgjdb.asp?lx=dg&kkxq=2017%E4%B8%8B&kcdm=10000103&kkhm=2017%E4%B8%8B10000103016\" target=\"_blank\">大纲</a>\n" +
+                "        /<a href=\"../kkgl/kcjd/dgjdb.asp?lx=jdb&kkxq=2017%E4%B8%8B&kcdm=10000103&kkhm=2017%E4%B8%8B10000103016\" target=\"_blank\">进度表</a></td>\t\t\t\n" +
+                "            <td align=\"center\">陈文福,魏渊,林筠颖,吴迪</td>\n" +
+                "        <td align=\"center\">公共必修</td>\t\t  \n" +
+                "        <td align=\"center\">正常考考试</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">16班,周四9,10节</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">1</td>\n" +
+                "            <td align=\"center\">16</td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\">04～10</td>\t\n" +
+                "          </tr>\n" +
+                "         \n" +
+                "          <tr> \n" +
+                "            <td  >&nbsp;中国近现代史纲要 (4)班</td>\n" +
+                "            <td align=\"center\"><a href=\"../kkgl/kcjd/dgjdb.asp?lx=dg&kkxq=2017%E4%B8%8B&kcdm=07004110&kkhm=2017%E4%B8%8B07004110004\" target=\"_blank\">大纲</a>\n" +
+                "        /<a href=\"../kkgl/kcjd/dgjdb.asp?lx=jdb&kkxq=2017%E4%B8%8B&kcdm=07004110&kkhm=2017%E4%B8%8B07004110004\" target=\"_blank\">进度表</a></td>\t\t\t\n" +
+                "            <td align=\"center\">郑恒鑫</td>\n" +
+                "        <td align=\"center\">公共必修</td>\t\t  \n" +
+                "        <td align=\"center\">正常考考试</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">4班,周1:9-10节</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">2</td>\n" +
+                "            <td align=\"center\">32</td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\">01～13</td>\t\n" +
+                "          </tr>\n" +
+                "         \n" +
+                "          <tr> \n" +
+                "            <td  >&nbsp;数字电路与逻辑设计 (1)班</td>\n" +
+                "            <td align=\"center\"><a href=\"../kkgl/kcjd/dgjdb.asp?lx=dg&kkxq=2017%E4%B8%8B&kcdm=06104205&kkhm=2017%E4%B8%8B06104205001\" target=\"_blank\">大纲</a>\n" +
+                "        /<a href=\"../kkgl/kcjd/dgjdb.asp?lx=jdb&kkxq=2017%E4%B8%8B&kcdm=06104205&kkhm=2017%E4%B8%8B06104205001\" target=\"_blank\">进度表</a></td>\t\t\t\n" +
+                "            <td align=\"center\">阴爱英</td>\n" +
+                "        <td align=\"center\">专业基础</td>\t\t  \n" +
+                "        <td align=\"center\">正常考考试</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">2017级计算机1</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">3</td>\n" +
+                "            <td align=\"center\">48</td>\n" +
+                "            <td align=\"center\">3</td>\n" +
+                "            <td align=\"center\">*</td>\n" +
+                "            <td align=\"center\">01～13</td>\t\n" +
+                "          </tr>\n" +
+                "         \n" +
+                "          <tr> \n" +
+                "            <td rowspan=\"2\"  >&nbsp;大学英语四级考试辅导 (30)班</td>\n" +
+                "            <td align=\"center\"><a href=\"../kkgl/kcjd/dgjdb.asp?lx=dg&kkxq=2017%E4%B8%8B&kcdm=16000508&kkhm=2017%E4%B8%8B16000508030\" target=\"_blank\">大纲</a>\n" +
+                "        /<a href=\"../kkgl/kcjd/dgjdb.asp?lx=jdb&kkxq=2017%E4%B8%8B&kcdm=16000508&kkhm=2017%E4%B8%8B16000508030\" target=\"_blank\">进度表</a></td>\t\t\t\n" +
+                "            <td align=\"center\">谢强英</td>\n" +
+                "        <td align=\"center\">院选课</td>\t\t  \n" +
+                "        <td align=\"center\">正常考考试</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">院选课</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">2</td>\n" +
+                "            <td align=\"center\">36</td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\">03～15</td>\t\n" +
+                "          </tr>\n" +
+                "         \n" +
+                "          <tr height=\"25\"><td align=\"left\" colspan=\"10\">★备注：非英语专业；四级未通过；英语不能有不及格记录</td></tr>\n" +
+                "         \n" +
+                "          <tr> \n" +
+                "            <td rowspan=\"2\"  >&nbsp;中国现代文学经典作品鉴赏 (154)班</td>\n" +
+                "            <td align=\"center\"><a href=\"../kkgl/kcjd/dgjdb.asp?lx=dg&kkxq=2017%E4%B8%8B&kcdm=80000098&kkhm=2017%E4%B8%8B80000098154\" target=\"_blank\">大纲</a>\n" +
+                "        /<a href=\"../kkgl/kcjd/dgjdb.asp?lx=jdb&kkxq=2017%E4%B8%8B&kcdm=80000098&kkhm=2017%E4%B8%8B80000098154\" target=\"_blank\">进度表</a></td>\t\t\t\n" +
+                "            <td align=\"center\"></td>\n" +
+                "        <td align=\"center\">院选课</td>\t\t  \n" +
+                "        <td align=\"center\">正常考考试</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">院选课超星尔雅（联盟课程）</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">2</td>\n" +
+                "            <td align=\"center\">32</td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\"></td>\t\n" +
+                "          </tr>\n" +
+                "         \n" +
+                "          <tr height=\"25\"><td align=\"left\" colspan=\"10\">★备注：第4周上平台注册学习第14周完成在线学习</td></tr>\n" +
+                "         \n" +
+                "          <tr> \n" +
+                "            <td  >&nbsp;大学物理实验（上） (3)班</td>\n" +
+                "            <td align=\"center\"><a href=\"../kkgl/kcjd/dgjdb.asp?lx=dg&kkxq=2017%E4%B8%8B&kcdm=06000162&kkhm=2017%E4%B8%8B06000162003\" target=\"_blank\">大纲</a>\n" +
+                "        /<a href=\"../kkgl/kcjd/dgjdb.asp?lx=jdb&kkxq=2017%E4%B8%8B&kcdm=06000162&kkhm=2017%E4%B8%8B06000162003\" target=\"_blank\">进度表</a></td>\t\t\t\n" +
+                "            <td align=\"center\">物理实验室</td>\n" +
+                "        <td align=\"center\">实践环节</td>\t\t  \n" +
+                "        <td align=\"center\">正常考考试</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">3班 周1 7、8节(单)</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">.5</td>\n" +
+                "            <td align=\"center\">15</td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\">03～14</td>\t\n" +
+                "          </tr>\n" +
+                "         \n" +
+                "          <tr> \n" +
+                "            <td  >&nbsp;高级语言程序设计(C语言)实验 (1)班</td>\n" +
+                "            <td align=\"center\"><a href=\"../kkgl/kcjd/dgjdb.asp?lx=dg&kkxq=2017%E4%B8%8B&kcdm=16999604&kkhm=2017%E4%B8%8B16999604001\" target=\"_blank\">大纲</a>\n" +
+                "        /<a href=\"../kkgl/kcjd/dgjdb.asp?lx=jdb&kkxq=2017%E4%B8%8B&kcdm=16999604&kkhm=2017%E4%B8%8B16999604001\" target=\"_blank\">进度表</a></td>\t\t\t\n" +
+                "            <td align=\"center\">冯新</td>\n" +
+                "        <td align=\"center\">实践环节</td>\t\t  \n" +
+                "        <td align=\"center\">正常考考试</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">1班</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">2.5</td>\n" +
+                "            <td align=\"center\">44</td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\"></td>\t\n" +
+                "          </tr>\n" +
+                "         \n" +
+                "          <tr> \n" +
+                "            <td rowspan=\"2\"  >&nbsp;数字电路与逻辑设计实验 (1)班</td>\n" +
+                "            <td align=\"center\"><a href=\"../kkgl/kcjd/dgjdb.asp?lx=dg&kkxq=2017%E4%B8%8B&kcdm=10111603&kkhm=2017%E4%B8%8B10111603001\" target=\"_blank\">大纲</a>\n" +
+                "        /<a href=\"../kkgl/kcjd/dgjdb.asp?lx=jdb&kkxq=2017%E4%B8%8B&kcdm=10111603&kkhm=2017%E4%B8%8B10111603001\" target=\"_blank\">进度表</a></td>\t\t\t\n" +
+                "            <td align=\"center\">阴爱英</td>\n" +
+                "        <td align=\"center\">实践环节</td>\t\t  \n" +
+                "        <td align=\"center\">正常考考试</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">2017级计算机1</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">1.5</td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\">√</td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\">10～18</td>\t\n" +
+                "          </tr>\n" +
+                "         \n" +
+                "          <tr height=\"25\"><td align=\"left\" colspan=\"10\">★备注：必修，具体时间由任课教师安排</td></tr>\n" +
+                "         \n" +
+                "          <tr> \n" +
+                "            <td  >&nbsp;思想政治理论课实践(一)</td>\n" +
+                "            <td align=\"center\"><a href=\"../kkgl/kcjd/dgjdb.asp?lx=dg&kkxq=2017%E4%B8%8B&kcdm=07004607&kkhm=2017%E4%B8%8B07004607021\" target=\"_blank\">大纲</a>\n" +
+                "        /<a href=\"../kkgl/kcjd/dgjdb.asp?lx=jdb&kkxq=2017%E4%B8%8B&kcdm=07004607&kkhm=2017%E4%B8%8B07004607021\" target=\"_blank\">进度表</a></td>\t\t\t\n" +
+                "            <td align=\"center\">王海霞</td>\n" +
+                "        <td align=\"center\">实践环节</td>\t\t  \n" +
+                "        <td align=\"center\">正常考考试</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">2017计算机</td>\t\t\t\t\t  \n" +
+                "        <td align=\"center\">1</td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\"></td>\n" +
+                "            <td align=\"center\"></td>\t\n" +
+                "          </tr>\n" +
+                "         \n" +
+                "        </table><font color=\"#CC3333\">\n" +
+                "      </font>\n" +
+                "      </td>\n" +
+                "      <td valign=\"top\">\n" +
+                "    \n" +
+                "    <table width=\"440\" height=\"400\" cellspacing=\"0\" cellpadding=\"1\" align=\"center\" style=\"border-collapse: collapse\" border=\"1\" bordercolor=\"#111111\">\n" +
+                "          <tr  height=\"30\"> \n" +
+                "            <td align=\"center\">\n" +
+                "              星期<br>\n" +
+                "              节次 </td>\n" +
+                "            <td align=\"center\">一</td>\n" +
+                "            <td align=\"center\">二</td>\n" +
+                "            <td align=\"center\">三</td>\n" +
+                "            <td align=\"center\">四</td>\n" +
+                "            <td align=\"center\">五</td>\n" +
+                "        \n" +
+                "          </tr>\n" +
+                "          \n" +
+                "          \n" +
+                "          <tr id=\"tr1\"> \n" +
+                "            <td align=\"center\">1</td>\n" +
+                "            \n" +
+                "            <td align=\"center\" rowspan=2 id=\"11\">大学英语（二）(20)班<br>[双][电机楼502]</td>\n" +
+                "            \n" +
+                "            <td align=\"center\" rowspan=2 id=\"12\">高级语言程序设计(C语言)(1)班<br>[电机楼601]</td>\n" +
+                "            \n" +
+                "            <td align=\"center\" rowspan=2 id=\"13\">高等数学（一）下(7)班<br>[东教101]</td>\n" +
+                "            \n" +
+                "            <td align=\"center\" rowspan=2 id=\"14\">高等数学（一）下(7)班<br>[双][化工316]</td>\n" +
+                "            \n" +
+                "            <td id=\"15\">&nbsp;</td>\n" +
+                "            \n" +
+                "          </tr>\n" +
+                "          \n" +
+                "          <tr id=\"tr2\"> \n" +
+                "            <td align=\"center\">2</td>\n" +
+                "            \n" +
+                "            <td id=\"25\">&nbsp;</td>\n" +
+                "            \n" +
+                "          </tr>\n" +
+                "          \n" +
+                "          <tr id=\"tr3\"> \n" +
+                "            <td align=\"center\">3</td>\n" +
+                "            \n" +
+                "            <td align=\"center\" rowspan=2 id=\"31\">高等数学（一）下(7)班<br>[东教101]</td>\n" +
+                "            \n" +
+                "            <td align=\"center\" rowspan=2 id=\"32\">大学物理（上）(9)班<br>[机北104]</td>\n" +
+                "            \n" +
+                "            <td align=\"center\" rowspan=2 id=\"33\">数字电路与逻辑设计(1)班<br>[化工317]</td>\n" +
+                "            \n" +
+                "            <td id=\"34\">&nbsp;</td>\n" +
+                "            \n" +
+                "            <td id=\"35\">&nbsp;</td>\n" +
+                "            \n" +
+                "          </tr>\n" +
+                "          \n" +
+                "          <tr id=\"tr4\"> \n" +
+                "            <td align=\"center\">4</td>\n" +
+                "            \n" +
+                "            <td id=\"44\">&nbsp;</td>\n" +
+                "            \n" +
+                "            <td id=\"45\">&nbsp;</td>\n" +
+                "            \n" +
+                "          </tr>\n" +
+                "          \n" +
+                "          <tr id=\"tr5\"> \n" +
+                "            <td align=\"center\">5</td>\n" +
+                "            \n" +
+                "            <td align=\"center\" rowspan=2 id=\"51\">数字电路与逻辑设计(1)班<br>[化工314]</td>\n" +
+                "            \n" +
+                "            <td align=\"center\" rowspan=2 id=\"52\">体育（二）(16)班<br>[体育场]</td>\n" +
+                "            \n" +
+                "            <td id=\"53\">&nbsp;</td>\n" +
+                "            \n" +
+                "            <td align=\"center\" rowspan=2 id=\"54\">大学英语（二）(20)班<br>[地矿206]</td>\n" +
+                "            \n" +
+                "            <td align=\"center\" rowspan=2 id=\"55\">高级语言程序设计(C语言)(1)班<br>[化工316]</td>\n" +
+                "            \n" +
+                "          </tr>\n" +
+                "          \n" +
+                "          <tr id=\"tr6\"> \n" +
+                "            <td align=\"center\">6</td>\n" +
+                "            \n" +
+                "            <td id=\"63\">&nbsp;</td>\n" +
+                "            \n" +
+                "          </tr>\n" +
+                "          \n" +
+                "          <tr id=\"tr7\"> \n" +
+                "            <td align=\"center\">7</td>\n" +
+                "            \n" +
+                "            <td align=\"center\" rowspan=2 id=\"71\">大学物理实验（上）(3)班<br>[单][电机楼四楼大厅]</td>\n" +
+                "            \n" +
+                "            <td id=\"72\">&nbsp;</td>\n" +
+                "            \n" +
+                "            <td align=\"center\" rowspan=2 id=\"73\">高级语言程序设计(C语言)(1)班<br>[双][电机楼601]<br>高级语言程序设计(C语言)(1)班<br>[单][创意101]</td>\n" +
+                "            \n" +
+                "            <td id=\"74\">&nbsp;</td>\n" +
+                "            \n" +
+                "            <td id=\"75\">&nbsp;</td>\n" +
+                "            \n" +
+                "          </tr>\n" +
+                "          \n" +
+                "          <tr id=\"tr8\"> \n" +
+                "            <td align=\"center\">8</td>\n" +
+                "            \n" +
+                "            <td id=\"82\">&nbsp;</td>\n" +
+                "            \n" +
+                "            <td id=\"84\">&nbsp;</td>\n" +
+                "            \n" +
+                "            <td id=\"85\">&nbsp;</td>\n" +
+                "            \n" +
+                "          </tr>\n" +
+                "          \n" +
+                "          <tr id=\"tr9\"> \n" +
+                "            <td align=\"center\">9</td>\n" +
+                "            \n" +
+                "            <td align=\"center\" rowspan=2 id=\"91\">中国近现代史纲要(4)班<br>[机北406]</td>\n" +
+                "            \n" +
+                "            <td id=\"92\">&nbsp;</td>\n" +
+                "            \n" +
+                "            <td align=\"center\" rowspan=3 id=\"93\">大学英语四级考试辅导(30)班<br>[东教201]</td>\n" +
+                "            \n" +
+                "            <td align=\"center\" rowspan=2 id=\"94\">形势与政策（上）(16)班<br>[东教406]</td>\n" +
+                "            \n" +
+                "            <td id=\"95\">&nbsp;</td>\n" +
+                "            \n" +
+                "          </tr>\n" +
+                "          \n" +
+                "          <tr id=\"tr10\"> \n" +
+                "            <td align=\"center\">10</td>\n" +
+                "            \n" +
+                "            <td id=\"102\">&nbsp;</td>\n" +
+                "            \n" +
+                "            <td id=\"105\">&nbsp;</td>\n" +
+                "            \n" +
+                "          </tr>\n" +
+                "          \n" +
+                "          <tr id=\"tr11\"> \n" +
+                "            <td align=\"center\">11</td>\n" +
+                "            \n" +
+                "            <td id=\"111\">&nbsp;</td>\n" +
+                "            \n" +
+                "            <td id=\"112\">&nbsp;</td>\n" +
+                "            \n" +
+                "            <td id=\"114\">&nbsp;</td>\n" +
+                "            \n" +
+                "            <td id=\"115\">&nbsp;</td>\n" +
+                "            \n" +
+                "          </tr>\n" +
+                "          \n" +
+                "        </table></td>\n" +
+                "    </tr>\n" +
+                "  </table>\n" +
+                "    \n" +
+                "  </body>\n" +
+                "  </html>\n" +
+                "  ";
+    }
+
+    /**
+     * 2017计科完整课表answer
+     *
+     * @return String
+     */
+    private static String get2017AllWeekAnswer() {
+        return "[Course{couID=10, onlyID=0, couName='中国现代文学经典作品鉴赏 (154)班', couRoom='null', couTeacher='超星尔雅（联盟课程）', couWeek=null, couStartNode=null, couEndNode=null, couWeekType=3, couStartWeek=null, couEndWeek=null, couColor=null}, " +
+                "Course{couID=1, onlyID=1, couName='大学英语（二） (20)班', couRoom='电机楼502', couTeacher='庄星来', couWeek=1, couStartNode=1, couEndNode=2, couWeekType=2, couStartWeek=1, couEndWeek=17, couColor=null}, " +
+                "Course{couID=3, onlyID=2, couName='高级语言程序设计(C语言) (1)班', couRoom='电机楼601', couTeacher='冯新', couWeek=2, couStartNode=1, couEndNode=2, couWeekType=0, couStartWeek=1, couEndWeek=16, couColor=null}, " +
+                "Course{couID=2, onlyID=3, couName='高等数学（一）下 (7)班', couRoom='东教101', couTeacher='侯远', couWeek=3, couStartNode=1, couEndNode=2, couWeekType=0, couStartWeek=1, couEndWeek=17, couColor=null}, " +
+                "Course{couID=2, onlyID=4, couName='高等数学（一）下 (7)班', couRoom='化工316', couTeacher='侯远', couWeek=4, couStartNode=1, couEndNode=2, couWeekType=2, couStartWeek=1, couEndWeek=17, couColor=null}, " +
+                "Course{couID=2, onlyID=5, couName='高等数学（一）下 (7)班', couRoom='东教101', couTeacher='侯远', couWeek=1, couStartNode=3, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=17, couColor=null}, " +
+                "Course{couID=0, onlyID=6, couName='大学物理（上） (9)班', couRoom='机北104', couTeacher='孙磊', couWeek=2, couStartNode=3, couEndNode=4, couWeekType=0, couStartWeek=2, couEndWeek=17, couColor=null}, " +
+                "Course{couID=7, onlyID=7, couName='数字电路与逻辑设计 (1)班', couRoom='化工317', couTeacher='阴爱英', couWeek=3, couStartNode=3, couEndNode=4, couWeekType=0, couStartWeek=1, couEndWeek=13, couColor=null}, " +
+                "Course{couID=7, onlyID=8, couName='数字电路与逻辑设计 (1)班', couRoom='化工314', couTeacher='阴爱英', couWeek=1, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=1, couEndWeek=13, couColor=null}, " +
+                "Course{couID=4, onlyID=9, couName='体育（二） (16)班', couRoom='体育场', couTeacher='卞贞坤', couWeek=2, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=2, couEndWeek=15, couColor=null}, " +
+                "Course{couID=1, onlyID=10, couName='大学英语（二） (20)班', couRoom='地矿206', couTeacher='庄星来', couWeek=4, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=1, couEndWeek=17, couColor=null}, " +
+                "Course{couID=3, onlyID=11, couName='高级语言程序设计(C语言) (1)班', couRoom='化工316', couTeacher='冯新', couWeek=5, couStartNode=5, couEndNode=6, couWeekType=0, couStartWeek=1, couEndWeek=16, couColor=null}, " +
+                "Course{couID=11, onlyID=12, couName='大学物理实验（上） (3)班', couRoom='电机楼四楼大厅', couTeacher='物理实验室', couWeek=1, couStartNode=7, couEndNode=8, couWeekType=1, couStartWeek=3, couEndWeek=14, couColor=null}, " +
+                "Course{couID=3, onlyID=13, couName='高级语言程序设计(C语言) (1)班', couRoom='电机楼601', couTeacher='冯新', couWeek=3, couStartNode=7, couEndNode=8, couWeekType=2, couStartWeek=1, couEndWeek=16, couColor=null}, " +
+                "Course{couID=3, onlyID=14, couName='高级语言程序设计(C语言) (1)班', couRoom='创意101', couTeacher='冯新', couWeek=3, couStartNode=7, couEndNode=8, couWeekType=1, couStartWeek=1, couEndWeek=16, couColor=null}, " +
+                "Course{couID=6, onlyID=15, couName='中国近现代史纲要 (4)班', couRoom='机北406', couTeacher='郑恒鑫', couWeek=1, couStartNode=9, couEndNode=10, couWeekType=0, couStartWeek=1, couEndWeek=13, couColor=null}, " +
+                "Course{couID=8, onlyID=16, couName='大学英语四级考试辅导 (30)班', couRoom='东教201', couTeacher='谢强英', couWeek=3, couStartNode=9, couEndNode=11, couWeekType=0, couStartWeek=3, couEndWeek=15, couColor=null}, " +
+                "Course{couID=5, onlyID=17, couName='形势与政策（上） (16)班', couRoom='东教406', couTeacher='陈文福,魏渊,林筠颖,吴迪', couWeek=4, couStartNode=9, couEndNode=10, couWeekType=0, couStartWeek=4, couEndWeek=10, couColor=null}]";
     }
 }
