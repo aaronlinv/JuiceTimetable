@@ -49,14 +49,14 @@ import java.util.Objects;
 
 public class InitFragment extends Fragment {
     private FragmentInitBinding binding;
-    private String sno;
-    private String edu;
-    private String leave;
+    private String mSno;
+    private String mEdu;
+    private String mLeave;
     private StuInfo stuInfo;
     private JuiceDatabase juiceDatabase;
     private StuInfoDao stuInfoDao;
     private Handler mHandler;
-    private DrawerLayout drawer;
+    private DrawerLayout mDrawerLayout;
     private LoadingBar mLoadingBar;
 
 
@@ -71,8 +71,8 @@ public class InitFragment extends Fragment {
         binding = FragmentInitBinding.inflate(getLayoutInflater());
 
         // 禁止侧滑打开抽屉
-        drawer = requireActivity().findViewById(R.id.drawer_layout);
-        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        mDrawerLayout = requireActivity().findViewById(R.id.drawer_layout);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         return binding.getRoot();
 
@@ -105,17 +105,17 @@ public class InitFragment extends Fragment {
         // 获取三个输入框的内容
         getInput();
 
-        if (sno.isEmpty()) {
+        if (mSno.isEmpty()) {
             Toast.makeText(requireActivity(), "请输入学号", Toast.LENGTH_SHORT).show();
         } else {
-            if (sno.length() != 9) {
+            if (mSno.length() != 9) {
                 Toast.makeText(requireActivity(), "请输入九位数的学号", Toast.LENGTH_SHORT).show();
-            } else if (!sno.matches("21\\d{7}")) {
+            } else if (!mSno.matches("21\\d{7}")) {
                 Toast.makeText(requireActivity(), "请输入以21开头的学号", Toast.LENGTH_SHORT).show();
             } else {
-                if (edu.isEmpty()) {
+                if (mEdu.isEmpty()) {
                     Toast.makeText(requireActivity(), "请输入教务网密码", Toast.LENGTH_SHORT).show();
-                } else if (edu.length() < 6) {
+                } else if (mEdu.length() < 6) {
                     Toast.makeText(requireActivity(), "请输入六位及以上的教务网密码", Toast.LENGTH_SHORT).show();
                 } else {
                     // 键盘隐藏
@@ -158,7 +158,7 @@ public class InitFragment extends Fragment {
                         Constant.FIRST_LOGIN = true;
 
                         // 允许侧滑打开抽屉
-                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                         // 显示Toolbar
                         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
                         break;
@@ -193,7 +193,7 @@ public class InitFragment extends Fragment {
                 String errorStr = "";
                 LogUtils.getInstance().d("教务网前端验证成功");
                 try {
-                    String timeTable = EduInfo.getTimeTable(sno, edu, Constant.URI_CUR_WEEK, getContext().getApplicationContext());
+                    String timeTable = EduInfo.getTimeTable(mSno, mEdu, Constant.URI_CUR_WEEK, getContext().getApplicationContext());
                     // 初始化当前周
                     List<OneWeekCourse> oneWeekCourses = ParseOneWeek.parseCourse(timeTable);
                     if (!oneWeekCourses.isEmpty()) {
@@ -210,11 +210,11 @@ public class InitFragment extends Fragment {
 
                 // 填写了请假系统，并且教务密码正确 校验请假系统密码
                 assert errorStr != null;
-                if (!leave.isEmpty() && errorStr.isEmpty()) {
+                if (!mLeave.isEmpty() && errorStr.isEmpty()) {
                     // 请假系统验证
                     LogUtils.getInstance().d("请假系统前端验证成功");
                     try {
-                        LeaveInfo.getLeave(sno, leave, Constant.URI_CHECK_IN, getContext().getApplicationContext());
+                        LeaveInfo.getLeave(mSno, mLeave, Constant.URI_CHECK_IN, getContext().getApplicationContext());
                     } catch (Exception e) {
                         errorStr = e.getMessage();
                         LogUtils.getInstance().d("errorText:" + errorStr);
@@ -242,9 +242,9 @@ public class InitFragment extends Fragment {
      * 提取三个文本的内容
      */
     private void getInput() {
-        sno = binding.etSno.getText().toString().trim();
-        edu = binding.etEduPassword.getText().toString().trim();
-        leave = binding.etLeavePassword.getText().toString().trim();
+        mSno = binding.etSno.getText().toString().trim();
+        mEdu = binding.etEduPassword.getText().toString().trim();
+        mLeave = binding.etLeavePassword.getText().toString().trim();
     }
 
 
@@ -252,11 +252,11 @@ public class InitFragment extends Fragment {
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(getContext());
         stuInfoDao = juiceDatabase.getStuInfoDao();
 
-        Integer snoStr = Integer.parseInt(sno);
+        Integer snoStr = Integer.parseInt(mSno);
         try {
             //AES加密
-            String edupw = AesCryptUtil.encrypt("橙子app", edu);
-            String leavepw = AesCryptUtil.encrypt("abc", leave);
+            String edupw = AesCryptUtil.encrypt("橙子app", mEdu);
+            String leavepw = AesCryptUtil.encrypt("abc", mLeave);
             //AES解密
             String educy = AesCryptUtil.decrypt("橙子app", edupw);
             String leavecy = AesCryptUtil.decrypt("abc", leavepw);

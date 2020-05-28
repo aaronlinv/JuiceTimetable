@@ -44,10 +44,10 @@ import java.util.Objects;
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding;
     private LoginViewModel loginViewModel;
-    private DrawerLayout drawer;
-    private String sno;
-    private String edu;
-    private String leave;
+    private DrawerLayout mDrawerLayout;
+    private String mSno;
+    private String mEdu;
+    private String mLeave;
     private StuInfo stuInfo;
     private JuiceDatabase juiceDatabase;
     private StuInfoDao stuInfoDao;
@@ -61,7 +61,7 @@ public class LoginFragment extends Fragment {
 
         binding = FragmentLoginBinding.inflate(getLayoutInflater());//binding初始化
 //        binding = DataBindingUtil.setContentView(requireActivity(), R.layout.fragment_login);
-        drawer = requireActivity().findViewById(R.id.drawer_layout);
+        mDrawerLayout = requireActivity().findViewById(R.id.drawer_layout);
 
         // 隐藏Toolbar的下拉菜单按钮
         Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
@@ -86,7 +86,7 @@ public class LoginFragment extends Fragment {
         handler();
         btnDialogClick();
         btoGoListen();
-        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
 
@@ -127,17 +127,17 @@ public class LoginFragment extends Fragment {
 
     private void judgmentLogic() {
         allStr();
-        if (sno.isEmpty()) {
+        if (mSno.isEmpty()) {
             Toast.makeText(requireActivity(), "请输入学号", Toast.LENGTH_SHORT).show();
         } else {
-            if (sno.length() != 9) {
+            if (mSno.length() != 9) {
                 Toast.makeText(requireActivity(), "请输入九位数的学号", Toast.LENGTH_SHORT).show();
-            } else if (!sno.matches("21\\d{7}")) {
+            } else if (!mSno.matches("21\\d{7}")) {
                 Toast.makeText(requireActivity(), "请输入以21开头的学号", Toast.LENGTH_SHORT).show();
             } else {
-                if (edu.isEmpty()) {
+                if (mEdu.isEmpty()) {
                     Toast.makeText(requireActivity(), "请输入教务网密码", Toast.LENGTH_SHORT).show();
-                } else if (edu.length() < 6) {
+                } else if (mEdu.length() < 6) {
                     Toast.makeText(requireActivity(), "请输入六位及以上的教务网密码", Toast.LENGTH_SHORT).show();
                 } else {
                     // 隐藏键盘
@@ -173,7 +173,7 @@ public class LoginFragment extends Fragment {
                 PreferencesUtils.clear(Constant.PREF_LEAVE_COOKIE);
 
                 try {
-                    EduInfo.getTimeTable(sno, edu, Constant.URI_CUR_WEEK, getContext().getApplicationContext());
+                    EduInfo.getTimeTable(mSno, mEdu, Constant.URI_CUR_WEEK, getContext().getApplicationContext());
                 } catch (Exception e) {
                     errorStr = e.getMessage();
                     LogUtils.getInstance().d("errorText:" + errorStr);
@@ -183,11 +183,11 @@ public class LoginFragment extends Fragment {
 
                 // 填写了请假系统，并且教务密码正确 校验请假系统密码
                 assert errorStr != null;
-                if (!leave.isEmpty() && errorStr.isEmpty()) {
+                if (!mLeave.isEmpty() && errorStr.isEmpty()) {
                     // 请假系统验证
                     LogUtils.getInstance().d("请假系统前端验证成功");
                     try {
-                        LeaveInfo.getLeave(sno, leave, Constant.URI_CHECK_IN, getContext().getApplicationContext());
+                        LeaveInfo.getLeave(mSno, mLeave, Constant.URI_CHECK_IN, getContext().getApplicationContext());
                     } catch (Exception e) {
                         errorStr = e.getMessage();
                         LogUtils.getInstance().d("errorText:" + errorStr);
@@ -216,9 +216,9 @@ public class LoginFragment extends Fragment {
      * 提取三个文本的内容
      */
     private void allStr() {
-        sno = binding.etSno.getText().toString().trim();
-        edu = binding.etEduPassword.getText().toString().trim();
-        leave = binding.etLeavePassword.getText().toString().trim();
+        mSno = binding.etSno.getText().toString().trim();
+        mEdu = binding.etEduPassword.getText().toString().trim();
+        mLeave = binding.etLeavePassword.getText().toString().trim();
     }
 
 
@@ -226,11 +226,11 @@ public class LoginFragment extends Fragment {
      * 更新用户账户密码数据
      */
     private void updateUser() {
-        Integer snoStr = Integer.parseInt(sno);
+        Integer snoStr = Integer.parseInt(mSno);
         StuInfo stuInfo1 = new StuInfo();
         stuInfo1.setStuID(snoStr);
-        stuInfo1.setEduPassword(edu);
-        stuInfo1.setEduPassword(leave);
+        stuInfo1.setEduPassword(mEdu);
+        stuInfo1.setEduPassword(mLeave);
         stuInfoDao.updateStuInfo(stuInfo1);
     }
 
