@@ -38,7 +38,6 @@ public class ParseAllWeek {
         Element leftTable = document.getElementsByTag("td").eq(1).get(0);
 
 
-
         int trSize = leftTable.getElementsByTag("tr").size();
         //循环tr标签内容
         for (int a = 1; a < trSize; a++) {
@@ -137,7 +136,8 @@ public class ParseAllWeek {
                         for (int a = 0; a < len_Br; a++) {
                             try {
                                 Course course = null;
-                                if (td.split("<br>")[a].contains("班")) {
+                                String[] trArr = td.split("<br>");
+                                if (trArr[a].contains("班")) {
                                     String couName = td.split("<br>")[a];
                                     //在leftTable解析完的List中寻找对应course
                                     for (Course cou : couList) {
@@ -154,31 +154,7 @@ public class ParseAllWeek {
                                     if (course == null) {
                                         continue;
                                     }
-
-                                    if (td.split("<br>")[a + 1].contains("[单]")) {
-                                        course.setCouWeekType(1);
-                                        //使用list后，对是否已经输入过教室进行判断，无则输入，有则重新开一个list存储
-                                        String couRoom = td.split("<br>")[a + 1].substring(4, td.split("<br>")[a + 1].length() - 1).trim();
-                                        course.setCouRoom(couRoom);
-                                    } else if (td.split("<br>")[a + 1].contains("[双]")) {
-                                        course.setCouWeekType(2);
-                                        String couRoom = td.split("<br>")[a + 1].substring(4, td.split("<br>")[a + 1].length() - 1).trim();
-                                        course.setCouRoom(couRoom);
-                                    } else {
-                                        course.setCouWeekType(0);
-                                        String couRoom = td.split("<br>")[a + 1].substring(1, td.split("<br>")[a + 1].length() - 1).trim();
-                                        course.setCouRoom(couRoom);
-                                    }
-                                    //判断是否在右边表格中有起始结束周
-                                    String[] trArr = td.split("<br>");
-                                    if (trArr.length - 1 >= a + 2) {
-                                        if (td.split("<br>")[a + 2].contains("周")) {
-                                            String newWeek = td.split("<br>")[a + 2].substring(1, td.split("<br>")[a + 2].length() - 2).trim();
-                                            //System.out.println(newWeek);
-                                            course.setCouStartWeek(Integer.valueOf(newWeek.split("-")[0]));
-                                            course.setCouEndWeek(Integer.valueOf(newWeek.split("-")[1]));
-                                        }
-                                    }
+                                    //初步判断 起始结束节，周几
                                     String id = el1.getElementsByTag("td").eq(j).attr("id").trim();
                                     Integer couWeek = Integer.valueOf(id.substring(id.length() - 1));
                                     course.setCouWeek(couWeek);
@@ -188,6 +164,37 @@ public class ParseAllWeek {
                                     Integer time = Integer.valueOf(el1.getElementsByTag("td").eq(j).attr("rowspan").trim());
                                     Integer couEndNode = couStartNode + time - 1;
                                     course.setCouEndNode(couEndNode);
+                                    //增加教室，判断在课程的后面是否有指定周·指定节·单双周
+                                    for (int b = 1; b < len_Br - a; b++) {
+                                        LogUtils.getInstance().e("课程内容判断--->" + trArr[a + b]);
+                                        if (trArr[a + b].contains("[单]")) {
+                                            course.setCouWeekType(1);
+                                            //使用list后，对是否已经输入过教室进行判断，无则输入，有则重新开一个list存储
+                                            String couRoom = trArr[a + b].substring(4, trArr[a + b].length() - 1).trim();
+                                            course.setCouRoom(couRoom);
+                                        } else if (trArr[a + b].contains("[双]")) {
+                                            course.setCouWeekType(2);
+                                            String couRoom = trArr[a + b].substring(4, trArr[a + b].length() - 1).trim();
+                                            course.setCouRoom(couRoom);
+                                        } else if (trArr[a + b].contains("节")) {
+                                            Integer startNode = Integer.valueOf(trArr[a + b].split("~")[0].substring(1));
+                                            course.setCouStartNode(startNode);
+                                            Integer endNode = Integer.valueOf(trArr[a + b].split("~")[1].substring(0, trArr[a + b].split("~")[1].length() - 2));
+                                            course.setCouEndNode(endNode);
+                                        } else if (trArr[a + b].contains("周")) {
+                                            Integer startWeek = Integer.valueOf(trArr[a + b].split("-")[0].substring(1));
+                                            course.setCouStartWeek(startWeek);
+                                            Integer endWeek = Integer.valueOf(trArr[a + b].split("-")[1].substring(0, trArr[a + b].split("-")[1].length() - 2));
+                                            course.setCouEndWeek(endWeek);
+                                        } else if (trArr[a + b].contains("[") && trArr[a + b].contains("]") && !trArr[a + b].contains("周")) {
+                                            course.setCouWeekType(0);
+                                            String couRoom = trArr[a + b].substring(1, trArr[a + b].length() - 1).trim();
+                                            course.setCouRoom(couRoom);
+                                        } else if (trArr[a + b].contains("班")) {
+                                            break;
+                                        }
+                                    }
+
                                     courseList.add(course);
                                 }
                             } catch (Exception e) {
