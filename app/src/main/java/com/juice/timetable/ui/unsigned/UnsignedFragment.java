@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -38,9 +37,10 @@ import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseClassNoSignedItem;
 import com.juice.timetable.data.viewmodel.ClassNoSignedItemViewModel;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
-import com.juice.timetable.utils.Utils;
 
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
 
 public class UnsignedFragment extends Fragment {
     private UnsignedAdapter unsignedAdapter;
@@ -168,7 +168,7 @@ public class UnsignedFragment extends Fragment {
                 String msgStr = (String) msg.obj;
                 try {
                     if ("success".equals(msgStr)) {
-                        Utils.showToast(requireActivity(), "未签名单更新成功");
+                        Toasty.success(requireActivity(), "未签名单更新成功", Toasty.LENGTH_SHORT, true).show();
                     } else if ("passwd".equals(msgStr)) {
                         Snackbar.make(requireView(), "未输入请假系统密码", Snackbar.LENGTH_SHORT)
                                 .setAction("去加密码", new View.OnClickListener() {
@@ -190,7 +190,7 @@ public class UnsignedFragment extends Fragment {
                     swipeRefreshLayout.setRefreshing(false);
                 } catch (Exception e) {
                     Log.w("ERROR", "操作中断");
-                    Toast.makeText(requireActivity(), "操作中断", Toast.LENGTH_SHORT).show();
+                    Toasty.error(requireActivity(), "操作中断", Toasty.LENGTH_SHORT, true).show();
                     swipeRefreshLayout.setRefreshing(false);
                     e.printStackTrace();
                 }
