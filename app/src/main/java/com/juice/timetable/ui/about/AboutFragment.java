@@ -61,13 +61,13 @@ public class AboutFragment extends Fragment {
 
     /****************
      *
-     * 发起添加群流程。群号：橙汁全国后援会(1064126287) 的 key 为： GmXAZjq9jmbJgvFgabV3TH_cPNcBRAz9
-     * 调用 joinQQGroup(GmXAZjq9jmbJgvFgabV3TH_cPNcBRAz9) 即可发起手Q客户端申请加群 橙汁全国后援会(1064126287)
+     * 发起添加群流程。群号：橙汁(1064126287) 的 key 为： C6DdqQNQ4cy60HhlLjSLci0nQnF26mOT
+     * 调用 joinQQGroup(GmXAZjq9jmbJgvFgabV3TH_cPNcBRAz9) 即可发起手Q客户端申请加群 橙汁(1064126287)
      *
      ******************/
     private void joinQQGroup() {
         Intent intent = new Intent();
-        intent.setData(Uri.parse("mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26k%3D" + "GmXAZjq9jmbJgvFgabV3TH_cPNcBRAz9"));
+        intent.setData(Uri.parse("mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26k%3D" + "C6DdqQNQ4cy60HhlLjSLci0nQnF26mOT"));
         // 此Flag可根据具体产品需要自定义，如设置，则在加群界面按返回，返回手Q主界面，不设置，按返回会返回到呼起产品界面    //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         try {
             startActivity(intent);
