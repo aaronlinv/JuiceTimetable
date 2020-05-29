@@ -54,7 +54,6 @@ public class AboutFragment extends Fragment {
     }
 
     private void findID(View root) {
-        Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
         imageButton = root.findViewById(R.id.QQ_feedback);
         githubLink = root.findViewById(R.id.tv_github);
         blogLink = root.findViewById(R.id.blogLink);
