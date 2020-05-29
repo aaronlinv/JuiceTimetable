@@ -49,7 +49,7 @@ public class CourseView extends FrameLayout {
     private int mHeight;
 
     private int mRowCount = 7;
-    private int mColCount = 16;
+    private int mColCount = 11;
 
     private boolean mFirstDraw = false;
 

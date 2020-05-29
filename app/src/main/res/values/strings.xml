@@ -73,4 +73,6 @@
     <string name="loading">正在登录…</string>
     <string name="week">周一</string>
     <string name="empty">暂无数据</string>
+    <string name="tip_current_mooc">本学期慕课课程</string>
+    <string name="tip_example_mooc">走进航空航天</string>
 </resources>
