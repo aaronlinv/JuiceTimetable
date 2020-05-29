@@ -42,6 +42,8 @@ import java.util.List;
 
 import es.dmoral.toasty.Toasty;
 
+import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
+
 public class UnsignedFragment extends Fragment {
     private UnsignedAdapter unsignedAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -170,7 +172,8 @@ public class UnsignedFragment extends Fragment {
                 if (isAdded()) {
                     try {
                         if ("success".equals(msgStr)) {
-                            Toasty.success(requireActivity(), "未签名单更新成功", Toasty.LENGTH_SHORT, true).show();
+                            Toasty.custom(requireActivity(), "未签名单更新成功", getResources().getDrawable(R.drawable.sign), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                            Toasty.Config.reset();
                         } else if ("passwd".equals(msgStr)) {
                             Snackbar.make(requireView(), "未输入请假系统密码", Snackbar.LENGTH_SHORT)
                                     .setAction("去加密码", new View.OnClickListener() {
@@ -192,7 +195,7 @@ public class UnsignedFragment extends Fragment {
                         swipeRefreshLayout.setRefreshing(false);
                     } catch (Exception e) {
                         Log.w("ERROR", "操作中断");
-                        Toasty.error(requireActivity(), "操作中断", Toasty.LENGTH_SHORT, true).show();
+                        Toasty.error(requireActivity(), "操作中断", LENGTH_SHORT, true).show();
                         swipeRefreshLayout.setRefreshing(false);
                         e.printStackTrace();
                     }

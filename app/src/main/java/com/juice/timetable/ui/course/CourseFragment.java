@@ -18,7 +18,6 @@ import android.widget.CompoundButton;
 import android.widget.PopupWindow;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,8 +55,10 @@ import java.util.Objects;
 import java.util.Random;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import es.dmoral.toasty.Toasty;
 
 import static android.animation.ObjectAnimator.ofObject;
+import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 
 @SuppressWarnings("unchecked")
 public class CourseFragment extends Fragment {
@@ -337,16 +338,17 @@ public class CourseFragment extends Fragment {
                 LogUtils.getInstance().d("签到提示按钮 -- > " + isChecked);
                 if (isChecked) {
                     if (hasLeavePwd()) {
-                        Toast.makeText(getActivity(), "签到提示开启，会在签到时间段显示签到情况", Toast.LENGTH_LONG).show();
+                        Toasty.custom(requireActivity(), "签到提示开启，会在签到时间段显示签到情况", getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                        Toasty.Config.reset();
 
                     } else {
-                        Toast.makeText(getActivity(), "需要先在修改认证信息界面添加请假系统密码才可以开启哦", Toast.LENGTH_LONG).show();
+                        Toasty.info(requireActivity(), "需要先在修改认证信息界面添加请假系统密码才可以开启哦", LENGTH_SHORT).show();
                         isChecked = false;
                         switchCheckIn.setChecked(false);
                     }
                 } else {
-
-                    Toast.makeText(getActivity(), "签到提示已关闭", Toast.LENGTH_SHORT).show();
+                    Toasty.custom(requireActivity(), "签到提示已关闭", getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                    Toasty.Config.reset();
                 }
                 // 在签到时间内 就是显示签到通知条
                 Constant.ENABLE_CHECK_IN = isChecked;
@@ -370,9 +372,11 @@ public class CourseFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 LogUtils.getInstance().d("慕课显示按钮 -- > " + isChecked);
                 if (isChecked) {
-                    Toast.makeText(getActivity(), "慕课显示开启，课表下方会显示所选慕课信息", Toast.LENGTH_LONG).show();
+                    Toasty.custom(requireActivity(), "慕课显示开启，课表下方会显示所选慕课信息", getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                    Toasty.Config.reset();
                 } else {
-                    Toast.makeText(getActivity(), "慕课显示已关闭", Toast.LENGTH_SHORT).show();
+                    Toasty.custom(requireActivity(), "慕课显示已关闭", getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                    Toasty.Config.reset();
                 }
                 Constant.ENABLE_SHOW_MOOC = isChecked;
 
@@ -592,7 +596,8 @@ public class CourseFragment extends Fragment {
                     case Constant.MSG_REFRESH:
                         String msgStr = (String) msg.obj;
                         if (!"ok".equals(msgStr)) {
-                            Toast.makeText(getActivity(), msgStr, Toast.LENGTH_SHORT).show();
+                            Toasty.custom(requireActivity(), msgStr, getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                            Toasty.Config.reset();
                             mSlRefresh.setRefreshing(false);
                         } else {
                             // 如果开启了彩虹模式 随机一个数
@@ -605,7 +610,8 @@ public class CourseFragment extends Fragment {
                                 PreferencesUtils.putInt(Constant.PREF_RAINBOW_MODE_NUM, rainbowModeNum);
                             }
                             updateCourse();
-                            Toast.makeText(requireActivity(), "课表刷新成功", Toast.LENGTH_SHORT).show();
+                            Toasty.custom(requireActivity(), "课表刷新成功", getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                            Toasty.Config.reset();
                             mSlRefresh.setRefreshing(false);
 
                         }

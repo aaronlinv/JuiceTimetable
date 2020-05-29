@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +38,8 @@ import com.juice.timetable.utils.Utils;
 
 import java.util.List;
 import java.util.Objects;
+
+import es.dmoral.toasty.Toasty;
 
 
 /**
@@ -99,17 +100,17 @@ public class InitFragment extends Fragment {
         getInput();
 
         if (mSno.isEmpty()) {
-            Toast.makeText(requireActivity(), "请输入学号", Toast.LENGTH_SHORT).show();
+            Toasty.info(requireActivity(), "请输入学号", Toasty.LENGTH_SHORT).show();
         } else {
             if (mSno.length() != 9) {
-                Toast.makeText(requireActivity(), "请输入九位数的学号", Toast.LENGTH_SHORT).show();
+                Toasty.info(requireActivity(), "请输入九位数的学号", Toasty.LENGTH_SHORT).show();
             } else if (!mSno.matches("21\\d{7}")) {
-                Toast.makeText(requireActivity(), "请输入以21开头的学号", Toast.LENGTH_SHORT).show();
+                Toasty.info(requireActivity(), "请输入以21开头的学号", Toasty.LENGTH_SHORT).show();
             } else {
                 if (mEdu.isEmpty()) {
-                    Toast.makeText(requireActivity(), "请输入教务网密码", Toast.LENGTH_SHORT).show();
+                    Toasty.info(requireActivity(), "请输入教务网密码", Toasty.LENGTH_SHORT).show();
                 } else if (mEdu.length() < 6) {
-                    Toast.makeText(requireActivity(), "请输入六位及以上的教务网密码", Toast.LENGTH_SHORT).show();
+                    Toasty.info(requireActivity(), "请输入六位及以上的教务网密码", Toasty.LENGTH_SHORT).show();
                 } else {
                     // 键盘隐藏
                     hideSoftKeyboard(requireActivity());
@@ -167,7 +168,7 @@ public class InitFragment extends Fragment {
                         //设置登录按钮和用户条款按钮可见
                         binding.btnGo.setVisibility(View.VISIBLE);
                         String errorStr = (String) msg.obj;
-                        Toast.makeText(getActivity(), errorStr, Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(), errorStr, Toasty.LENGTH_SHORT).show();
                         break;
                 }
             }
