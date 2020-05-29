@@ -166,33 +166,35 @@ public class UnsignedFragment extends Fragment {
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 String msgStr = (String) msg.obj;
-                try {
-                    if ("success".equals(msgStr)) {
-                        Toasty.success(requireActivity(), "未签名单更新成功", Toasty.LENGTH_SHORT, true).show();
-                    } else if ("passwd".equals(msgStr)) {
-                        Snackbar.make(requireView(), "未输入请假系统密码", Snackbar.LENGTH_SHORT)
-                                .setAction("去加密码", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.nav_login);
-                                    }
-                                }).show();
-                    } else if ("network".equals(msgStr)) {
-                        Snackbar.make(requireView(), "设备未联网", Snackbar.LENGTH_SHORT)
-                                .setAction("去联网", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Intent intent = new Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS);
-                                        startActivity(intent);
-                                    }
-                                }).show();
+                if (isAdded()) {
+                    try {
+                        if ("success".equals(msgStr)) {
+                            Toasty.success(requireActivity(), "未签名单更新成功", Toasty.LENGTH_SHORT, true).show();
+                        } else if ("passwd".equals(msgStr)) {
+                            Snackbar.make(requireView(), "未输入请假系统密码", Snackbar.LENGTH_SHORT)
+                                    .setAction("去加密码", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(R.id.nav_login);
+                                        }
+                                    }).show();
+                        } else if ("network".equals(msgStr)) {
+                            Snackbar.make(requireView(), "设备未联网", Snackbar.LENGTH_SHORT)
+                                    .setAction("去联网", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Intent intent = new Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS);
+                                            startActivity(intent);
+                                        }
+                                    }).show();
+                        }
+                        swipeRefreshLayout.setRefreshing(false);
+                    } catch (Exception e) {
+                        Log.w("ERROR", "操作中断");
+                        Toasty.error(requireActivity(), "操作中断", Toasty.LENGTH_SHORT, true).show();
+                        swipeRefreshLayout.setRefreshing(false);
+                        e.printStackTrace();
                     }
-                    swipeRefreshLayout.setRefreshing(false);
-                } catch (Exception e) {
-                    Log.w("ERROR", "操作中断");
-                    Toasty.error(requireActivity(), "操作中断", Toasty.LENGTH_SHORT, true).show();
-                    swipeRefreshLayout.setRefreshing(false);
-                    e.printStackTrace();
                 }
             }
         };
