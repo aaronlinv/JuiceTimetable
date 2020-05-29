@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +35,8 @@ import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
 
 import java.util.Objects;
+
+import es.dmoral.toasty.Toasty;
 
 /**
  * 修改认证页面相应功能实现类
@@ -131,22 +132,22 @@ public class LoginFragment extends Fragment {
         if (Objects.equals(mSno, stu.getStuID().toString()) &&
                 Objects.equals(mEdu, stu.getEduPassword()) &&
                 Objects.equals(mLeave, stu.getLeavePassword())) {
-            Toast.makeText(getActivity(), "你还没有修改帐号或密码", Toast.LENGTH_SHORT).show();
+            Toasty.info(getActivity(), "你还没有修改帐号或密码", Toasty.LENGTH_SHORT).show();
             return;
         }
 
         if (mSno.isEmpty()) {
-            Toast.makeText(requireActivity(), "请输入学号", Toast.LENGTH_SHORT).show();
+            Toasty.info(getActivity(), "请输入学号", Toasty.LENGTH_SHORT).show();
         } else {
             if (mSno.length() != 9) {
-                Toast.makeText(requireActivity(), "请输入九位数的学号", Toast.LENGTH_SHORT).show();
+                Toasty.info(getActivity(), "请输入九位数的学号", Toasty.LENGTH_SHORT).show();
             } else if (!mSno.matches("21\\d{7}")) {
-                Toast.makeText(requireActivity(), "请输入以21开头的学号", Toast.LENGTH_SHORT).show();
+                Toasty.info(getActivity(), "请输入以21开头的学号", Toasty.LENGTH_SHORT).show();
             } else {
                 if (mEdu.isEmpty()) {
-                    Toast.makeText(requireActivity(), "请输入教务网密码", Toast.LENGTH_SHORT).show();
+                    Toasty.info(getActivity(), "请输入教务网密码", Toasty.LENGTH_SHORT).show();
                 } else if (mEdu.length() < 6) {
-                    Toast.makeText(requireActivity(), "请输入六位及以上的教务网密码", Toast.LENGTH_SHORT).show();
+                    Toasty.info(getActivity(), "请输入六位及以上的教务网密码", Toasty.LENGTH_SHORT).show();
                 } else {
                     // 隐藏键盘
                     hideSoftKeyboard(requireActivity());
@@ -296,7 +297,7 @@ public class LoginFragment extends Fragment {
                         //设置登录按钮和用户条款按钮可见
                         binding.btnGo.setVisibility(View.VISIBLE);
                         String errorStr = (String) msg.obj;
-                        Toast.makeText(getActivity(), errorStr, Toast.LENGTH_SHORT).show();
+                        Toasty.error(getActivity(), errorStr, Toasty.LENGTH_SHORT).show();
                         break;
                 }
             }
