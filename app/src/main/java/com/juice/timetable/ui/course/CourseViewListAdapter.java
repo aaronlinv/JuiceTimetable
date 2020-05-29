@@ -150,7 +150,7 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
                 textView.setText(weekStr);
                 // 给今天 加深背景色 本周且为当日
                 if (Constant.CUR_WEEK == item.getCurrentIndex() && weekDay == curDay) {
-                    textView.setBackgroundColor(0xFFf0f0f0);
+                    textView.setBackgroundColor(0xFFdddddd);
                 }
             }
             //添加这个视图
