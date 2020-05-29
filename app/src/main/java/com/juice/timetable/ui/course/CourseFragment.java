@@ -596,7 +596,7 @@ public class CourseFragment extends Fragment {
                     case Constant.MSG_REFRESH:
                         String msgStr = (String) msg.obj;
                         if (!"ok".equals(msgStr)) {
-                            Toasty.custom(requireActivity(), msgStr, getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                            Toasty.custom(requireActivity(), msgStr, getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
                             Toasty.Config.reset();
                             mSlRefresh.setRefreshing(false);
                         } else {
@@ -610,7 +610,7 @@ public class CourseFragment extends Fragment {
                                 PreferencesUtils.putInt(Constant.PREF_RAINBOW_MODE_NUM, rainbowModeNum);
                             }
                             updateCourse();
-                            Toasty.custom(requireActivity(), "课表刷新成功", getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                            Toasty.custom(requireActivity(), "课表刷新成功", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
                             Toasty.Config.reset();
                             mSlRefresh.setRefreshing(false);
 

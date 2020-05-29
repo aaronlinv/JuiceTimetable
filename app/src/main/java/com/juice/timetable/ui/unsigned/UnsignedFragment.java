@@ -172,7 +172,7 @@ public class UnsignedFragment extends Fragment {
                 if (isAdded()) {
                     try {
                         if ("success".equals(msgStr)) {
-                            Toasty.custom(requireActivity(), "未签名单更新成功", getResources().getDrawable(R.drawable.sign), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                            Toasty.custom(requireActivity(), "未签名单更新成功", getResources().getDrawable(R.drawable.sign1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
                             Toasty.Config.reset();
                         } else if ("passwd".equals(msgStr)) {
                             Snackbar.make(requireView(), "未输入请假系统密码", Snackbar.LENGTH_SHORT)
