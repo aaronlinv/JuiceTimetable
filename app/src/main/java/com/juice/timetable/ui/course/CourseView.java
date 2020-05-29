@@ -303,6 +303,11 @@ public class CourseView extends FrameLayout {
                     course.setOnlyID(oneCou.getOnlyID());
                     course.setCouID(oneCou.getCouID());
                     course.setCouWeekType(oneCou.getCourseType());
+                    // 用于撞课的但前周判断
+                    if (oneCou.getCourseType() == 4) {
+                        // 用startWeek存储周课表 当前周信息
+                        course.setCouStartWeek(mCurrentIndex);
+                    }
                     addCourse(course);
                 }
             }

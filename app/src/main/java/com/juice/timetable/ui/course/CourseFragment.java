@@ -231,8 +231,11 @@ public class CourseFragment extends Fragment {
                     List<OneWeekCourse> oneWeekCourse = mCourseViewBeanList.get(0).getOneWeekCourse();
                     int i = 0;
                     for (OneWeekCourse weekCourse : oneWeekCourse) {
-                        // 星期相同 且（起或止节数 相同）
-                        if (Objects.equals(weekCourse.getDayOfWeek(), cou.getCouWeek()) && (Objects.equals(weekCourse.getStartNode(), cou.getCouStartNode()) || Objects.equals(weekCourse.getEndNode(), cou.getCouEndNode()))) {
+                        // 周相同 且星期相同 且（起或止节数 相同）
+                        // 周课表的周 用startWeek代替(在CourseView里面赋值过)
+                        if (Objects.equals(weekCourse.getInWeek(), cou.getCouStartWeek())
+                                && Objects.equals(weekCourse.getDayOfWeek(), cou.getCouWeek())
+                                && (Objects.equals(weekCourse.getStartNode(), cou.getCouStartNode()) || Objects.equals(weekCourse.getEndNode(), cou.getCouEndNode()))) {
                             if (i > 0) {
                                 sb.append("<br><br>");
                             }
