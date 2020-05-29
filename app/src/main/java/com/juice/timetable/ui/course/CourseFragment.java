@@ -58,6 +58,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 
 import static android.animation.ObjectAnimator.ofObject;
+import static es.dmoral.toasty.Toasty.LENGTH_LONG;
 import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 
 @SuppressWarnings("unchecked")
@@ -338,11 +339,11 @@ public class CourseFragment extends Fragment {
                 LogUtils.getInstance().d("签到提示按钮 -- > " + isChecked);
                 if (isChecked) {
                     if (hasLeavePwd()) {
-                        Toasty.custom(requireActivity(), "签到提示开启，会在签到时间段显示签到情况", getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                        Toasty.custom(requireActivity(), "签到提示开启，会在签到时间段显示签到情况", getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_LONG, true, true).show();
                         Toasty.Config.reset();
 
                     } else {
-                        Toasty.info(requireActivity(), "需要先在修改认证信息界面添加请假系统密码才可以开启哦", LENGTH_SHORT).show();
+                        Toasty.info(requireActivity(), "需要先在修改认证信息界面添加请假系统密码才可以开启哦", LENGTH_LONG).show();
                         isChecked = false;
                         switchCheckIn.setChecked(false);
                     }
@@ -372,7 +373,7 @@ public class CourseFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 LogUtils.getInstance().d("慕课显示按钮 -- > " + isChecked);
                 if (isChecked) {
-                    Toasty.custom(requireActivity(), "慕课显示开启，课表下方会显示所选慕课信息", getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                    Toasty.custom(requireActivity(), "慕课显示开启，课表下方会显示所选慕课信息", getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_LONG, true, true).show();
                     Toasty.Config.reset();
                 } else {
                     Toasty.custom(requireActivity(), "慕课显示已关闭", getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
