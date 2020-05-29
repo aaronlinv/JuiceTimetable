@@ -13,4 +13,5 @@
     <color name="transparent">#00000000</color>
     <color name="widgetText">#000000</color>
     <color name="juice">#ffd08b</color>
+    <color name="green">#62a565</color>
 </resources>
