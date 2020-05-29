@@ -115,6 +115,9 @@ public class CourseFragment extends Fragment {
     private boolean hasLeavePwd() {
         StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
         LogUtils.getInstance().d("用户数据库信息：" + stuInfo);
+        if (stuInfo == null) {
+            return false;
+        }
         return (!stuInfo.getLeavePassword().isEmpty());
     }
 
