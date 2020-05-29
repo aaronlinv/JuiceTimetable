@@ -105,6 +105,7 @@ public class ParseAllWeekTest {
     }
 
 
+
     /**
      * 计算机科学与技术完整课表
      *
@@ -3108,6 +3109,7 @@ public class ParseAllWeekTest {
                 "Course{couID=4, onlyID=36, couName='计算机网络 (实验班)班', couRoom='网络教学', couTeacher='黄巧云', couWeek=5, couStartNode=7, couEndNode=8, couWeekType=0, couStartWeek=9, couEndWeek=12, couColor=null}, " +
                 "Course{couID=0, onlyID=37, couName='概率论与数理统计 (普6)班', couRoom='网络教学', couTeacher='项景华', couWeek=3, couStartNode=9, couEndNode=10, couWeekType=0, couStartWeek=1, couEndWeek=15, couColor=null}, " +
                 "Course{couID=7, onlyID=38, couName='数字逻辑与计算机组成 (实验班)班', couRoom='网络教学', couTeacher='黄福明', couWeek=3, couStartNode=9, couEndNode=10, couWeekType=0, couStartWeek=3, couEndWeek=14, couColor=null}, " +
-                "Course{couID=4, onlyID=39, couName='计算机网络 (实验班)班', couRoom='网络教学', couTeacher='黄巧云', couWeek=4, couStartNode=9, couEndNode=10, couWeekType=0, couStartWeek=7, couEndWeek=12, couColor=null}]";}
+                "Course{couID=4, onlyID=39, couName='计算机网络 (实验班)班', couRoom='网络教学', couTeacher='黄巧云', couWeek=4, couStartNode=9, couEndNode=10, couWeekType=0, couStartWeek=7, couEndWeek=12, couColor=null}]";
+    }
 
 }
