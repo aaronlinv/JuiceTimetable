@@ -60,18 +60,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.1" />
+            app:layout_constraintGuide_percent="0.11" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9002433" />
+            app:layout_constraintGuide_percent="0.89" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
         <EditText
             android:id="@+id/et_sno"
-            android:layout_width="200sp"
+            android:layout_width="210sp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="number|textPersonName"
@@ -84,7 +91,7 @@
 
         <EditText
             android:id="@+id/et_edu_password"
-            android:layout_width="200sp"
+            android:layout_width="210sp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPassword"
@@ -97,7 +104,7 @@
 
         <EditText
             android:id="@+id/et_leave_password"
-            android:layout_width="200sp"
+            android:layout_width="210sp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/text_select"
@@ -105,6 +112,7 @@
             android:maxLength="20"
             app:layout_constraintBottom_toTopOf="@+id/guideline5"
             app:layout_constraintEnd_toEndOf="@+id/et_edu_password"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/et_edu_password"
             app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
@@ -118,9 +126,8 @@
             android:textSize="14sp"
 
             app:layout_constraintBottom_toTopOf="@+id/guideline6"
-            app:layout_constraintEnd_toStartOf="@+id/guideline8"
-            app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+            app:layout_constraintStart_toStartOf="@+id/guideline9"
             app:layout_constraintTop_toTopOf="@+id/guideline5"
             app:layout_constraintVertical_bias="0.477" />
 
@@ -138,11 +145,10 @@
             android:textColorLink="@color/design_default_color_background"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline8"
-            app:layout_constraintHorizontal_bias="0.539"
-            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+            app:layout_constraintStart_toStartOf="@+id/guideline9"
             app:layout_constraintTop_toTopOf="@+id/guideline6"
-            app:layout_constraintVertical_bias="0.864" />
+            app:layout_constraintVertical_bias="0.886" />
 
         <TextView
             android:id="@+id/tv_sno"
@@ -152,8 +158,10 @@
             android:text="@string/tv_sno"
             app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toStartOf="@+id/et_sno"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toTopOf="@+id/guideline" />
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            app:layout_constraintVertical_bias="0.608" />
 
         <TextView
             android:id="@+id/tv_edu_password"
@@ -162,9 +170,11 @@
             android:gravity="center"
             android:text="@string/tv_edu_passwd"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
-            app:layout_constraintEnd_toEndOf="@+id/tv_sno"
-            app:layout_constraintStart_toStartOf="@+id/tv_sno"
-            app:layout_constraintTop_toTopOf="@+id/guideline2" />
+            app:layout_constraintEnd_toStartOf="@+id/et_edu_password"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toTopOf="@+id/guideline2"
+            app:layout_constraintVertical_bias="0.608" />
 
         <TextView
             android:id="@+id/tv_leave_password"
@@ -173,9 +183,11 @@
             android:gravity="center"
             android:text="@string/tv_leave_passwd"
             app:layout_constraintBottom_toTopOf="@+id/guideline5"
-            app:layout_constraintEnd_toEndOf="@+id/tv_edu_password"
-            app:layout_constraintStart_toStartOf="@+id/tv_edu_password"
-            app:layout_constraintTop_toTopOf="@+id/guideline3" />
+            app:layout_constraintEnd_toStartOf="@+id/et_leave_password"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toTopOf="@+id/guideline3"
+            app:layout_constraintVertical_bias="0.608" />
 
         <ImageView
             android:id="@+id/im_cz_logo"
@@ -188,6 +200,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideline6"
             app:layout_constraintVertical_bias="0.956"
             app:srcCompat="@drawable/logo" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
