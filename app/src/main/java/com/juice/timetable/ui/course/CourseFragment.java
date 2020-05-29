@@ -338,7 +338,7 @@ public class CourseFragment extends Fragment {
                 LogUtils.getInstance().d("签到提示按钮 -- > " + isChecked);
                 if (isChecked) {
                     if (hasLeavePwd()) {
-                        Toasty.custom(requireActivity(), "签到提示开启，会在签到时间段显示签到情况", getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                        Toasty.custom(requireActivity(), "签到提示开启，会在签到时间段显示签到情况", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
                         Toasty.Config.reset();
 
                     } else {
@@ -347,7 +347,7 @@ public class CourseFragment extends Fragment {
                         switchCheckIn.setChecked(false);
                     }
                 } else {
-                    Toasty.custom(requireActivity(), "签到提示已关闭", getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                    Toasty.custom(requireActivity(), "签到提示已关闭", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
                     Toasty.Config.reset();
                 }
                 // 在签到时间内 就是显示签到通知条
@@ -372,10 +372,10 @@ public class CourseFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 LogUtils.getInstance().d("慕课显示按钮 -- > " + isChecked);
                 if (isChecked) {
-                    Toasty.custom(requireActivity(), "慕课显示开启，课表下方会显示所选慕课信息", getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                    Toasty.custom(requireActivity(), "慕课显示开启，课表下方会显示所选慕课信息", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
                     Toasty.Config.reset();
                 } else {
-                    Toasty.custom(requireActivity(), "慕课显示已关闭", getResources().getDrawable(R.drawable.course), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                    Toasty.custom(requireActivity(), "慕课显示已关闭", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
                     Toasty.Config.reset();
                 }
                 Constant.ENABLE_SHOW_MOOC = isChecked;
