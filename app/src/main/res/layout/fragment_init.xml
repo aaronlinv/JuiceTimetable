@@ -15,39 +15,32 @@
         tools:context="ui.init.InitFragment">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.15" />
-
-        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.25" />
+            app:layout_constraintGuide_percent="0.3" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.35" />
+            app:layout_constraintGuide_percent="0.4" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.05" />
+            app:layout_constraintGuide_percent="0.02" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.45" />
+            app:layout_constraintGuide_percent="0.5" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline6"
@@ -70,21 +63,6 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.9002433" />
 
-        <TextView
-            android:id="@+id/tv__amend_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tv_amend_title"
-            android:textColor="@color/design_default_color_on_secondary"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/guideline"
-            app:layout_constraintEnd_toStartOf="@+id/guideline8"
-            app:layout_constraintHorizontal_bias="0.091"
-            app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toTopOf="@+id/guideline4"
-            app:layout_constraintVertical_bias="0.298" />
-
         <EditText
             android:id="@+id/et_sno"
             android:layout_width="250sp"
@@ -96,9 +74,8 @@
             android:maxLength="9"
             app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
-            app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toTopOf="@+id/guideline"
-            app:layout_constraintVertical_bias="0.265" />
+            app:layout_constraintHorizontal_bias="0.506"
+            app:layout_constraintStart_toStartOf="@+id/guideline7" />
 
         <EditText
             android:id="@+id/et_edu_password"
@@ -108,13 +85,13 @@
             android:ems="10"
             android:hint="@string/et_edu_password"
             android:inputType="textPassword"
-            android:maxLength="20"
+            android:maxLength="30"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
             app:layout_constraintEnd_toEndOf="@+id/et_sno"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/et_sno"
             app:layout_constraintTop_toTopOf="@+id/guideline2"
-            app:layout_constraintVertical_bias="0.246" />
+            app:layout_constraintVertical_bias="1.0" />
 
         <EditText
             android:id="@+id/et_leave_password"
@@ -124,13 +101,13 @@
             android:ems="10"
             android:hint="@string/et_leave_password"
             android:inputType="textPassword"
-            android:maxLength="20"
+            android:maxLength="30"
             app:layout_constraintBottom_toTopOf="@+id/guideline5"
             app:layout_constraintEnd_toEndOf="@+id/et_edu_password"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/et_edu_password"
             app:layout_constraintTop_toTopOf="@+id/guideline3"
-            app:layout_constraintVertical_bias="0.2" />
+            app:layout_constraintVertical_bias="1.0" />
 
         <Button
             android:id="@+id/btn_go"
@@ -142,42 +119,43 @@
             android:textSize="14sp"
 
             app:layout_constraintBottom_toTopOf="@+id/guideline6"
-            app:layout_constraintEnd_toStartOf="@+id/guideline8"
-            app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintEnd_toEndOf="@+id/et_leave_password"
+            app:layout_constraintHorizontal_bias="0.372"
+            app:layout_constraintStart_toStartOf="@+id/et_leave_password"
             app:layout_constraintTop_toTopOf="@+id/guideline5"
-            app:layout_constraintVertical_bias="0.776" />
+            app:layout_constraintVertical_bias="1.0" />
 
         <Button
             android:id="@+id/btn_user_item"
             android:layout_width="77sp"
             android:layout_height="27sp"
             android:background="#00000000"
-            android:hapticFeedbackEnabled="false"
 
+            android:hapticFeedbackEnabled="false"
             android:text="@string/btn_user_item"
             android:textColor="#1638D2"
             android:textColorHighlight="@color/design_default_color_background"
             android:textColorHint="@color/design_default_color_background"
             android:textColorLink="@color/design_default_color_background"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline6"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toTopOf="@+id/guideline5"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="@+id/guideline6"
+            app:layout_constraintVertical_bias="0.815" />
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="113dp"
-            android:layout_height="131dp"
+            android:layout_width="153dp"
+            android:layout_height="104dp"
             android:contentDescription="@string/todo"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintEnd_toStartOf="@+id/guideline8"
+            app:layout_constraintHorizontal_bias="0.471"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toTopOf="@+id/guideline6"
-            app:layout_constraintVertical_bias="0.9"
-            app:srcCompat="@drawable/ic_juice_icon" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.086"
+            app:srcCompat="@drawable/cz1" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

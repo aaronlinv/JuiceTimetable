@@ -56,7 +56,6 @@ public class InitFragment extends Fragment {
     private LoadingBar mLoadingBar;
     private StuInfoViewModel mStuInfoViewModel;
 
-
     public InitFragment() {
         // Required empty public constructor
     }
@@ -119,7 +118,6 @@ public class InitFragment extends Fragment {
                     binding.btnGo.setClickable(false);
                     //设置登录按钮和用户条款按钮不可见
                     binding.btnGo.setVisibility(View.GONE);
-                    binding.btnUserItem.setVisibility(View.GONE);
                     //loading显示
                     showLoading(binding.btnGo);
 
@@ -140,6 +138,8 @@ public class InitFragment extends Fragment {
                         if (mLoadingBar != null) {
                             mLoadingBar.cancel();
                         }
+                        //设置登录按钮和用户条款按钮可见
+                        binding.btnGo.setVisibility(View.VISIBLE);
                         // TODO 跳转页面，并调用写入数据库的方法writeAllData()
                         LogUtils.getInstance().d("接受消息：开始写入数据库");
                         writeUser();
@@ -166,7 +166,6 @@ public class InitFragment extends Fragment {
                         }
                         //设置登录按钮和用户条款按钮可见
                         binding.btnGo.setVisibility(View.VISIBLE);
-                        binding.btnUserItem.setVisibility(View.VISIBLE);
                         String errorStr = (String) msg.obj;
                         Toast.makeText(getActivity(), errorStr, Toast.LENGTH_SHORT).show();
                         break;
