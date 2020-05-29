@@ -77,6 +77,8 @@ public class LoginFragment extends Fragment {
         StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
         String sno = stuInfo.getStuID().toString();
         binding.etSno.setText(sno);
+        binding.etEduPassword.setText(stuInfo.getEduPassword());
+        binding.etLeavePassword.setText(stuInfo.getLeavePassword());
 
         handler();
         btnDialogClick();
@@ -122,6 +124,15 @@ public class LoginFragment extends Fragment {
 
     private void judgmentLogic() {
         allStr();
+        // 如果没有改变则不让用户点按钮
+        StuInfo stu = mStuInfoViewModel.selectStuInfo();
+        if (Objects.equals(mSno, stu.getStuID().toString()) &&
+                Objects.equals(mEdu, stu.getEduPassword()) &&
+                Objects.equals(mLeave, stu.getLeavePassword())) {
+            Toast.makeText(getActivity(), "你还没有修改帐号或密码", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (mSno.isEmpty()) {
             Toast.makeText(requireActivity(), "请输入学号", Toast.LENGTH_SHORT).show();
         } else {

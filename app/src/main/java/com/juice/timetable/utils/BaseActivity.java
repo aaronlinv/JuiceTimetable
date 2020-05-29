@@ -17,10 +17,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        iniView();
+
     }
 
-    public abstract void iniView();
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
