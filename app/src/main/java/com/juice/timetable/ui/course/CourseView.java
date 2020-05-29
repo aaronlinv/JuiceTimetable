@@ -202,7 +202,12 @@ public class CourseView extends FrameLayout {
         params.setMargins(textLRMargin, textTBMargin, textLRMargin, textTBMargin);
         tv.setLayoutParams(params);
         // 设置tv文本
-        String showText = course.getCouName() + "\n" + course.getCouRoom();
+        // 撞课 在前面 添加[课程冲突]
+        String showText = "";
+        if (course.getCouWeekType() == 4) {
+            showText = "[课程冲突]";
+        }
+        showText = showText + course.getCouName() + "\n" + course.getCouRoom();
         tv.setText(showText);
 
         tv.setBackgroundColor(Utils.getColor(course.getCouColor() + Constant.RAINBOW_MODE_NUM));
@@ -297,6 +302,7 @@ public class CourseView extends FrameLayout {
                     course.setCouWeek(oneCou.getDayOfWeek());
                     course.setOnlyID(oneCou.getOnlyID());
                     course.setCouID(oneCou.getCouID());
+                    course.setCouWeekType(oneCou.getCourseType());
                     addCourse(course);
                 }
             }
