@@ -151,8 +151,8 @@ public class CourseFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        toolbar.hideOverflowMenu();
-        mSpinner.setVisibility(View.INVISIBLE);
+//        toolbar.hideOverflowMenu();
+//        mSpinner.setVisibility(View.INVISIBLE);
 
     }
 

@@ -57,7 +57,8 @@ public class UnsignedFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_unsigned, container, false);
         findID(root);
         handler();
-        // 隐藏Toolbar的下拉菜单按钮
+        // 隐藏 toolbar 的按钮 和星期下拉菜单按钮
+        toolbar.findViewById(R.id.spinner).setVisibility(View.INVISIBLE);
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, false);
         //布局管理器
