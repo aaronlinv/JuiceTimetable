@@ -21,7 +21,6 @@ public class OneWeekCourse {
     //课程对应的ID（与完整的课表相同ID的课表）
     private Long couID;
 
-
     private String couName;
 
     private String couRoom;
@@ -34,37 +33,16 @@ public class OneWeekCourse {
 
     private Integer InWeek;
 
+    private Integer CourseType;
+
+    private Integer Color;
+
     public Integer getOnlyID() {
         return onlyID;
     }
 
     public void setOnlyID(Integer onlyID) {
         this.onlyID = onlyID;
-    }
-
-    public Integer getColor() {
-        return Color;
-    }
-
-    public void setColor(Integer color) {
-        Color = color;
-    }
-
-    private Integer Color;
-
-    @Override
-    public String toString() {
-        return "OneWeekCourse{" +
-                "onlyID=" + onlyID +
-                ", couID=" + couID +
-                ", couName='" + couName + '\'' +
-                ", couRoom='" + couRoom + '\'' +
-                ", dayOfWeek=" + dayOfWeek +
-                ", startNode=" + startNode +
-                ", endNode=" + endNode +
-                ", InWeek=" + InWeek +
-                ", Color=" + Color +
-                '}';
     }
 
     public Long getCouID() {
@@ -122,4 +100,37 @@ public class OneWeekCourse {
     public void setInWeek(Integer inWeek) {
         InWeek = inWeek;
     }
+
+    public Integer getCourseType() {
+        return CourseType;
+    }
+
+    public void setCourseType(Integer courseType) {
+        CourseType = courseType;
+    }
+
+    public Integer getColor() {
+        return Color;
+    }
+
+    public void setColor(Integer color) {
+        Color = color;
+    }
+
+    @Override
+    public String toString() {
+        return "OneWeekCourse{" +
+                "onlyID=" + onlyID +
+                ", couID=" + couID +
+                ", couName='" + couName + '\'' +
+                ", couRoom='" + couRoom + '\'' +
+                ", dayOfWeek=" + dayOfWeek +
+                ", startNode=" + startNode +
+                ", endNode=" + endNode +
+                ", InWeek=" + InWeek +
+                ", CourseType=" + CourseType +
+                ", Color=" + Color +
+                '}';
+    }
 }
+

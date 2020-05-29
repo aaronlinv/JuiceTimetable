@@ -88,6 +88,13 @@ public class ParseOneWeek {
                                     Integer time = Integer.valueOf(td.attr("rowspan"));
                                     Integer endNode = startNode + time - 1;
                                     cou.setEndNode(endNode);
+                                    cou.setCourseType(0);
+                                    //新增一个属性CourseType判断 重课
+                                    for (OneWeekCourse oneWeekCourse : couList) {
+                                        if (cou.getDayOfWeek().equals(oneWeekCourse.getDayOfWeek()) && cou.getStartNode().equals(oneWeekCourse.getStartNode()) && cou.getEndNode().equals(oneWeekCourse.getEndNode())) {
+                                            cou.setCourseType(4);
+                                        }
+                                    }
 
                                     couList.add(cou);
                                 }
