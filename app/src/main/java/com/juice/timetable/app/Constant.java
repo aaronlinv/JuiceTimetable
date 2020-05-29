@@ -46,6 +46,9 @@ public class Constant {
     // 开启签到显示 Preferences
     public static final String PREF_ENABLE_CHECK_IN = "PREF_ENABLE_CHECK_IN";
 
+    // 开启慕课显示 Preferences
+    public static final String PREF_ENABLE_SHOW_MOOC = "PREF_ENABLE_SHOW_MOOC";
+
     // 当前学校周 从1开始计数 1代表第一周
     public static int CUR_WEEK = -1;
     // 最大周 默认25周
@@ -76,4 +79,7 @@ public class Constant {
 
     // 签到显示 开关
     public static boolean ENABLE_CHECK_IN = true;
+
+    // 慕课显示 开关
+    public static boolean ENABLE_SHOW_MOOC = true;
 }

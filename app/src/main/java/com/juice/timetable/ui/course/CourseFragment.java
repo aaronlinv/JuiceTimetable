@@ -104,6 +104,9 @@ public class CourseFragment extends Fragment {
         if (!hasLeavePwd()) {
             Constant.ENABLE_CHECK_IN = false;
         }
+
+        // 是否开启慕课显示
+        Constant.ENABLE_SHOW_MOOC = PreferencesUtils.getBoolean(Constant.PREF_ENABLE_SHOW_MOOC, true);
     }
 
     /**
@@ -283,6 +286,7 @@ public class CourseFragment extends Fragment {
         Switch switchShowMooc = contentView.findViewById(R.id.switch_show_mooc);
         // 初始化开关状态
         switchCheckIn.setChecked(Constant.ENABLE_CHECK_IN);
+        switchShowMooc.setChecked(Constant.ENABLE_SHOW_MOOC);
 
         switchCheckIn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -327,6 +331,9 @@ public class CourseFragment extends Fragment {
                 } else {
                     Toast.makeText(getActivity(), "慕课显示已关闭", Toast.LENGTH_SHORT).show();
                 }
+                Constant.ENABLE_SHOW_MOOC = isChecked;
+                // 持久化
+                PreferencesUtils.putBoolean(Constant.PREF_ENABLE_SHOW_MOOC, isChecked);
             }
         });
 
