@@ -332,6 +332,9 @@ public class CourseFragment extends Fragment {
                     Toast.makeText(getActivity(), "慕课显示已关闭", Toast.LENGTH_SHORT).show();
                 }
                 Constant.ENABLE_SHOW_MOOC = isChecked;
+
+                // 通知ViewPager 重新调整布局，不然慕课显示还会在
+                mCourseViewListAdapter.notifyDataSetChanged();
                 // 持久化
                 PreferencesUtils.putBoolean(Constant.PREF_ENABLE_SHOW_MOOC, isChecked);
             }
@@ -382,15 +385,25 @@ public class CourseFragment extends Fragment {
         List<Integer> week = mOneWeekCourseViewModel.getWeek();
         HashSet<Integer> weekSet = new HashSet<>(week);
         List<CourseViewBean> tempList = new ArrayList<>();
+
+        // 遍历得到慕课列表 慕课类型为3
+        List<Course> moocCourse = new ArrayList<>();
+        for (Course course : allWeekCourse) {
+            if (course.getCouWeekType() == 3) {
+                moocCourse.add(course);
+            }
+        }
+
         for (int i = 1; i <= 25; i++) {
             CourseViewBean courseViewBean = new CourseViewBean();
             courseViewBean.setAllWeekCourse(allWeekCourse);
             courseViewBean.setCurrentIndex(i);
             courseViewBean.setOneWeekCourse(oneWeekCourse);
             courseViewBean.setWeekSet(weekSet);
+            courseViewBean.setMoocCourse(moocCourse);
             tempList.add(courseViewBean);
-            LogUtils.getInstance().d("mCourseViewBeanList size -- > " + mCourseViewBeanList.size());
         }
+        LogUtils.getInstance().d("mCourseViewBeanList size -- > " + mCourseViewBeanList.size());
         // 先清空原有的数据 再写入新数据
         mCourseViewBeanList.clear();
         mCourseViewBeanList.addAll(tempList);

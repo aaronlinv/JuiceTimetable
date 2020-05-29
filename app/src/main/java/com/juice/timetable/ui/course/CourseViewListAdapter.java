@@ -22,6 +22,7 @@ import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.Utils;
 
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * <pre>
@@ -68,6 +69,33 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
         courseView.setSet(item.getWeekSet());
         courseView.setCourses(item.getAllWeekCourse());
         courseView.setOneWeekCourses(item.getOneWeekCourse());
+/*        // 测试
+        Course course1 = new Course();
+        course1.setCouName("测试万一有小可怜，选了2门慕课");
+        course1.setCouTeacher("超新尔雅");
+        item.getMoocCourse().add(course1);*/
+
+        // 慕课处理 存在慕课 并且开启了慕课显示 就显示慕课界面 否者Gone掉
+        LinearLayout llMooc = holder.itemView.findViewById(R.id.ll_mooc);
+        TextView tvMooc = holder.itemView.findViewById(R.id.tv_mooc);
+        // 先清空 放置多次刷新堆积
+        tvMooc.setText("");
+        if (item.getMoocCourse().size() > 0 && Constant.ENABLE_SHOW_MOOC) {
+            StringBuilder sb = new StringBuilder();
+            List<Course> mooc = item.getMoocCourse();
+            for (int i = 0; i < mooc.size(); i++) {
+                if (i > 0) {
+                    sb.append("\n");
+                }
+                sb.append(mooc.get(i).getCouTeacher()).append("：");
+                sb.append(mooc.get(i).getCouName());
+            }
+            tvMooc.setText(sb);
+            llMooc.setVisibility(View.VISIBLE);
+        } else {
+            llMooc.setVisibility(View.GONE);
+        }
+
         // 不重置，在切换不同周 会出现重叠情况
         courseView.resetView();
         // 获取第一周星期一的时间
