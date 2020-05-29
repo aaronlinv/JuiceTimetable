@@ -129,13 +129,12 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline9"
             app:layout_constraintStart_toStartOf="@+id/guideline9"
             app:layout_constraintTop_toTopOf="@+id/guideline5"
-            app:layout_constraintVertical_bias="0.477" />
+            app:layout_constraintVertical_bias="0.45" />
 
         <Button
             android:id="@+id/btn_user_item"
             android:layout_width="77sp"
             android:layout_height="27sp"
-
             android:background="#00000000"
             android:hapticFeedbackEnabled="false"
             android:text="@string/bt_item"
@@ -148,7 +147,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline9"
             app:layout_constraintStart_toStartOf="@+id/guideline9"
             app:layout_constraintTop_toTopOf="@+id/guideline6"
-            app:layout_constraintVertical_bias="0.886" />
+            app:layout_constraintVertical_bias="0.85" />
 
         <TextView
             android:id="@+id/tv_sno"
