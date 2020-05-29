@@ -86,12 +86,33 @@ public class CourseFragment extends Fragment {
         mAllWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(AllWeekCourseViewModel.class);
         mOneWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(OneWeekCourseViewModel.class);
         mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
-        List<Course> allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
 
+        initConfig();
         initCurrentWeek();
         initView();
         initCourse();
         return binding.getRoot();
+    }
+
+    /**
+     * 初始化配置
+     */
+    private void initConfig() {
+        // 是否开启签到提示
+        Constant.ENABLE_CHECK_IN = PreferencesUtils.getBoolean(Constant.PREF_ENABLE_CHECK_IN, true);
+        // 不存请假系统密码就关掉
+        if (!hasLeavePwd()) {
+            Constant.ENABLE_CHECK_IN = false;
+        }
+    }
+
+    /**
+     * 用户存在请假系统密码
+     */
+    private boolean hasLeavePwd() {
+        StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
+        LogUtils.getInstance().d("用户数据库信息：" + stuInfo);
+        return (!stuInfo.getLeavePassword().isEmpty());
     }
 
 
@@ -110,8 +131,10 @@ public class CourseFragment extends Fragment {
             // 设置首次登录为false
             Constant.FIRST_LOGIN = false;
         }
-
-        getCheckIn();
+        // 开启签到显示 且 在签到时间刷新签到情况
+        if (Constant.ENABLE_CHECK_IN && Utils.isCheckInTime()) {
+            getCheckIn();
+        }
         initEvent();
     }
 
@@ -256,18 +279,43 @@ public class CourseFragment extends Fragment {
         View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.popupwindow, null);
         popupWindow.setContentView(contentView);
         popupWindow.showAsDropDown(toolbar, 0, 0, Gravity.RIGHT);
-        Switch switchCheckIn = contentView.findViewById(R.id.switch_check_in);
+        final Switch switchCheckIn = contentView.findViewById(R.id.switch_check_in);
         Switch switchShowMooc = contentView.findViewById(R.id.switch_show_mooc);
+        // 初始化开关状态
+        switchCheckIn.setChecked(Constant.ENABLE_CHECK_IN);
 
         switchCheckIn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 LogUtils.getInstance().d("签到提示按钮 -- > " + isChecked);
                 if (isChecked) {
-                    Toast.makeText(getActivity(), "签到提示开启，会在签到时间段显示签到情况", Toast.LENGTH_LONG).show();
+                    if (hasLeavePwd()) {
+                        Toast.makeText(getActivity(), "签到提示开启，会在签到时间段显示签到情况", Toast.LENGTH_LONG).show();
+
+                    } else {
+                        Toast.makeText(getActivity(), "需要先在修改认证信息界面添加请假系统密码才可以开启哦", Toast.LENGTH_LONG).show();
+                        isChecked = false;
+                        switchCheckIn.setChecked(false);
+                    }
                 } else {
+
                     Toast.makeText(getActivity(), "签到提示已关闭", Toast.LENGTH_SHORT).show();
                 }
+                // 在签到时间内 就是显示签到通知条
+                Constant.ENABLE_CHECK_IN = isChecked;
+
+                if (Utils.isCheckInTime() && isChecked) {
+                    mTvCheckIn.setVisibility(TextView.VISIBLE);
+                    // 通知刷新数据
+                    getCheckIn();
+                } else {
+                    mTvCheckIn.setVisibility(TextView.GONE);
+                    // 通知ViewPager 重新调整布局，不然下方会有空隙
+                    mCourseViewListAdapter.notifyDataSetChanged();
+                }
+
+                // 持久化
+                PreferencesUtils.putBoolean(Constant.PREF_ENABLE_CHECK_IN, isChecked);
             }
         });
         switchShowMooc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -395,8 +443,8 @@ public class CourseFragment extends Fragment {
         // 初始化标题栏 只在 registerOnPageChangeCallback 中初始化 从后台切回标题栏不会显示周
         // 在 updateCourse 中初始
 
-        // 不在签到时间并且不在调试模式 隐藏签到提示栏
-        if (!Utils.isCheckInTime() && !Constant.DEBUG_CHECK_IN_TEXTVIEW) {
+        // 没有开启签到显示 或 不在签到时间并 隐藏签到提示栏
+        if (!Constant.ENABLE_CHECK_IN || !Utils.isCheckInTime()) {
             mTvCheckIn.setVisibility(TextView.GONE);
         }
     }
@@ -540,9 +588,9 @@ public class CourseFragment extends Fragment {
                 StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
                 LogUtils.getInstance().d("用户数据库信息：" + stuInfo);
                 boolean hasLeavePwd = (stuInfo.getEduPassword() != null);
-                // (签到时间或者调试模式)且数据库有请假系统密码  初始化签到信息
+                // 数据库有请假系统密码  初始化签到信息
                 LogUtils.getInstance().d("有请假系统密码则开始获取签到信息");
-                if ((Utils.isCheckInTime() || Constant.DEBUG_CHECK_IN_TEXTVIEW) && hasLeavePwd) {
+                if (hasLeavePwd) {
                     try {
                         String checkIn = LeaveInfo.getLeave(stuInfo.getStuID().toString(), stuInfo.getLeavePassword(), Constant.URI_CHECK_IN, requireContext());
                         LogUtils.getInstance().d("签到数据：" + checkIn);

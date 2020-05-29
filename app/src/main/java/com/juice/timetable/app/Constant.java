@@ -43,6 +43,9 @@ public class Constant {
     // 彩虹模式随机数 Preferences
     public static final String PREF_RAINBOW_MODE_ENABLED = "PREF_RAINBOW_MODE_ENABLED";
 
+    // 开启签到显示 Preferences
+    public static final String PREF_ENABLE_CHECK_IN = "PREF_ENABLE_CHECK_IN";
+
     // 当前学校周 从1开始计数 1代表第一周
     public static int CUR_WEEK = -1;
     // 最大周 默认25周
@@ -58,7 +61,7 @@ public class Constant {
     // 调式Init界面，用于调试登录界面
     public static boolean DEBUG_INIT_FRAGMENT = false;
     // 调式签到提示栏
-    public static boolean DEBUG_CHECK_IN_TEXTVIEW = false;
+//    public static boolean DEBUG_CHECK_IN_TEXTVIEW = false;
 
     // 首次登录
     public static boolean FIRST_LOGIN = false;
@@ -70,4 +73,7 @@ public class Constant {
 
     // 彩虹模式开关
     public static boolean RAINBOW_MODE_ENABLED = true;
+
+    // 签到显示 开关
+    public static boolean ENABLE_CHECK_IN = true;
 }
