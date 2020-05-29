@@ -37,6 +37,9 @@ public class StuInfoRepository {
         AsyncTask<Void, Void, StuInfo> asyncTask = new SelectAsyncTask(stuInfoDao).execute();
         try {
             stuInfo = asyncTask.get();
+            if (stuInfo == null) {
+                return null;
+            }
             // 解密
             LogUtils.getInstance().d("StuInfoRepository中解密前 -- > " + stuInfo);
             String eduPassword = null;

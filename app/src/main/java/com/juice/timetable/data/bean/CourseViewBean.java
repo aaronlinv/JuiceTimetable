@@ -15,6 +15,7 @@ public class CourseViewBean {
     private List<Course> allWeekCourse;
     private HashSet<Integer> weekSet;
     private List<OneWeekCourse> oneWeekCourse;
+    private List<Course> moocCourse;
     private int currentIndex;
 
     public int getCurrentIndex() {
@@ -49,12 +50,21 @@ public class CourseViewBean {
         this.oneWeekCourse = oneWeekCourse;
     }
 
+    public List<Course> getMoocCourse() {
+        return moocCourse;
+    }
+
+    public void setMoocCourse(List<Course> moocCourse) {
+        this.moocCourse = moocCourse;
+    }
+
     @Override
     public String toString() {
         return "CourseViewBean{" +
                 "allWeekCourse=" + allWeekCourse +
                 ", weekSet=" + weekSet +
                 ", oneWeekCourse=" + oneWeekCourse +
+                ", moocCourse=" + moocCourse +
                 ", currentIndex=" + currentIndex +
                 '}';
     }

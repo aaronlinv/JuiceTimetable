@@ -6,8 +6,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,12 +21,13 @@ import com.google.android.material.navigation.NavigationView;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
+import com.juice.timetable.utils.BaseActivity;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.UserInfoUtils;
 import com.juice.timetable.widget.TodayWidget;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -48,7 +50,14 @@ public class MainActivity extends AppCompatActivity {
 
         //侧边栏
         NavigationView navigationView = findViewById(R.id.nav_view);
-        //课表
+        // 初始化PreferencesUtils
+        PreferencesUtils.init(getApplicationContext());
+
+        // 初始化彩虹模式随机数
+        Constant.RAINBOW_MODE_NUM = PreferencesUtils.getInt(Constant.PREF_RAINBOW_MODE_NUM, 0);
+        // 初始化彩虹模式开关
+        Constant.RAINBOW_MODE_ENABLED = PreferencesUtils.getBoolean(Constant.PREF_RAINBOW_MODE_ENABLED, false);
+
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -63,8 +72,28 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        // 初始化PreferencesUtils
-        PreferencesUtils.init(getApplicationContext());
+        // 侧边栏橙汁图标
+        NavigationView navigation = this.findViewById(R.id.nav_view);
+//        navigation.inflateHeaderView(R.layout.nav_header_main);
+        ImageView juiceIcon = navigationView.getHeaderView(0).findViewById(R.id.imageView);
+
+        // 单击开启/关闭 彩虹模式
+        juiceIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String toastStr = "开启彩虹模式";
+                boolean enableRainbowMode = true;
+                // 如果现在是开启就关闭
+                if (Constant.RAINBOW_MODE_ENABLED) {
+                    toastStr = "关闭彩虹模式";
+                    enableRainbowMode = false;
+                }
+                Constant.RAINBOW_MODE_ENABLED = enableRainbowMode;
+                PreferencesUtils.putBoolean(Constant.PREF_RAINBOW_MODE_ENABLED, enableRainbowMode);
+                Toast.makeText(MainActivity.this, toastStr, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         String luanchFragment = getIntent().getStringExtra("luanchFragment");
 
         // 调式模式：注入自己的账号密码，用于免登录调式
@@ -100,12 +129,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+/*        // Inflate the menu; this adds items to the action bar if it is present.
         // 添加周的显示
         for (int i = 0; i < 25; i++) {
             menu.add(0, i, i, "第" + (i + 1) + "周");
-        }
-
+        }*/
+        // 填充toolBar的布局
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }

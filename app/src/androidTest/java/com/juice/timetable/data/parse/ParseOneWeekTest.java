@@ -21,6 +21,7 @@ public class ParseOneWeekTest {
     @Test
     public void parseCourse() {
         String question = ParseOneWeek.parseCourse(getOneWeekStr()).toString();
+
         String answer = getOneWeekAnswer();
         boolean isCheck = answer.equals(question);
 
@@ -41,9 +42,35 @@ public class ParseOneWeekTest {
     }
 
     /**
+     * 2019实验班
+     */
+    @Test
+    public void parseSoftwareEngineeringCourse() {
+        String question = ParseOneWeek.parseCourse(get2019SoftwareEngineering()).toString();
+        String answer = get2019SoftwareEngineeringAnswer();
+        boolean isCheck = answer.equals(question);
+
+        Assert.assertTrue(isCheck);
+    }
+
+
+    /**
+     * 马老师周课表测试
+     */
+    @Test
+    public void parseTeacherMaOneWeekTest() {
+        String question = ParseOneWeek.parseCourse(getTeacherMaOneWeek()).toString();
+        String answer = getTeacherMaOneWeekAnswer();
+        boolean isCheck = answer.equals(question);
+
+        Assert.assertTrue(isCheck);
+    }
+
+
+    /**
      * 17计科周课表
      *
-     * @return
+     * @return String
      */
     private static String getOneWeekStr() {
         return "\n" +
@@ -240,21 +267,21 @@ public class ParseOneWeekTest {
     /**
      * 17计科周课表answer
      *
-     * @return
+     * @return String
      */
     private static String getOneWeekAnswer() {
-        return "[OneWeekCourse{onlyID=null, couID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=1, startNode=1, endNode=4, InWeek=11, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=3, startNode=1, endNode=4, InWeek=11, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=2, startNode=3, endNode=4, InWeek=11, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='软件工程(1)班', couRoom='网络教学', dayOfWeek=1, startNode=5, endNode=6, InWeek=11, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='大数据应用开发实践(1)班', couRoom='网络教学', dayOfWeek=2, startNode=5, endNode=8, InWeek=11, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='大数据综合应用案例实训(1)班', couRoom='网络教学', dayOfWeek=4, startNode=5, endNode=8, InWeek=11, Color=null}]";
+        return "[OneWeekCourse{onlyID=null, couID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=1, startNode=1, endNode=4, InWeek=11, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=3, startNode=1, endNode=4, InWeek=11, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=2, startNode=3, endNode=4, InWeek=11, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='软件工程(1)班', couRoom='网络教学', dayOfWeek=1, startNode=5, endNode=6, InWeek=11, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='大数据应用开发实践(1)班', couRoom='网络教学', dayOfWeek=2, startNode=5, endNode=8, InWeek=11, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='大数据综合应用案例实训(1)班', couRoom='网络教学', dayOfWeek=4, startNode=5, endNode=8, InWeek=11, CourseType=0, Color=null}]";
     }
 
     /**
      * 汉语言周课表
      *
-     * @return
+     * @return String
      */
     private static String getChineseTimetable() {
         return "<META NAME=\"ROBOTS\" CONTENT=\"NOINDEX,NOFOLLOW\">\n" +
@@ -459,16 +486,478 @@ public class ParseOneWeekTest {
     /**
      * 汉语言周课表answer
      *
-     * @return
+     * @return String
      */
     private static String getChineseTimetableAnswer() {
-        return "[OneWeekCourse{onlyID=null, couID=null, couName='毛泽东思想和中国特色社会主义理论体系概论(19)班', couRoom='网络教学', dayOfWeek=2, startNode=1, endNode=2, InWeek=12, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='古代汉语（下）(1)班', couRoom='网络教学', dayOfWeek=3, startNode=2, endNode=4, InWeek=12, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='语言学概论(1)班', couRoom='网络教学', dayOfWeek=1, startNode=3, endNode=4, InWeek=12, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='大学英语（四）(10)班', couRoom='网络教学', dayOfWeek=1, startNode=5, endNode=6, InWeek=12, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='语言学概论(1)班', couRoom='网络教学', dayOfWeek=2, startNode=5, endNode=6, InWeek=12, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='毛泽东思想和中国特色社会主义理论体系概论(19)班', couRoom='网络教学', dayOfWeek=4, startNode=5, endNode=6, InWeek=12, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='中国现当代文学（下）(1)班', couRoom='网络教学', dayOfWeek=1, startNode=9, endNode=11, InWeek=12, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='中国古代文学（四）(1)班', couRoom='机北407', dayOfWeek=3, startNode=9, endNode=11, InWeek=12, Color=null}]";
+        return "[OneWeekCourse{onlyID=null, couID=null, couName='毛泽东思想和中国特色社会主义理论体系概论(19)班', couRoom='网络教学', dayOfWeek=2, startNode=1, endNode=2, InWeek=12, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='古代汉语（下）(1)班', couRoom='网络教学', dayOfWeek=3, startNode=2, endNode=4, InWeek=12, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='语言学概论(1)班', couRoom='网络教学', dayOfWeek=1, startNode=3, endNode=4, InWeek=12, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='大学英语（四）(10)班', couRoom='网络教学', dayOfWeek=1, startNode=5, endNode=6, InWeek=12, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='语言学概论(1)班', couRoom='网络教学', dayOfWeek=2, startNode=5, endNode=6, InWeek=12, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='毛泽东思想和中国特色社会主义理论体系概论(19)班', couRoom='网络教学', dayOfWeek=4, startNode=5, endNode=6, InWeek=12, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='中国现当代文学（下）(1)班', couRoom='网络教学', dayOfWeek=1, startNode=9, endNode=11, InWeek=12, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='中国古代文学（四）(1)班', couRoom='机北407', dayOfWeek=3, startNode=9, endNode=11, InWeek=12, CourseType=0, Color=null}]";
     }
+
+    /**
+     * 2019下计科实验班
+     *
+     * @return String
+     */
+    private static String get2019SoftwareEngineering() {
+        return "\n" +
+                "\n" +
+                "<META NAME=\"ROBOTS\" CONTENT=\"NOINDEX,NOFOLLOW\">\n" +
+                "<META HTTP-EQUIV=\"pragma\" CONTENT=\"no-cache\">\n" +
+                "<META http-equiv=\"cache-control\" content=\"no-cache\">\n" +
+                "<META HTTP-EQUIV=\"expires\" CONTENT=\"0\">\n" +
+                "<META http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+                " \n" +
+                "\n" +
+                "<html>\n" +
+                "<head>\n" +
+                "<title>福州大学至诚学院课程表</title>\n" +
+                "<meta http-equiv=\"Content-Type\" content=\"text/html; Charset=UTF-8\">\n" +
+                "<link rel=\"stylesheet\" href=\"../inc/kbstyle.css\">\n" +
+                "</head>\n" +
+                "\n" +
+                "<BODY onbeforeprint=\"w.style.display='none';\"  onafterprint=\"w.style.display='';\">\n" +
+                "\t \n" +
+                "  <table width=\"440\" border=\"0\" cellspacing=\"0\" id=\"w\" align=\"center\">\n" +
+                "  <tr height=\"45\"><td align=\"center\"><input name=\"pweek\" type=\"button\" value=\"上一周 \" onClick=\"javascript:document.location='zkb_xs.asp?week1=14&kkxq=2019%E4%B8%8B';\" class=\"button\">   \t\t\t\t\t\t\n" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;<input name=\"allkb\" type=\"button\" value=\"完整课表\" onClick=\"javascript:document.location='kb_xs.asp';\" class=\"button\">&nbsp;&nbsp;&nbsp;&nbsp;   \n" +
+                "\t<input name=\"nweek\" type=\"button\" value=\"下一周 \" onClick=\"javascript:document.location='zkb_xs.asp?week1=16&kkxq=2019%E4%B8%8B';\" class=\"button\">  \n" +
+                "  \n" +
+                "</td></tr>\n" +
+                "<tr><td align=\"center\" class=\"td3\"><strong> 2019下学期第15周(2020-5-25-2020-5-31)，热心同学</strong> </td></tr>\n" +
+                "</table>\t\n" +
+                "\n" +
+                "\n" +
+                "<table  cellspacing=\"0\" cellpadding=\"0\" align=\"center\" border=\"0\" bordercolor=\"#111111\">\n" +
+                "  <tr> \n" +
+                "    <td valign=\"top\">\n" +
+                "\t\n" +
+                "\t<table class=\"table1\" width=\"440\" height=\"400\" cellspacing=\"0\" cellpadding=\"1\" align=\"center\" style=\"border-collapse: collapse\" border=\"1\" >\n" +
+                "        <tr  height=\"30\"> \n" +
+                "          <td align=\"center\" class=\"td1\">\n" +
+                "            5月<br>\n" +
+                "            节次 </td>\n" +
+                "          <td align=\"center\" class=\"td1\">25<br />周一</td>\n" +
+                "          <td align=\"center\" class=\"td1\">26<br />周二</td>\n" +
+                "          <td align=\"center\" class=\"td1\">27<br />周三</td>\n" +
+                "          <td align=\"center\" class=\"td11\">28<br />周四</td>\n" +
+                "          <td align=\"center\" class=\"td1\">29<br />周五</td>\n" +
+                "\t\t  \n" +
+                "          <td align=\"center\" class=\"td1\">30<br />周六</td>\n" +
+                "\t\t  \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        \n" +
+                "        <tr id=\"tr1\"> \n" +
+                "          <td align=\"center\" class=\"td1\">1</td>\n" +
+                "          \n" +
+                "          <td id=\"11\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td align=\"center\" rowspan=4 id=\"12\"  class=\"td2\">证券投资模拟实验(实验班)班<br>[网络教学]</td>\n" +
+                "          \n" +
+                "          <td align=\"center\" rowspan=4 id=\"13\"  class=\"td2\">数据挖掘应用实践(实验班)班<br>[网络教学]</td>\n" +
+                "          \n" +
+                "          <td align=\"center\" rowspan=4 id=\"14\"  class=\"td2\">大数据计算实践(实验班)班<br>[网络教学]</td>\n" +
+                "          \n" +
+                "          <td id=\"15\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td align=\"center\" rowspan=2 id=\"16\"  class=\"td2\">数据可视化与可视分析(实验班)班<br>[网络教学]</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr2\"> \n" +
+                "          <td align=\"center\" class=\"td1\">2</td>\n" +
+                "          \n" +
+                "          <td id=\"21\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"25\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr3\"> \n" +
+                "          <td align=\"center\" class=\"td1\">3</td>\n" +
+                "          \n" +
+                "          <td id=\"31\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"35\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"36\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr4\"> \n" +
+                "          <td align=\"center\" class=\"td1\">4</td>\n" +
+                "          \n" +
+                "          <td id=\"41\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"45\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"46\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr5\"> \n" +
+                "          <td align=\"center\" class=\"td1\">5</td>\n" +
+                "          \n" +
+                "          <td align=\"center\" rowspan=4 id=\"51\"  class=\"td2\">数据可视化与可视分析(实验班)班<br>[网络教学]</td>\n" +
+                "          \n" +
+                "          <td id=\"52\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"53\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"54\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"55\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td align=\"center\" rowspan=4 id=\"56\"  class=\"td2\">互联网金融产品运营实践(实验班)班<br>[网络教学]</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr6\"> \n" +
+                "          <td align=\"center\" class=\"td1\">6</td>\n" +
+                "          \n" +
+                "          <td id=\"62\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"63\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"64\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"65\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr7\"> \n" +
+                "          <td align=\"center\" class=\"td1\">7</td>\n" +
+                "          \n" +
+                "          <td id=\"72\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"73\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"74\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"75\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr8\"> \n" +
+                "          <td align=\"center\" class=\"td1\">8</td>\n" +
+                "          \n" +
+                "          <td id=\"82\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"83\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"84\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"85\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr9\"> \n" +
+                "          <td align=\"center\" class=\"td1\">9</td>\n" +
+                "          \n" +
+                "          <td id=\"91\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td align=\"center\" rowspan=3 id=\"92\"  class=\"td2\">金融仿真模拟交易系统(实验班)班<br>[网络教学]</td>\n" +
+                "          \n" +
+                "          <td align=\"center\" rowspan=2 id=\"93\"  class=\"td2\">调课：形势与政策（六）<br>[网络教学]</td>\n" +
+                "          \n" +
+                "          <td id=\"94\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"95\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"96\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr10\"> \n" +
+                "          <td align=\"center\" class=\"td1\">10</td>\n" +
+                "          \n" +
+                "          <td id=\"101\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"104\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"105\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"106\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr11\"> \n" +
+                "          <td align=\"center\" class=\"td1\">11</td>\n" +
+                "          \n" +
+                "          <td id=\"111\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"113\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"114\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"115\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"116\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "      </table></td>\n" +
+                "  </tr>\n" +
+                "</table>\n" +
+                "\t\n" +
+                "</body>\n" +
+                "</html>\n";
+    }
+
+    /**
+     * 2019下计科实验班answer
+     *
+     * @return String
+     */
+    private static String get2019SoftwareEngineeringAnswer() {
+        return "[OneWeekCourse{onlyID=null, couID=null, couName='证券投资模拟实验(实验班)班', couRoom='网络教学', dayOfWeek=2, startNode=1, endNode=4, InWeek=15, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='数据挖掘应用实践(实验班)班', couRoom='网络教学', dayOfWeek=3, startNode=1, endNode=4, InWeek=15, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='大数据计算实践(实验班)班', couRoom='网络教学', dayOfWeek=4, startNode=1, endNode=4, InWeek=15, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='数据可视化与可视分析(实验班)班', couRoom='网络教学', dayOfWeek=6, startNode=1, endNode=2, InWeek=15, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='数据可视化与可视分析(实验班)班', couRoom='网络教学', dayOfWeek=1, startNode=5, endNode=8, InWeek=15, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='互联网金融产品运营实践(实验班)班', couRoom='网络教学', dayOfWeek=6, startNode=5, endNode=8, InWeek=15, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='金融仿真模拟交易系统(实验班)班', couRoom='网络教学', dayOfWeek=2, startNode=9, endNode=11, InWeek=15, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='调课：形势与政策（六）', couRoom='网络教学', dayOfWeek=3, startNode=9, endNode=10, InWeek=15, CourseType=0, Color=null}]";
+    }
+
+    /**
+     * 马老师周课表
+     *
+     * @return String
+     */
+    private static String getTeacherMaOneWeek() {
+        return "\n" +
+                "<META NAME=\"ROBOTS\" CONTENT=\"NOINDEX,NOFOLLOW\">\n" +
+                "<META HTTP-EQUIV=\"pragma\" CONTENT=\"no-cache\">\n" +
+                "<META http-equiv=\"cache-control\" content=\"no-cache\">\n" +
+                "<META HTTP-EQUIV=\"expires\" CONTENT=\"0\">\n" +
+                "<META http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n" +
+                " \n" +
+                "\n" +
+                "<html>\n" +
+                "<head>\n" +
+                "<title>福州大学至诚学院课程表</title>\n" +
+                "<meta http-equiv=\"Content-Type\" content=\"text/html; Charset=UTF-8\">\n" +
+                "<link rel=\"stylesheet\" href=\"../inc/kbstyle.css\">\n" +
+                "</head>\n" +
+                "\n" +
+                "<BODY onbeforeprint=\"w.style.display='none';\"  onafterprint=\"w.style.display='';\">\n" +
+                "\t \n" +
+                "  <table width=\"440\" border=\"0\" cellspacing=\"0\" id=\"w\" align=\"center\">\n" +
+                "  <tr height=\"45\"><td align=\"center\"><input name=\"pweek\" type=\"button\" value=\"上一周 \" onClick=\"javascript:document.location='zkb_xs.asp?week1=12&kkxq=2019%E4%B8%8B';\" class=\"button\">   \t\t\t\t\t\t\n" +
+                "&nbsp;&nbsp;&nbsp;&nbsp;<input name=\"allkb\" type=\"button\" value=\"完整课表\" onClick=\"javascript:document.location='kb_xs.asp';\" class=\"button\">&nbsp;&nbsp;&nbsp;&nbsp;   \n" +
+                "\t<input name=\"nweek\" type=\"button\" value=\"下一周 \" onClick=\"javascript:document.location='zkb_xs.asp?week1=14&kkxq=2019%E4%B8%8B';\" class=\"button\">  \n" +
+                "  \n" +
+                "</td></tr>\n" +
+                "<tr><td align=\"center\" class=\"td3\"><strong> 2019下学期第13周(2020-5-11-2020-5-17)，马骏</strong> </td></tr>\n" +
+                "</table>\t\n" +
+                "\n" +
+                "\n" +
+                "<table  cellspacing=\"0\" cellpadding=\"0\" align=\"center\" border=\"0\" bordercolor=\"#111111\">\n" +
+                "  <tr> \n" +
+                "    <td valign=\"top\">\n" +
+                "\t\n" +
+                "\t<table class=\"table1\" width=\"440\" height=\"400\" cellspacing=\"0\" cellpadding=\"1\" align=\"center\" style=\"border-collapse: collapse\" border=\"1\" >\n" +
+                "        <tr  height=\"30\"> \n" +
+                "          <td align=\"center\" class=\"td1\">\n" +
+                "            5月<br>\n" +
+                "            节次 </td>\n" +
+                "          <td align=\"center\" class=\"td1\">11<br />周一</td>\n" +
+                "          <td align=\"center\" class=\"td1\">12<br />周二</td>\n" +
+                "          <td align=\"center\" class=\"td1\">13<br />周三</td>\n" +
+                "          <td align=\"center\" class=\"td1\">14<br />周四</td>\n" +
+                "          <td align=\"center\" class=\"td1\">15<br />周五</td>\n" +
+                "\t\t  \n" +
+                "          <td align=\"center\" class=\"td1\">16<br />周六</td>\n" +
+                "\t\t  \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        \n" +
+                "        <tr id=\"tr1\"> \n" +
+                "          <td align=\"center\" class=\"td1\">1</td>\n" +
+                "          \n" +
+                "          <td align=\"center\" rowspan=4 id=\"11\"  class=\"td2\">高级数据库技术(1)班<br>[网络教学]</td>\n" +
+                "          \n" +
+                "          <td id=\"12\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td align=\"center\" rowspan=4 id=\"13\"  class=\"td2\">数据挖掘应用实践(1)班<br>[网络教学]</td>\n" +
+                "          \n" +
+                "          <td id=\"14\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"15\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"16\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr2\"> \n" +
+                "          <td align=\"center\" class=\"td1\">2</td>\n" +
+                "          \n" +
+                "          <td id=\"22\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"24\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"25\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"26\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr3\"> \n" +
+                "          <td align=\"center\" class=\"td1\">3</td>\n" +
+                "          \n" +
+                "          <td align=\"center\" rowspan=2 id=\"32\"  class=\"td2\">大学物理（上）(15)班<br>[网络教学]<br>形势与政策（六）(6)班<br>[网络教学]</td>\n" +
+                "          \n" +
+                "          <td id=\"34\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"35\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"36\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr4\"> \n" +
+                "          <td align=\"center\" class=\"td1\">4</td>\n" +
+                "          \n" +
+                "          <td id=\"44\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"45\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"46\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr5\"> \n" +
+                "          <td align=\"center\" class=\"td1\">5</td>\n" +
+                "          \n" +
+                "          <td id=\"51\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td align=\"center\" rowspan=4 id=\"52\"  class=\"td2\">大数据应用开发实践(1)班<br>[网络教学]</td>\n" +
+                "          \n" +
+                "          <td align=\"center\" rowspan=4 id=\"53\"  class=\"td2\">软件工程(1)班<br>[网络教学]</td>\n" +
+                "          \n" +
+                "          <td id=\"54\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"55\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td align=\"center\" rowspan=2 id=\"56\"  class=\"td2\">概率论与数理统计(普10)班<br>[网络教学]</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr6\"> \n" +
+                "          <td align=\"center\" class=\"td1\">6</td>\n" +
+                "          \n" +
+                "          <td id=\"61\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"64\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"65\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr7\"> \n" +
+                "          <td align=\"center\" class=\"td1\">7</td>\n" +
+                "          \n" +
+                "          <td id=\"71\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"74\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"75\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"76\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr8\"> \n" +
+                "          <td align=\"center\" class=\"td1\">8</td>\n" +
+                "          \n" +
+                "          <td id=\"81\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"84\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"85\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"86\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr9\"> \n" +
+                "          <td align=\"center\" class=\"td1\">9</td>\n" +
+                "          \n" +
+                "          <td id=\"91\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"92\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td align=\"center\" rowspan=2 id=\"93\"  class=\"td2\">概率论与数理统计(普10)班<br>[网络教学]</td>\n" +
+                "          \n" +
+                "          <td id=\"94\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"95\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"96\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr10\"> \n" +
+                "          <td align=\"center\" class=\"td1\">10</td>\n" +
+                "          \n" +
+                "          <td id=\"101\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"102\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"104\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"105\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"106\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "        <tr id=\"tr11\"> \n" +
+                "          <td align=\"center\" class=\"td1\">11</td>\n" +
+                "          \n" +
+                "          <td id=\"111\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"112\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"113\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"114\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"115\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "          <td id=\"116\" class=\"td2\">&nbsp;</td>\n" +
+                "          \n" +
+                "        </tr>\n" +
+                "        \n" +
+                "      </table></td>\n" +
+                "  </tr>\n" +
+                "</table>\n" +
+                "\t\n" +
+                "</body>\n" +
+                "</html>\n";
+    }
+
+    /**
+     * 马老师周课表answer
+     *
+     * @return String
+     */
+    private static String getTeacherMaOneWeekAnswer() {
+        return "[OneWeekCourse{onlyID=null, couID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=1, startNode=1, endNode=4, InWeek=13, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='数据挖掘应用实践(1)班', couRoom='网络教学', dayOfWeek=3, startNode=1, endNode=4, InWeek=13, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='大学物理（上）(15)班', couRoom='网络教学', dayOfWeek=2, startNode=3, endNode=4, InWeek=13, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='形势与政策（六）(6)班', couRoom='网络教学', dayOfWeek=2, startNode=3, endNode=4, InWeek=13, CourseType=4, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='大数据应用开发实践(1)班', couRoom='网络教学', dayOfWeek=2, startNode=5, endNode=8, InWeek=13, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='软件工程(1)班', couRoom='网络教学', dayOfWeek=3, startNode=5, endNode=8, InWeek=13, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='概率论与数理统计(普10)班', couRoom='网络教学', dayOfWeek=6, startNode=5, endNode=6, InWeek=13, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='概率论与数理统计(普10)班', couRoom='网络教学', dayOfWeek=3, startNode=9, endNode=10, InWeek=13, CourseType=0, Color=null}]";
+    }
+
 }

@@ -3,14 +3,20 @@ package com.juice.timetable.ui.course;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.PopupWindow;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +28,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.Course;
@@ -39,11 +46,16 @@ import com.juice.timetable.data.viewmodel.OneWeekCourseViewModel;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.databinding.FragmentCourseBinding;
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static android.animation.ObjectAnimator.ofObject;
 
@@ -61,6 +73,8 @@ public class CourseFragment extends Fragment {
     private CourseViewListAdapter mCourseViewListAdapter;
     private List<CourseViewBean> mCourseViewBeanList = new ArrayList<>();
     private int mCurViewPagerNum;
+    private MaterialSpinner mSpinner;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -72,14 +86,41 @@ public class CourseFragment extends Fragment {
         mAllWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(AllWeekCourseViewModel.class);
         mOneWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(OneWeekCourseViewModel.class);
         mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
-        List<Course> allWeekCourse = mAllWeekCourseViewModel.getAllWeekCourse();
-        LogUtils.getInstance().d("mAllWeekCourseViewModel.getAllWeekCourse() -- > " + allWeekCourse);
 
+        initConfig();
         initCurrentWeek();
         initView();
         initCourse();
         return binding.getRoot();
     }
+
+    /**
+     * 初始化配置
+     */
+    private void initConfig() {
+        // 是否开启签到提示
+        Constant.ENABLE_CHECK_IN = PreferencesUtils.getBoolean(Constant.PREF_ENABLE_CHECK_IN, true);
+        // 不存请假系统密码就关掉
+        if (!hasLeavePwd()) {
+            Constant.ENABLE_CHECK_IN = false;
+        }
+
+        // 是否开启慕课显示
+        Constant.ENABLE_SHOW_MOOC = PreferencesUtils.getBoolean(Constant.PREF_ENABLE_SHOW_MOOC, true);
+    }
+
+    /**
+     * 用户存在请假系统密码
+     */
+    private boolean hasLeavePwd() {
+        StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
+        LogUtils.getInstance().d("用户数据库信息：" + stuInfo);
+        if (stuInfo == null) {
+            return false;
+        }
+        return (!stuInfo.getLeavePassword().isEmpty());
+    }
+
 
     @SuppressLint("HandlerLeak")
     @Override
@@ -96,17 +137,35 @@ public class CourseFragment extends Fragment {
             // 设置首次登录为false
             Constant.FIRST_LOGIN = false;
         }
-
-        getCheckIn();
+        // 开启签到显示 且 在签到时间刷新签到情况
+        if (Constant.ENABLE_CHECK_IN && Utils.isCheckInTime()) {
+            getCheckIn();
+        }
         initEvent();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 设置为可见 切换到其他界面会隐藏，所以这样要设置回可见
+        mSpinner.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+//        toolbar.hideOverflowMenu();
+//        mSpinner.setVisibility(View.INVISIBLE);
+
     }
 
     private void initEvent() {
         // 下拉菜单 获取点击的周 设置标题栏
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @SuppressLint("RtlHardcoded")
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                int week = item.getItemId() + 1;
+/*                int week = item.getItemId() + 1;
                 LogUtils.getInstance().d("MenuItem <" + week + "> onMenuItemClick");
 
                 if (week != Constant.CUR_WEEK) {
@@ -115,11 +174,19 @@ public class CourseFragment extends Fragment {
                     toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
                 }
 
-                mVpCourse.setCurrentItem(item.getItemId(), true);
-
+                mVpCourse.setCurrentItem(item.getItemId(), true);*/
+                // 跳转当前周 图标监听
+                if (item.getItemId() == R.id.item_go_current_week) {
+                    mVpCourse.setCurrentItem(Constant.CUR_WEEK - 1, true);
+                    LogUtils.getInstance().d("点击了 跳转到当前周图标 -- > " + (Constant.CUR_WEEK - 1));
+                }
+                if (item.getItemId() == R.id.item_more_option) {
+                    popupWindowEvent();
+                }
                 return false;
             }
         });
+
 
         // 下拉刷新监听
         mSlRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -134,24 +201,189 @@ public class CourseFragment extends Fragment {
         mVpCourse.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
-                mCurViewPagerNum = position;
                 super.onPageSelected(position);
-                int week = position + 1;
+                mCurViewPagerNum = position;
+                // 设置 toolbar 显示当前周
+                mSpinner.setSelectedIndex(position);
+
+/*                int week = position + 1;
                 if (week != Constant.CUR_WEEK) {
                     toolbar.setTitle("第" + week + "周 (非本周)");
                 } else {
                     toolbar.setTitle("第" + week + "周");
-                }
+                }*/
             }
         });
 
         // ViewPager 课程被点击事件
         mCourseViewListAdapter.setItemClickListener(new CourseViewListAdapter.OnItemClickListener() {
             @Override
-            public void onClick(int onlyId) {
-                LogUtils.getInstance().d("课程被点击 onlyId -- > " + onlyId);
+            public void onClick(Course cou) {
+                LogUtils.getInstance().d("课程被点击  -- > " + cou);
+
+                // 撞课处理 类型4 为撞课
+                if (cou.getCouWeekType() == 4) {
+                    // 遍历周课表 查询所有撞课课程
+                    StringBuilder sb = new StringBuilder();
+
+                    List<OneWeekCourse> oneWeekCourse = mCourseViewBeanList.get(0).getOneWeekCourse();
+                    int i = 0;
+                    for (OneWeekCourse weekCourse : oneWeekCourse) {
+                        // 星期相同 且（起或止节数 相同）
+                        if (Objects.equals(weekCourse.getDayOfWeek(), cou.getCouWeek()) && (Objects.equals(weekCourse.getStartNode(), cou.getCouStartNode()) || Objects.equals(weekCourse.getEndNode(), cou.getCouEndNode()))) {
+                            if (i > 0) {
+                                sb.append("<br><br>");
+                            }
+                            sb.append(weekCourse.getCouName()).append("<br>")
+                                    .append(getTeacherName(weekCourse.getCouID()))
+                                    .append(weekCourse.getCouRoom());
+                            i++;
+                        }
+                    }
+
+
+                    new SweetAlertDialog(requireActivity(), SweetAlertDialog.NORMAL_TYPE)
+                            .setTitleText("<font color=\"red\">课程冲突</font>")
+                            .setContentText(sb.toString())
+//                        .setContentTextSize(18)
+                            .hideConfirmButton()
+                            .show();
+                    return;
+                }
+
+                // 周课表没有老师所以要填充
+                String teach = getTeacherName(cou.getCouID());
+
+
+                String sb = teach + cou.getCouRoom();
+
+                new SweetAlertDialog(requireActivity(), SweetAlertDialog.NORMAL_TYPE)
+                        .setTitleText(cou.getCouName())
+                        .setContentText(sb)
+//                        .setContentTextSize(18)
+                        .hideConfirmButton()
+                        .show();
             }
         });
+
+        // 第几周的下拉监听
+        mSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                // 跳转到对应周
+                mVpCourse.setCurrentItem(position, true);
+                LogUtils.getInstance().d("点击了 下拉菜单 跳转到对应周索引 -- > " + position);
+            }
+        });
+    }
+
+    /**
+     * 获取老师名字，没匹配到返回 "" 所以不需要 在后面加 br
+     * 找到自带br
+     *
+     * @param couId
+     * @return
+     */
+    private String getTeacherName(long couId) {
+        // 如果没有匹配到老师 就直接显示空 ""
+        String teach = "";
+        List<Course> allWeekCourse = mCourseViewBeanList.get(0).getAllWeekCourse();
+        for (Course course : allWeekCourse) {
+            if (Objects.equals(course.getCouID(), couId)) {
+                teach = course.getCouTeacher() + "<br>";
+                break;
+            }
+        }
+        return teach;
+    }
+
+    /**
+     * popupWindow的监听事件
+     */
+    private void popupWindowEvent() {
+        // 必须设置宽度
+        final PopupWindow popupWindow = new PopupWindow(requireView(),
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setAnimationStyle(R.anim.nav_default_pop_enter_anim);
+
+        // 添加阴影
+        popupWindow.setElevation(100);
+
+        // 点击其他区域 PopUpWindow消失
+        popupWindow.setTouchable(true);
+        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // false 不拦截这个事件
+                // 拦截了PopUpWindow 的onTouchEvent就不会被调用
+//                            popupWindow.dismiss();
+                return false;
+            }
+        });
+        popupWindow.setBackgroundDrawable(new ColorDrawable(0xfffafafa));
+        View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.popupwindow, null);
+        popupWindow.setContentView(contentView);
+        popupWindow.showAsDropDown(toolbar, 0, 0, Gravity.RIGHT);
+        final Switch switchCheckIn = contentView.findViewById(R.id.switch_check_in);
+        Switch switchShowMooc = contentView.findViewById(R.id.switch_show_mooc);
+        // 初始化开关状态
+        switchCheckIn.setChecked(Constant.ENABLE_CHECK_IN);
+        switchShowMooc.setChecked(Constant.ENABLE_SHOW_MOOC);
+
+        switchCheckIn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                LogUtils.getInstance().d("签到提示按钮 -- > " + isChecked);
+                if (isChecked) {
+                    if (hasLeavePwd()) {
+                        Toast.makeText(getActivity(), "签到提示开启，会在签到时间段显示签到情况", Toast.LENGTH_LONG).show();
+
+                    } else {
+                        Toast.makeText(getActivity(), "需要先在修改认证信息界面添加请假系统密码才可以开启哦", Toast.LENGTH_LONG).show();
+                        isChecked = false;
+                        switchCheckIn.setChecked(false);
+                    }
+                } else {
+
+                    Toast.makeText(getActivity(), "签到提示已关闭", Toast.LENGTH_SHORT).show();
+                }
+                // 在签到时间内 就是显示签到通知条
+                Constant.ENABLE_CHECK_IN = isChecked;
+
+                if (Utils.isCheckInTime() && isChecked) {
+                    mTvCheckIn.setVisibility(TextView.VISIBLE);
+                    // 通知刷新数据
+                    getCheckIn();
+                } else {
+                    mTvCheckIn.setVisibility(TextView.GONE);
+                    // 通知ViewPager 重新调整布局，不然下方会有空隙
+                    mCourseViewListAdapter.notifyDataSetChanged();
+                }
+
+                // 持久化
+                PreferencesUtils.putBoolean(Constant.PREF_ENABLE_CHECK_IN, isChecked);
+            }
+        });
+        switchShowMooc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                LogUtils.getInstance().d("慕课显示按钮 -- > " + isChecked);
+                if (isChecked) {
+                    Toast.makeText(getActivity(), "慕课显示开启，课表下方会显示所选慕课信息", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity(), "慕课显示已关闭", Toast.LENGTH_SHORT).show();
+                }
+                Constant.ENABLE_SHOW_MOOC = isChecked;
+
+                // 通知ViewPager 重新调整布局，不然慕课显示还会在
+                mCourseViewListAdapter.notifyDataSetChanged();
+                // 持久化
+                PreferencesUtils.putBoolean(Constant.PREF_ENABLE_SHOW_MOOC, isChecked);
+            }
+        });
+
+
     }
 
     /**
@@ -163,14 +395,28 @@ public class CourseFragment extends Fragment {
         updateCourse();
         mVpCourse.setAdapter(mCourseViewListAdapter);
         // 打开主页 跳转当前周
-        mVpCourse.setCurrentItem(Constant.CUR_WEEK - 1, false);
-        // 显示标题栏
+
+
+        // 本地不存在 会返回-1
+        int curWeek = Constant.CUR_WEEK;
+        // 不在周范围 显示第一周
+        if (curWeek < 1 || curWeek > Constant.MAX_WEEK) {
+            curWeek = 1;
+        }
+
+
+        mVpCourse.setCurrentItem(curWeek - 1, false);
+        // 设置 toolbar 显示当前周
+        LogUtils.getInstance().d("spinner 设置当前周 -- > " + curWeek);
+
+        mSpinner.setSelectedIndex(curWeek - 1);
+/*        // 显示标题栏
 
         if ((mCurViewPagerNum + 1) != Constant.CUR_WEEK) {
             toolbar.setTitle("第" + Constant.CUR_WEEK + "周 (非本周)");
         } else {
             toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
-        }
+        }*/
     }
 
     /**
@@ -182,15 +428,25 @@ public class CourseFragment extends Fragment {
         List<Integer> week = mOneWeekCourseViewModel.getWeek();
         HashSet<Integer> weekSet = new HashSet<>(week);
         List<CourseViewBean> tempList = new ArrayList<>();
+
+        // 遍历得到慕课列表 慕课类型为3
+        List<Course> moocCourse = new ArrayList<>();
+        for (Course course : allWeekCourse) {
+            if (course.getCouWeekType() == 3) {
+                moocCourse.add(course);
+            }
+        }
+
         for (int i = 1; i <= 25; i++) {
             CourseViewBean courseViewBean = new CourseViewBean();
             courseViewBean.setAllWeekCourse(allWeekCourse);
             courseViewBean.setCurrentIndex(i);
             courseViewBean.setOneWeekCourse(oneWeekCourse);
             courseViewBean.setWeekSet(weekSet);
+            courseViewBean.setMoocCourse(moocCourse);
             tempList.add(courseViewBean);
-            LogUtils.getInstance().d("mCourseViewBeanList size -- > " + mCourseViewBeanList.size());
         }
+        LogUtils.getInstance().d("mCourseViewBeanList size -- > " + mCourseViewBeanList.size());
         // 先清空原有的数据 再写入新数据
         mCourseViewBeanList.clear();
         mCourseViewBeanList.addAll(tempList);
@@ -227,16 +483,31 @@ public class CourseFragment extends Fragment {
     private void initView() {
         toolbar = requireActivity().findViewById(R.id.toolbar);
 
-        // 显示Toolbar的下拉菜单按钮
-        Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
+//         显示Toolbar的右侧菜单按钮
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, true);
+
+        // 移除原有标题
+        toolbar.setTitle("");
+        // toolbar spinner 下拉菜单
+        mSpinner = toolbar.findViewById(R.id.spinner);
+
+        String[] weekArr = new String[Constant.MAX_WEEK];
+        for (int i = 0; i < Constant.MAX_WEEK; i++) {
+            weekArr[i] = "第 " + (i + 1) + " 周";
+        }
+
+        mSpinner.setItems(weekArr);
+        mSpinner.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        mSpinner.setTextColor(0xFF000000);
+        mSpinner.setTextSize(20);
+        mSpinner.setDropdownMaxHeight(700);
 
         // 初始化标题栏 只在 registerOnPageChangeCallback 中初始化 从后台切回标题栏不会显示周
         // 在 updateCourse 中初始
 
-        // 不在签到时间并且不在调试模式 隐藏签到提示栏
-        if (!Utils.isCheckInTime() && !Constant.DEBUG_CHECK_IN_TEXTVIEW) {
+        // 没有开启签到显示 或 不在签到时间并 隐藏签到提示栏
+        if (!Constant.ENABLE_CHECK_IN || !Utils.isCheckInTime()) {
             mTvCheckIn.setVisibility(TextView.GONE);
         }
     }
@@ -261,7 +532,11 @@ public class CourseFragment extends Fragment {
                 } catch (Exception e) {
                     LogUtils.getInstance().d("setOnRefreshListener：" + e.getMessage());
                     // 可能密码错误
-                    message.obj = e.getMessage();
+                    if (e.getMessage().contains("Unable to resolve host")) {
+                        message.obj = "网络好像不太好，请检查网络";
+                    } else {
+                        message.obj = e.getMessage();
+                    }
                 }
                 LogUtils.getInstance().d("setOnRefreshListener:模拟登录获取完整课表结束");
                 if (allCourse == null) {
@@ -279,13 +554,13 @@ public class CourseFragment extends Fragment {
                     // 先删除数据库 完整课表
                     mAllWeekCourseViewModel.deleteAllWeekCourse();
                     // 加载完整课表填充颜色
-                    for (Course cours : courses) {
-                        if (cours.getCouColor() == null) {
+                    for (Course cou : courses) {
+                        if (cou.getCouColor() == null) {
                             // 这里的courses是模拟登录获取的，所有color为null，所以每次都刷新颜色
-                            cours.setCouColor(Utils.getColor(cours.getCouID().intValue()));
+                            cou.setCouColor(cou.getCouID().intValue());
                         }
                         // 填充完颜色将课程写入数据库
-                        mAllWeekCourseViewModel.insertAllWeekCourse(cours);
+                        mAllWeekCourseViewModel.insertAllWeekCourse(cou);
                     }
 
 
@@ -320,6 +595,15 @@ public class CourseFragment extends Fragment {
                             Toast.makeText(getActivity(), msgStr, Toast.LENGTH_SHORT).show();
                             mSlRefresh.setRefreshing(false);
                         } else {
+                            // 如果开启了彩虹模式 随机一个数
+                            if (Constant.RAINBOW_MODE_ENABLED) {
+                                Random random = new Random();
+                                // 随机一个1开始的数， 0代表关闭彩虹模式
+                                int rainbowModeNum = random.nextInt(Utils.getColorCount() + 1);
+                                Constant.RAINBOW_MODE_NUM = rainbowModeNum;
+                                // 写入本地Preferences
+                                PreferencesUtils.putInt(Constant.PREF_RAINBOW_MODE_NUM, rainbowModeNum);
+                            }
                             updateCourse();
                             Toast.makeText(requireActivity(), "课表刷新成功", Toast.LENGTH_SHORT).show();
                             mSlRefresh.setRefreshing(false);
@@ -367,9 +651,9 @@ public class CourseFragment extends Fragment {
                 StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
                 LogUtils.getInstance().d("用户数据库信息：" + stuInfo);
                 boolean hasLeavePwd = (stuInfo.getEduPassword() != null);
-                // (签到时间或者调试模式)且数据库有请假系统密码  初始化签到信息
+                // 数据库有请假系统密码  初始化签到信息
                 LogUtils.getInstance().d("有请假系统密码则开始获取签到信息");
-                if ((Utils.isCheckInTime() || Constant.DEBUG_CHECK_IN_TEXTVIEW) && hasLeavePwd) {
+                if (hasLeavePwd) {
                     try {
                         String checkIn = LeaveInfo.getLeave(stuInfo.getStuID().toString(), stuInfo.getLeavePassword(), Constant.URI_CHECK_IN, requireContext());
                         LogUtils.getInstance().d("签到数据：" + checkIn);
@@ -487,7 +771,7 @@ public class CourseFragment extends Fragment {
                 } else {
                     // 没有找到 可能是一些考试的显示
                     // 取当前的完整课表的课数目为随机数
-                    oneWeekCourse.setColor(Utils.getColor(colorNum++));
+                    oneWeekCourse.setColor(colorNum++);
 
                 }
             }

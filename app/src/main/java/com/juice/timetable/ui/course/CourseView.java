@@ -21,6 +21,7 @@ import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -44,12 +45,11 @@ public class CourseView extends FrameLayout {
     private int mTextColor = Color.WHITE;
     private int mTextSize = 12;
 
-
     private int mWidth;
     private int mHeight;
 
     private int mRowCount = 7;
-    private int mColCount = 16;
+    private int mColCount = 11;
 
     private boolean mFirstDraw = false;
 
@@ -202,10 +202,15 @@ public class CourseView extends FrameLayout {
         params.setMargins(textLRMargin, textTBMargin, textLRMargin, textTBMargin);
         tv.setLayoutParams(params);
         // 设置tv文本
-        String showText = course.getCouName() + "\n" + course.getCouRoom();
+        // 撞课 在前面 添加[课程冲突]
+        String showText = "";
+        if (course.getCouWeekType() == 4) {
+            showText = "[课程冲突]";
+        }
+        showText = showText + course.getCouName() + "\n" + course.getCouRoom();
         tv.setText(showText);
-        LogUtils.getInstance().d("course.getCouColor():" + course.getCouColor());
-        tv.setBackgroundColor(course.getCouColor());
+
+        tv.setBackgroundColor(Utils.getColor(course.getCouColor() + Constant.RAINBOW_MODE_NUM));
 
         // 背景图层
         backgroundView.addView(tv);
@@ -229,7 +234,7 @@ public class CourseView extends FrameLayout {
             public void onClick(View v) {
                 // 通知ViewPager
                 if (mItemClickListener != null) {
-                    mItemClickListener.onClick(course.getOnlyID());
+                    mItemClickListener.onClick(course);
                 }
             }
         });
@@ -278,7 +283,7 @@ public class CourseView extends FrameLayout {
         // 移除课表界面所有课程
         removeAllViews();
 
-        LogUtils.getInstance().d("initCourseItemView执行了");
+        LogUtils.getInstance().d("initCourseItemView执行");
         // 通过Dao层获取课程数据 添加课程到课程界面
         if (courses == null) {
             courses = new ArrayList<>();
@@ -296,6 +301,8 @@ public class CourseView extends FrameLayout {
                     course.setCouColor(oneCou.getColor());
                     course.setCouWeek(oneCou.getDayOfWeek());
                     course.setOnlyID(oneCou.getOnlyID());
+                    course.setCouID(oneCou.getCouID());
+                    course.setCouWeekType(oneCou.getCourseType());
                     addCourse(course);
                 }
             }
@@ -338,7 +345,7 @@ public class CourseView extends FrameLayout {
     // 设置当前周
     public CourseView setCurrentIndex(int currentIndex) {
         this.mCurrentIndex = currentIndex;
-        LogUtils.getInstance().d("setCurrentIndex:" + currentIndex);
+
         postInvalidate();
         return this;
     }
@@ -353,7 +360,7 @@ public class CourseView extends FrameLayout {
     }
 
     interface OnItemClickListener {
-        void onClick(int onlyId);
+        void onClick(Course cou);
     }
 
     public OnItemClickListener getItemClickListener() {

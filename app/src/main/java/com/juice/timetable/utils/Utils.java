@@ -21,6 +21,7 @@ import java.util.UUID;
  * </pre>
  */
 public class Utils {
+    private static int[] colorArr = {0xFFEB9D6C, 0xFFF4B997, 0xFFD0DDE3, 0xFFB4DDCF, 0xFFEDB6D5, 0xFFE9D2E2, 0xFFFCE2C1, 0xFFE35B45, 0xFFFD8256, 0xFFF9C272, 0xFF8BD5C8, 0xFFACC864, 0xFFAED5D4, 0xFFF9CE89, 0xFFFFB296, 0xFFFD485B, 0xFF75CAE9, 0xFFA7DDE9, 0xFFF7DB70, 0xFFEF727A, 0xFFFFA3A8, 0xFFFFA791, 0xFF7186A3, 0xFF7CCDEA, 0xFFCBE7F5, 0xFFBEF4E6, 0xFF65EEDE, 0xFF91C7ED, 0xFFF9D1AD, 0xFFDCE1E4, 0xFFF9C0B9, 0xFFFDE9AC, 0xFFAFE9DB};
 
 
     /**
@@ -48,8 +49,16 @@ public class Utils {
      * @return
      */
     public static int getColor(int num) {
-        int[] colorArr = {0xFFEB9D6C, 0xFFF4B997, 0xFFD0DDE3, 0xFFB4DDCF, 0xFFEDB6D5, 0xFFE9D2E2, 0xFFFCE2C1, 0xFFE35B45, 0xFFFD8256, 0xFFF9C272, 0xFF8BD5C8, 0xFFACC864, 0xFFAED5D4, 0xFFF9CE89, 0xFFFFB296, 0xFFFD485B, 0xFF75CAE9, 0xFFA7DDE9, 0xFFF7DB70, 0xFFEF727A, 0xFFFFA3A8, 0xFFFFA791, 0xFF7186A3, 0xFF7CCDEA, 0xFFCBE7F5, 0xFFBEF4E6, 0xFF65EEDE, 0xFF91C7ED, 0xFFF9D1AD, 0xFFDCE1E4, 0xFFF9C0B9, 0xFFFDE9AC, 0xFFAFE9DB};
         return colorArr[num % (colorArr.length - 1)];
+    }
+
+    /**
+     * 获取颜色数组的个数
+     *
+     * @return
+     */
+    public static int getColorCount() {
+        return colorArr.length;
     }
 
     /**
@@ -150,6 +159,7 @@ public class Utils {
     /**
      * 获取当前周
      * 不存在return -1
+     *
      * @return
      */
     public static int getCurrentWeek() {

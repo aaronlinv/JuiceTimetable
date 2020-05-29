@@ -18,23 +18,54 @@
         android:fillViewport="true">
 
         <LinearLayout
-            android:id="@+id/ll_course"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/ll_node"
-                android:layout_width="28dp"
+                android:id="@+id/ll_course"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
+                <LinearLayout
+                    android:id="@+id/ll_node"
+                    android:layout_width="28dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <com.juice.timetable.ui.course.CourseView
+                    android:id="@+id/course_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <com.juice.timetable.ui.course.CourseView
-                android:id="@+id/course_view"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
+            <LinearLayout
+                android:id="@+id/ll_mooc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tip_current_mooc"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_mooc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="100dp"
+                    android:text="@string/tip_example_mooc"
+                    android:textColor="#FFFF0000"
+                    android:textSize="13sp" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
