@@ -143,7 +143,18 @@ public class CourseView extends FrameLayout {
 
     public void addCourse(Course course) {
 
-        View itemView = createCourseItem(course);
+        // 冲突课程集合
+        List<Course> conflictList = findConflictCourse(course);
+        String str = "";
+        if (conflictList.size() > 0) {
+            for (Course course1 : conflictList) {
+                str = str + "<--->" + course1.getCouName();
+            }
+            LogUtils.getInstance().d("查找冲突课程" + course.getCouName() + " -- > " + str);
+        }
+
+
+        View itemView = createCourseItem(course, conflictList);
         // 节课节数
         int row = course.getCouEndNode() - course.getCouStartNode() + 1;
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(mRowItemWidth,
@@ -186,7 +197,7 @@ public class CourseView extends FrameLayout {
      *
      * @return
      */
-    public View createCourseItem(Course course) {
+    public View createCourseItem(Course course, List<Course> conflictList) {
         // 背景
         FrameLayout backgroundView = new FrameLayout(getContext());
 
@@ -203,20 +214,12 @@ public class CourseView extends FrameLayout {
         // 设置tv文本
         // 撞课 在前面 添加[课程冲突]
 
-        // 测试查找冲突课程 要排除周课表
-        if (!(course.getCouEndWeek() == null)) {
-            List<Course> conflictCourse = findConflictCourse(course, courses);
-            String str = "";
-            if (conflictCourse.size() > 0) {
-                for (Course course1 : conflictCourse) {
-                    str = str + "<--->" + course1.getCouName();
-                }
-                LogUtils.getInstance().d("查找冲突课程" + course.getCouName() + " -- > " + str);
-            }
-        }
 
         String showText = "";
-        if (course.getCouWeekType() == 4) {
+//        if (course.getCouWeekType() == 4) {
+//            showText = "[课程冲突]";
+//        }
+        if (conflictList.size() > 0) {
             showText = "[课程冲突]";
         }
         showText = showText + course.getCouName() + "\n" + course.getCouRoom();
@@ -361,29 +364,14 @@ public class CourseView extends FrameLayout {
      * @param cou
      * @return
      */
-    private List<Course> findConflictCourse(Course cou, List<Course> allCou) {
-        LogUtils.getInstance().d("findConflictCourse cou -- > " + cou);
+    private List<Course> findConflictCourse(Course cou) {
+        // 上面已经处理好了 这里courses 就是单前周应该添加的所有课程（不管是周课表还是完整课表）
         List<Course> conflictCouList = new ArrayList<>();
-        for (Course findCou : allCou) {
-            LogUtils.getInstance().d("findConflictCourse findCou -- > " + findCou);
-            // 非实体课 跳过
-            // TODO: 2020/5/30 单双周要考虑
-            if (findCou.getCouWeekType() == 1 && getCurrentIndex() % 2 != 1) {
-                continue;
-            }
-            if (findCou.getCouWeekType() == 2 && getCurrentIndex() % 2 != 0) {
-                continue;
-            }
-            if (findCou.getCouWeekType() == 3) {
-                continue;
-            }
-
+        for (Course findCou : courses) {
             // 课不相同 周相同
-            if (!Objects.equals(findCou.getCouID(), cou.getCouID()) &&
-                    findCou.getCouStartWeek() >= cou.getCouStartWeek()
-                    && findCou.getCouEndWeek() <= cou.getCouEndWeek()) {
-                // 周相同 起始结束节有碰到就为冲突
-                if (findCou.getCouWeek() < cou.getCouWeek()
+            if (!Objects.equals(findCou.getCouID(), cou.getCouID())) {
+                // 星期相同 起始结束节有碰到就为冲突
+                if (Objects.equals(findCou.getCouWeek(), cou.getCouWeek())
                         && (Objects.equals(findCou.getCouStartNode(), cou.getCouStartNode()) ||
                         Objects.equals(findCou.getCouEndNode(), cou.getCouEndNode()))) {
                     conflictCouList.add(findCou);
