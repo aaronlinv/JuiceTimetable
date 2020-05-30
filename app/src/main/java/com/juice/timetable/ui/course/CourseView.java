@@ -147,6 +147,9 @@ public class CourseView extends FrameLayout {
         List<Course> conflictList = findConflictCourse(course);
         String str = "";
         if (conflictList.size() > 0) {
+            // 把自己添加进去
+            conflictList.add(course);
+
             for (Course course1 : conflictList) {
                 str = str + "<--->" + course1.getCouName();
             }
@@ -233,7 +236,7 @@ public class CourseView extends FrameLayout {
         // 设置点击的背景色
         setItemViewBackground(tv, backgroundColor);
         // 点击事件
-        initEvent(tv, course);
+        initEvent(tv, course, conflictList);
         return backgroundView;
 
 
@@ -256,14 +259,15 @@ public class CourseView extends FrameLayout {
      *
      * @param tv
      * @param course
+     * @param conflictList
      */
-    private void initEvent(TextView tv, final Course course) {
+    private void initEvent(final TextView tv, final Course course, final List<Course> conflictList) {
         tv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 通知ViewPager
                 if (mItemClickListener != null) {
-                    mItemClickListener.onClick(course);
+                    mItemClickListener.onClick(course, conflictList);
                 }
             }
         });
@@ -421,7 +425,7 @@ public class CourseView extends FrameLayout {
     }
 
     interface OnItemClickListener {
-        void onClick(Course cou);
+        void onClick(Course cou, List<Course> conflictList);
     }
 
     public OnItemClickListener getItemClickListener() {

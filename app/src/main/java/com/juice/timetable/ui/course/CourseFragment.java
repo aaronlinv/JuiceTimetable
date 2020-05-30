@@ -220,8 +220,8 @@ public class CourseFragment extends Fragment {
         // ViewPager 课程被点击事件
         mCourseViewListAdapter.setItemClickListener(new CourseViewListAdapter.OnItemClickListener() {
             @Override
-            public void onClick(Course cou) {
-                LogUtils.getInstance().d("课程被点击  -- > " + cou);
+            public void onClick(Course cou, List<Course> conflictList) {
+                LogUtils.getInstance().d("课程被点击  -- > " + cou.getCouName() + " 冲突列表 --> " + conflictList);
 
                 // 撞课处理 类型4 为撞课
                 if (cou.getCouWeekType() == 4) {
