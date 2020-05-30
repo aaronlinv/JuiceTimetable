@@ -223,44 +223,41 @@ public class CourseFragment extends Fragment {
             public void onClick(Course cou, List<Course> conflictList) {
                 LogUtils.getInstance().d("课程被点击  -- > " + cou.getCouName() + " 冲突列表 --> " + conflictList);
 
-                // 撞课处理 类型4 为撞课
-                if (cou.getCouWeekType() == 4) {
+                // 撞课处理 撞课列表大于0 为撞课
+                if (conflictList.size() > 0) {
                     // 遍历周课表 查询所有撞课课程
                     StringBuilder sb = new StringBuilder();
 
-                    List<OneWeekCourse> oneWeekCourse = mCourseViewBeanList.get(0).getOneWeekCourse();
-                    int i = 0;
-                    for (OneWeekCourse weekCourse : oneWeekCourse) {
-                        // 周相同 且星期相同 且（起或止节数 相同）
-                        // 周课表的周 用startWeek代替(在CourseView里面赋值过)
-                        if (Objects.equals(weekCourse.getInWeek(), cou.getCouStartWeek())
-                                && Objects.equals(weekCourse.getDayOfWeek(), cou.getCouWeek())
-                                && (Objects.equals(weekCourse.getStartNode(), cou.getCouStartNode()) || Objects.equals(weekCourse.getEndNode(), cou.getCouEndNode()))) {
-                            if (i > 0) {
-                                sb.append("<br><br>");
-                            }
-                            sb.append(weekCourse.getCouName()).append("<br>")
-                                    .append(getTeacherName(weekCourse.getCouID()))
-                                    .append(weekCourse.getCouRoom());
-                            i++;
+                    for (int i = 0; i < conflictList.size(); i++) {
+                        Course conflictCou = conflictList.get(i);
+                        if (i > 0) {
+                            sb.append("<br><br>");
                         }
+                        sb.append(conflictCou.getCouName())
+                                .append("<br>")
+                                .append(getTeacherName(conflictCou.getCouID()))
+                                .append("&nbsp;&nbsp;")
+                                .append(conflictCou.getCouRoom())
+                                .append("&nbsp;&nbsp;")
+                                .append(conflictCou.getCouStartNode()).append("~").append(conflictCou.getCouEndNode()).append("节");
                     }
 
 
                     new SweetAlertDialog(requireActivity(), SweetAlertDialog.NORMAL_TYPE)
                             .setTitleText("<font color=\"red\">课程冲突</font>")
                             .setContentText(sb.toString())
-//                        .setContentTextSize(18)
                             .hideConfirmButton()
                             .show();
                     return;
                 }
 
                 // 周课表没有老师所以要填充
-                String teach = getTeacherName(cou.getCouID());
-
-
-                String sb = teach + cou.getCouRoom();
+                String teacher = getTeacherName(cou.getCouID());
+                // 不为空 换行
+                if (!teacher.isEmpty()) {
+                    teacher = teacher + "<br>";
+                }
+                String sb = teacher + cou.getCouRoom();
 
                 new SweetAlertDialog(requireActivity(), SweetAlertDialog.NORMAL_TYPE)
                         .setTitleText(cou.getCouName())
@@ -284,7 +281,6 @@ public class CourseFragment extends Fragment {
 
     /**
      * 获取老师名字，没匹配到返回 "" 所以不需要 在后面加 br
-     * 找到自带br
      *
      * @param couId
      * @return
@@ -299,7 +295,7 @@ public class CourseFragment extends Fragment {
         List<Course> allWeekCourse = mCourseViewBeanList.get(0).getAllWeekCourse();
         for (Course course : allWeekCourse) {
             if (Objects.equals(course.getCouID(), couId)) {
-                teach = course.getCouTeacher() + "<br>";
+                teach = course.getCouTeacher();
                 break;
             }
         }
