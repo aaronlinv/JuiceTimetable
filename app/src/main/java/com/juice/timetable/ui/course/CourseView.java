@@ -142,22 +142,6 @@ public class CourseView extends FrameLayout {
 
 
     public void addCourse(Course course) {
-        // 课为空 return回去 不显示
-        if (course == null) {
-            return;
-        }
-        // 当前显示的不是周课表 且 该课程不是当前显示周的课，return回去 不显示
-        if (!set.contains(mCurrentIndex) && !isActiveStatus(course)) {
-            return;
-        }
-        // 单周课程，当前不为单周 返回
-        if (course.getCouWeekType() != null && course.getCouWeekType() == 1 && mCurrentIndex % 2 != 1) {
-            return;
-        }
-        // 双周课程，当前不为双周 返回
-        if (course.getCouWeekType() != null && course.getCouWeekType() == 2 && mCurrentIndex % 2 != 0) {
-            return;
-        }
 
         View itemView = createCourseItem(course);
         // 节课节数
@@ -174,9 +158,22 @@ public class CourseView extends FrameLayout {
 
     }
 
-    // 是否为当前显示周的课
+    // 只用于周课表 判断是否为当前显示周的课
     private boolean isActiveStatus(Course course) {
-        LogUtils.getInstance().d("isActiveStatus:" + course.toString());
+
+        // 课为空 return回去 不显示
+        if (course == null) {
+            return false;
+        }
+        // 单周课程，当前不为单周 返回
+        if (course.getCouWeekType() != null && course.getCouWeekType() == 1 && mCurrentIndex % 2 != 1) {
+            return false;
+        }
+        // 双周课程，当前不为双周 返回
+        if (course.getCouWeekType() != null && course.getCouWeekType() == 2 && mCurrentIndex % 2 != 0) {
+            return false;
+        }
+        // 起或止周不存在
         if ((course.getCouStartWeek() == null) || (course.getCouEndWeek() == null)) {
             return false;
         }
@@ -341,13 +338,20 @@ public class CourseView extends FrameLayout {
                     addCouList.add(course);
                 }
             }
-            courses = addCouList;
+
+        } else {
+            // 如果不存在周课表就要筛选需要显示的完整课表
+            for (Course cou : courses) {
+                if (isActiveStatus(cou)) {
+                    addCouList.add(cou);
+                }
+            }
         }
         // 添加课程
+        courses = addCouList;
         for (Course cou : courses) {
             addCourse(cou);
         }
-
 
     }
 
