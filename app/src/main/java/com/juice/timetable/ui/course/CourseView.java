@@ -119,7 +119,7 @@ public class CourseView extends FrameLayout {
         return courses;
     }
 
-    private List<Course> courses = new ArrayList<>();
+    private List<Course> courses = null;
 
     public List<OneWeekCourse> getOneWeekCourses() {
         return oneWeekCourses;
@@ -317,10 +317,8 @@ public class CourseView extends FrameLayout {
         if (courses == null) {
             courses = new ArrayList<>();
         }
-        // 数据库有存当前需要显示的周课表 就封装成Course List
+        // 数据库有存当前需要显示的周课表
         if (set.contains(mCurrentIndex)) {
-            courses.clear();
-
             for (OneWeekCourse oneCou : oneWeekCourses) {
                 if (oneCou.getInWeek().equals(mCurrentIndex)) {
                     // 封装一个Course对象
@@ -335,19 +333,25 @@ public class CourseView extends FrameLayout {
                     course.setCouID(oneCou.getCouID());
                     course.setCouWeekType(oneCou.getCourseType());
                     // 用于撞课的但前周判断
-                    // 用startWeek endWeek 存储周课表 当前周信息
-                    course.setCouStartWeek(mCurrentIndex);
-                    course.setCouEndWeek(mCurrentIndex);
-
-                    courses.add(course);
+                    if (oneCou.getCourseType() == 4) {
+                        // 用startWeek存储周课表 当前周信息
+                        course.setCouStartWeek(mCurrentIndex);
+                    }
+                    addCourse(course);
                 }
             }
-        }
-        // 遍历添加每个课程
-        for (Course cou : courses) {
-            addCourse(cou);
-        }
+        } else {
+            for (Course cou : courses) {
+//            LogUtils.getInstance().d("课表控件 遍历课程："+cou);
+                // 没有颜色 添加颜色
+/*            if (cou.getCouColor() == null) {
+                cou.setCouColor(Utils.getColor(cou.getCouID().intValue()));
+//                LogUtils.getInstance().d("添加颜色" + cou.getCouColor());
+            }*/
+                addCourse(cou);
+            }
 
+        }
 
     }
 
