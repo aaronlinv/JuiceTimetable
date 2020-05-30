@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.drawable.StateListDrawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -210,16 +211,30 @@ public class CourseView extends FrameLayout {
         showText = showText + course.getCouName() + "\n" + course.getCouRoom();
         tv.setText(showText);
 
-        tv.setBackgroundColor(Utils.getColor(course.getCouColor() + Constant.RAINBOW_MODE_NUM));
+        int backgroundColor = Utils.getColor(course.getCouColor() + Constant.RAINBOW_MODE_NUM);
+        tv.setBackgroundColor(backgroundColor);
 
         // 背景图层
         backgroundView.addView(tv);
-//        setItemViewBackground(course, tv);
+        // 设置点击的背景色
+        setItemViewBackground(tv, backgroundColor);
         // 点击事件
         initEvent(tv, course);
         return backgroundView;
 
 
+    }
+
+    private void setItemViewBackground(TextView tv, int color) {
+        StateListDrawable drawable;
+        drawable = getShowBgDrawable(color, color & 0x80FFFFFF);
+        tv.setBackground(drawable);
+    }
+
+    private StateListDrawable getShowBgDrawable(int color, int color2) {
+        return Utils.getPressedSelector(getContext(),
+                // 0 不圆角矩形
+                color, color2, 0);
     }
 
     /**
