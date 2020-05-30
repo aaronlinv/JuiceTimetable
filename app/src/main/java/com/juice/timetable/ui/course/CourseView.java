@@ -27,6 +27,7 @@ import com.juice.timetable.utils.Utils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <pre>
@@ -204,6 +205,19 @@ public class CourseView extends FrameLayout {
         tv.setLayoutParams(params);
         // 设置tv文本
         // 撞课 在前面 添加[课程冲突]
+
+        // 测试查找冲突课程 要排除周课表
+        if (!(course.getCouEndWeek() == null)) {
+            List<Course> conflictCourse = findConflictCourse(course, courses);
+            String str = "";
+            if (conflictCourse.size() > 0) {
+                for (Course course1 : conflictCourse) {
+                    str = str + "<--->" + course1.getCouName();
+                }
+                LogUtils.getInstance().d("查找冲突课程" + course.getCouName() + " -- > " + str);
+            }
+        }
+
         String showText = "";
         if (course.getCouWeekType() == 4) {
             showText = "[课程冲突]";
@@ -340,6 +354,45 @@ public class CourseView extends FrameLayout {
         }
 
     }
+
+    /**
+     * 根据课程 id 和 起止节 查找冲突的课程
+     *
+     * @param cou
+     * @return
+     */
+    private List<Course> findConflictCourse(Course cou, List<Course> allCou) {
+        LogUtils.getInstance().d("findConflictCourse cou -- > " + cou);
+        List<Course> conflictCouList = new ArrayList<>();
+        for (Course findCou : allCou) {
+            LogUtils.getInstance().d("findConflictCourse findCou -- > " + findCou);
+            // 非实体课 跳过
+            // TODO: 2020/5/30 单双周要考虑
+            if (findCou.getCouWeekType() == 1 && getCurrentIndex() % 2 != 1) {
+                continue;
+            }
+            if (findCou.getCouWeekType() == 2 && getCurrentIndex() % 2 != 0) {
+                continue;
+            }
+            if (findCou.getCouWeekType() == 3) {
+                continue;
+            }
+
+            // 课不相同 周相同
+            if (!Objects.equals(findCou.getCouID(), cou.getCouID()) &&
+                    findCou.getCouStartWeek() >= cou.getCouStartWeek()
+                    && findCou.getCouEndWeek() <= cou.getCouEndWeek()) {
+                // 周相同 起始结束节有碰到就为冲突
+                if (findCou.getCouWeek() < cou.getCouWeek()
+                        && (Objects.equals(findCou.getCouStartNode(), cou.getCouStartNode()) ||
+                        Objects.equals(findCou.getCouEndNode(), cou.getCouEndNode()))) {
+                    conflictCouList.add(findCou);
+                }
+            }
+        }
+        return conflictCouList;
+    }
+
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
