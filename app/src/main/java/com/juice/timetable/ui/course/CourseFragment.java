@@ -770,8 +770,10 @@ public class CourseFragment extends Fragment {
 
         // 颜色的随机数(从完整课表总课程数开始)
         int colorNum = allWeekCourse.size();
+        LogUtils.getInstance().d("allWeekCourse.size() -- > " + allWeekCourse.size());
         // 周课表课程存在完整课表中，就赋值上完整课表id
         for (OneWeekCourse oneWeekCourse : couList) {
+            long color = -1;
             for (Course cou : allWeekCourse) {
                 // 去除空格
                 String wholeCouName = cou.getCouName().replace(" ", "");
@@ -779,16 +781,21 @@ public class CourseFragment extends Fragment {
                 if (wholeCouName.equals(oneCouName)) {
                     // 设置上课程id和颜色
                     oneWeekCourse.setCouID(cou.getCouID());
-                    oneWeekCourse.setColor(cou.getCouColor());
+                    color = cou.getCouID();
                     LogUtils.getInstance().d("在完整课表中找到了该课程并修改：" + oneWeekCourse);
                     break;
-                } else {
-                    // 没有找到 可能是一些考试的显示
-                    // 取当前的完整课表的课数目为随机数
-                    oneWeekCourse.setColor(colorNum++);
-
                 }
             }
+            // 没有找到 可能是一些考试的显示
+            // 取当前的完整课表的课数目为随机数
+            if (color == -1) {
+                LogUtils.getInstance().d("没有在完整课表中找到当前课程 -- > " + oneWeekCourse.getCouName());
+                color = colorNum;
+                colorNum++;
+            }
+            // 设置颜色
+            oneWeekCourse.setColor((int) color);
+
             // 插入数据库
             mOneWeekCourseViewModel.insertOneWeekCourse(oneWeekCourse);
         }
