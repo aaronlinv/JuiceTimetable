@@ -289,9 +289,13 @@ public class CourseFragment extends Fragment {
      * @param couId
      * @return
      */
-    private String getTeacherName(long couId) {
+    private String getTeacherName(Long couId) {
         // 如果没有匹配到老师 就直接显示空 ""
         String teach = "";
+        // 可能传入 null
+        if (couId == null) {
+            return teach;
+        }
         List<Course> allWeekCourse = mCourseViewBeanList.get(0).getAllWeekCourse();
         for (Course course : allWeekCourse) {
             if (Objects.equals(course.getCouID(), couId)) {
