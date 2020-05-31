@@ -704,7 +704,8 @@ public class CourseFragment extends Fragment {
                     case Constant.MSG_REFRESH:
                         String msgStr = (String) msg.obj;
                         if (!"ok".equals(msgStr)) {
-                            Toasty.custom(requireActivity(), msgStr, getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                            // 课表刷新有问题情况
+                            Toasty.custom(requireActivity(), msgStr, getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
                             Toasty.Config.reset();
                             mSlRefresh.setRefreshing(false);
                         } else {
