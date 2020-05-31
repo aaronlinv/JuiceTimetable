@@ -74,7 +74,7 @@ public class AboutFragment extends Fragment {
         try {
             startActivity(intent);
         } catch (Exception e) {
-            Toasty.custom(requireActivity(), "您还没有安装QQ，请先安装软件", getResources().getDrawable(R.drawable.x), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+            Toasty.custom(requireActivity(), "您还没有安装QQ，请先安装软件", getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
             Toasty.Config.reset();
             // 未安装手Q或安装的版本不支持
         }

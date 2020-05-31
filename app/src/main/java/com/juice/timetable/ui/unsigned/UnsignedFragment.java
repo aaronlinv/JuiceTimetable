@@ -195,7 +195,7 @@ public class UnsignedFragment extends Fragment {
                         swipeRefreshLayout.setRefreshing(false);
                     } catch (Exception e) {
                         Log.w("ERROR", "操作中断");
-                        Toasty.custom(requireActivity(), "操作中断", getResources().getDrawable(R.drawable.x), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                        Toasty.custom(requireActivity(), "操作中断", getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
                         Toasty.Config.reset();
                         swipeRefreshLayout.setRefreshing(false);
                         e.printStackTrace();

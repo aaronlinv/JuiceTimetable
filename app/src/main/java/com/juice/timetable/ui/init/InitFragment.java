@@ -172,7 +172,7 @@ public class InitFragment extends Fragment {
                         //设置登录按钮和用户条款按钮可见
                         binding.btnGo.setVisibility(View.VISIBLE);
                         String errorStr = (String) msg.obj;
-                        Toasty.custom(requireActivity(), errorStr, getResources().getDrawable(R.drawable.x), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                        Toasty.custom(requireActivity(), errorStr, getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
                         Toasty.Config.reset();
                         break;
                 }
