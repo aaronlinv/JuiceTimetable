@@ -155,7 +155,7 @@ public class InitFragment extends Fragment {
                         Navigation.findNavController(requireView()).navigate(R.id.action_initFragment_to_nav_course);
 
                         // 设置首次登录，刷新数据
-                        Constant.REFRESH_DATE = true;
+//                        Constant.REFRESH_DATE = true;
                         // 设置打开首次登录引导
                         PreferencesUtils.putBoolean(Constant.FIRST_LOGIN_GUIDE, true);
 

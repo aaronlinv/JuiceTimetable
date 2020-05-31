@@ -75,8 +75,8 @@ public class Constant {
     // 调式签到提示栏
 //    public static boolean DEBUG_CHECK_IN_TEXTVIEW = false;
 
-    // 初次登录和修改认证后需要要刷新数据
-    public static boolean REFRESH_DATE = false;
+    // 初次登录和修改认证后需要要刷新数据，每次打开也要
+    public static boolean REFRESH_DATE = true;
 
     public static boolean FIRST_IN = true;
 

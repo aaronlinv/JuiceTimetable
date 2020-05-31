@@ -222,12 +222,12 @@ public class CourseFragment extends Fragment {
 
         handler();
 
-        // 首次登录，获取数据并刷新界面
+        // 每次到这个界面都 获取数据并刷新界面
         if (Constant.REFRESH_DATE) {
             // 刷新动画
             mSlRefresh.setRefreshing(true);
             refreshData();
-            // 设置首次登录为false
+            // 设置为false
             Constant.REFRESH_DATE = false;
         }
         // 开启签到显示 且 在签到时间刷新签到情况
