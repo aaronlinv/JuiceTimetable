@@ -76,18 +76,46 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.34" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.37" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.75" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.8" />
+
         <EditText
             android:id="@+id/et_sno"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:autofillHints=""
             android:ems="10"
             android:inputType="number|textPersonName"
             android:maxLength="9"
             app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline13"
-            app:layout_constraintTop_toTopOf="@+id/guideline"
-            android:autofillHints="" />
+            app:layout_constraintTop_toTopOf="@+id/guideline" />
 
         <EditText
             android:id="@+id/et_edu_password"
@@ -192,30 +220,16 @@
 
         <ImageView
             android:id="@+id/im_cz_logo"
-            android:layout_width="90dp"
-            android:layout_height="130dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/todo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.942"
-            app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toTopOf="@+id/guideline6"
-            app:layout_constraintVertical_bias="0.956"
-            app:srcCompat="@drawable/logo"
-            android:contentDescription="@string/todo" />
+            app:layout_constraintStart_toStartOf="@+id/guideline14"
+            app:layout_constraintTop_toTopOf="@+id/guideline15"
+            app:srcCompat="@drawable/logo" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.34" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.37" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
