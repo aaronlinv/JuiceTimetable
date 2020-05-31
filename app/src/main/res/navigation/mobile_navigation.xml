@@ -13,7 +13,9 @@
 
         <action
             android:id="@+id/action_nav_course_to_initFragment"
-            app:destination="@id/initFragment" />
+            app:destination="@id/initFragment"
+            app:popUpTo="@id/nav_course"
+            app:popUpToInclusive="true" />
 
     </fragment>
 
@@ -31,7 +33,13 @@
     <fragment
         android:id="@+id/initFragment"
         android:name="com.juice.timetable.ui.init.InitFragment"
-        android:label="InitFragment" />
+        android:label="InitFragment">
+        <action
+            android:id="@+id/action_initFragment_to_nav_course"
+            app:destination="@id/nav_course"
+            app:popUpTo="@id/initFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/nav_about"
         android:name="com.juice.timetable.ui.about.AboutFragment"
