@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -26,6 +25,10 @@ import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.UserInfoUtils;
 import com.juice.timetable.widget.TodayWidget;
+
+import es.dmoral.toasty.Toasty;
+
+import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 
 public class MainActivity extends BaseActivity {
 
@@ -90,7 +93,7 @@ public class MainActivity extends BaseActivity {
                 }
                 Constant.RAINBOW_MODE_ENABLED = enableRainbowMode;
                 PreferencesUtils.putBoolean(Constant.PREF_RAINBOW_MODE_ENABLED, enableRainbowMode);
-                Toast.makeText(MainActivity.this, toastStr, Toast.LENGTH_SHORT).show();
+                Toasty.info(MainActivity.this, toastStr, LENGTH_SHORT).show();
             }
         });
 
