@@ -27,6 +27,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.github.florent37.viewtooltip.ViewTooltip;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
@@ -75,6 +76,7 @@ public class CourseFragment extends Fragment {
     private List<CourseViewBean> mCourseViewBeanList = new ArrayList<>();
     private int mCurViewPagerNum;
     private MaterialSpinner mSpinner;
+    int temp = 1;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -92,6 +94,59 @@ public class CourseFragment extends Fragment {
         initCurrentWeek();
         initView();
         initCourse();
+        if (temp == 1) {
+            final int height = Utils.dip2px(requireActivity(), 40 + 4 * 55);
+            MaterialSpinner materialSpinner = requireActivity().findViewById(R.id.spinner);
+            ViewTooltip.on(materialSpinner)
+                    .position(ViewTooltip.Position.BOTTOM)
+                    .clickToHide(true)
+                    .color(getResources().getColor(R.color.blue))
+                    .text("这里是周跳转\n(点此消失)")
+                    .arrowSourceMargin(0)
+                    .arrowTargetMargin(0)
+                    .autoHide(false, 0)
+                    .animation(new ViewTooltip.FadeTooltipAnimation(500))
+                    .onHide(new ViewTooltip.ListenerHide() {
+                        @Override
+                        public void onHide(View view) {
+                            ViewTooltip.on(mSlRefresh)
+                                    .position(ViewTooltip.Position.TOP)
+                                    .align(ViewTooltip.ALIGN.CENTER)
+                                    .color(getResources().getColor(R.color.blue))
+                                    .clickToHide(true)
+                                    .distanceWithView(-height)
+                                    .text("下拉刷新课表，左右滑动切换周")
+                                    .animation(new ViewTooltip.FadeTooltipAnimation(500))
+                                    .onHide(new ViewTooltip.ListenerHide() {
+                                        @Override
+                                        public void onHide(View view) {
+                                            View viewById = requireActivity().findViewById(R.id.item_more_option);
+                                            ViewTooltip.on(viewById)
+                                                    .position(ViewTooltip.Position.BOTTOM)
+                                                    .color(getResources().getColor(R.color.blue))
+                                                    .clickToHide(true)
+                                                    .text("更多设置")
+                                                    .animation(new ViewTooltip.FadeTooltipAnimation(500))
+                                                    .onHide(new ViewTooltip.ListenerHide() {
+                                                        @Override
+                                                        public void onHide(View view) {
+                                                            View viewById1 = requireActivity().findViewById(R.id.item_go_current_week);
+                                                            ViewTooltip.on(viewById1)
+                                                                    .position(ViewTooltip.Position.BOTTOM)
+                                                                    .color(getResources().getColor(R.color.blue))
+                                                                    .clickToHide(true)
+                                                                    .text("回到当前周")
+                                                                    .animation(new ViewTooltip.FadeTooltipAnimation(500))
+                                                                    .show();
+                                                        }
+                                                    })
+                                                    .show();
+                                        }
+                                    })
+                                    .show();
+                        }
+                    }).show();
+        }
         return binding.getRoot();
     }
 
