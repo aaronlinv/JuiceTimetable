@@ -645,8 +645,9 @@ public class CourseFragment extends Fragment {
                         break;
                     case Constant.MSG_CHECK_IN_FAIL:
                         // 获取签到信息失败
-                        Toasty.custom(requireActivity(), "获取签到信息失败", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
-                        // TODO: 2020/5/31 修改toast颜色
+                        LogUtils.getInstance().d("获取签到信息失败 开始提示Toasty");
+                        Toasty.custom(requireActivity(), "获取签到信息失败", getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                        Toasty.Config.reset();
                         break;
 
 
@@ -678,6 +679,7 @@ public class CourseFragment extends Fragment {
 
                         MyCheckIn mySigned = ParseCheckIn.getMySigned(checkIn);
                         // 测试
+
 //                        if (!mySigned.isCheckIn()) {
                         if (mySigned.isCheckIn()) {
                             String checkInTime = mySigned.getCheckTime();
@@ -688,9 +690,9 @@ public class CourseFragment extends Fragment {
                             checkInMSG.what = Constant.MSG_CHECK_IN_SUCCESS;
                             checkInMSG.obj = checkInTime;
                             mHandler.sendMessage(checkInMSG);
+                        }
 //                            // 测试失败情况
 //                            throw new Exception();
-                        }
 
                     } catch (Exception e) {
                         LogUtils.getInstance().e("获取签到信息失败：" + e.getMessage());
