@@ -33,7 +33,7 @@
         \ncom.github.GrenderG:Toasty
         \njunit:junit:4.12
     </string>
-    <string name="app_name_for_about">Juice橙汁</string>
+    <string name="app_name_for_about">橙汁</string>
     <string name="github">Github</string>
     <string name="qq_feedback">加入QQ群反馈</string>
     <string name="team">开发者</string>
