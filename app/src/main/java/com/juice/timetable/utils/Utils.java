@@ -77,7 +77,7 @@ public class Utils {
             now = df.parse(df.format(new Date()));
             // 注意！时间左右都不包括 实际是21:40~22:40
             beginTime = df.parse("21:39");
-            endTime = df.parse("22:41");
+            endTime = df.parse("22:40");
 //            LogUtils.getInstance().d(new Date()+"  "+beginTime+"  "+endTime);
         } catch (Exception e) {
             e.printStackTrace();

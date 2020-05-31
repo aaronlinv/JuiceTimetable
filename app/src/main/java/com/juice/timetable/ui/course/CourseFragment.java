@@ -616,6 +616,15 @@ public class CourseFragment extends Fragment {
      * 开始刷新数据，结束刷新动画
      */
     private void refreshData() {
+        // 开启签到显示 且 在签到时间刷新签到情况
+        if (Constant.ENABLE_CHECK_IN && Utils.isCheckInTime()) {
+            mTvCheckIn.setVisibility(View.VISIBLE);
+            getCheckIn();
+            // 设置可见
+        } else {
+            mTvCheckIn.setVisibility(View.GONE);
+        }
+
         new Thread() {
             @Override
             public void run() {
@@ -798,7 +807,7 @@ public class CourseFragment extends Fragment {
                             checkInMSG.obj = checkInTime;
                             mHandler.sendMessage(checkInMSG);
                         }
-//                            // 测试失败情况
+//                            // 测试获取信息失败情况
 //                            throw new Exception();
 
                     } catch (Exception e) {
