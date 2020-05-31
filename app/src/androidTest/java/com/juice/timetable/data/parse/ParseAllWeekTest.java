@@ -22,10 +22,11 @@ public class ParseAllWeekTest {
     public void parseAllCourse() {
         String question = ParseAllWeek.parseAllCourse(getAllCourseStr()).toString();
         String answer = getAllCourseAnswer();
-
         boolean isCheck = answer.equals(question);
-
         Assert.assertTrue(isCheck);
+
+        String question2 = ParseAllWeek.getSemester();
+        Assert.assertEquals("福州大学至诚学院 2019下学期张三同学课程表", question2);
     }
 
     /**
@@ -40,6 +41,9 @@ public class ParseAllWeekTest {
         boolean isCheck = answer.equals(question);
 
         Assert.assertTrue(isCheck);
+
+        String question2 = ParseAllWeek.getSemester();
+        Assert.assertTrue("福州大学至诚学院 2019下学期小易同学课程表".equals(question2));
 
     }
 
@@ -56,6 +60,9 @@ public class ParseAllWeekTest {
 
         Assert.assertTrue(isCheck);
 
+        String question2 = ParseAllWeek.getSemester();
+        Assert.assertEquals("福州大学至诚学院 2017下学期张三同学课程表", question2);
+
     }
 
     /**
@@ -70,6 +77,9 @@ public class ParseAllWeekTest {
         boolean isCheck = answer.equals(question);
 
         Assert.assertTrue(isCheck);
+
+        String question2 = ParseAllWeek.getSemester();
+        Assert.assertEquals("福州大学至诚学院 2019下学期实验班同学课程表", question2);
 
     }
 
@@ -86,6 +96,9 @@ public class ParseAllWeekTest {
 
         Assert.assertTrue(isCheck);
 
+        String question2 = ParseAllWeek.getSemester();
+        Assert.assertEquals("福州大学至诚学院 2019下学期马骏同学课程表", question2);
+
     }
 
 
@@ -101,6 +114,8 @@ public class ParseAllWeekTest {
         boolean isCheck = answer.equals(question);
 
         Assert.assertTrue(isCheck);
+        String question2 = ParseAllWeek.getSemester();
+        Assert.assertEquals("福州大学至诚学院 2019下学期吴戈同学课程表", question2);
 
     }
 
