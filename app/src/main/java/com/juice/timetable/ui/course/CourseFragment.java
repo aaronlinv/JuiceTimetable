@@ -622,7 +622,8 @@ public class CourseFragment extends Fragment {
                         break;
                     case Constant.MSG_CHECK_IN_SUCCESS:
                         String checkInTime = (String) msg.obj;
-                        final String checkInStr = "今天 " + checkInTime + " 已签到";
+//                        final String checkInStr = "今天 " + checkInTime + " 已签到";
+                        final String checkInStr = checkInTime + " 已签到";
 
 //                        mTvCheckIn.setBackgroundColor(0xFFe6e6e6);
                         ObjectAnimator backgroundColor = ofObject(mTvCheckIn, "backgroundColor", new ArgbEvaluator(), 0xFFec6b6b, 0xFFe6e6e6);
@@ -676,11 +677,13 @@ public class CourseFragment extends Fragment {
                         LogUtils.getInstance().d("签到数据：" + checkIn);
 
                         MyCheckIn mySigned = ParseCheckIn.getMySigned(checkIn);
-
-                        if (!mySigned.isCheckIn()) {
+                        // 测试
+//                        if (!mySigned.isCheckIn()) {
+                        if (mySigned.isCheckIn()) {
                             String checkInTime = mySigned.getCheckTime();
-                            // TODO: 2020/5/7 需要更换为签到时间
-                            checkInTime = "21:50";
+//                            2020/5/7 需要更换为签到时间
+//                            checkInTime = "21:50";
+//                            checkInTime = "2020-05-31 21:50:30";
 
                             checkInMSG.what = Constant.MSG_CHECK_IN_SUCCESS;
                             checkInMSG.obj = checkInTime;
