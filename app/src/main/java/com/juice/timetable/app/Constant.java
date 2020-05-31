@@ -52,6 +52,9 @@ public class Constant {
     // 开启慕课显示 Preferences
     public static final String PREF_ENABLE_SHOW_MOOC = "PREF_ENABLE_SHOW_MOOC";
 
+    // 首次登录 Preferences 用于显示引导提示
+    public static final String FIRST_LOGIN_GUIDE = "FIRST_LOGIN_GUIDE";
+
     // 当前学校周 从1开始计数 1代表第一周
     public static int CUR_WEEK = -1;
     // 最大周 默认25周
@@ -63,14 +66,14 @@ public class Constant {
     public static final String PREF_FIRST_WEEK_MONDAY = "PREF_FIRST_WEEK_MONDAY";
 
     // 注入自己的账号密码，用于免登录调式
-    public static boolean DEBUG_MODE = true;
+    public static boolean DEBUG_MODE = false;
     // 调式Init界面，用于调试登录界面
     public static boolean DEBUG_INIT_FRAGMENT = false;
     // 调式签到提示栏
 //    public static boolean DEBUG_CHECK_IN_TEXTVIEW = false;
 
-    // 首次登录
-    public static boolean FIRST_LOGIN = false;
+    // 初次登录和修改认证后需要要刷新数据
+    public static boolean REFRESH_DATE = false;
 
     public static boolean FIRST_IN = true;
 

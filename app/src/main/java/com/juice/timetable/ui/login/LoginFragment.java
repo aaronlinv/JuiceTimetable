@@ -286,7 +286,7 @@ public class LoginFragment extends Fragment {
                         Navigation.findNavController(requireView()).popBackStack(R.id.nav_login, true);
 
                         // 设置首次登录，刷新数据
-                        Constant.FIRST_LOGIN = true;
+                        Constant.REFRESH_DATE = true;
                         break;
                     // 登录失败
                     case Constant.MSG_LOGIN_FAIL:
