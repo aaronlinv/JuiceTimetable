@@ -97,47 +97,60 @@ public class CourseFragment extends Fragment {
         initCourse();
         if (temp == 1) {
             final int height = Utils.dip2px(requireActivity(), 40 + 4 * 55);
-            MaterialSpinner materialSpinner = requireActivity().findViewById(R.id.spinner);
-            ViewTooltip.on(materialSpinner)
+            View views = toolbar.getChildAt(1);
+            ViewTooltip.on(views)
                     .position(ViewTooltip.Position.BOTTOM)
-                    .clickToHide(true)
                     .color(getResources().getColor(R.color.blue))
-                    .text("这里是周跳转  (点此消失)")
-                    .arrowSourceMargin(0)
-                    .arrowTargetMargin(0)
-                    .autoHide(false, 0)
+                    .clickToHide(true)
+                    .text("打开抽屉")
                     .animation(new ViewTooltip.FadeTooltipAnimation(500))
                     .onHide(new ViewTooltip.ListenerHide() {
                         @Override
                         public void onHide(View view) {
-                            ViewTooltip.on(mSlRefresh)
-                                    .position(ViewTooltip.Position.TOP)
-                                    .align(ViewTooltip.ALIGN.CENTER)
-                                    .color(getResources().getColor(R.color.blue))
+                            MaterialSpinner materialSpinner = requireActivity().findViewById(R.id.spinner);
+                            ViewTooltip.on(materialSpinner)
+                                    .position(ViewTooltip.Position.BOTTOM)
                                     .clickToHide(true)
-                                    .distanceWithView(-height)
-                                    .text("下拉刷新课表，左右滑动切换周")
+                                    .color(getResources().getColor(R.color.blue))
+                                    .text("这里是周跳转  (点此消失)")
+                                    .arrowSourceMargin(0)
+                                    .arrowTargetMargin(0)
+                                    .autoHide(false, 0)
                                     .animation(new ViewTooltip.FadeTooltipAnimation(500))
                                     .onHide(new ViewTooltip.ListenerHide() {
                                         @Override
                                         public void onHide(View view) {
-                                            View viewById = requireActivity().findViewById(R.id.item_more_option);
-                                            ViewTooltip.on(viewById)
+                                            View item_go_current_week = requireActivity().findViewById(R.id.item_go_current_week);
+                                            ViewTooltip.on(item_go_current_week)
                                                     .position(ViewTooltip.Position.BOTTOM)
                                                     .color(getResources().getColor(R.color.blue))
                                                     .clickToHide(true)
-                                                    .text("更多设置")
+                                                    .text("回到当前周")
                                                     .animation(new ViewTooltip.FadeTooltipAnimation(500))
                                                     .onHide(new ViewTooltip.ListenerHide() {
                                                         @Override
                                                         public void onHide(View view) {
-                                                            View viewById1 = requireActivity().findViewById(R.id.item_go_current_week);
-                                                            ViewTooltip.on(viewById1)
+                                                            View item_more_option = requireActivity().findViewById(R.id.item_more_option);
+                                                            ViewTooltip.on(item_more_option)
                                                                     .position(ViewTooltip.Position.BOTTOM)
                                                                     .color(getResources().getColor(R.color.blue))
                                                                     .clickToHide(true)
-                                                                    .text("回到当前周")
+                                                                    .text("更多设置")
                                                                     .animation(new ViewTooltip.FadeTooltipAnimation(500))
+                                                                    .onHide(new ViewTooltip.ListenerHide() {
+                                                                        @Override
+                                                                        public void onHide(View view) {
+                                                                            ViewTooltip.on(mSlRefresh)
+                                                                                    .position(ViewTooltip.Position.TOP)
+                                                                                    .align(ViewTooltip.ALIGN.CENTER)
+                                                                                    .color(getResources().getColor(R.color.blue))
+                                                                                    .clickToHide(true)
+                                                                                    .distanceWithView(-height)
+                                                                                    .text("下拉刷新课表，左右滑动切换周")
+                                                                                    .animation(new ViewTooltip.FadeTooltipAnimation(500))
+                                                                                    .show();
+                                                                        }
+                                                                    })
                                                                     .show();
                                                         }
                                                     })
