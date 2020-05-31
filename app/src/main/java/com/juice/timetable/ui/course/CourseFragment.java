@@ -102,7 +102,8 @@ public class CourseFragment extends Fragment {
                     .position(ViewTooltip.Position.BOTTOM)
                     .color(getResources().getColor(R.color.blue))
                     .clickToHide(true)
-                    .text("打开抽屉")
+                    .text("打开抽屉 (点此消失)")
+                    .autoHide(true, 4000)
                     .animation(new ViewTooltip.FadeTooltipAnimation(500))
                     .onHide(new ViewTooltip.ListenerHide() {
                         @Override
@@ -111,17 +112,18 @@ public class CourseFragment extends Fragment {
                             ViewTooltip.on(materialSpinner)
                                     .position(ViewTooltip.Position.BOTTOM)
                                     .clickToHide(true)
+                                    .autoHide(true, 4000)
                                     .color(getResources().getColor(R.color.blue))
-                                    .text("这里是周跳转  (点此消失)")
+                                    .text("这里是周跳转")
                                     .arrowSourceMargin(0)
                                     .arrowTargetMargin(0)
-                                    .autoHide(false, 0)
                                     .animation(new ViewTooltip.FadeTooltipAnimation(500))
                                     .onHide(new ViewTooltip.ListenerHide() {
                                         @Override
                                         public void onHide(View view) {
                                             View item_go_current_week = requireActivity().findViewById(R.id.item_go_current_week);
                                             ViewTooltip.on(item_go_current_week)
+                                                    .autoHide(true, 4000)
                                                     .position(ViewTooltip.Position.BOTTOM)
                                                     .color(getResources().getColor(R.color.blue))
                                                     .clickToHide(true)
@@ -133,6 +135,7 @@ public class CourseFragment extends Fragment {
                                                             View item_more_option = requireActivity().findViewById(R.id.item_more_option);
                                                             ViewTooltip.on(item_more_option)
                                                                     .position(ViewTooltip.Position.BOTTOM)
+                                                                    .autoHide(true, 4000)
                                                                     .color(getResources().getColor(R.color.blue))
                                                                     .clickToHide(true)
                                                                     .text("更多设置")
@@ -142,6 +145,7 @@ public class CourseFragment extends Fragment {
                                                                         public void onHide(View view) {
                                                                             ViewTooltip.on(mSlRefresh)
                                                                                     .position(ViewTooltip.Position.TOP)
+                                                                                    .autoHide(true, 5000)
                                                                                     .align(ViewTooltip.ALIGN.CENTER)
                                                                                     .color(getResources().getColor(R.color.blue))
                                                                                     .clickToHide(true)
