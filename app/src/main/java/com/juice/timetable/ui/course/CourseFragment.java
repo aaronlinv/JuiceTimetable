@@ -642,6 +642,11 @@ public class CourseFragment extends Fragment {
                     case Constant.STOP_REFRESH:
                         mSlRefresh.setRefreshing(false);
                         break;
+                    case Constant.MSG_CHECK_IN_FAIL:
+                        // 获取签到信息失败
+                        Toasty.custom(requireActivity(), "获取签到信息失败", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                        // TODO: 2020/5/31 修改toast颜色
+                        break;
 
 
                 }
@@ -664,7 +669,9 @@ public class CourseFragment extends Fragment {
                 // 数据库有请假系统密码  初始化签到信息
                 LogUtils.getInstance().d("有请假系统密码则开始获取签到信息");
                 if (hasLeavePwd) {
+                    Message checkInMSG = new Message();
                     try {
+
                         String checkIn = LeaveInfo.getLeave(stuInfo.getStuID().toString(), stuInfo.getLeavePassword(), Constant.URI_CHECK_IN, requireContext());
                         LogUtils.getInstance().d("签到数据：" + checkIn);
 
@@ -675,15 +682,17 @@ public class CourseFragment extends Fragment {
                             // TODO: 2020/5/7 需要更换为签到时间
                             checkInTime = "21:50";
 
-                            Message checkInMSG = new Message();
                             checkInMSG.what = Constant.MSG_CHECK_IN_SUCCESS;
                             checkInMSG.obj = checkInTime;
                             mHandler.sendMessage(checkInMSG);
+//                            // 测试失败情况
+//                            throw new Exception();
                         }
 
                     } catch (Exception e) {
                         LogUtils.getInstance().e("获取签到信息失败：" + e.getMessage());
-                        e.printStackTrace();
+                        checkInMSG.what = Constant.MSG_CHECK_IN_FAIL;
+                        mHandler.sendMessage(checkInMSG);
                     }
                 }
             }
