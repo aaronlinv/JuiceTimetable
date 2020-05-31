@@ -270,7 +270,13 @@ public class CourseFragment extends Fragment {
                 mVpCourse.setCurrentItem(item.getItemId(), true);*/
                 // 跳转当前周 图标监听
                 if (item.getItemId() == R.id.item_go_current_week) {
-                    mVpCourse.setCurrentItem(Constant.CUR_WEEK - 1, true);
+                    // 如果是当前周，提示
+                    if (mVpCourse.getCurrentItem() == Constant.CUR_WEEK - 1) {
+                        Toasty.custom(requireActivity(), "已在当前周", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                        Toasty.Config.reset();
+                    } else {
+                        mVpCourse.setCurrentItem(Constant.CUR_WEEK - 1, true);
+                    }
                     LogUtils.getInstance().d("点击了 跳转到当前周图标 -- > " + (Constant.CUR_WEEK - 1));
                 }
                 if (item.getItemId() == R.id.item_more_option) {

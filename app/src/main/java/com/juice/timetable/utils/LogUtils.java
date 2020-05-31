@@ -14,7 +14,7 @@ public class LogUtils {
     //单例
     private static LogUtils logUtil;
     //打印调试开关
-    private static boolean IS_DEBUG = true;
+    private static boolean IS_DEBUG = false;
     //Log 单词打印的最大长度
     private static final int MAX_LENGTH = 3 * 1024;
 
