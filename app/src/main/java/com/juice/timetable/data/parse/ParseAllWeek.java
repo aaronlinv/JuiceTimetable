@@ -235,7 +235,7 @@ public class ParseAllWeek {
         return courseList;
     }
 
-    static String getSemester() {
+    public static String getSemester() {
         return sSemester;
     }
 

@@ -644,6 +644,19 @@ public class CourseFragment extends Fragment {
 
                 } else {
                     List<Course> courses = ParseAllWeek.parseAllCourse(allCourse);
+                    // 不为当前学期就删除 所有周课表避免冲突，完整课表下面已经删了，不用担心
+                    String curSemester = PreferencesUtils.getString(Constant.CUR_SEMESTER, "");
+                    LogUtils.getInstance().d("本地curSemester -- > " + curSemester);
+                    LogUtils.getInstance().d("爬取curSemester -- > " + ParseAllWeek.getSemester());
+
+                    // 爬取的学期信息与本地不同，清除周课表
+                    if (!curSemester.equals(ParseAllWeek.getSemester())) {
+                        mOneWeekCourseViewModel.deleteOneWeekCourse();
+                        LogUtils.getInstance().d("curSemester 爬取的学期信息与本地不同，清除周课表结束");
+                        // 写入学期信息
+                        PreferencesUtils.putString(Constant.CUR_SEMESTER, ParseAllWeek.getSemester());
+                    }
+
                     LogUtils.getInstance().d("setOnRefreshListener:解析完整课表结束");
                     if (courses.isEmpty()) {
                         message.obj = "解析完整课表失败";
