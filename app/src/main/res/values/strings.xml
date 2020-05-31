@@ -32,6 +32,9 @@
         \ncom.squareup.okhttp3:okhttp
         \ncom.github.GrenderG:Toasty
         \njunit:junit
+        \ncom.github.florent37:viewtooltip
+        \ncom.jaredrummler:material-spinner
+        \ncom.github.f0ris.sweetalert:library
     </string>
     <string name="app_name_for_about">橙汁</string>
     <string name="github">Github</string>
