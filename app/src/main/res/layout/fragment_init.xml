@@ -62,7 +62,7 @@
 
         <EditText
             android:id="@+id/et_sno"
-            android:layout_width="250sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/et_sno"
@@ -71,14 +71,14 @@
             android:maxLength="9"
             app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toEndOf="@+id/imageView2"
-            app:layout_constraintHorizontal_bias="0.494"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/imageView2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
 
         <EditText
             android:id="@+id/et_edu_password"
-            android:layout_width="250sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autofillHints=""
             android:ems="10"
@@ -94,7 +94,7 @@
 
         <EditText
             android:id="@+id/et_leave_password"
-            android:layout_width="250sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autofillHints=""
             android:ems="10"
@@ -110,8 +110,8 @@
 
         <Button
             android:id="@+id/btn_go"
-            android:layout_width="164sp"
-            android:layout_height="43sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/shape"
             android:text="@string/btn_go"
             android:textColor="@color/design_default_color_on_secondary"
@@ -124,8 +124,8 @@
 
         <Button
             android:id="@+id/btn_user_item"
-            android:layout_width="77sp"
-            android:layout_height="27sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="#00000000"
 
             android:hapticFeedbackEnabled="false"
@@ -139,7 +139,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline10"
             app:layout_constraintStart_toStartOf="@+id/guideline10"
             app:layout_constraintTop_toTopOf="@+id/guideline6"
-            app:layout_constraintVertical_bias="0.815" />
+            app:layout_constraintVertical_bias="0.8" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -148,9 +148,10 @@
             android:contentDescription="@string/todo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline10"
+            app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="@+id/guideline10"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.086"
+            app:layout_constraintVertical_bias="0.05"
             app:srcCompat="@drawable/cz1" />
 
         <androidx.constraintlayout.widget.Barrier
@@ -158,6 +159,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="left" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.20" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
