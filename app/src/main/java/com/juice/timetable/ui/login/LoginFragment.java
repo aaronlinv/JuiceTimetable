@@ -28,6 +28,7 @@ import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.data.http.LeaveInfo;
+import com.juice.timetable.data.viewmodel.OneWeekCourseViewModel;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.databinding.FragmentLoginBinding;
 import com.juice.timetable.utils.CustomLoadingFactory;
@@ -53,6 +54,7 @@ public class LoginFragment extends Fragment {
     private Handler mHandler;
     private LoadingBar mLoadingBar;
     private StuInfoViewModel mStuInfoViewModel;
+    private OneWeekCourseViewModel mOneWeekCourseViewModel;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -62,6 +64,7 @@ public class LoginFragment extends Fragment {
 //        binding = DataBindingUtil.setContentView(requireActivity(), R.layout.fragment_login);
         mDrawerLayout = requireActivity().findViewById(R.id.drawer_layout);
         mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
+        mOneWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(OneWeekCourseViewModel.class);
 
         // 隐藏 toolbar 的按钮 和星期下拉菜单按钮
         Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
@@ -159,7 +162,8 @@ public class LoginFragment extends Fragment {
                     binding.btnGo.setVisibility(View.GONE);
                     //loading显示
                     showLoading(binding.btnGo);
-                    checkPassword();
+                    // 传入修改前数据库的学号，用于比对，如果修改了学号，需要清除周课表避免冲突
+                    checkPassword(stu.getStuID().toString());
                 }
 
             }
@@ -170,8 +174,10 @@ public class LoginFragment extends Fragment {
 
     /**
      * 校验密码
+     *
+     * @param oldSno
      */
-    private void checkPassword() {
+    private void checkPassword(final String oldSno) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -207,6 +213,12 @@ public class LoginFragment extends Fragment {
                         LogUtils.getInstance().d("errorText:" + errorStr);
                     }
 
+                }
+
+                // 如果修改了学号，需要清除周课表避免冲突
+                if (!Objects.equals(mSno, oldSno)) {
+                    mOneWeekCourseViewModel.insertOneWeekCourse();
+                    LogUtils.getInstance().d("修改了账号 清除数据库所有周课表");
                 }
                 LogUtils.getInstance().d("教务网和请假系统密码验证结束");
                 // 跳转到课表首页
