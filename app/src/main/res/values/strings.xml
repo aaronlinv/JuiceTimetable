@@ -27,13 +27,16 @@
     <string name="todo">TODO</string>
     <string name="github_lib">github.com/xxyangyoulin/ClassSchedule
         \ngithub.com/YZune/WakeUpSchedule
-        \norg.jsoup:jsoup:1.11.3
-        \norg.mockito:mockito-core:1.10.19
-        \ncom.squareup.okhttp3:okhttp:4.6.0
+        \norg.jsoup:jsoup
+        \norg.mockito:mockito-core
+        \ncom.squareup.okhttp3:okhttp
         \ncom.github.GrenderG:Toasty
-        \njunit:junit:4.12
+        \njunit:junit
+        \ncom.github.florent37:viewtooltip
+        \ncom.jaredrummler:material-spinner
+        \ncom.github.f0ris.sweetalert:library
     </string>
-    <string name="app_name_for_about">Juice橙汁</string>
+    <string name="app_name_for_about">橙汁</string>
     <string name="github">Github</string>
     <string name="qq_feedback">加入QQ群反馈</string>
     <string name="team">开发者</string>
