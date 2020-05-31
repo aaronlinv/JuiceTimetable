@@ -714,7 +714,10 @@ public class CourseFragment extends Fragment {
                         String msgStr = (String) msg.obj;
                         if (!"ok".equals(msgStr)) {
                             // 课表刷新有问题情况
-                            Toasty.custom(requireActivity(), msgStr, getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                            if ("您输入的教务网用户名或是密码有误".equals(msgStr)) {
+                                msgStr = "教务网密码已被更改，请在修改认证信息页面进行修改";
+                            }
+                            Toasty.custom(requireActivity(), msgStr, getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_LONG, true, true).show();
                             Toasty.Config.reset();
                             mSlRefresh.setRefreshing(false);
                         } else {
@@ -758,12 +761,17 @@ public class CourseFragment extends Fragment {
                         mSlRefresh.setRefreshing(false);
                         break;
                     case Constant.MSG_CHECK_IN_FAIL:
+                        String checkInMsgStr = (String) msg.obj;
                         // 获取签到信息失败
                         LogUtils.getInstance().d("获取签到信息失败 开始提示Toasty");
                         // 修改通知栏文字
                         mTvCheckIn.setText("获取签到信息失败");
-                        Toasty.custom(requireActivity(), "获取签到信息失败", getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
-                        Toasty.Config.reset();
+
+                        if ("您输入的请假系统用户名或是密码有误".equals(checkInMsgStr)) {
+                            checkInMsgStr = "请假系统密码已被更改，请在修改认证信息页面进行修改";
+                        }
+
+                        Toasty.custom(requireActivity(), checkInMsgStr, getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_LONG, true, true).show();
                         break;
 
 
@@ -813,6 +821,7 @@ public class CourseFragment extends Fragment {
                     } catch (Exception e) {
                         LogUtils.getInstance().e("获取签到信息失败：" + e.getMessage());
                         checkInMSG.what = Constant.MSG_CHECK_IN_FAIL;
+                        checkInMSG.obj = e.getMessage();
                         mHandler.sendMessage(checkInMSG);
                     }
                 }
