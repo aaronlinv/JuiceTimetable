@@ -101,7 +101,7 @@ public class CourseFragment extends Fragment {
                     .position(ViewTooltip.Position.BOTTOM)
                     .clickToHide(true)
                     .color(getResources().getColor(R.color.blue))
-                    .text("这里是周跳转\n(点此消失)")
+                    .text("这里是周跳转  (点此消失)")
                     .arrowSourceMargin(0)
                     .arrowTargetMargin(0)
                     .autoHide(false, 0)
