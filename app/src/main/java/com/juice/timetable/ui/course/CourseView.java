@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.drawable.StateListDrawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -26,6 +27,7 @@ import com.juice.timetable.utils.Utils;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <pre>
@@ -140,24 +142,22 @@ public class CourseView extends FrameLayout {
 
 
     public void addCourse(Course course) {
-        // 课为空 return回去 不显示
-        if (course == null) {
-            return;
-        }
-        // 当前显示的不是周课表 且 该课程不是当前显示周的课，return回去 不显示
-        if (!set.contains(mCurrentIndex) && !isActiveStatus(course)) {
-            return;
-        }
-        // 单周课程，当前不为单周 返回
-        if (course.getCouWeekType() != null && course.getCouWeekType() == 1 && mCurrentIndex % 2 != 1) {
-            return;
-        }
-        // 双周课程，当前不为双周 返回
-        if (course.getCouWeekType() != null && course.getCouWeekType() == 2 && mCurrentIndex % 2 != 0) {
-            return;
+
+        // 冲突课程集合
+        List<Course> conflictList = findConflictCourse(course);
+        String str = "";
+        if (conflictList.size() > 0) {
+            // 把自己添加进去
+            conflictList.add(course);
+
+            for (Course course1 : conflictList) {
+                str = str + "<--->" + course1.getCouName();
+            }
+            LogUtils.getInstance().d("查找冲突课程" + course.getCouName() + " -- > " + str);
         }
 
-        View itemView = createCourseItem(course);
+
+        View itemView = createCourseItem(course, conflictList);
         // 节课节数
         int row = course.getCouEndNode() - course.getCouStartNode() + 1;
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(mRowItemWidth,
@@ -172,9 +172,22 @@ public class CourseView extends FrameLayout {
 
     }
 
-    // 是否为当前显示周的课
+    // 只用于周课表 判断是否为当前显示周的课
     private boolean isActiveStatus(Course course) {
-        LogUtils.getInstance().d("isActiveStatus:" + course.toString());
+
+        // 课为空 return回去 不显示
+        if (course == null) {
+            return false;
+        }
+        // 单周课程，当前不为单周 返回
+        if (course.getCouWeekType() != null && course.getCouWeekType() == 1 && mCurrentIndex % 2 != 1) {
+            return false;
+        }
+        // 双周课程，当前不为双周 返回
+        if (course.getCouWeekType() != null && course.getCouWeekType() == 2 && mCurrentIndex % 2 != 0) {
+            return false;
+        }
+        // 起或止周不存在
         if ((course.getCouStartWeek() == null) || (course.getCouEndWeek() == null)) {
             return false;
         }
@@ -187,7 +200,7 @@ public class CourseView extends FrameLayout {
      *
      * @return
      */
-    public View createCourseItem(Course course) {
+    public View createCourseItem(Course course, List<Course> conflictList) {
         // 背景
         FrameLayout backgroundView = new FrameLayout(getContext());
 
@@ -203,23 +216,42 @@ public class CourseView extends FrameLayout {
         tv.setLayoutParams(params);
         // 设置tv文本
         // 撞课 在前面 添加[课程冲突]
+
+
         String showText = "";
-        if (course.getCouWeekType() == 4) {
+//        if (course.getCouWeekType() == 4) {
+//            showText = "[课程冲突]";
+//        }
+        if (conflictList.size() > 0) {
             showText = "[课程冲突]";
         }
         showText = showText + course.getCouName() + "\n" + course.getCouRoom();
         tv.setText(showText);
 
-        tv.setBackgroundColor(Utils.getColor(course.getCouColor() + Constant.RAINBOW_MODE_NUM));
+        int backgroundColor = Utils.getColor(course.getCouColor() + Constant.RAINBOW_MODE_NUM);
+        tv.setBackgroundColor(backgroundColor);
 
         // 背景图层
         backgroundView.addView(tv);
-//        setItemViewBackground(course, tv);
+        // 设置点击的背景色
+        setItemViewBackground(tv, backgroundColor);
         // 点击事件
-        initEvent(tv, course);
+        initEvent(tv, course, conflictList);
         return backgroundView;
 
 
+    }
+
+    private void setItemViewBackground(TextView tv, int color) {
+        StateListDrawable drawable;
+        drawable = getShowBgDrawable(color, color & 0x80FFFFFF);
+        tv.setBackground(drawable);
+    }
+
+    private StateListDrawable getShowBgDrawable(int color, int color2) {
+        return Utils.getPressedSelector(getContext(),
+                // 0 不圆角矩形
+                color, color2, 0);
     }
 
     /**
@@ -227,14 +259,15 @@ public class CourseView extends FrameLayout {
      *
      * @param tv
      * @param course
+     * @param conflictList
      */
-    private void initEvent(TextView tv, final Course course) {
+    private void initEvent(final TextView tv, final Course course, final List<Course> conflictList) {
         tv.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 通知ViewPager
                 if (mItemClickListener != null) {
-                    mItemClickListener.onClick(course);
+                    mItemClickListener.onClick(course, conflictList);
                 }
             }
         });
@@ -288,7 +321,9 @@ public class CourseView extends FrameLayout {
         if (courses == null) {
             courses = new ArrayList<>();
         }
-        // 数据库有存当前需要显示的周课表
+        // 需要被添加的课
+        List<Course> addCouList = new ArrayList<>();
+        // 数据库有存当前需要显示的周课表 那就都显示
         if (set.contains(mCurrentIndex)) {
             for (OneWeekCourse oneCou : oneWeekCourses) {
                 if (oneCou.getInWeek().equals(mCurrentIndex)) {
@@ -303,23 +338,53 @@ public class CourseView extends FrameLayout {
                     course.setOnlyID(oneCou.getOnlyID());
                     course.setCouID(oneCou.getCouID());
                     course.setCouWeekType(oneCou.getCourseType());
-                    addCourse(course);
+                    // 用于撞课的当前周判断
+                    // 把起始周都赋值为当前周
+                    course.setCouStartWeek(mCurrentIndex);
+                    course.setCouEndWeek(mCurrentIndex);
+                    addCouList.add(course);
                 }
             }
-        } else {
-            for (Course cou : courses) {
-//            LogUtils.getInstance().d("课表控件 遍历课程："+cou);
-                // 没有颜色 添加颜色
-/*            if (cou.getCouColor() == null) {
-                cou.setCouColor(Utils.getColor(cou.getCouID().intValue()));
-//                LogUtils.getInstance().d("添加颜色" + cou.getCouColor());
-            }*/
-                addCourse(cou);
-            }
 
+        } else {
+            // 如果不存在周课表就要筛选需要显示的完整课表
+            for (Course cou : courses) {
+                if (isActiveStatus(cou)) {
+                    addCouList.add(cou);
+                }
+            }
+        }
+        // 添加课程
+        courses = addCouList;
+        for (Course cou : courses) {
+            addCourse(cou);
         }
 
     }
+
+    /**
+     * 根据课程 id 和 起止节 查找冲突的课程
+     *
+     * @param cou
+     * @return
+     */
+    private List<Course> findConflictCourse(Course cou) {
+        // 上面已经处理好了 这里courses 就是单前周应该添加的所有课程（不管是周课表还是完整课表）
+        List<Course> conflictCouList = new ArrayList<>();
+        for (Course findCou : courses) {
+            // 课不相同 周相同
+            if (!Objects.equals(findCou.getCouID(), cou.getCouID())) {
+                // 星期相同 起始结束节有碰到就为冲突
+                if (Objects.equals(findCou.getCouWeek(), cou.getCouWeek())
+                        && (Objects.equals(findCou.getCouStartNode(), cou.getCouStartNode()) ||
+                        Objects.equals(findCou.getCouEndNode(), cou.getCouEndNode()))) {
+                    conflictCouList.add(findCou);
+                }
+            }
+        }
+        return conflictCouList;
+    }
+
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -360,7 +425,7 @@ public class CourseView extends FrameLayout {
     }
 
     interface OnItemClickListener {
-        void onClick(Course cou);
+        void onClick(Course cou, List<Course> conflictList);
     }
 
     public OnItemClickListener getItemClickListener() {

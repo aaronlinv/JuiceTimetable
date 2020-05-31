@@ -179,9 +179,9 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
     private void initEvent(CourseView courseView) {
         courseView.setItemClickListener(new CourseView.OnItemClickListener() {
             @Override
-            public void onClick(Course cou) {
+            public void onClick(Course cou, List<Course> conflictList) {
                 if (mItemClickListener != null) {
-                    mItemClickListener.onClick(cou);
+                    mItemClickListener.onClick(cou, conflictList);
                 }
             }
         });
@@ -217,7 +217,7 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
      * 点击监听器
      */
     interface OnItemClickListener {
-        void onClick(Course cou);
+        void onClick(Course cou, List<Course> conflictList);
     }
 
     public OnItemClickListener getItemClickListener() {

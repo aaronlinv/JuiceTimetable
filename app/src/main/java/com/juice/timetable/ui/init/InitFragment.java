@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -149,7 +149,9 @@ public class InitFragment extends Fragment {
                         LogUtils.getInstance().d("查询数据库：" + mStuInfoViewModel.selectStuInfo());
                         // 跳转结束后将debugInit置为false否则死循环
                         Constant.DEBUG_INIT_FRAGMENT = false;
-                        Navigation.findNavController(requireView()).popBackStack(R.id.initFragment, true);
+                        // 之前使用这种退栈的方法，不靠谱
+//                        Navigation.findNavController(requireView()).popBackStack(R.id.initFragment, true);
+                        Navigation.findNavController(requireView()).navigate(R.id.action_initFragment_to_nav_course);
 
                         // 设置首次登录，刷新数据
                         Constant.FIRST_LOGIN = true;
@@ -319,34 +321,14 @@ public class InitFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                    //拦截到的返回事件
-                    LogUtils.getInstance().d("Init界面 拦截返回键");
-                    // 返回 true 表示已经消耗了返回的时间，返回false表示没有消耗，依旧会执行返回。
-                    // true 就等于按下返回 无反应
-                    // 按下直接结束退出应用
-                    getActivity().finish();
-                    return false;
-                }
-                return false;
-            }
-
-        });
-        // 隐藏Toolbar -1
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        // 隐藏toolbar 实现全屏
+        @SuppressWarnings("ConstantConditions") ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.hide();
+        }
     }
 
-    // 隐藏Toolbar -2
-    /*@Override
-    public void onStop() {
-        super.onStop();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
-    }*/
+
     private void showLoading(View v) {
         CustomLoadingFactory factory = new CustomLoadingFactory();
         factory.setString("正在登录...");

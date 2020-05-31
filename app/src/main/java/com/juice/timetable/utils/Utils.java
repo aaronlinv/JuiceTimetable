@@ -1,6 +1,8 @@
 package com.juice.timetable.utils;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
 
 import com.juice.timetable.app.Constant;
 
@@ -182,5 +184,43 @@ public class Utils {
      */
     public static int getWeekGap(long weekBeginMillis, long endMillis) {
         return (int) (((endMillis - weekBeginMillis) / (1000 * 3600 * 24)) / 7);
+    }
+
+    /**
+     * 创建一个Drawable
+     *
+     * @param context
+     * @param rgb
+     * @param radius
+     * @param stroke
+     * @param strokeColor
+     * @return
+     */
+    public static GradientDrawable getDrawable(Context context, int rgb,
+                                               float radius, int stroke, int strokeColor) {
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        gradientDrawable.setColor(rgb);
+        gradientDrawable.setCornerRadius(dip2px(context, radius));
+        gradientDrawable.setStroke(dip2px(context, stroke), strokeColor);
+        return gradientDrawable;
+    }
+
+    /**
+     * 创建Selector 配置 默认颜色和点击时的颜色
+     *
+     * @param context
+     * @param color
+     * @param pressedColor
+     * @param radius
+     * @return
+     */
+    public static StateListDrawable getPressedSelector(Context context, int color, int pressedColor, float radius) {
+        GradientDrawable normalD = getDrawable(context, color, radius, 0, 0);
+        GradientDrawable pressedD = getDrawable(context, pressedColor, radius, 0, 0);
+
+        StateListDrawable drawable = new StateListDrawable();
+        drawable.addState(new int[]{android.R.attr.state_pressed}, pressedD);
+        drawable.addState(new int[]{}, normalD);
+        return drawable;
     }
 }

@@ -59,6 +59,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 
 import static android.animation.ObjectAnimator.ofObject;
+import static es.dmoral.toasty.Toasty.LENGTH_LONG;
 import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 
 @SuppressWarnings("unchecked")
@@ -274,44 +275,44 @@ public class CourseFragment extends Fragment {
         // ViewPager 课程被点击事件
         mCourseViewListAdapter.setItemClickListener(new CourseViewListAdapter.OnItemClickListener() {
             @Override
-            public void onClick(Course cou) {
-                LogUtils.getInstance().d("课程被点击  -- > " + cou);
+            public void onClick(Course cou, List<Course> conflictList) {
+                LogUtils.getInstance().d("课程被点击  -- > " + cou.getCouName() + " 冲突列表 --> " + conflictList);
 
-                // 撞课处理 类型4 为撞课
-                if (cou.getCouWeekType() == 4) {
+                // 撞课处理 撞课列表大于0 为撞课
+                if (conflictList.size() > 0) {
                     // 遍历周课表 查询所有撞课课程
                     StringBuilder sb = new StringBuilder();
 
-                    List<OneWeekCourse> oneWeekCourse = mCourseViewBeanList.get(0).getOneWeekCourse();
-                    int i = 0;
-                    for (OneWeekCourse weekCourse : oneWeekCourse) {
-                        // 星期相同 且（起或止节数 相同）
-                        if (Objects.equals(weekCourse.getDayOfWeek(), cou.getCouWeek()) && (Objects.equals(weekCourse.getStartNode(), cou.getCouStartNode()) || Objects.equals(weekCourse.getEndNode(), cou.getCouEndNode()))) {
-                            if (i > 0) {
-                                sb.append("<br><br>");
-                            }
-                            sb.append(weekCourse.getCouName()).append("<br>")
-                                    .append(getTeacherName(weekCourse.getCouID()))
-                                    .append(weekCourse.getCouRoom());
-                            i++;
+                    for (int i = 0; i < conflictList.size(); i++) {
+                        Course conflictCou = conflictList.get(i);
+                        if (i > 0) {
+                            sb.append("<br><br>");
                         }
+                        sb.append(conflictCou.getCouName())
+                                .append("<br>")
+                                .append(getTeacherName(conflictCou.getCouID()))
+                                .append("&nbsp;&nbsp;")
+                                .append(conflictCou.getCouRoom())
+                                .append("&nbsp;&nbsp;")
+                                .append(conflictCou.getCouStartNode()).append("~").append(conflictCou.getCouEndNode()).append("节");
                     }
 
 
                     new SweetAlertDialog(requireActivity(), SweetAlertDialog.NORMAL_TYPE)
                             .setTitleText("<font color=\"red\">课程冲突</font>")
                             .setContentText(sb.toString())
-//                        .setContentTextSize(18)
                             .hideConfirmButton()
                             .show();
                     return;
                 }
 
                 // 周课表没有老师所以要填充
-                String teach = getTeacherName(cou.getCouID());
-
-
-                String sb = teach + cou.getCouRoom();
+                String teacher = getTeacherName(cou.getCouID());
+                // 不为空 换行
+                if (!teacher.isEmpty()) {
+                    teacher = teacher + "<br>";
+                }
+                String sb = teacher + cou.getCouRoom();
 
                 new SweetAlertDialog(requireActivity(), SweetAlertDialog.NORMAL_TYPE)
                         .setTitleText(cou.getCouName())
@@ -335,18 +336,21 @@ public class CourseFragment extends Fragment {
 
     /**
      * 获取老师名字，没匹配到返回 "" 所以不需要 在后面加 br
-     * 找到自带br
      *
      * @param couId
      * @return
      */
-    private String getTeacherName(long couId) {
+    private String getTeacherName(Long couId) {
         // 如果没有匹配到老师 就直接显示空 ""
         String teach = "";
+        // 可能传入 null
+        if (couId == null) {
+            return teach;
+        }
         List<Course> allWeekCourse = mCourseViewBeanList.get(0).getAllWeekCourse();
         for (Course course : allWeekCourse) {
             if (Objects.equals(course.getCouID(), couId)) {
-                teach = course.getCouTeacher() + "<br>";
+                teach = course.getCouTeacher();
                 break;
             }
         }
@@ -393,11 +397,11 @@ public class CourseFragment extends Fragment {
                 LogUtils.getInstance().d("签到提示按钮 -- > " + isChecked);
                 if (isChecked) {
                     if (hasLeavePwd()) {
-                        Toasty.custom(requireActivity(), "签到提示开启，会在签到时间段显示签到情况", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                        Toasty.custom(requireActivity(), "签到提示开启，会在签到时间段显示签到情况", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_LONG, true, true).show();
                         Toasty.Config.reset();
 
                     } else {
-                        Toasty.info(requireActivity(), "需要先在修改认证信息界面添加请假系统密码才可以开启哦", LENGTH_SHORT).show();
+                        Toasty.info(requireActivity(), "需要先在修改认证信息界面添加请假系统密码才可以开启哦", LENGTH_LONG).show();
                         isChecked = false;
                         switchCheckIn.setChecked(false);
                     }
@@ -427,7 +431,7 @@ public class CourseFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 LogUtils.getInstance().d("慕课显示按钮 -- > " + isChecked);
                 if (isChecked) {
-                    Toasty.custom(requireActivity(), "慕课显示开启，课表下方会显示所选慕课信息", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                    Toasty.custom(requireActivity(), "慕课显示开启，课表下方会显示所选慕课信息", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_LONG, true, true).show();
                     Toasty.Config.reset();
                 } else {
                     Toasty.custom(requireActivity(), "慕课显示已关闭", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
@@ -673,7 +677,8 @@ public class CourseFragment extends Fragment {
                         break;
                     case Constant.MSG_CHECK_IN_SUCCESS:
                         String checkInTime = (String) msg.obj;
-                        final String checkInStr = "今天 " + checkInTime + " 已签到";
+//                        final String checkInStr = "今天 " + checkInTime + " 已签到";
+                        final String checkInStr = checkInTime + " 已签到";
 
 //                        mTvCheckIn.setBackgroundColor(0xFFe6e6e6);
                         ObjectAnimator backgroundColor = ofObject(mTvCheckIn, "backgroundColor", new ArgbEvaluator(), 0xFFec6b6b, 0xFFe6e6e6);
@@ -692,6 +697,11 @@ public class CourseFragment extends Fragment {
                         break;
                     case Constant.STOP_REFRESH:
                         mSlRefresh.setRefreshing(false);
+                        break;
+                    case Constant.MSG_CHECK_IN_FAIL:
+                        // 获取签到信息失败
+                        Toasty.custom(requireActivity(), "获取签到信息失败", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                        // TODO: 2020/5/31 修改toast颜色
                         break;
 
 
@@ -715,26 +725,32 @@ public class CourseFragment extends Fragment {
                 // 数据库有请假系统密码  初始化签到信息
                 LogUtils.getInstance().d("有请假系统密码则开始获取签到信息");
                 if (hasLeavePwd) {
+                    Message checkInMSG = new Message();
                     try {
+
                         String checkIn = LeaveInfo.getLeave(stuInfo.getStuID().toString(), stuInfo.getLeavePassword(), Constant.URI_CHECK_IN, requireContext());
                         LogUtils.getInstance().d("签到数据：" + checkIn);
 
                         MyCheckIn mySigned = ParseCheckIn.getMySigned(checkIn);
-
-                        if (!mySigned.isCheckIn()) {
+                        // 测试
+//                        if (!mySigned.isCheckIn()) {
+                        if (mySigned.isCheckIn()) {
                             String checkInTime = mySigned.getCheckTime();
-                            // TODO: 2020/5/7 需要更换为签到时间
-                            checkInTime = "21:50";
+//                            2020/5/7 需要更换为签到时间
+//                            checkInTime = "21:50";
+//                            checkInTime = "2020-05-31 21:50:30";
 
-                            Message checkInMSG = new Message();
                             checkInMSG.what = Constant.MSG_CHECK_IN_SUCCESS;
                             checkInMSG.obj = checkInTime;
                             mHandler.sendMessage(checkInMSG);
+//                            // 测试失败情况
+//                            throw new Exception();
                         }
 
                     } catch (Exception e) {
                         LogUtils.getInstance().e("获取签到信息失败：" + e.getMessage());
-                        e.printStackTrace();
+                        checkInMSG.what = Constant.MSG_CHECK_IN_FAIL;
+                        mHandler.sendMessage(checkInMSG);
                     }
                 }
             }
@@ -817,8 +833,10 @@ public class CourseFragment extends Fragment {
 
         // 颜色的随机数(从完整课表总课程数开始)
         int colorNum = allWeekCourse.size();
+        LogUtils.getInstance().d("allWeekCourse.size() -- > " + allWeekCourse.size());
         // 周课表课程存在完整课表中，就赋值上完整课表id
         for (OneWeekCourse oneWeekCourse : couList) {
+            long color = -1;
             for (Course cou : allWeekCourse) {
                 // 去除空格
                 String wholeCouName = cou.getCouName().replace(" ", "");
@@ -826,16 +844,21 @@ public class CourseFragment extends Fragment {
                 if (wholeCouName.equals(oneCouName)) {
                     // 设置上课程id和颜色
                     oneWeekCourse.setCouID(cou.getCouID());
-                    oneWeekCourse.setColor(cou.getCouColor());
+                    color = cou.getCouID();
                     LogUtils.getInstance().d("在完整课表中找到了该课程并修改：" + oneWeekCourse);
                     break;
-                } else {
-                    // 没有找到 可能是一些考试的显示
-                    // 取当前的完整课表的课数目为随机数
-                    oneWeekCourse.setColor(colorNum++);
-
                 }
             }
+            // 没有找到 可能是一些考试的显示
+            // 取当前的完整课表的课数目为随机数
+            if (color == -1) {
+                LogUtils.getInstance().d("没有在完整课表中找到当前课程 -- > " + oneWeekCourse.getCouName());
+                color = colorNum;
+                colorNum++;
+            }
+            // 设置颜色
+            oneWeekCourse.setColor((int) color);
+
             // 插入数据库
             mOneWeekCourseViewModel.insertOneWeekCourse(oneWeekCourse);
         }
