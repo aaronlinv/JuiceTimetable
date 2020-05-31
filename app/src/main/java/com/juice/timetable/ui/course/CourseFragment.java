@@ -646,6 +646,8 @@ public class CourseFragment extends Fragment {
                     case Constant.MSG_CHECK_IN_FAIL:
                         // 获取签到信息失败
                         LogUtils.getInstance().d("获取签到信息失败 开始提示Toasty");
+                        // 修改通知栏文字
+                        mTvCheckIn.setText("获取签到信息失败");
                         Toasty.custom(requireActivity(), "获取签到信息失败", getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
                         Toasty.Config.reset();
                         break;
