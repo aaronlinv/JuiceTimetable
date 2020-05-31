@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 public class ParseAllWeek {
-
+    private static String sSemester = "";
     /**
      * 解析完整的课表
      */
@@ -37,7 +37,9 @@ public class ParseAllWeek {
         ///将table左边的表格标签里的内容提取（课程名，老师，起始结束周）
         Element leftTable = document.getElementsByTag("td").eq(1).get(0);
 
-
+        Element div = document.getElementsByTag("div").eq(0).get(0);
+        sSemester = div.getElementsByTag("strong").text();
+        LogUtils.getInstance().e("所在学期--->" + sSemester);
         int trSize = leftTable.getElementsByTag("tr").size();
         //循环tr标签内容
         for (int a = 1; a < trSize; a++) {
@@ -233,4 +235,11 @@ public class ParseAllWeek {
         return courseList;
     }
 
+    static String getSemester() {
+        return sSemester;
+    }
+
+    public void setSemester(String semester) {
+        sSemester = semester;
+    }
 }
