@@ -68,6 +68,7 @@ public class UnsignedFragment extends Fragment {
         unsignedAdapter = new UnsignedAdapter();
         recyclerView.setAdapter(unsignedAdapter);
         recyclerView.addItemDecoration(new UnsignedItemDecoration(requireContext()));
+        //recyclerView.setItemAnimator(new DefaultItemAnimator());
         return root;
     }
 
