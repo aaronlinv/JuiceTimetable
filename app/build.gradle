@@ -42,7 +42,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'org.jsoup:jsoup:1.12.2'
     implementation 'com.dyhdyh.loadingbar:loadingbar:1.4.4'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     def room_version = "2.2.3"
     testImplementation 'androidx.test:core:1.0.0'
     androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.0'
