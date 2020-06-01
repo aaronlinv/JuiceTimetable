@@ -120,6 +120,16 @@
                         android:text="@string/team_name"
                         android:textColor="@color/primary_text"
                         android:textIsSelectable="true" />
+
+                    <TextView
+                        android:id="@+id/blogLink"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/marginLeft"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/team_blog"
+                        android:textColor="@color/primary_text"
+                        android:textIsSelectable="true" />
                 </LinearLayout>
 
                 <TextView
