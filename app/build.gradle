@@ -60,10 +60,11 @@ dependencies {
 
 
     // Test helpers
+    //noinspection GradleDependency
     testImplementation "androidx.room:room-testing:$room_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'androidx.mediarouter:mediarouter:1.0.0'
+    implementation 'androidx.mediarouter:mediarouter:1.1.0'
 
     implementation("com.squareup.okhttp3:okhttp:4.6.0")
     implementation 'com.github.f0ris.sweetalert:library:1.6.2'
