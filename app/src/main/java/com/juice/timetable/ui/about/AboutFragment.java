@@ -27,7 +27,7 @@ import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 
 public class AboutFragment extends Fragment {
     private ImageButton imageButton;
-    private TextView githubLink, blogLink;
+    private TextView githubLink;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_about, container, false);
@@ -48,9 +48,7 @@ public class AboutFragment extends Fragment {
         NoUnderlineSpan mNoUnderlineSpan = new NoUnderlineSpan();
         if (githubLink.getText() instanceof Spannable) {
             Spannable github = (Spannable) githubLink.getText();
-            Spannable blog = (Spannable) blogLink.getText();
             github.setSpan(mNoUnderlineSpan, 0, github.length(), Spanned.SPAN_MARK_MARK);
-            blog.setSpan(mNoUnderlineSpan, 0, blog.length(), Spanned.SPAN_MARK_MARK);
         }
         return root;
     }
@@ -58,7 +56,6 @@ public class AboutFragment extends Fragment {
     private void findID(View root) {
         imageButton = root.findViewById(R.id.QQ_feedback);
         githubLink = root.findViewById(R.id.tv_github);
-        blogLink = root.findViewById(R.id.blogLink);
     }
 
     /****************
