@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -68,7 +69,18 @@ public class UnsignedFragment extends Fragment {
         unsignedAdapter = new UnsignedAdapter();
         recyclerView.setAdapter(unsignedAdapter);
         recyclerView.addItemDecoration(new UnsignedItemDecoration(requireContext()));
+        return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         getTable();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         if (Constant.FIRST_IN) {
             // 刷新动画
             // 通过调用控件的引用调用post方法，在run方法中更新ui界面
@@ -88,7 +100,6 @@ public class UnsignedFragment extends Fragment {
                 fresh();
             }
         });
-        return root;
     }
 
     private void findID(View root) {
@@ -160,6 +171,10 @@ public class UnsignedFragment extends Fragment {
                 }
             }
         }).start();
+    }
+
+    private void network() {
+
     }
 
     @SuppressLint("HandlerLeak")
