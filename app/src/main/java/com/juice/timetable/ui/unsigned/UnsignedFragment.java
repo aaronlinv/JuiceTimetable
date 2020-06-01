@@ -173,10 +173,6 @@ public class UnsignedFragment extends Fragment {
         }).start();
     }
 
-    private void network() {
-
-    }
-
     @SuppressLint("HandlerLeak")
     private void handler() {
         mHandler = new Handler() {
