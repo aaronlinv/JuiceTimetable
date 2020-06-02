@@ -36,7 +36,7 @@
         \ncom.jaredrummler:material-spinner
         \ncom.github.f0ris.sweetalert:library
     </string>
-    <string name="app_name_for_about">橙汁 V1.0</string>
+    <string name="app_name_for_about">橙汁 V1.0.0</string>
     <string name="github">Github</string>
     <string name="qq_feedback">加入QQ群反馈</string>
     <string name="team">开发者</string>
