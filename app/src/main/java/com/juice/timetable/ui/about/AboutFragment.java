@@ -29,6 +29,7 @@ import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 public class AboutFragment extends Fragment {
     private ImageButton imageButton;
     private TextView githubLink;
+    private TextView blogLink;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_about, container, false);
@@ -40,7 +41,7 @@ public class AboutFragment extends Fragment {
         menu.setGroupVisible(0, false);
 
         imageButton.getBackground().setAlpha(200);
-        imageButton.setOnClickListener(new OnClickListener() {
+        blogLink.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 joinQQGroup();
@@ -57,6 +58,8 @@ public class AboutFragment extends Fragment {
     private void findID(View root) {
         imageButton = root.findViewById(R.id.QQ_feedback);
         githubLink = root.findViewById(R.id.tv_github);
+        blogLink = root.findViewById(R.id.blogLink);
+
     }
 
     /****************
