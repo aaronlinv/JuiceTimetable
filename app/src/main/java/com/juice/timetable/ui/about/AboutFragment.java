@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,7 +26,6 @@ import es.dmoral.toasty.Toasty;
 import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 
 public class AboutFragment extends Fragment {
-    private ImageButton imageButton;
     private TextView githubLink;
     private TextView blogLink;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -40,11 +38,10 @@ public class AboutFragment extends Fragment {
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, false);
 
-        imageButton.getBackground().setAlpha(200);
         blogLink.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                joinQQGroup();
+                joinEmail();
             }
         });
         NoUnderlineSpan mNoUnderlineSpan = new NoUnderlineSpan();
@@ -56,20 +53,13 @@ public class AboutFragment extends Fragment {
     }
 
     private void findID(View root) {
-        imageButton = root.findViewById(R.id.QQ_feedback);
         githubLink = root.findViewById(R.id.tv_github);
         blogLink = root.findViewById(R.id.blogLink);
 
     }
 
-    /****************
-     *
-     * 发起添加群流程。群号：橙汁(1064126287) 的 key 为： C6DdqQNQ4cy60HhlLjSLci0nQnF26mOT
-     * 调用 joinQQGroup(GmXAZjq9jmbJgvFgabV3TH_cPNcBRAz9) 即可发起手Q客户端申请加群 橙汁(1064126287)
-     *
-     ******************/
     @SuppressLint("IntentReset")
-    private void joinQQGroup() {
+    private void joinEmail() {
         Uri uri = Uri.parse("mailto:aaronlinv@outlook.com");
         Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
         intent.putExtra(Intent.EXTRA_TEXT, "“对于<橙汁>的意见反馈"); // 正文
