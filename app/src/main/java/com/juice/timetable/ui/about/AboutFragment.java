@@ -69,7 +69,6 @@ public class AboutFragment extends Fragment {
         } catch (Exception e) {
             Toasty.custom(requireActivity(), "您没有任何邮箱软件", getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
             Toasty.Config.reset();
-            // 未安装手Q或安装的版本不支持
         }
     }
 
