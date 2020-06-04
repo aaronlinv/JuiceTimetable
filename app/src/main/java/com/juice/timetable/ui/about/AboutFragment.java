@@ -46,6 +46,12 @@ public class AboutFragment extends Fragment {
                 joinEmail();
             }
         });
+        blogLink.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                joinEmail();
+            }
+        });
         NoUnderlineSpan mNoUnderlineSpan = new NoUnderlineSpan();
         if (githubLink.getText() instanceof Spannable) {
             Spannable github = (Spannable) githubLink.getText();
