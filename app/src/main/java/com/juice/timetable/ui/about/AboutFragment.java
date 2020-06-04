@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 public class AboutFragment extends Fragment {
     private TextView githubLink;
     private TextView blogLink;
+    private LinearLayout linearLayout;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_about, container, false);
@@ -38,7 +40,7 @@ public class AboutFragment extends Fragment {
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, false);
 
-        blogLink.setOnClickListener(new OnClickListener() {
+        linearLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 joinEmail();
@@ -55,7 +57,7 @@ public class AboutFragment extends Fragment {
     private void findID(View root) {
         githubLink = root.findViewById(R.id.tv_github);
         blogLink = root.findViewById(R.id.blogLink);
-
+        linearLayout = root.findViewById(R.id.linearLayout3);
     }
 
     @SuppressLint("IntentReset")
