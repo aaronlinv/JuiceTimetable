@@ -21,6 +21,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.gyf.immersionbar.ImmersionBar;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
@@ -53,7 +54,7 @@ public class MainActivity extends BaseActivity {
          * 通知栏透明
          * SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
          */
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Window window = getWindow();
             window.getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -61,6 +62,16 @@ public class MainActivity extends BaseActivity {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
             window.setNavigationBarColor(Color.TRANSPARENT);
+        } else {
+            ImmersionBar.with(this)
+                    .transparentBar()
+                    .navigationBarColor(R.color.transparent)
+                    .statusBarDarkFont(true)
+                    .navigationBarDarkIcon(true)
+                    .autoDarkModeEnable(true)
+                    .barColorTransform(R.color.colorPrimaryDark)
+                    .init();
+
         }
         setContentView(R.layout.activity_main);
         //toolbar
