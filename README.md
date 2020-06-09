@@ -1,6 +1,6 @@
-# <center>橙汁</center>
+# 橙汁
 
-<center>![图标](https://github.com/soreak/JuiceTimetable/blob/dev/img/juice_icon.png?raw=true)</center>
+![图标](https://github.com/soreak/JuiceTimetable/blob/dev/img/juice_icon.png?raw=true)
 
 ## 简介
 
@@ -39,7 +39,7 @@
 
 ## 截图预览
 
-![课表首页](https://github.com/soreak/JuiceTimetable/blob/dev/img/01.jpg?raw=true) {:width="300px" height="600px"}
+<img src = ''https://github.com/soreak/JuiceTimetable/blob/dev/img/01.jpg?raw=true"  width="50%">[课表首页] </img>
 
 ![慕课显示](https://github.com/soreak/JuiceTimetable/blob/dev/img/02.jpg?raw=true){:width="300px" height="600px"}
 
