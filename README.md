@@ -53,9 +53,9 @@
 
 ## 感谢开源库
 
-<a href="github.com/xxyangyoulin/ClassSchedule">github.com/xxyangyoulin/ClassSchedule</a>
+github.com/xxyangyoulin/ClassSchedule
 
-<a href="github.com/YZune/WakeUpSchedule">github.com/YZune/WakeUpSchedule</a>
+github.com/YZune/WakeUpSchedule
 
 <a href="https://jsoup.org/download">org.jsoup:jsoup</a>
 
