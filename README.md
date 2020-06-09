@@ -36,7 +36,7 @@
 
 - 更改软件所存储的认证信息
 
-
+## 下载链接 <div href="https://www.coolapk.com/apk/265263">前往下载</div>
 
 ## 截图预览
 
