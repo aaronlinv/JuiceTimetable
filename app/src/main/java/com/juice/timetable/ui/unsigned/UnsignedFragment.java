@@ -68,7 +68,19 @@ public class UnsignedFragment extends Fragment {
         unsignedAdapter = new UnsignedAdapter();
         recyclerView.setAdapter(unsignedAdapter);
         recyclerView.addItemDecoration(new UnsignedItemDecoration(requireContext()));
+        //recyclerView.setItemAnimator(new DefaultItemAnimator());
+        return root;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
         getTable();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         if (Constant.FIRST_IN) {
             // 刷新动画
             // 通过调用控件的引用调用post方法，在run方法中更新ui界面
@@ -88,7 +100,6 @@ public class UnsignedFragment extends Fragment {
                 fresh();
             }
         });
-        return root;
     }
 
     private void findID(View root) {

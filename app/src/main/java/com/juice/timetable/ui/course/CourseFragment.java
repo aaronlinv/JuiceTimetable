@@ -222,12 +222,12 @@ public class CourseFragment extends Fragment {
 
         handler();
 
-        // 首次登录，获取数据并刷新界面
+        // 每次到这个界面都 获取数据并刷新界面
         if (Constant.REFRESH_DATE) {
             // 刷新动画
             mSlRefresh.setRefreshing(true);
             refreshData();
-            // 设置首次登录为false
+            // 设置为false
             Constant.REFRESH_DATE = false;
         }
         // 开启签到显示 且 在签到时间刷新签到情况
@@ -270,7 +270,13 @@ public class CourseFragment extends Fragment {
                 mVpCourse.setCurrentItem(item.getItemId(), true);*/
                 // 跳转当前周 图标监听
                 if (item.getItemId() == R.id.item_go_current_week) {
-                    mVpCourse.setCurrentItem(Constant.CUR_WEEK - 1, true);
+                    // 如果是当前周，提示
+                    if (mVpCourse.getCurrentItem() == Constant.CUR_WEEK - 1) {
+                        Toasty.custom(requireActivity(), "已在当前周", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                        Toasty.Config.reset();
+                    } else {
+                        mVpCourse.setCurrentItem(Constant.CUR_WEEK - 1, true);
+                    }
                     LogUtils.getInstance().d("点击了 跳转到当前周图标 -- > " + (Constant.CUR_WEEK - 1));
                 }
                 if (item.getItemId() == R.id.item_more_option) {
@@ -616,6 +622,15 @@ public class CourseFragment extends Fragment {
      * 开始刷新数据，结束刷新动画
      */
     private void refreshData() {
+        // 开启签到显示 且 在签到时间刷新签到情况
+        if (Constant.ENABLE_CHECK_IN && Utils.isCheckInTime()) {
+            mTvCheckIn.setVisibility(View.VISIBLE);
+            getCheckIn();
+            // 设置可见
+        } else {
+            mTvCheckIn.setVisibility(View.GONE);
+        }
+
         new Thread() {
             @Override
             public void run() {
@@ -644,6 +659,19 @@ public class CourseFragment extends Fragment {
 
                 } else {
                     List<Course> courses = ParseAllWeek.parseAllCourse(allCourse);
+                    // 不为当前学期就删除 所有周课表避免冲突，完整课表下面已经删了，不用担心
+                    String curSemester = PreferencesUtils.getString(Constant.CUR_SEMESTER, "");
+                    LogUtils.getInstance().d("本地curSemester -- > " + curSemester);
+                    LogUtils.getInstance().d("爬取curSemester -- > " + ParseAllWeek.getSemester());
+
+                    // 爬取的学期信息与本地不同，清除周课表
+                    if (!curSemester.equals(ParseAllWeek.getSemester())) {
+                        mOneWeekCourseViewModel.deleteOneWeekCourse();
+                        LogUtils.getInstance().d("curSemester 爬取的学期信息与本地不同，清除周课表结束");
+                        // 写入学期信息
+                        PreferencesUtils.putString(Constant.CUR_SEMESTER, ParseAllWeek.getSemester());
+                    }
+
                     LogUtils.getInstance().d("setOnRefreshListener:解析完整课表结束");
                     if (courses.isEmpty()) {
                         message.obj = "解析完整课表失败";
@@ -691,7 +719,11 @@ public class CourseFragment extends Fragment {
                     case Constant.MSG_REFRESH:
                         String msgStr = (String) msg.obj;
                         if (!"ok".equals(msgStr)) {
-                            Toasty.custom(requireActivity(), msgStr, getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                            // 课表刷新有问题情况
+                            if ("您输入的教务网用户名或是密码有误".equals(msgStr)) {
+                                msgStr = "教务网密码已被更改，请在修改认证信息页面进行修改";
+                            }
+                            Toasty.custom(requireActivity(), msgStr, getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_LONG, true, true).show();
                             Toasty.Config.reset();
                             mSlRefresh.setRefreshing(false);
                         } else {
@@ -735,12 +767,17 @@ public class CourseFragment extends Fragment {
                         mSlRefresh.setRefreshing(false);
                         break;
                     case Constant.MSG_CHECK_IN_FAIL:
+                        String checkInMsgStr = (String) msg.obj;
                         // 获取签到信息失败
                         LogUtils.getInstance().d("获取签到信息失败 开始提示Toasty");
                         // 修改通知栏文字
                         mTvCheckIn.setText("获取签到信息失败");
-                        Toasty.custom(requireActivity(), "获取签到信息失败", getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
-                        Toasty.Config.reset();
+
+                        if ("您输入的请假系统用户名或是密码有误".equals(checkInMsgStr)) {
+                            checkInMsgStr = "请假系统密码已被更改，请在修改认证信息页面进行修改";
+                        }
+
+                        Toasty.custom(requireActivity(), checkInMsgStr, getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_LONG, true, true).show();
                         break;
 
 
@@ -784,12 +821,13 @@ public class CourseFragment extends Fragment {
                             checkInMSG.obj = checkInTime;
                             mHandler.sendMessage(checkInMSG);
                         }
-//                            // 测试失败情况
+//                            // 测试获取信息失败情况
 //                            throw new Exception();
 
                     } catch (Exception e) {
                         LogUtils.getInstance().e("获取签到信息失败：" + e.getMessage());
                         checkInMSG.what = Constant.MSG_CHECK_IN_FAIL;
+                        checkInMSG.obj = e.getMessage();
                         mHandler.sendMessage(checkInMSG);
                     }
                 }

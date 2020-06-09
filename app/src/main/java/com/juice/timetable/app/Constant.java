@@ -55,6 +55,9 @@ public class Constant {
     // 首次登录 Preferences 用于显示引导提示
     public static final String FIRST_LOGIN_GUIDE = "FIRST_LOGIN_GUIDE";
 
+    // 当前学期 Preferences
+    public static final String CUR_SEMESTER = "CUR_SEMESTER";
+
     // 当前学校周 从1开始计数 1代表第一周
     public static int CUR_WEEK = -1;
     // 最大周 默认25周
@@ -72,8 +75,8 @@ public class Constant {
     // 调式签到提示栏
 //    public static boolean DEBUG_CHECK_IN_TEXTVIEW = false;
 
-    // 初次登录和修改认证后需要要刷新数据
-    public static boolean REFRESH_DATE = false;
+    // 初次登录和修改认证后需要要刷新数据，每次打开也要
+    public static boolean REFRESH_DATE = true;
 
     public static boolean FIRST_IN = true;
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F3F3F3"
@@ -36,10 +37,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="3dp"
                 android:text="@string/app_name_for_about"
                 android:textColor="@color/primary_text"
                 android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/secondary_text"
+                android:textSize="12sp"
+                android:text="@string/version"
+                tools:text="1.0.0" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -127,10 +138,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/marginLeft"
                         android:layout_marginTop="8dp"
-                        android:autoLink="web"
                         android:text="@string/team_blog"
                         android:textColor="@color/primary_text"
-                        android:textColorLink="@color/primary_text" />
+                        android:textIsSelectable="true" />
                 </LinearLayout>
 
                 <TextView
@@ -169,32 +179,6 @@
                         android:textColor="@color/primary_text" />
                 </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/QQ_feedback"
-                    android:layout_width="75dp"
-                    android:layout_height="67dp"
-                    android:background="#00000000"
-                    android:contentDescription="@string/todo"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/qq_icon2"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-                    app:layout_constraintVertical_bias="0.321" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
-                    android:text="@string/qq_feedback"
-                    android:textColor="@color/secondary_text"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.498"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/QQ_feedback"
-                    app:layout_constraintVertical_bias="0.076" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.juice.timetable.ui.about.RippleLayout>
