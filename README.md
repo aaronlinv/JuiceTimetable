@@ -41,7 +41,7 @@
 
 ## 截图预览
 
-![课表首页](https://github.com/soreak/JuiceTimetable/blob/dev/img/01.jpg?raw=true width="30%") 
+![课表首页](https://github.com/soreak/JuiceTimetable/blob/dev/img/01.jpg?raw=true) 
 
 ![慕课显示](https://github.com/soreak/JuiceTimetable/blob/dev/img/02.jpg?raw=true)
 
@@ -60,3 +60,5 @@
 ![项目关于](https://github.com/soreak/JuiceTimetable/blob/dev/img/09.jpg?raw=true)
 
 ![签到提醒](https://github.com/soreak/JuiceTimetable/blob/dev/img/10.jpg?raw=true)
+
+<img src=“https://github.com/soreak/JuiceTimetable/blob/dev/img/01.jpg?raw=true” style=“width:200px height:300px” />
