@@ -5,7 +5,7 @@
 
 ## 简介
 
-这是一款专属于福州大学至诚学院的app。能够简单快捷查看课程表与指纹签到情况，小巧，轻便，让你摆脱庞大的存储空间困扰。
+这是一款专属于福州大学至诚学院的App，能够简单快捷查看课程表与指纹签到情况，小巧，轻便，让你摆脱庞大的存储空间困扰
 
 
 
@@ -14,7 +14,7 @@
 ### 周课表 
 
 - 进入软件即为主页——课程表
-- 可以通过点击下拉菜单切换周课表
+- 可以通过左右滑动或者点击下拉菜单切换周课表
 
 ### 侧边菜单栏 
 
@@ -51,7 +51,7 @@
 
 <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/09.jpg" width="420px" height="720px" />        <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/04.jpg" width="420px" height="720px" />
 
-## 感谢开源库
+## 感谢以下开源项目
 
 <a href="https://github.com/xxyangyoulin/ClassSchedule">github.com/xxyangyoulin/ClassSchedule</a>
 
@@ -61,25 +61,16 @@
 
 <a href="https://site.mockito.org/">org.mockito:mockito-core</a>
 
-<a href="https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp">com.squareup.okhttp3:okhttp</a>
+<a href="https://square.github.io/okhttp/">com.squareup.okhttp3:okhttp</a>
 
 <a href="https://github.com/GrenderG/Toasty">com.github.GrenderG:Toasty</a>
 
-<a href="https://mvnrepository.com/artifact/junit/junit">junit:junit</a>
+<a href="https://github.com/junit-team">junit:junit</a>
 
 <a href="https://github.com/florent37/viewtooltip">com.github.florent37:viewtooltip</a>
 
 <a href="https://github.com/jaredrummler/MaterialSpinner">com.jaredrummler:material-spinner</a>
 
-<a href="https://libraries.io/maven/com.github.f0ris.sweetalert:library">com.github.f0ris.sweetalert:library</a>
+<a href="https://github.com/F0RIS/sweet-alert-dialog">com.github.f0ris.sweetalert:library</a>
 
         
-        
-        
-        
-        
-        
-        
-        
-
-
