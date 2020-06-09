@@ -1,6 +1,6 @@
 # <center>橙汁</center>
 
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/juice_icon.png" align="center"/>
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/juice_icon.png" align="middle" />
 
 
 ## 简介
