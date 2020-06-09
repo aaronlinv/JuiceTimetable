@@ -40,34 +40,15 @@
 
 ## 截图预览
 
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/01.jpg" width="300px" height="600px" />
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/01.jpg" width="420px" height="720px" /><img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/02.jpg" width="300px" height="600px" />
 
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/02.jpg" width="300px" height="600px" />
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/03.jpg" width="300px" height="600px" />
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/04.jpg" width="300px" height="600px" />
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/05.jpg" width="300px" height="600px" />
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/06.jpg" width="300px" height="600px" />
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/07.jpg" width="300px" height="600px" />
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/08.jpg" width="300px" height="600px" />
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/09.jpg" width="300px" height="600px" />
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/10.jpg" width="300px" height="600px" />
-![课表首页](https://github.com/soreak/JuiceTimetable/blob/dev/img/01.jpg?raw=true)
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/03.jpg" width="300px" height="600px" /><img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/04.jpg" width="300px" height="600px" />
 
-![慕课显示](https://github.com/soreak/JuiceTimetable/blob/dev/img/02.jpg?raw=true)
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/05.jpg" width="300px" height="600px" /><img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/06.jpg" width="300px" height="600px" />
 
-![切换周数](https://github.com/soreak/JuiceTimetable/blob/dev/img/03.jpg?raw=true)
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/07.jpg" width="300px" height="600px" /><img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/08.jpg" width="300px" height="600px" />
 
-![开关展示](https://github.com/soreak/JuiceTimetable/blob/dev/img/04.jpg?raw=true)
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/09.jpg" width="300px" height="600px" /><img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/10.jpg" width="300px" height="600px" />
 
-![课程冲突](https://github.com/soreak/JuiceTimetable/blob/dev/img/05.jpg?raw=true)
 
-![侧边栏](https://github.com/soreak/JuiceTimetable/blob/dev/img/06.jpg?raw=true)
-
-![班级未签](https://github.com/soreak/JuiceTimetable/blob/dev/img/07.jpg?raw=true)
-
-![修改认证](https://github.com/soreak/JuiceTimetable/blob/dev/img/08.jpg?raw=true)
-
-![项目关于](https://github.com/soreak/JuiceTimetable/blob/dev/img/09.jpg?raw=true)
-
-![签到提醒](https://github.com/soreak/JuiceTimetable/blob/dev/img/10.jpg?raw=true)
 
