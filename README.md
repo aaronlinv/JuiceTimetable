@@ -41,7 +41,7 @@
 
 ## 截图预览
 
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/01.jpg" style="width:200px height:300px" />
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/01.jpg" width="200px" height="300px" />
 
 
 ![课表首页](https://github.com/soreak/JuiceTimetable/blob/dev/img/01.jpg?raw=true) 
