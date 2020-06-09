@@ -1,8 +1,12 @@
 # 橙汁
 
+![图标](https://github.com/soreak/JuiceTimetable/blob/dev/img/juice_icon.png?raw=true)
+
 ## 简介
 
-一款能够简单快捷查看课程表与指纹签到情况的App
+这是一款专属于福州大学至诚学院的app。能够简单快捷查看课程表与指纹签到情况，小巧，轻便，让你摆脱庞大的存储空间困扰。
+
+
 
 ## 功能模块介绍
 
@@ -30,3 +34,27 @@
 ### 认证信息修改 
 
 - 更改软件所存储的认证信息
+
+
+
+## 截图预览
+
+![课表首页](https://github.com/soreak/JuiceTimetable/blob/dev/img/01.jpg?raw=true)
+
+![慕课显示](https://github.com/soreak/JuiceTimetable/blob/dev/img/02.jpg?raw=true)
+
+![切换周数](https://github.com/soreak/JuiceTimetable/blob/dev/img/03.jpg?raw=true)
+
+![开关展示](https://github.com/soreak/JuiceTimetable/blob/dev/img/04.jpg?raw=true)
+
+![课程冲突](https://github.com/soreak/JuiceTimetable/blob/dev/img/05.jpg?raw=true)
+
+![侧边栏](https://github.com/soreak/JuiceTimetable/blob/dev/img/06.jpg?raw=true)
+
+![班级未签](https://github.com/soreak/JuiceTimetable/blob/dev/img/07.jpg?raw=true)
+
+![修改认证](https://github.com/soreak/JuiceTimetable/blob/dev/img/08.jpg?raw=true)
+
+![项目关于](https://github.com/soreak/JuiceTimetable/blob/dev/img/09.jpg?raw=true)
+
+![签到提醒](https://github.com/soreak/JuiceTimetable/blob/dev/img/10.jpg?raw=true)

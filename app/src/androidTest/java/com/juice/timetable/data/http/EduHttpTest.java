@@ -42,7 +42,7 @@ public class EduHttpTest {
     @Test
     public void testGetCookieWrongInfo() {
         try {
-            String cookie = EduHttp.getCookie("211709111", "testWrongPWD", getContext());
+            String cookie = EduHttp.getCookie("211706162", "1314520cc", getContext());
         } catch (Exception e) {
             Assert.assertEquals(null, "您输入的教务网用户名或是密码有误", e.getMessage());
         }

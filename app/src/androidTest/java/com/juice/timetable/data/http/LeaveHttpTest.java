@@ -48,7 +48,7 @@ public class LeaveHttpTest {
 
         try {
             UserInfoUtils instant = UserInfoUtils.getINSTANT(getContext());
-            LeaveHttp.getCookie("211700119", "211700119");
+            LeaveHttp.getCookie("211706162", "1314520");
         } catch (Exception e) {
             Assert.assertEquals(null, "您输入的请假系统用户名或是密码有误", e.getMessage());
         }
