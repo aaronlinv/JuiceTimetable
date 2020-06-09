@@ -1,7 +1,6 @@
-# 橙汁
+# <center>橙汁</center>
 
-![图标](https://github.com/soreak/JuiceTimetable/blob/dev/img/juice_icon.png?raw=true)
-
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/juice_icon.png" align="center"/>
 
 
 ## 简介
@@ -41,10 +40,18 @@
 
 ## 截图预览
 
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/01.jpg" width="200px" height="300px" />
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/01.jpg" width="300px" height="600px" />
 
-
-![课表首页](https://github.com/soreak/JuiceTimetable/blob/dev/img/01.jpg?raw=true) 
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/02.jpg" width="300px" height="600px" />
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/03.jpg" width="300px" height="600px" />
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/04.jpg" width="300px" height="600px" />
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/05.jpg" width="300px" height="600px" />
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/06.jpg" width="300px" height="600px" />
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/07.jpg" width="300px" height="600px" />
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/08.jpg" width="300px" height="600px" />
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/09.jpg" width="300px" height="600px" />
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/10.jpg" width="300px" height="600px" />
+![课表首页](https://github.com/soreak/JuiceTimetable/blob/dev/img/01.jpg?raw=true)
 
 ![慕课显示](https://github.com/soreak/JuiceTimetable/blob/dev/img/02.jpg?raw=true)
 
