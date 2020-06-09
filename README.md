@@ -54,15 +54,25 @@
 ## 感谢开源库
 
 <a href="github.com/xxyangyoulin/ClassSchedule">github.com/xxyangyoulin/ClassSchedule</a>
+
 <a href="github.com/YZune/WakeUpSchedule">github.com/YZune/WakeUpSchedule</a>
+
 <a href="https://jsoup.org/download">org.jsoup:jsoup</a>
+
 <a href="https://site.mockito.org/">org.mockito:mockito-core</a>
+
 <a href="https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp">com.squareup.okhttp3:okhttp</a>
+
 <a href="https://github.com/GrenderG/Toasty">com.github.GrenderG:Toasty</a>
+
 <a href="https://mvnrepository.com/artifact/junit/junit">junit:junit</a>
+
 <a href="https://github.com/florent37/viewtooltip">com.github.florent37:viewtooltip</a>
+
 <a href="https://github.com/jaredrummler/MaterialSpinner">com.jaredrummler:material-spinner</a>
+
 <a href="https://libraries.io/maven/com.github.f0ris.sweetalert:library">com.github.f0ris.sweetalert:library</a>
+
         
         
         
