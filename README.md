@@ -1,4 +1,4 @@
-<div align=center><h2 style="width:100%;text-align:center">橙汁</h2></div>
+<div align=center><h1 style="width:100%;text-align:center">橙汁</h1></div>
 
 <div align=center><img style="display:black;margin:10px auto;"            src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/juice_icon.png" align="middle" /></div>
 
