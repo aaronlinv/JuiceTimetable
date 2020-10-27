@@ -62,8 +62,8 @@ public class EduInfo {
      */
     public static String parse(String cookies, String uri) throws Exception {
         Request request = new Request.Builder()
-                .addHeader("Referer", "http://jwb.fdzcxy.com/default.asp")
-                .addHeader("Host", "jwb.fdzcxy.com")
+                .addHeader("Referer", "https://jwc.fdzcxy.edu.cn/default.asp")
+                .addHeader("Host", "jwc.fdzcxy.edu.cn")
                 .addHeader("Cookie", cookies)
                 .get()
                 .url(uri)

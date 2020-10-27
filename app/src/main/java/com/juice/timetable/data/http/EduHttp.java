@@ -86,12 +86,13 @@ public class EduHttp {
     private static String login(String stuID, String stuPassword, String firstCookie, String code) throws Exception {
         // 登录入口url
 //        String loginURL = "http://jwb.fdzcxy.com/loginchk.asp?id=.447517";
-        String loginURL = "https://jwc.fdzcxy.edu.cn/ajax/chkCode.asp";
+        String loginURL = "http://jwc.fdzcxy.edu.cn/loginchk.asp?id=.447517";
+//        String loginURL = "https://jwc.fdzcxy.edu.cn/ajax/chkCode.asp";
 
         // okHttp
         FormBody formBody = new FormBody.Builder()
                 .add("muser", stuID)
-                .add("passWd", stuPassword)
+                .add("passwd", stuPassword)
                 .add("code", code)
                 .build();
         Request request = new Request.Builder()
@@ -106,7 +107,7 @@ public class EduHttp {
 //        int statusCode = response.code();
 //        LogUtils.getInstance().d("模拟登录状态码：" + statusCode);
         String result = response.body().string();
-        LogUtils.getInstance().d(result);
+        LogUtils.getInstance().d("result == >" + result);
         if (result == null) {
             throw new Exception("responseBody为空");
         } else if (result.contains("您输入的用户名或是密码出错")) {

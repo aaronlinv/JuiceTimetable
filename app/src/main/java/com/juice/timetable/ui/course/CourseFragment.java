@@ -643,6 +643,7 @@ public class CourseFragment extends Fragment {
                 StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
                 try {
                     allCourse = EduInfo.getTimeTable(stuInfo.getStuID().toString(), stuInfo.getEduPassword(), Constant.URI_WHOLE_COURSE, requireContext());
+                    LogUtils.getInstance().d("allCourse == >" + allCourse);
                 } catch (Exception e) {
                     LogUtils.getInstance().d("setOnRefreshListener：" + e.getMessage());
                     // 可能密码错误
