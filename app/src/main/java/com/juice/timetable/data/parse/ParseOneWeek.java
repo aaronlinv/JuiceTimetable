@@ -76,7 +76,11 @@ public class ParseOneWeek {
                                     cou.setCouName(couName);
 
                                     String s1 = tdText[c + 1];
-                                    String couRoom = s1.substring(1, s1.length() - 1);
+                                    // 去除 [网络教室] 左右的 []
+//                                    String couRoom = s1.substring(1, s1.length() - 1);
+                                    // 20.10.27 增加了时间 故去掉上面功能，直接显示 [网络教室](19:00)
+                                    String couRoom = s1;
+                                    LogUtils.getInstance().d("couRoom == >" + couRoom);
                                     cou.setCouRoom(couRoom);
 
                                     String id = td.attr("id");

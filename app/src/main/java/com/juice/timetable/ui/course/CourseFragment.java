@@ -355,6 +355,10 @@ public class CourseFragment extends Fragment {
                     teacher = teacher + "<br>";
                 }
                 String sb = teacher + cou.getCouRoom();
+                LogUtils.getInstance().d("teacher == >" + teacher);
+                LogUtils.getInstance().d("cou.getCouRoom() == >" + cou.getCouRoom());
+
+
 
                 new SweetAlertDialog(requireActivity(), SweetAlertDialog.NORMAL_TYPE)
                         .setTitleText(cou.getCouName())
