@@ -44,7 +44,7 @@ public class EduHttp {
      */
     private static String firstLogin() throws IOException {
         // 教务网主页url
-        String mainURL = "http://jwb.fdzcxy.com/default.asp";
+        String mainURL = "https://jwc.fdzcxy.edu.cn";
 
         Request request = new Request.Builder()
                 .get()
@@ -71,7 +71,7 @@ public class EduHttp {
      */
     private static Bitmap getCaptcha(String firstCookie) throws IOException {
         // 验证码获取url
-        String checkCodeURL = "http://jwb.fdzcxy.com/ValidateCookie.asp";
+        String checkCodeURL = "https://jwc.fdzcxy.edu.cn/ValidateCookie.asp";
         LogUtils.getInstance().d("获取验证码的cookie：" + firstCookie);
         Request request = new Request.Builder()
                 .addHeader("Cookie", firstCookie)
@@ -86,7 +86,7 @@ public class EduHttp {
     private static String login(String stuID, String stuPassword, String firstCookie, String code) throws Exception {
         // 登录入口url
 //        String loginURL = "http://jwb.fdzcxy.com/loginchk.asp?id=.447517";
-        String loginURL = "http://jwb.fdzcxy.com/loginchk.asp";
+        String loginURL = "https://jwc.fdzcxy.edu.cn/ajax/chkCode.asp";
 
         // okHttp
         FormBody formBody = new FormBody.Builder()
