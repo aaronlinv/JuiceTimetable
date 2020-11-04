@@ -391,6 +391,15 @@ public class CourseView extends FrameLayout {
         if (mRowItemWidthAuto) {
             mWidth = w;
             mRowItemWidth = mWidth / mRowCount;
+
+
+            ViewGroup parent = (ViewGroup) getParent();
+            int height = parent.getMeasuredHeight();
+
+            mHeight = height;
+            LogUtils.getInstance().d("高度 == >" + height);
+            mColItemHeight = height / mColCount;
+
         } else {
             mWidth = mRowItemWidth * mRowCount;
         }
@@ -401,7 +410,10 @@ public class CourseView extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         LogUtils.getInstance().d("调用onMeasure");
 
-        mHeight = mColItemHeight * mColCount;
+
+//        mHeight = mColItemHeight * mColCount;
+
+
         int heightResult = MeasureSpec.makeMeasureSpec(mHeight, MeasureSpec.EXACTLY);
 
         setMeasuredDimension(widthMeasureSpec, heightResult);
