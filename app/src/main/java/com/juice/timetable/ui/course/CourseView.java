@@ -48,7 +48,7 @@ public class CourseView extends FrameLayout {
     private int mTextSize = 12;
 
     private int mWidth;
-    private int mHeight;
+    public int mHeight;
 
     private int mRowCount = 7;
     private int mColCount = 11;
@@ -391,15 +391,17 @@ public class CourseView extends FrameLayout {
         if (mRowItemWidthAuto) {
             mWidth = w;
             mRowItemWidth = mWidth / mRowCount;
+            // 1.想法1获取父类的长度，课表格子可以适配，但是课程节数无法适配，getMeasureHeight始终获取到的是0
+//            ViewGroup parent = (ViewGroup) getParent();
+//            int height = parent.getMeasuredHeight();
 
+            // 改用绝对数值，来匹配高度
+            int dip2px = Utils.dip2px(this.getContext().getApplicationContext(), 125);
+            int heightPixels = getResources().getDisplayMetrics().heightPixels;
+            mHeight = heightPixels - dip2px;
 
-            ViewGroup parent = (ViewGroup) getParent();
-            int height = parent.getMeasuredHeight();
-
-            mHeight = height;
-            LogUtils.getInstance().d("高度 == >" + height);
-            mColItemHeight = height / mColCount;
-
+            LogUtils.getInstance().d("高度 == >" + mHeight);
+            mColItemHeight = mHeight / mColCount;
         } else {
             mWidth = mRowItemWidth * mRowCount;
         }
@@ -410,13 +412,16 @@ public class CourseView extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         LogUtils.getInstance().d("调用onMeasure");
 
+        int dip2px = Utils.dip2px(this.getContext().getApplicationContext(), 125);
+
+//        LogUtils.getInstance().d("高度 == >" + height);
 
 //        mHeight = mColItemHeight * mColCount;
 
+        int heightPixels = getResources().getDisplayMetrics().heightPixels;
+//        int heightResult = MeasureSpec.makeMeasureSpec(mHeight, MeasureSpec.EXACTLY);
 
-        int heightResult = MeasureSpec.makeMeasureSpec(mHeight, MeasureSpec.EXACTLY);
-
-        setMeasuredDimension(widthMeasureSpec, heightResult);
+        setMeasuredDimension(widthMeasureSpec, heightPixels - dip2px);
     }
 
     // 设置当前周

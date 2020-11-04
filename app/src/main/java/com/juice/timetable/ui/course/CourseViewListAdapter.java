@@ -156,11 +156,24 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
             //添加这个视图
             week.addView(textView, params);
         }
+
+        // 课程节数列表
         LinearLayout node = holder.itemView.findViewById(R.id.ll_node);
+        int dip2px = Utils.dip2px(holder.itemView.getContext().getApplicationContext(), 125);
+//        LogUtils.getInstance().d("高度 == >" + height);
+//        mHeight = mColItemHeight * mColCount;
+
+        // 节数栏使用绝对高度
+        int heightPixels = holder.itemView.getResources().getDisplayMetrics().heightPixels;
+
+        int nodeHeight = (heightPixels - dip2px) / 11;
+        LogUtils.getInstance().d("nodeHeight == >" + nodeHeight);
+
         // 清除已有View 否则会导致切换时一直叠加新的View
         node.removeAllViews();
         //  课程节数栏
-        int nodeItemHeight = Utils.dip2px(holder.itemView.getContext().getApplicationContext(), 55);
+
+//        int nodeItemHeight = Utils.dip2px(holder.itemView.getContext().getApplicationContext(), 55);
         for (int i = 1; i <= 11; i++) {
             TextView textView = new TextView(holder.itemView.getContext().getApplicationContext());
             textView.setTextSize(NODE_TEXT_SIZE);
@@ -169,7 +182,7 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
             textView.setText(String.valueOf(i));
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, nodeItemHeight);
+                    ViewGroup.LayoutParams.MATCH_PARENT, nodeHeight);
             node.addView(textView, params);
         }
         initEvent(courseView);
