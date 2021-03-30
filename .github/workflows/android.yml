@@ -1,0 +1,28 @@
+name: Build & Publish Debug APK
+on:
+ push:
+  branches:
+   - test
+   
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Make Gradle executable
+      run: chmod +x ./gradlew
+    - name: Build with Gradle
+      run: ./gradlew build
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug
+    - name: Releasing using Hub
+      uses: ShaunLWM/action-release-debugapk@master
+      env:
+       GITHUB_TOKEN: ${{ secrets.JuiceTimetable }} # github 项目secert key 名字必须和设置的一致， 并且token具有相关权限
+       APP_FOLDER: app
+       RELEASE_TITLE: New Build # 版本名称
+
