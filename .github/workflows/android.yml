@@ -45,7 +45,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.JuiceTimetable }}
       with:
-        tag_name: v1.1.1
+        tag_name: v1.1.2
         asset_path: ./app/build/outputs/apk/release/app-release.apk
         asset_name: Example.apk
         asset_content_type: application/apk
