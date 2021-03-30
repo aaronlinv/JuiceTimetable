@@ -7,9 +7,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
+      # outputs:
       # version: ${{ steps.step_version.outputs.version }}
-      upload_url: ${{ steps.step_upload_url.outputs.upload_url }}
+    # upload_url: ${{ steps.step_upload_url.outputs.upload_url }}
     steps:
       # 拉取test分支代码
     - uses: actions/checkout@v1
@@ -40,16 +40,27 @@ jobs:
       run: ./gradlew clean assembleRelease --stacktrace
 
       # 发行包
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1.0.1
+    - name: Create release and upload apk
+      uses: underwindfall/create-release-with-debugapk@v2.0.0
       env:
         GITHUB_TOKEN: ${{ secrets.JuiceTimetable }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        # JuiceTimetable\app\build\outputs\apk\release\app-release.apk
-        asset_path: ./app/build/outputs/apk/release/*.apk
-        asset_name: JuiceTimetable.apk
+        tag_name: v1.0.0
+        asset_path: app/build/outputs/apk/release/*.apk
+        asset_name: Example.apk
         asset_content_type: application/apk
+
+
+    # - name: Upload Release Asset
+    #   uses: actions/upload-release-asset@v1.0.1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.JuiceTimetable }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+    #     # JuiceTimetable\app\build\outputs\apk\release\app-release.apk
+    #     asset_path: ./app/build/outputs/apk/release/*.apk
+    #     asset_name: JuiceTimetable.apk
+    #     asset_content_type: application/apk
 
     # - name: Releasing using Hub
     #   uses: ShaunLWM/action-release-debugapk@master
