@@ -2,7 +2,11 @@ name: Build & Publish Debug APK
 on:
  push:
   branches:
+<<<<<<< HEAD
    - test
+=======
+   - master
+>>>>>>> c645392c9349eafca57ba7ba8ecdbb60c4358a91
    
 jobs:
   build:
