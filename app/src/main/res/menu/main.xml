@@ -2,8 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/item_go_current_week"
+        android:title="@string/go_current_week"
+        android:icon="@drawable/ic_current_week"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/item_more_option"
+        android:title="@string/more_option"
+        android:icon="@drawable/ic_more_vert_black_24dp"
+        app:showAsAction="always" />
 </menu>
