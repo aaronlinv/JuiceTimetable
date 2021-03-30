@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 // 加载仓库的密钥配置
 def keyProps = new Properties()
-def keyPropsFile = rootProject.file('../AndroidKeystore/juice.properties')
+def keyPropsFile = rootProject.file('AndroidKeystore/juice.properties')
 if (keyPropsFile.exists()) {
     keyProps.load(new FileInputStream(keyPropsFile))
 }
@@ -45,7 +45,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            signingConfig signingConfigs.juice
+//            signingConfig signingConfigs.juice
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
