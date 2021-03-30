@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
 
+// 加载仓库的密钥配置
+def keyProps = new Properties()
+def keyPropsFile = rootProject.file('../AndroidKeystore/juice.properties')
+if (keyPropsFile.exists()) {
+    keyProps.load(new FileInputStream(keyPropsFile))
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -19,12 +26,31 @@ android {
 
 
     }
+    // 配置打包使用的密钥
+    signingConfigs {
+        juice {
+            keyAlias keyProps['keyAlias']
+            keyPassword keyProps['keyPassword']
+            storeFile keyProps['storeFile'] ? file(keyProps['storeFile']) : null
+            storePassword keyProps['storePassword']
+        }
+    }
 
     buildTypes {
         release {
+            // 签名
+            signingConfig signingConfigs.juice
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            signingConfig signingConfigs.juice
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+
     }
     //添加如下配置就ok了
     lintOptions {
