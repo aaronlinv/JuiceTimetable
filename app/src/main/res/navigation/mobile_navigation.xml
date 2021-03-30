@@ -3,41 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_course">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.juice.timetable.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home">
+        android:id="@+id/nav_course"
+        android:name="com.juice.timetable.ui.course.CourseFragment"
+        android:label="@string/menu_course"
+        tools:layout="@layout/fragment_course">
 
         <action
-            android:id="@+id/action_HomeFragment_to_HomeSecondFragment"
-            app:destination="@id/nav_home_second" />
-    </fragment>
-    <fragment
-        android:id="@+id/nav_home_second"
-        android:name="com.juice.timetable.ui.home.HomeSecondFragment"
-        android:label="@string/home_second"
-        tools:layout="@layout/fragment_home_second">
-        <action
-            android:id="@+id/action_HomeSecondFragment_to_HomeFragment"
-            app:destination="@id/nav_home" />
+            android:id="@+id/action_nav_course_to_initFragment"
+            app:destination="@id/initFragment"
+            app:popUpTo="@id/nav_course"
+            app:popUpToInclusive="true" />
 
-        <argument
-            android:name="myArg"
-            app:argType="string" />
     </fragment>
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.juice.timetable.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_unsigned"
+        android:name="com.juice.timetable.ui.unsigned.UnsignedFragment"
+        android:label="@string/menu_unsigned"
+        tools:layout="@layout/fragment_unsigned" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.juice.timetable.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_login"
+        android:name="com.juice.timetable.ui.login.LoginFragment"
+        android:label="@string/menu_login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/initFragment"
+        android:name="com.juice.timetable.ui.init.InitFragment"
+        android:label="InitFragment">
+        <action
+            android:id="@+id/action_initFragment_to_nav_course"
+            app:destination="@id/nav_course"
+            app:popUpTo="@id/initFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.juice.timetable.ui.about.AboutFragment"
+        android:label="@string/menu_about"
+        android:layout="@layout/fragment_about" />
 </navigation>

@@ -1,11 +1,15 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        //光标和下划线颜色
+        <item name="colorControlActivated">@color/dark_gray</item>
+        //下划线默认颜色
+        <item name="colorControlNormal">@color/dark_gray</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
