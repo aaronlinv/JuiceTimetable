@@ -11,6 +11,7 @@ jobs:
     # upload_url: ${{ steps.step_upload_url.outputs.upload_url }}
     steps:
       - name: Get version
+        #
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
 
