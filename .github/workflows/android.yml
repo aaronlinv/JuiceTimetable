@@ -10,11 +10,6 @@ jobs:
       # version: ${{ steps.step_version.outputs.version }}
     # upload_url: ${{ steps.step_upload_url.outputs.upload_url }}
     steps:
-      # 获取版本号 如：v1.0.0
-      - name: Get version
-          id: get_version
-          run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-
       # 拉取test分支代码
     - uses: actions/checkout@v1
       with:
@@ -38,8 +33,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
 
-
-      - name: Build apk package
+    - name: Build apk package
       run: ./gradlew clean assembleRelease --stacktrace
 
       # 发行包
@@ -49,8 +43,8 @@ jobs:
       with:
         repo_token: ${{ secrets.JuiceTimetable }}
         file: ./app/build/outputs/apk/release/app-release.apk
-        asset_name: JuiceTimeTable${{ steps.get_version.outputs.VERSION }}.apk
-        tag: ${{ steps.get_version.outputs.VERSION }}
+        asset_name: JuiceTimeTable ${{ github.ref }} .apk
+        tag: ${{ github.ref }}
         overwrite: true
     #        body: "This is my release package"
 
