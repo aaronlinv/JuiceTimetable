@@ -50,7 +50,7 @@
                 android:text="@string/version"
                 android:textColor="@color/secondary_text"
                 android:textSize="12sp"
-                tools:text="1.1.0" />
+                tools:text="1.1.1" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
