@@ -1,16 +1,14 @@
 name: Build & Publish Release APK
 
 # 标签方式自动部署
-#on:
-#  push:
-#    tags:
-#      - v[1-9]+.[0-9]+.[0-9]+
-
-
 on:
   push:
-    branches:
-      - master
+    tags:
+      - v[1-9]+.[0-9]+.[0-9]+
+#on:
+#  push:
+#    branches:
+#      - master
 #  pull_request:
 #    branches:
 #      - master
