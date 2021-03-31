@@ -1,8 +1,8 @@
 name: Build & Publish Debug APK
 on:
  push:
-  branches:
-   - test
+   tags:
+     - 'v*'
    
 jobs:
   build:
