@@ -59,13 +59,15 @@ jobs:
         echo "ARTIFACT_NAME_APK is " ${ARTIFACT_NAME_APK}
         echo "ARTIFACT_PATHNAME_APK=${ARTIFACT_PATHNAME_APK}" >> $GITHUB_ENV
         echo "ARTIFACT_NAME_APK=${ARTIFACT_NAME_APK}" >> $GITHUB_ENV
-    - name: Upload our Artifact Assets
+
+      # - name: Upload our Artifact Assets
+    - name: uploadApk
       id: upload-release-asset
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.JuiceTimetable }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ steps.uploadApk.outputs.upload_url }}
         asset_path: ${{ env.ARTIFACT_PATHNAME_APK }}
         asset_name: ${{ env.ARTIFACT_NAME_APK }}
         asset_content_type: application/apk
