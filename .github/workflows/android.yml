@@ -67,7 +67,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.JuiceTimetable }}
       with:
-        # upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: https://github.com/aaronlinv/JuiceTimetable
         asset_path: ${{ env.ARTIFACT_PATHNAME_APK }}
         asset_name: ${{ env.ARTIFACT_NAME_APK }}
         asset_content_type: application/apk
