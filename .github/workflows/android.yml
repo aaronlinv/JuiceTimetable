@@ -41,7 +41,7 @@ jobs:
 
       # 发行包
     - name: Create Release
-      # id: create_release
+      id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.JuiceTimetable }}
@@ -68,7 +68,7 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ${{ env.ARTIFACT_PATHNAME_APK }}
         asset_name: ${{ env.ARTIFACT_NAME_APK }}
-        asset_content_type: application/zip
+        asset_content_type: application/apk
 
     # - name: Create release and upload apk
     #   uses: underwindfall/create-release-with-debugapk@v2.0.0
