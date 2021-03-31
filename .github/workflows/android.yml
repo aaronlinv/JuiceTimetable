@@ -15,6 +15,7 @@ jobs:
       with:
         ref: test
 
+
       # 克隆私有的密钥库, 用于打包时签名. 该仓库为私有库
     - name: clone project keystore
       uses: actions/checkout@v2
