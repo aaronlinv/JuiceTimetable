@@ -10,11 +10,15 @@ jobs:
       # version: ${{ steps.step_version.outputs.version }}
     # upload_url: ${{ steps.step_upload_url.outputs.upload_url }}
     steps:
+      # 获取版本号 如：v1.0.0
+      - name: Get version
+          id: get_version
+          run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
       # 拉取test分支代码
     - uses: actions/checkout@v1
       with:
         ref: test
-
 
       # 克隆私有的密钥库, 用于打包时签名. 该仓库为私有库
     - name: clone project keystore
@@ -35,21 +39,20 @@ jobs:
       run: ./gradlew build
 
 
-    - name: Build Debug APK
-      # run: ./gradlew assembleDebug
+      - name: Build apk package
       run: ./gradlew clean assembleRelease --stacktrace
 
       # 发行包
 
-    - name: Upload binaries to release
+      - name: Upload apk to release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.JuiceTimetable }}
         file: ./app/build/outputs/apk/release/app-release.apk
-        asset_name: JuiceTimeTable
-        tag: ${{ github.ref }}
+        asset_name: JuiceTimeTable${{ steps.get_version.outputs.VERSION }}.apk
+        tag: ${{ steps.get_version.outputs.VERSION }}
         overwrite: true
-        body: "This is my release package"
+    #        body: "This is my release package"
 
     # - name: Create Release
     #   id: create_release
