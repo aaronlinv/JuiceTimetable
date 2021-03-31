@@ -10,7 +10,11 @@ jobs:
       # version: ${{ steps.step_version.outputs.version }}
     # upload_url: ${{ steps.step_upload_url.outputs.upload_url }}
     steps:
-      # 拉取test分支代码
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+        # 拉取test分支代码
     - uses: actions/checkout@v1
       with:
         ref: test
@@ -43,7 +47,7 @@ jobs:
       with:
         repo_token: ${{ secrets.JuiceTimetable }}
         file: ./app/build/outputs/apk/release/app-release.apk
-        asset_name: JuiceTimeTable ${{ github.ref }} .apk
+        asset_name: JuiceTimeTable ${{ steps.get_version.outputs.VERSION }} .apk
         tag: ${{ github.ref }}
         overwrite: true
     #        body: "This is my release package"
