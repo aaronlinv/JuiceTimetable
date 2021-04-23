@@ -46,13 +46,12 @@ jobs:
       - name: Build apk package
         run: ./gradlew clean assembleRelease --stacktrace
 
-        # 发行包
-      - name: Create debug and upload apk
-        uses: underwindfall/create-release-with-debugapk@v2.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.JuiceTimetable }}
+        # 发行测试包
+      - name: Upload test apk to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          tag_name: ${{ steps.get_version.outputs.VERSION }}
-          asset_path: app/build/outputs/apk/debug/app-debug.apk
-          asset_name: JuiceTimeTable ${{ steps.get_version.outputs.VERSION }} .apk
-          asset_content_type: application/zip
+          repo_token: ${{ secrets.JuiceTimetable }}
+          file: ./app/build/outputs/apk/release/app-release.apk
+          asset_name: JuiceTimeTable(Test) ${{ steps.get_version.outputs.VERSION }}.apk
+          tag: ${{ github.ref }}
+          overwrite: true
