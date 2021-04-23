@@ -1,0 +1,57 @@
+name: Build & Publish Test APK in Dev Branch
+
+# 标签方式自动部署
+on:
+  push:
+    tags:
+      - 'test*'
+#on:
+#  push:
+#    branches:
+#      - master
+#  pull_request:
+#    branches:
+#      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+      # 拉取test分支代码
+      - uses: actions/checkout@v1
+        with:
+          ref: dev
+
+      # 克隆私有的密钥库, 用于打包时签名. 该仓库为私有库
+      - name: clone project keystore
+        uses: actions/checkout@v2
+        with:
+          repository: aaronlinv/AndroidKeystore
+          path: keystore
+          token: ${{secrets.JuiceTimetable}}
+
+      - name: set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Build apk package
+        run: ./gradlew clean assembleRelease --stacktrace
+
+        # 发行测试包
+      - name: Upload test apk to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.JuiceTimetable }}
+          file: ./app/build/outputs/apk/release/app-release.apk
+          asset_name: JuiceTimeTable(Test) ${{ steps.get_version.outputs.VERSION }}.apk
+          tag: ${{ github.ref }}
+          overwrite: true
