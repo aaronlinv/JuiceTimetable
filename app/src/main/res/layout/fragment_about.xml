@@ -87,6 +87,37 @@
                 android:paddingTop="10dp">
 
                 <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:padding="8dp"
+                    android:text="@string/cool_apk"
+                    android:textColor="@color/secondary_text" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@color/about_text_background"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_cool_apk"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/marginLeft"
+                        android:autoLink="web"
+                        android:text="@string/cook_apk_address"
+                        android:textColorLink="@color/primary_text" />
+
+                </LinearLayout>
+
+                <TextView
                     android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

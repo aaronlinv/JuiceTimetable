@@ -41,6 +41,7 @@
     <string name="version">1.1.1</string>
     <string name="team">开发者</string>
     <string name="github_Address">github.com/aaronlinv/JuiceTimetable</string>
+    <string name="cook_apk_address">coolapk.com/apk/265263</string>
     <string name="team_name">开发团队：happy_tree_friends</string>
     <string name="openSource">感谢以下开源项目</string>
     <string name="team_blog">反馈邮箱：aaronlinv@outlook.com</string>
@@ -86,4 +87,5 @@
     <string name="empty">暂无数据</string>
     <string name="tip_current_mooc">本学期慕课课程</string>
     <string name="tip_example_mooc">走进航空航天</string>
+    <string name="cool_apk">酷安</string>
 </resources>

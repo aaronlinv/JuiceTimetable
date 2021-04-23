@@ -28,6 +28,7 @@ import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 
 public class AboutFragment extends Fragment {
     private TextView githubLink;
+    private TextView cookApkLink;
     private TextView blogLink;
     private LinearLayout linearLayout;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -57,6 +58,10 @@ public class AboutFragment extends Fragment {
             Spannable github = (Spannable) githubLink.getText();
             github.setSpan(mNoUnderlineSpan, 0, github.length(), Spanned.SPAN_MARK_MARK);
         }
+        if (cookApkLink.getText() instanceof Spannable) {
+            Spannable cookApk = (Spannable) cookApkLink.getText();
+            cookApk.setSpan(mNoUnderlineSpan, 0, cookApk.length(), Spanned.SPAN_MARK_MARK);
+        }
         return root;
     }
 
@@ -64,6 +69,7 @@ public class AboutFragment extends Fragment {
         githubLink = root.findViewById(R.id.tv_github);
         blogLink = root.findViewById(R.id.blogLink);
         linearLayout = root.findViewById(R.id.linearLayout3);
+        cookApkLink = root.findViewById(R.id.tv_cool_apk);
     }
 
     @SuppressLint("IntentReset")
