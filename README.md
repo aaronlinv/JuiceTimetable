@@ -5,8 +5,7 @@
 
 ## 简介
 
-这是一款专属于福州大学至诚学院的App，能够简单快捷查看课程表与指纹签到情况，小巧，轻便，让你摆脱庞大的存储空间困扰
-
+这是一款专属于至诚的 App，能够简单快捷查看课程表与指纹签到情况，小巧，轻便，让你摆脱庞大的存储空间困扰
 
 
 ## 功能模块介绍
@@ -20,24 +19,16 @@
 
 - 用于切换到各个功能
 
-### 指纹签到状态
-
-- 签到时间段内，主页将显示签到情况
-
-### 本班未签记录
-
-- 实时查看本班未签到的同学及其学号
-
 ### 登录
 
-- 用输入学号、教务网密码、至诚信息系统密码进行登录，以获取课表和签到信息
+- 输入学号、教务网密码进行登录，以获取课表
 
 ### 认证信息修改 
 
 - 更改软件所存储的认证信息
 
 ## 下载链接
-<a href="https://www.coolapk.com/apk/265263">前往下载</a>
+<a href="https://www.coolapk.com/apk/265263">前往酷安下载</a>
 
 ## 截图预览
 
@@ -46,8 +37,6 @@
 <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/10.jpg" width="420px" height="720px" />        <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/03.jpg" width="420px" height="720px" /> 
 
 <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/05.jpg" width="420px" height="720px" />        <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/06.jpg" width="420px" height="720px" />
-
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/07.jpg" width="420px" height="720px" />        <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/08.jpg" width="420px" height="720px" />
 
 <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/09.jpg" width="420px" height="720px" />        <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/04.jpg" width="420px" height="720px" />
 
@@ -72,5 +61,3 @@
 <a href="https://github.com/jaredrummler/MaterialSpinner">com.jaredrummler:material-spinner</a>
 
 <a href="https://github.com/F0RIS/sweet-alert-dialog">com.github.f0ris.sweetalert:library</a>
-
-        
