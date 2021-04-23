@@ -23,7 +23,7 @@ jobs:
       # 拉取test分支代码
       - uses: actions/checkout@v1
         with:
-          ref: test
+          ref: dev
 
       # 克隆私有的密钥库, 用于打包时签名. 该仓库为私有库
       - name: clone project keystore
