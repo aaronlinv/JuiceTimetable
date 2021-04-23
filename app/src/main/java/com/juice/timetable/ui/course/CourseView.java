@@ -238,8 +238,6 @@ public class CourseView extends FrameLayout {
         // 点击事件
         initEvent(tv, course, conflictList);
         return backgroundView;
-
-
     }
 
     private void setItemViewBackground(TextView tv, int color) {
@@ -357,6 +355,10 @@ public class CourseView extends FrameLayout {
         // 添加课程
         courses = addCouList;
         for (Course cou : courses) {
+            // 如果为线上慕课则不添加课程格子
+            if (cou.getCouWeekType() == 3 && cou.getCouStartNode() == null && cou.getCouEndNode() == null) {
+                continue;
+            }
             addCourse(cou);
         }
 

@@ -30,7 +30,7 @@ public class Course {
     // 这门课是从当天的第几节课结束
     private Integer couEndNode;
 
-    // 单双周的判断
+    // 单双周的判断 3为慕课
     private Integer couWeekType;
     // 这门课程开始于第几周
     private Integer couStartWeek;
