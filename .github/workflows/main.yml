@@ -4,7 +4,7 @@ name: Build & Publish Release APK in Master
 on:
   push:
     tags:
-      - v[1-9]+.[0-9]+.[0-9]+
+      - 'test*'
 #on:
 #  push:
 #    branches:
@@ -47,11 +47,12 @@ jobs:
         run: ./gradlew clean assembleRelease --stacktrace
 
         # 发行包
-      - name: Upload apk to release
-        uses: svenstaro/upload-release-action@v2
+      - name: Create debug and upload apk
+        uses: underwindfall/create-release-with-debugapk@v2.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.JuiceTimetable }}
         with:
-          repo_token: ${{ secrets.JuiceTimetable }}
-          file: ./app/build/outputs/apk/release/app-release.apk
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          asset_path: app/build/outputs/apk/debug/app-debug.apk
           asset_name: JuiceTimeTable ${{ steps.get_version.outputs.VERSION }} .apk
-          tag: ${{ github.ref }}
-          overwrite: true
+          asset_content_type: application/zip
