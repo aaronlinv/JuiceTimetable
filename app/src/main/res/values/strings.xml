@@ -92,4 +92,10 @@
     <string name="tip_current_mooc">本学期慕课课程</string>
     <string name="tip_example_mooc">走进航空航天</string>
     <string name="cool_apk">酷安</string>
+
+
+    <string name="menu_grade">成绩查询</string>
+    <string name="syngrade">综合成绩</string>
+    <string name="unigrade">统考成绩</string>
+
 </resources>

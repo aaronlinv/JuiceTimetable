@@ -39,6 +39,5 @@ public class ClassNoSignedItemViewModel extends AndroidViewModel {
 
     public LiveData<List<ClassNoSignedItem>> getClassNoSignedItemLive(Void... Voids) {
         return repository.getClassNoSignedItemLive();
-
     }
 }

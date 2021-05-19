@@ -16,13 +16,17 @@ public class Constant {
     public static final String URI_ONE_WEEK = "http://jwc.fdzcxy.edu.cn/kb/zkb_xs.asp?week1=";
     // 完整课表
     public static final String URI_WHOLE_COURSE = "http://jwc.fdzcxy.edu.cn/kb/kb_xs.asp";
-
     // 自己签到情况
     public static final String URI_CHECK_IN = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-record-student&c=dormcheckrecordstudent";
     // 班级未签
     public static final String URI_UNSIGNED_LIST = "http://mis.fdzcxy.com/index.php?n=stuwork-dormcheck-unsignin-cls&c=dormcheckclassunsignin";
     // 请假系统登录入口
     public static final String URI_LEAVE_LOGIN = "http://mis.fdzcxy.com/index.php?n=login&s=1001";
+
+    // 综合成绩
+    public static final String URI_SYNGRADE = "https://jwc.fdzcxy.edu.cn/cjgl/cx/zhcx_xs.asp";
+    // 统考成绩
+    private static final String URI_UNIGRADE = "https://jwc.fdzcxy.edu.cn/bmgl/tkcj/cjcx_xs.asp?menu_no=1004";
 
     // 登录成功
     public static final int MSG_LOGIN_SUCCESS = 2020;

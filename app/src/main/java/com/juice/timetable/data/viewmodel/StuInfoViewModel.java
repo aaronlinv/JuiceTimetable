@@ -30,7 +30,6 @@ public class StuInfoViewModel extends AndroidViewModel {
         return repository.getStuInfo();
     }
 
-
     public void insertStuInfo(StuInfo... stuInfo) {
         repository.insertStuInfo(stuInfo);
     }

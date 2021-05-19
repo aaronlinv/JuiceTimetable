@@ -95,7 +95,7 @@ public class MainActivity extends BaseActivity {
         // menu should be considered as top level destinations.
         //app bar与nav元素、navView绑定
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_course, R.id.nav_unsigned, R.id.nav_login, R.id.nav_about)
+                R.id.nav_course, R.id.nav_unsigned, R.id.nav_login, R.id.nav_about,R.id.nav_grade)
                 .setDrawerLayout(drawer)
                 .build();
         //NavController与界面绑定

@@ -243,7 +243,6 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
 }
 
 class CourseViewHolder extends RecyclerView.ViewHolder {
-
     public CourseViewHolder(@NonNull View itemView) {
         super(itemView);
     }

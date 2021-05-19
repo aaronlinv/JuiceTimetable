@@ -71,6 +71,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'org.jsoup:jsoup:1.12.2'
     implementation 'com.dyhdyh.loadingbar:loadingbar:1.4.4'
+    implementation 'androidx.viewpager:viewpager:1.0.0'
     testImplementation 'junit:junit:4.13'
     def room_version = "2.2.3"
     testImplementation 'androidx.test:core:1.2.0'
@@ -108,4 +109,7 @@ dependencies {
 // fragment快速实现（可选）
     implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
 
+    //ButterKnife框架，作用是去除类似于findviewById这类的模板化代码
+    implementation 'com.jakewharton:butterknife:10.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
 }

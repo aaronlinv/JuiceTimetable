@@ -8,10 +8,14 @@
             android:id="@+id/nav_course"
             android:icon="@drawable/course"
             android:title="@string/menu_course" />
+<!--        <item-->
+<!--            android:id="@+id/nav_unsigned"-->
+<!--            android:icon="@drawable/sign"-->
+<!--            android:title="@string/menu_unsigned" />-->
         <item
-            android:id="@+id/nav_unsigned"
-            android:icon="@drawable/sign"
-            android:title="@string/menu_unsigned" />
+            android:id="@+id/nav_grade"
+            android:icon="@drawable/grade"
+            android:title="@string/menu_grade" />
         <item
             android:id="@+id/nav_login"
             android:icon="@drawable/edit"
