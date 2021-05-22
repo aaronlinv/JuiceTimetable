@@ -1,5 +1,7 @@
 package com.juice.timetable.data.bean;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 /**
@@ -9,13 +11,15 @@ import androidx.room.PrimaryKey;
  * </pre>
  */
 //统考成绩
+@Entity
 public class UniGrade {
+    @NonNull
     @PrimaryKey
-    private String uYear;
+    public String uYear;
 
-    private String uName;
-    private String uGrade;
-    private String uRemarks;
+    public String uName;
+    public String uGrade;
+    public String uRemarks;
 
     @Override
     public String toString() {
@@ -27,11 +31,12 @@ public class UniGrade {
                 '}';
     }
 
+    @NonNull
     public String getuYear() {
         return uYear;
     }
 
-    public void setuYear(String uYear) {
+    public void setuYear(@NonNull String uYear) {
         this.uYear = uYear;
     }
 

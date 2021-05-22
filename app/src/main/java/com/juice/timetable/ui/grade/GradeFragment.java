@@ -140,6 +140,4 @@ public class GradeFragment extends Fragment {
             return temp[position];
         }
     }
-
-
 }

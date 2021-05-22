@@ -29,6 +29,7 @@ public class EduInfo {
         // 加解密Cookie
         String prefEduCookie = CookieUtils.getCookie(Constant.PREF_EDU_COOKIE);
 
+
         LogUtils.getInstance().d("PREF_EDU_COOKIE:" + prefEduCookie);
         // 本地存在Cookie先用本地Cookie 尝试登录
         if ((prefEduCookie != null) && enableSaveCookie) {

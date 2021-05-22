@@ -60,7 +60,6 @@ public class StuInfoRepository {
         return stuInfo;
     }
 
-
     public void insertStuInfo(StuInfo... stuInfo) {
         // 加密
         String eduPassword = null;
@@ -88,7 +87,6 @@ public class StuInfoRepository {
     public void deleteStuInfo(Void... Voids) {
         new DeleteAsyncTask(stuInfoDao).execute();
     }
-
 
     //插入
     static class InsertAsyncTask extends AsyncTask<StuInfo, Void, Void> {

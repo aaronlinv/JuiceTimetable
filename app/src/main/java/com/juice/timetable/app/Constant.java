@@ -26,7 +26,7 @@ public class Constant {
     // 综合成绩
     public static final String URI_SYNGRADE = "https://jwc.fdzcxy.edu.cn/cjgl/cx/zhcx_xs.asp";
     // 统考成绩
-    private static final String URI_UNIGRADE = "https://jwc.fdzcxy.edu.cn/bmgl/tkcj/cjcx_xs.asp?menu_no=1004";
+    public static final String URI_UNIGRADE = "https://jwc.fdzcxy.edu.cn/bmgl/tkcj/cjcx_xs.asp?menu_no=1004";
 
     // 登录成功
     public static final int MSG_LOGIN_SUCCESS = 2020;
@@ -71,6 +71,7 @@ public class Constant {
     public static final String PREF_EDU_COOKIE = "PREF_EDU_COOKIE";
     public static final String PREF_LEAVE_COOKIE = "PREF_LEAVE_COOKIE";
     public static final String PREF_FIRST_WEEK_MONDAY = "PREF_FIRST_WEEK_MONDAY";
+    public static final String PREF_GRADE_COOKIE = "PREF_GRADE_COOKIE";
 
     // 注入自己的账号密码，用于免登录调式
     public static boolean DEBUG_MODE = false;

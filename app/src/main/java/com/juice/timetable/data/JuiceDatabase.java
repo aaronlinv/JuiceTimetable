@@ -11,11 +11,15 @@ import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.data.bean.MyCheckIn;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.bean.StuInfo;
+import com.juice.timetable.data.bean.SynGrade;
+import com.juice.timetable.data.bean.UniGrade;
 import com.juice.timetable.data.dao.AllWeekCourseDao;
 import com.juice.timetable.data.dao.ClassNoSignedItemDao;
 import com.juice.timetable.data.dao.MyCheckInDao;
 import com.juice.timetable.data.dao.OneWeekCourseDao;
 import com.juice.timetable.data.dao.StuInfoDao;
+import com.juice.timetable.data.dao.SynGradeDao;
+import com.juice.timetable.data.dao.UniGradeDao;
 
 /**
  * <pre>
@@ -27,7 +31,7 @@ import com.juice.timetable.data.dao.StuInfoDao;
  *     version: 1.0
  * </pre>
  */
-@Database(entities = {OneWeekCourse.class, ClassNoSignedItem.class, MyCheckIn.class, StuInfo.class, Course.class}, version = 1, exportSchema = false)
+@Database(entities = {OneWeekCourse.class, ClassNoSignedItem.class, MyCheckIn.class, StuInfo.class, Course.class, SynGrade.class, UniGrade.class}, version = 1, exportSchema = false)
 public abstract class JuiceDatabase extends RoomDatabase {
     private static JuiceDatabase INSTANCE;
 
@@ -49,4 +53,8 @@ public abstract class JuiceDatabase extends RoomDatabase {
     public abstract StuInfoDao getStuInfoDao();
 
     public abstract AllWeekCourseDao getAllWeekCourseDao();
+
+    public abstract SynGradeDao getSynGradeDao();
+
+    public abstract UniGradeDao getUniGradeDao();
 }

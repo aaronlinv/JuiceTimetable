@@ -1,5 +1,7 @@
 package com.juice.timetable.data.bean;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 /**
@@ -9,9 +11,11 @@ import androidx.room.PrimaryKey;
  * </pre>
  */
 //综合成绩
+@Entity
 public class SynGrade {
-    @PrimaryKey(autoGenerate = true)
-    private Integer couID;
+    @NonNull
+    @PrimaryKey
+    private String couYear;
 
     private String couName;
     private String couGrade;
@@ -19,18 +23,18 @@ public class SynGrade {
     @Override
     public String toString() {
         return "SynGrade{" +
-                "couID=" + couID +
+                "couYear='" + couYear + '\'' +
                 ", couName='" + couName + '\'' +
                 ", couGrade='" + couGrade + '\'' +
                 '}';
     }
 
-    public Integer getCouID() {
-        return couID;
+    public String getCouYear() {
+        return couYear;
     }
 
-    public void setCouID(Integer couID) {
-        this.couID = couID;
+    public void setCouYear(String couYear) {
+        this.couYear = couYear;
     }
 
     public String getCouName() {

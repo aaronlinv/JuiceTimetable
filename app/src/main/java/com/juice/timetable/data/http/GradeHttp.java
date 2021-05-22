@@ -1,12 +1,10 @@
 package com.juice.timetable.data.http;
 
-import android.content.Context;
-import android.graphics.Bitmap;
+import com.juice.timetable.app.Constant;
+import com.juice.timetable.utils.CookieUtils;
 
-import com.juice.timetable.utils.CaptchaUtils;
-import com.juice.timetable.utils.LogUtils;
-
-import okhttp3.OkHttpClient;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 
 /**
  * <pre>
@@ -15,7 +13,11 @@ import okhttp3.OkHttpClient;
  * </pre>
  */
 public class GradeHttp {
-//    private static OkHttpClient client = HttpUtils.getHttpClient();
+    public static void getGrade(){
+        //从shp中(相当于硬盘)读取加密的cookies进行解密
+        String prefEduCookie = CookieUtils.getCookie(Constant.PREF_EDU_COOKIE);
+//        Connection con = Jsoup.connect(url);
+    }
 
 
 }
