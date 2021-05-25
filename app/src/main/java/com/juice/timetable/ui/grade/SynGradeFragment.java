@@ -58,7 +58,6 @@ public class SynGradeFragment extends Fragment {
                     List<SynGrade> synGradeArrayList;
                     //获取成绩网页源码
                     String pagesource = GradeInfo.getGradeSource(Constant.URI_SYNGRADE);
-                    System.out.println("pagesource"+pagesource);
                     //利用爬虫获取成绩
                     synGradeArrayList = ParseGrade.parseSynGrade(pagesource);
 
