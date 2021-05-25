@@ -12,18 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParseGrade {
+    // TODO
+    //出成绩的时候不能查询、会返回一个空列表，写一个对话框，让他们去微信评测
+
     //爬取成绩，一个是统考成绩爬虫，一个是综合成绩的爬虫
 
-    public static List<UniGrade> parseUniGrade(String parseStr){
+    public static List<UniGrade> parseUniGrade(String parseStr) {
         List<UniGrade> uniGradeArrayList = new ArrayList<>();
         //解析统考成绩网页源码
         Document doc = Jsoup.parse(parseStr);
         //爬虫
         Elements rootselect = doc.select("tbody > tr");
 
-        for(Element ele : rootselect){
+        for (Element ele : rootselect) {
             Elements all = ele.select("td");
-            Element yearall=all.get(0);  //学年
+            Element yearall = all.get(0);  //学年
             String year = yearall.text();
             if (year.equals("学年")) continue;
             Element courseall = all.get(1); //考试项目
@@ -43,7 +46,7 @@ public class ParseGrade {
         return uniGradeArrayList;
     }
 
-    public static List<SynGrade> parseSynGrade (String parseStr){
+    public static List<SynGrade> parseSynGrade(String parseStr) {
         List<SynGrade> synGradeArrayList = new ArrayList<>();
         //解析综合成绩网页源码
         Document doc = Jsoup.parse(parseStr);
@@ -61,7 +64,7 @@ public class ParseGrade {
             Element gradeall = all.get(3);  //成绩
             String grade = gradeall.text();
 
-            SynGrade synGrade= new SynGrade();
+            SynGrade synGrade = new SynGrade();
             synGrade.setCouName(course);
             synGrade.setCouGrade(grade);
             synGrade.setCouYear(year);
@@ -69,4 +72,6 @@ public class ParseGrade {
         }
         return synGradeArrayList;
     }
+
+
 }

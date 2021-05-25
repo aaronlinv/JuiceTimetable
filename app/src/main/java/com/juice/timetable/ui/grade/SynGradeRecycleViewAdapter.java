@@ -24,6 +24,7 @@ public class SynGradeRecycleViewAdapter extends RecyclerView.Adapter<SynGradeRec
     private static final int VIEW_TYPE_EMPTY = 0;
     private static final int VIEW_TYPE_ITEM = 1;
     private List<SynGrade> synGradeList = new ArrayList<>();
+
     void setSynGradeList(List<SynGrade> synGradeList) {
         this.synGradeList = synGradeList;
     }
@@ -36,7 +37,7 @@ public class SynGradeRecycleViewAdapter extends RecyclerView.Adapter<SynGradeRec
             return new SynViewHolder(emptyView);
         }
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.cell_syngrade,parent,false);
+        View itemView = layoutInflater.inflate(R.layout.cell_syngrade, parent, false);
 
         return new SynViewHolder(itemView);
     }
@@ -50,9 +51,8 @@ public class SynGradeRecycleViewAdapter extends RecyclerView.Adapter<SynGradeRec
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SynViewHolder holder,final int position) {
-
-        if(synGradeList != null&&!synGradeList.isEmpty()){
+    public void onBindViewHolder(@NonNull SynViewHolder holder, final int position) {
+        if (synGradeList != null && !synGradeList.isEmpty()) {
             SynGrade synGrade = synGradeList.get(position);
             holder.textViewYear.setText(String.valueOf(synGrade.getCouYear()));
             holder.textViewGradeName.setText(String.valueOf(synGrade.getCouName()));
@@ -63,14 +63,14 @@ public class SynGradeRecycleViewAdapter extends RecyclerView.Adapter<SynGradeRec
 
     @Override
     public int getItemCount() {
-        if(synGradeList.size()==0){
+        if (synGradeList.size() == 0) {
             return 1;
         }
         return synGradeList.size();
     }
 
-    static class SynViewHolder extends RecyclerView.ViewHolder{
-        TextView textViewYear,textViewGradeName,textViewSynGrade;
+    static class SynViewHolder extends RecyclerView.ViewHolder {
+        TextView textViewYear, textViewGradeName, textViewSynGrade;
 
         public SynViewHolder(@NonNull View itemView) {
             super(itemView);

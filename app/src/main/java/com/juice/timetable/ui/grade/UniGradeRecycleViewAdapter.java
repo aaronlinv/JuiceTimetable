@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.juice.timetable.R;
-import com.juice.timetable.data.bean.SynGrade;
 import com.juice.timetable.data.bean.UniGrade;
 
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ import java.util.List;
  *     time   : 2021/5/25 23:09
  * </pre>
  */
-public class UniGradeRecycleViewAdapter  extends RecyclerView.Adapter<UniGradeRecycleViewAdapter.UniViewHolder>{
+public class UniGradeRecycleViewAdapter extends RecyclerView.Adapter<UniGradeRecycleViewAdapter.UniViewHolder> {
     private static final int VIEW_TYPE_EMPTY = 0;
     private static final int VIEW_TYPE_ITEM = 1;
     private List<UniGrade> uniGradeList = new ArrayList<>();
@@ -29,6 +28,7 @@ public class UniGradeRecycleViewAdapter  extends RecyclerView.Adapter<UniGradeRe
     public void setUniGradeList(List<UniGrade> uniGradeList) {
         this.uniGradeList = uniGradeList;
     }
+
     @NonNull
     @Override
     public UniViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -37,10 +37,11 @@ public class UniGradeRecycleViewAdapter  extends RecyclerView.Adapter<UniGradeRe
             return new UniViewHolder(emptyView);
         }
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.cell_unigrade,parent,false);
+        View itemView = layoutInflater.inflate(R.layout.cell_unigrade, parent, false);
 
         return new UniViewHolder(itemView);
     }
+
     @Override
     public int getItemViewType(int position) {
         if (uniGradeList.size() == 0) {
@@ -51,7 +52,7 @@ public class UniGradeRecycleViewAdapter  extends RecyclerView.Adapter<UniGradeRe
 
     @Override
     public void onBindViewHolder(@NonNull UniViewHolder holder, final int position) {
-        if(uniGradeList != null&&!uniGradeList.isEmpty()){
+        if (uniGradeList != null && !uniGradeList.isEmpty()) {
             UniGrade uniGrade = uniGradeList.get(position);
             holder.textViewUniYear.setText(String.valueOf(uniGrade.getuYear()));
             holder.textViewUniName.setText(String.valueOf(uniGrade.uName));
@@ -60,8 +61,9 @@ public class UniGradeRecycleViewAdapter  extends RecyclerView.Adapter<UniGradeRe
         }
 
     }
-    static class UniViewHolder extends RecyclerView.ViewHolder{
-        TextView textViewUniYear,textViewRemark,textViewUniGrade,textViewUniName;
+
+    static class UniViewHolder extends RecyclerView.ViewHolder {
+        TextView textViewUniYear, textViewRemark, textViewUniGrade, textViewUniName;
 
         public UniViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,9 +73,10 @@ public class UniGradeRecycleViewAdapter  extends RecyclerView.Adapter<UniGradeRe
             textViewRemark = itemView.findViewById(R.id.textViewRemark);
         }
     }
+
     @Override
     public int getItemCount() {
-        if(uniGradeList.size()==0){
+        if (uniGradeList.size() == 0) {
             return 1;
         }
         return uniGradeList.size();

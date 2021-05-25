@@ -16,11 +16,9 @@ import android.view.ViewGroup;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
-import com.juice.timetable.data.bean.SynGrade;
 import com.juice.timetable.data.bean.UniGrade;
 import com.juice.timetable.data.http.GradeInfo;
 import com.juice.timetable.data.parse.ParseGrade;
-import com.juice.timetable.data.viewmodel.SynGradeViewModel;
 import com.juice.timetable.data.viewmodel.UniGradeViewModel;
 
 import java.util.List;
@@ -30,12 +28,14 @@ public class UniGradeFragment extends Fragment {
     private UniGradeViewModel uniGradeViewModel;
     private UniGradeRecycleViewAdapter uniGradeRecycleViewAdapter;
     private RecyclerView uniRecyclerView;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         UniGrade();
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,8 +50,9 @@ public class UniGradeFragment extends Fragment {
 
         return root;
     }
+
     //获取数据，然后插入数据库
-    private void UniGrade(){
+    private void UniGrade() {
         //新建线程
         new Thread(new Runnable() {
             @Override
@@ -65,7 +66,7 @@ public class UniGradeFragment extends Fragment {
                     //先清空表
                     uniGradeViewModel.deleteAllUniGrade();
                     //再插入数据库
-                    for(UniGrade uniGrade: uniGradeArrayList){
+                    for (UniGrade uniGrade : uniGradeArrayList) {
                         uniGradeViewModel.insertUniGrade(uniGrade);
 
                     }
@@ -73,7 +74,7 @@ public class UniGradeFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-        }){
+        }) {
         }.start();
     }
 
@@ -91,7 +92,7 @@ public class UniGradeFragment extends Fragment {
         });
     }
 
-    private void findID(View root){
+    private void findID(View root) {
         uniRecyclerView = root.findViewById(R.id.uniRecyclerView);
     }
 }

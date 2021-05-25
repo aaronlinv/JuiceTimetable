@@ -1,12 +1,10 @@
 package com.juice.timetable.ui.grade;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -34,13 +32,11 @@ public class SynGradeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         SynGrade();
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View root = inflater.inflate(R.layout.fragment_grade_syn, container, false);
         findID(root);
         //初始化ViewModel
@@ -53,9 +49,8 @@ public class SynGradeFragment extends Fragment {
         return root;
     }
 
-
     //获取数据，然后插入数据库
-    private void SynGrade(){
+    private void SynGrade() {
         //新建线程
         new Thread(new Runnable() {
             @Override
@@ -69,7 +64,7 @@ public class SynGradeFragment extends Fragment {
                     //先清空表
                     synGradeViewModel.deleteAllSynGrade();
                     //再插入数据库
-                    for(SynGrade synGrade: synGradeArrayList){
+                    for (SynGrade synGrade : synGradeArrayList) {
                         synGradeViewModel.insertSynGrade(synGrade);
 
                     }
@@ -94,8 +89,7 @@ public class SynGradeFragment extends Fragment {
         });
     }
 
-    private void findID(View root){
+    private void findID(View root) {
         synRecyclerView = root.findViewById(R.id.synRecyclerView);
     }
-
 }

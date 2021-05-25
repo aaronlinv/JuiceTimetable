@@ -22,7 +22,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class UniGradeRepository {
     private UniGradeDao uniGradeDao;
-    private LiveData< List<UniGrade> > listUniGradeLive;
+    private LiveData<List<UniGrade>> listUniGradeLive;
 
     public UniGradeRepository(Context context) {
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
@@ -38,6 +38,7 @@ public class UniGradeRepository {
     public void insertUniGrade(UniGrade... uniGrades) {
         new InsertAsyncTask(uniGradeDao).execute(uniGrades);
     }
+
     public void deleteAllUniGrade(Void... voids) {
         new DeleteAllAsyncTask(uniGradeDao).execute();
     }
@@ -54,6 +55,7 @@ public class UniGradeRepository {
         }
         return uniListLiveData;
     }
+
     //插入AsyncTask
     static class InsertAsyncTask extends AsyncTask<UniGrade, Void, Void> {
         private UniGradeDao uniGradeDao;
@@ -73,7 +75,6 @@ public class UniGradeRepository {
     static class DeleteAllAsyncTask extends AsyncTask<Void, Void, Void> {
         private UniGradeDao uniGradeDao;
 
-
         public DeleteAllAsyncTask(UniGradeDao uniGradeDao) {
             this.uniGradeDao = uniGradeDao;
         }
@@ -86,7 +87,7 @@ public class UniGradeRepository {
     }
 
     //查询(LiveData)AsyncTask
-    static class SelectLiveDataAsyncTask extends AsyncTask<Void, Void, LiveData< List<UniGrade> >> {
+    static class SelectLiveDataAsyncTask extends AsyncTask<Void, Void, LiveData<List<UniGrade>>> {
         private UniGradeDao uniGradeDao;
 
         public SelectLiveDataAsyncTask(UniGradeDao uniGradeDao) {
@@ -94,7 +95,7 @@ public class UniGradeRepository {
         }
 
         @Override
-        protected LiveData< List<UniGrade> > doInBackground(Void... voids) {
+        protected LiveData<List<UniGrade>> doInBackground(Void... voids) {
             return uniGradeDao.getAllUniGradeLive();
 
         }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+
 import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.ClassNoSignedItem;
 import com.juice.timetable.data.bean.SynGrade;
@@ -26,7 +27,6 @@ public class SynGradeRepository {
     public SynGradeRepository(Context context) {
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
         synGradeDao = juiceDatabase.getSynGradeDao();
-
     }
 
     //接口
@@ -88,7 +88,6 @@ public class SynGradeRepository {
         public SelectLiveDataAsyncTask(SynGradeDao synGradeDao) {
             this.synGradeDao = synGradeDao;
         }
-
 
         @Override
         protected LiveData<List<SynGrade>> doInBackground(Void... voids) {
