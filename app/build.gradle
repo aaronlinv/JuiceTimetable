@@ -8,7 +8,11 @@ if (keyPropsFile.exists()) {
 }
 
 android {
-    compileSdkVersion 29
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+        compileSdkVersion 29
     buildToolsVersion "29.0.3"
     testOptions {
         unitTests {
@@ -109,7 +113,4 @@ dependencies {
 // fragment快速实现（可选）
     implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
 
-    //ButterKnife框架，作用是去除类似于findviewById这类的模板化代码
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
 }

@@ -45,7 +45,6 @@ public class SynGradeFragment extends Fragment {
         synRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         synGradeRecycleViewAdapter = new SynGradeRecycleViewAdapter();
         synRecyclerView.setAdapter(synGradeRecycleViewAdapter);
-
         return root;
     }
 
@@ -59,20 +58,21 @@ public class SynGradeFragment extends Fragment {
                     List<SynGrade> synGradeArrayList;
                     //获取成绩网页源码
                     String pagesource = GradeInfo.getGradeSource(Constant.URI_SYNGRADE);
+                    System.out.println("pagesource"+pagesource);
                     //利用爬虫获取成绩
                     synGradeArrayList = ParseGrade.parseSynGrade(pagesource);
+
                     //先清空表
                     synGradeViewModel.deleteAllSynGrade();
                     //再插入数据库
                     for (SynGrade synGrade : synGradeArrayList) {
                         synGradeViewModel.insertSynGrade(synGrade);
-
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        });
+        }).start();
     }
 
     @Override

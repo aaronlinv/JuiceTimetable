@@ -68,7 +68,6 @@ public class UniGradeFragment extends Fragment {
                     //再插入数据库
                     for (UniGrade uniGrade : uniGradeArrayList) {
                         uniGradeViewModel.insertUniGrade(uniGrade);
-
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
