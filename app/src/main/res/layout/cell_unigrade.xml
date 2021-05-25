@@ -38,12 +38,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:maxEms="10"
+                android:maxLines="1"
                 android:text="TextView"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textViewUniName"
                 app:layout_constraintTop_toBottomOf="@+id/textViewUniName"
-                tools:text="351370202107930" />
+                tools:text="351370202107930351370202107930" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline23"
@@ -76,6 +79,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxEms="10"
+                android:maxLines="1"
                 android:text="TextView"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/textViewRemark"
@@ -83,7 +89,7 @@
                 app:layout_constraintHorizontal_bias="0.045"
                 app:layout_constraintStart_toStartOf="@+id/guideline23"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="cet4" />
+                tools:text="cet4cet4cet4cet4cet4cet4cet4cet4cet4cet4" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

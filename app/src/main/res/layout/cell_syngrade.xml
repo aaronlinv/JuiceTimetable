@@ -21,6 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
+
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline21"
@@ -46,12 +47,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
+                android:ellipsize="end"
+                android:maxEms="10"
+                android:maxLines="1"
                 android:text="TextView"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline20"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="形势与政策（六）" />
+                tools:text="形势与政策（六）形势与政策（六）" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline20"
