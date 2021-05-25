@@ -52,9 +52,6 @@ public class SynGradeRecycleViewAdapter extends RecyclerView.Adapter<SynGradeRec
     @Override
     public void onBindViewHolder(@NonNull SynViewHolder holder,final int position) {
 
-        System.out.println("synGradeList-->"+synGradeList);
-        System.out.println("position --> "+position);
-
         if(synGradeList != null&&!synGradeList.isEmpty()){
             SynGrade synGrade = synGradeList.get(position);
             holder.textViewYear.setText(String.valueOf(synGrade.getCouYear()));

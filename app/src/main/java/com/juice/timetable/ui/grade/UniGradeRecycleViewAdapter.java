@@ -51,10 +51,6 @@ public class UniGradeRecycleViewAdapter  extends RecyclerView.Adapter<UniGradeRe
 
     @Override
     public void onBindViewHolder(@NonNull UniViewHolder holder, final int position) {
-
-        System.out.println("synGradeList-->"+uniGradeList);
-        System.out.println("position --> "+position);
-
         if(uniGradeList != null&&!uniGradeList.isEmpty()){
             UniGrade uniGrade = uniGradeList.get(position);
             holder.textViewUniYear.setText(String.valueOf(uniGrade.getuYear()));
