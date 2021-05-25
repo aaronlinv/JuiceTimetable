@@ -4,9 +4,13 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
+import com.juice.timetable.data.bean.SynGrade;
 import com.juice.timetable.data.bean.UniGrade;
 import com.juice.timetable.data.repository.UniGradeRepository;
+
+import java.util.List;
 
 /**
  * <pre>
@@ -24,7 +28,10 @@ public class UniGradeViewModel extends AndroidViewModel {
     public void insertUniGrade(UniGrade... uniGrades) {
         uniGradeRepository.insertUniGrade(uniGrades);
     }
-    public void deleteUniGrade(Void... Voids) {
+    public void deleteAllUniGrade(Void... Voids) {
         uniGradeRepository.deleteAllUniGrade();
+    }
+    public LiveData<List<UniGrade>> getAllUniGradeLive() {
+        return uniGradeRepository.getAllUniGradeLive();
     }
 }

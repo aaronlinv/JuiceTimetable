@@ -14,7 +14,7 @@ public interface SynGradeDao {
     @Insert//增加
     void insertSynGrade(SynGrade... synGrades);
 
-    @Query("Delete From SynGrade")//删除
+    @Query("DELETE FROM SynGrade")//删除
     void deleteAllSynGrade();
 
     @Query("SELECT * FROM SynGrade")//查询全表

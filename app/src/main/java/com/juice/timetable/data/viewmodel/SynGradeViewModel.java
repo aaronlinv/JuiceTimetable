@@ -4,9 +4,12 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.juice.timetable.data.bean.SynGrade;
 import com.juice.timetable.data.repository.SynGradeRepository;
+
+import java.util.List;
 
 
 /**
@@ -23,12 +26,16 @@ public class SynGradeViewModel extends AndroidViewModel {
         synGradeRepository = new SynGradeRepository(application);
 
     }
+    public LiveData< List<SynGrade> > getAllSynGradeLive() {
+        return synGradeRepository.getAllSynGradeLive();
+    }
 
     public void insertSynGrade(SynGrade... synGrades) {
         synGradeRepository.insertSynGrade(synGrades);
     }
-    public void deleteSynGrade(Void... Voids) {
+    public void deleteAllSynGrade(Void... Voids) {
         synGradeRepository.deleteAllSynGrade();
     }
+
 
 }

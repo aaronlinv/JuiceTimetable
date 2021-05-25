@@ -13,10 +13,10 @@ import androidx.room.PrimaryKey;
 //统考成绩
 @Entity
 public class UniGrade {
-    @NonNull
-    @PrimaryKey
-    public String uYear;
 
+    @PrimaryKey(autoGenerate = true)
+    public Integer unigradeId;
+    public String uYear;
     public String uName;
     public String uGrade;
     public String uRemarks;
@@ -24,19 +24,27 @@ public class UniGrade {
     @Override
     public String toString() {
         return "UniGrade{" +
-                "uYear='" + uYear + '\'' +
+                "unigradeId=" + unigradeId +
+                ", uYear='" + uYear + '\'' +
                 ", uName='" + uName + '\'' +
                 ", uGrade='" + uGrade + '\'' +
                 ", uRemarks='" + uRemarks + '\'' +
                 '}';
     }
 
-    @NonNull
+    public Integer getUnigradeId() {
+        return unigradeId;
+    }
+
+    public void setUnigradeId(Integer unigradeId) {
+        this.unigradeId = unigradeId;
+    }
+
     public String getuYear() {
         return uYear;
     }
 
-    public void setuYear(@NonNull String uYear) {
+    public void setuYear(String uYear) {
         this.uYear = uYear;
     }
 

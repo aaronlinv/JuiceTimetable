@@ -13,20 +13,30 @@ import androidx.room.PrimaryKey;
 //综合成绩
 @Entity
 public class SynGrade {
-    @NonNull
-    @PrimaryKey
-    private String couYear;
+    @PrimaryKey(autoGenerate = true)
+    private Integer syngradeId;
 
+    private String couYear;
     private String couName;
     private String couGrade;
 
     @Override
     public String toString() {
         return "SynGrade{" +
-                "couYear='" + couYear + '\'' +
+                "couId=" + syngradeId +
+                ", couYear='" + couYear + '\'' +
                 ", couName='" + couName + '\'' +
                 ", couGrade='" + couGrade + '\'' +
                 '}';
+    }
+
+    @NonNull
+    public Integer getSyngradeId() {
+        return syngradeId;
+    }
+
+    public void setSyngradeId(@NonNull Integer syngradeId) {
+        this.syngradeId = syngradeId;
     }
 
     public String getCouYear() {

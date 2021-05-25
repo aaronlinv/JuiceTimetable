@@ -6,10 +6,13 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import com.juice.timetable.data.JuiceDatabase;
+import com.juice.timetable.data.bean.SynGrade;
 import com.juice.timetable.data.bean.UniGrade;
+import com.juice.timetable.data.dao.SynGradeDao;
 import com.juice.timetable.data.dao.UniGradeDao;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * <pre>
@@ -27,7 +30,7 @@ public class UniGradeRepository {
         listUniGradeLive = uniGradeDao.getAllUniGradeLive();
     }
 
-    public LiveData<List<UniGrade>> getListUniGradeLive() {
+    public LiveData<List<UniGrade>> getAllUniGradeLive() {
         return listUniGradeLive;
     }
 
@@ -39,6 +42,18 @@ public class UniGradeRepository {
         new DeleteAllAsyncTask(uniGradeDao).execute();
     }
 
+    public LiveData<List<UniGrade>> getAllUniGradeLive(Void... Voids) {
+        LiveData<List<UniGrade>> uniListLiveData = null;
+        AsyncTask<Void, Void, LiveData<List<UniGrade>>> execute = new UniGradeRepository.SelectLiveDataAsyncTask(uniGradeDao).execute();
+        try {
+            uniListLiveData = execute.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return uniListLiveData;
+    }
     //插入AsyncTask
     static class InsertAsyncTask extends AsyncTask<UniGrade, Void, Void> {
         private UniGradeDao uniGradeDao;
@@ -67,6 +82,21 @@ public class UniGradeRepository {
         protected Void doInBackground(Void... voids) {
             uniGradeDao.deleteAllUniGrade();
             return null;
+        }
+    }
+
+    //查询(LiveData)AsyncTask
+    static class SelectLiveDataAsyncTask extends AsyncTask<Void, Void, LiveData< List<UniGrade> >> {
+        private UniGradeDao uniGradeDao;
+
+        public SelectLiveDataAsyncTask(UniGradeDao uniGradeDao) {
+            this.uniGradeDao = uniGradeDao;
+        }
+
+        @Override
+        protected LiveData< List<UniGrade> > doInBackground(Void... voids) {
+            return uniGradeDao.getAllUniGradeLive();
+
         }
     }
 }
