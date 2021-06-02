@@ -177,6 +177,15 @@
                         android:textIsSelectable="true" />
 
                     <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/marginLeft"
+                        android:textColor="@color/primary_text"
+                        android:layout_marginTop="8dp"
+                        android:textIsSelectable="true"
+                        android:text="@string/team_name2" />
+
+                    <TextView
                         android:id="@+id/blogLink"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
