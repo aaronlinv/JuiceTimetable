@@ -5,7 +5,7 @@
 
 ## 简介
 
-这是一款专属于至诚的 App，能够简单快捷查看课程表与指纹签到情况，小巧，轻便，让你摆脱庞大的存储空间困扰
+这是一款专属于至诚的 App，能够简单快捷查看课程表与指纹签到情况，小巧，轻便，让你摆脱庞大的存储空间困扰。课表界面展示和数据获取是其核心功能，主要满足用户及时查看课表的需求，且用户可以根据自己的喜好自定义课表界面。其次是成绩查询功能。我们的APP实现了部分至诚教务助手的功能，用户使用我们产品可以极大简化查询课表信息和查询成绩的流程。
 
 
 ## 功能模块介绍
@@ -14,14 +14,20 @@
 
 - 进入软件即为主页——课程表
 - 可以通过左右滑动或者点击下拉菜单切换周课表
+- 可以选择你想要查看的学习周，跳转到当周课表
+- 右上角有签到提示和显示慕课的功能
 
 ### 侧边菜单栏 
 
-- 用于切换到各个功能
+- 用于切换到各个功能，包括查询成绩，修改认证信息，关于app的信息
 
 ### 登录
 
 - 输入学号、教务网密码进行登录，以获取课表
+
+### 查询成绩
+
+- 可以查看统考成绩和综合成绩
 
 ### 认证信息修改 
 
@@ -32,13 +38,27 @@
 
 ## 截图预览
 
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/01.jpg" width="420px" height="720px" />        <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/02.jpg" width="420px" height="720px" />
+<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/01.jpg"  />  
 
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/10.jpg" width="420px" height="720px" />        <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/03.jpg" width="420px" height="720px" /> 
+<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/02.jpg"  />  
 
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/05.jpg" width="420px" height="720px" />        <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/06.jpg" width="420px" height="720px" />
+<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/03.jpg"  />  
 
-<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/09.jpg" width="420px" height="720px" />        <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/04.jpg" width="420px" height="720px" />
+<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/04.jpg"  />  
+
+<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/05.jpg"  />  
+
+<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/06.jpg"  />  
+
+<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/07.jpg"  />  
+
+<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/08.jpg"  />  
+
+<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/09.jpg"  />  
+
+<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/10.jpg"  />  
+
+<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/juice_icon.png" />  
 
 ## 感谢以下开源项目
 
