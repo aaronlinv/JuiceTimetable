@@ -118,6 +118,9 @@ public class CourseFragment extends Fragment {
         final int height = Utils.dip2px(requireActivity(), 40 + 4 * 55);
         // 打开抽屉的按钮，使用索引可能不太靠谱
         View views = toolbar.getChildAt(1);
+        if (views == null) {
+            return;
+        }
         ViewTooltip.on(views)
                 .position(ViewTooltip.Position.BOTTOM)
                 .color(getResources().getColor(R.color.blue))
@@ -129,6 +132,9 @@ public class CourseFragment extends Fragment {
                     @Override
                     public void onHide(View view) {
                         MaterialSpinner materialSpinner = requireActivity().findViewById(R.id.spinner);
+                        if (materialSpinner == null) {
+                            return;
+                        }
                         ViewTooltip.on(materialSpinner)
                                 .position(ViewTooltip.Position.BOTTOM)
                                 .clickToHide(true)
@@ -141,8 +147,11 @@ public class CourseFragment extends Fragment {
                                 .onHide(new ViewTooltip.ListenerHide() {
                                     @Override
                                     public void onHide(View view) {
-                                        View item_go_current_week = requireActivity().findViewById(R.id.item_go_current_week);
-                                        ViewTooltip.on(item_go_current_week)
+                                        View itemGoCurrentWeek = requireActivity().findViewById(R.id.item_go_current_week);
+                                        if (itemGoCurrentWeek == null) {
+                                            return;
+                                        }
+                                        ViewTooltip.on(itemGoCurrentWeek)
                                                 .autoHide(true, 2000)
                                                 .position(ViewTooltip.Position.BOTTOM)
                                                 .color(getResources().getColor(R.color.blue))
@@ -152,8 +161,11 @@ public class CourseFragment extends Fragment {
                                                 .onHide(new ViewTooltip.ListenerHide() {
                                                     @Override
                                                     public void onHide(View view) {
-                                                        View item_more_option = requireActivity().findViewById(R.id.item_more_option);
-                                                        ViewTooltip.on(item_more_option)
+                                                        View itemMoreOption = requireActivity().findViewById(R.id.item_more_option);
+                                                        if (itemMoreOption == null) {
+                                                            return;
+                                                        }
+                                                        ViewTooltip.on(itemMoreOption)
                                                                 .position(ViewTooltip.Position.BOTTOM)
                                                                 .autoHide(true, 2000)
                                                                 .color(getResources().getColor(R.color.blue))
@@ -163,6 +175,9 @@ public class CourseFragment extends Fragment {
                                                                 .onHide(new ViewTooltip.ListenerHide() {
                                                                     @Override
                                                                     public void onHide(View view) {
+                                                                        if (mSlRefresh == null) {
+                                                                            return;
+                                                                        }
                                                                         ViewTooltip.on(mSlRefresh)
                                                                                 .position(ViewTooltip.Position.TOP)
                                                                                 .autoHide(true, 2000)
