@@ -25,13 +25,12 @@ import java.util.ArrayList;
 public class GradeFragment extends Fragment {
     private FragmentGradeBinding binding;
     private Toolbar toolbar;
-
-    //以下为测试demo
     private View contextView;// 总视图
     private TabLayout tabLayout;
     private ViewPager viewpager;
     ArrayList fragmentList = new ArrayList<Fragment>();
     String[] temp = {"综合成绩", "统考成绩"};
+    private boolean flag = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,9 +43,15 @@ public class GradeFragment extends Fragment {
 
         //tablayout+viewpager 统考成绩与综合成绩的页面切换
         contextView = inflater.inflate(R.layout.fragment_grade, container, false);
+        findID(contextView);
+
+        return contextView;
+
+    }
+
+    private void findID(View contextView) {
         tabLayout = contextView.findViewById(R.id.tabgrade);
         viewpager = contextView.findViewById(R.id.vp_grade);
-        return contextView;
     }
 
     @Override
@@ -60,8 +65,12 @@ public class GradeFragment extends Fragment {
     }
 
     private void initFragment() {
-        fragmentList.add(new SynGradeFragment());
-        fragmentList.add(new UniGradeFragment());
+        //只需要创建一遍
+        if (!flag) {
+            fragmentList.add(new SynGradeFragment());
+            fragmentList.add(new UniGradeFragment());
+            flag = true;
+        }
     }
 
     class MPagerAdapter extends FragmentPagerAdapter {

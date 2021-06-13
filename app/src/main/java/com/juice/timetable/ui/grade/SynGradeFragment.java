@@ -27,6 +27,7 @@ public class SynGradeFragment extends Fragment {
     private SynGradeViewModel synGradeViewModel;
     private RecyclerView synRecyclerView;
     private SynGradeRecycleViewAdapter synGradeRecycleViewAdapter;
+    private List<SynGrade> synGradeArrayList;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class SynGradeFragment extends Fragment {
         synRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         synGradeRecycleViewAdapter = new SynGradeRecycleViewAdapter();
         synRecyclerView.setAdapter(synGradeRecycleViewAdapter);
+
         return root;
     }
 
@@ -55,7 +57,6 @@ public class SynGradeFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    List<SynGrade> synGradeArrayList;
                     //获取成绩网页源码
                     String pagesource = GradeInfo.getGradeSource(Constant.URI_SYNGRADE);
                     //利用爬虫获取成绩
@@ -83,7 +84,6 @@ public class SynGradeFragment extends Fragment {
             public void onChanged(List<SynGrade> synGrades) {
                 synGradeRecycleViewAdapter.setSynGradeList(synGrades);
                 synGradeRecycleViewAdapter.notifyDataSetChanged();
-
             }
         });
     }

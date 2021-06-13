@@ -67,11 +67,10 @@ public class Constant {
     // 最大周 默认25周
     public static final int MAX_WEEK = 25;
 
-    //
+    //保存的cookies的key
     public static final String PREF_EDU_COOKIE = "PREF_EDU_COOKIE";
     public static final String PREF_LEAVE_COOKIE = "PREF_LEAVE_COOKIE";
     public static final String PREF_FIRST_WEEK_MONDAY = "PREF_FIRST_WEEK_MONDAY";
-    public static final String PREF_GRADE_COOKIE = "PREF_GRADE_COOKIE";
 
     // 注入自己的账号密码，用于免登录调式
     public static boolean DEBUG_MODE = false;

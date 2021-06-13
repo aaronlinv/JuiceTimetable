@@ -17,22 +17,20 @@ import okhttp3.Response;
 public class GradeInfo {
     //直接获取PREF_EDU_COOKIE的cookies，不判断是否存在cookie(必存在)
     public static String getGradeSource(String uri) throws Exception {
-        String prefCookie = CookieUtils.getCookie(Constant.PREF_EDU_COOKIE);
-        //去除"path=/;"
-        String prefCookie_del = prefCookie.replaceAll("path=/;","");
+        String prefCookie = CookieUtils.getCookie(Constant.PREF_EDU_COOKIE).replaceAll("path=/;", "");
 
-        return source(prefCookie_del, uri);
+        return source(prefCookie, uri);
     }
 
     //根据不同的url获取网页源代码
-    public static String source(String cookies, String uri) throws Exception {
+    public static String source(String cookies, String url) throws Exception {
         OkHttpClient client = HttpUtils.getHttpClient();
         Request request = new Request.Builder()
                 .addHeader("Content-Type", "text/html")
                 .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36 Edg/90.0.818.56")
                 .addHeader("Cookie", cookies)
                 .get()
-                .url(uri)
+                .url(url)
                 .build();
 
         Response response = client.newCall(request).execute();

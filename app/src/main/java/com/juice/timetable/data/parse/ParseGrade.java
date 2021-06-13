@@ -47,10 +47,9 @@ public class ParseGrade {
         List<SynGrade> synGradeArrayList = new ArrayList<>();
         //解析综合成绩网页源码
         Document doc = Jsoup.parse(parseStr);
-        //爬虫
 
         //如果存在成绩评测，就直接返回空列表
-        if(!doc.toString().contains("评测")){
+        if (!doc.toString().contains("评测")) {
             Elements rootselect = doc.select("body > table > tbody > tr:nth-child(2) > td > table:nth-child(4) > tbody > tr");
 
             for (Element ele : rootselect) {
