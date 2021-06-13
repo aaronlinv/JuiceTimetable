@@ -5,7 +5,7 @@
 
 ## 简介
 
-这是一款专属于至诚的 App，能够简单快捷查看课程表与指纹签到情况，小巧，轻便，让你摆脱庞大的存储空间困扰。课表界面展示和数据获取是其核心功能，主要满足用户及时查看课表的需求，且用户可以根据自己的喜好自定义课表界面。其次是成绩查询功能。我们的APP实现了部分至诚教务助手的功能，用户使用我们产品可以极大简化查询课表信息和查询成绩的流程。
+这是一款专属于至诚的 App，能够简单快捷查看课程表与指纹签到情况，小巧，轻便，让你摆脱庞大的存储空间困扰。课表界面展示和数据获取是其核心功能，主要满足用户及时查看课表的需求，其次是成绩查询功能。我们的APP实现了部分至诚教务助手的功能，用户使用我们产品可以极大简化查询课表信息和查询成绩的流程。
 
 
 ## 功能模块介绍
@@ -39,13 +39,13 @@
 ## 截图预览
 <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/02.jpg" width="200" />  <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/03.jpg" width="200" /> 
 <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/04.jpg" width="200" />  <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/05.jpg" width="200" />  
-<img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/08.jpg" width="200" height="430px" /> <img	src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/01.jpg" width="200" /> 
+<img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/08.jpg" width="200"  /> <img	src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/01.jpg" width="200" /> 
 <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/07.png" width="200" />  <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/10.png" width="200" />  
 <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/06.jpg" width="200" /><img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/09.jpg" width="200" />  
 
 
 
-<img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/juice_icon.png"  />
+
 
 ## 感谢以下开源项目
 
