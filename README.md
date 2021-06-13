@@ -38,27 +38,9 @@
 
 ## 截图预览
 
-<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/01.jpg"  />  
+<img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/01.jpg"  />  <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/02.jpg"  />  <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/03.jpg"  />  <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/04.jpg"  />  <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/05.jpg"  />  <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/06.jpg"  />  <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/07.jpg"  />  <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/08.jpg"  />  <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/09.jpg"  />  <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/10.png"  />  <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/juice_icon.png" />
 
-<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/02.jpg"  />  
 
-<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/03.jpg"  />  
-
-<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/04.jpg"  />  
-
-<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/05.jpg"  />  
-
-<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/06.jpg"  />  
-
-<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/07.jpg"  />  
-
-<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/08.jpg"  />  
-
-<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/09.jpg"  />  
-
-<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/10.jpg"  />  
-
-<img src="https://github.com/wangyuxiang123/JuiceTimetable/blob/masterimg/juice_icon.png" />  
 
 ## 感谢以下开源项目
 
