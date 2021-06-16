@@ -27,7 +27,6 @@ import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.http.EduInfo;
-import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.viewmodel.OneWeekCourseViewModel;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.databinding.FragmentLoginBinding;
@@ -49,7 +48,6 @@ public class LoginFragment extends Fragment {
     private DrawerLayout mDrawerLayout;
     private String mSno;
     private String mEdu;
-    private String mLeave;
 
     private Handler mHandler;
     private LoadingBar mLoadingBar;
@@ -61,7 +59,7 @@ public class LoginFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentLoginBinding.inflate(getLayoutInflater());//binding初始化
-//        binding = DataBindingUtil.setContentView(requireActivity(), R.layout.fragment_login);
+
         mDrawerLayout = requireActivity().findViewById(R.id.drawer_layout);
         mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
         mOneWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(OneWeekCourseViewModel.class);
@@ -71,7 +69,6 @@ public class LoginFragment extends Fragment {
         toolbar.findViewById(R.id.spinner).setVisibility(View.INVISIBLE);
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, false);
-
 
 
         //图片透明度
@@ -88,7 +85,7 @@ public class LoginFragment extends Fragment {
         String sno = stuInfo.getStuID().toString();
         binding.etSno.setText(sno);
         binding.etEduPassword.setText(stuInfo.getEduPassword());
-        binding.etLeavePassword.setText(stuInfo.getLeavePassword());
+
 
         handler();
         btnDialogClick();
@@ -137,8 +134,7 @@ public class LoginFragment extends Fragment {
         // 如果没有改变则不让用户点按钮
         StuInfo stu = mStuInfoViewModel.selectStuInfo();
         if (Objects.equals(mSno, stu.getStuID().toString()) &&
-                Objects.equals(mEdu, stu.getEduPassword()) &&
-                Objects.equals(mLeave, stu.getLeavePassword())) {
+                Objects.equals(mEdu, stu.getEduPassword())) {
             Toasty.info(getActivity(), "你还没有修改帐号或密码", Toasty.LENGTH_SHORT).show();
             return;
         }
@@ -203,20 +199,6 @@ public class LoginFragment extends Fragment {
                 LogUtils.getInstance().d("教务网密码验证结束");
 
 
-                // 填写了请假系统，并且教务密码正确 校验请假系统密码
-                assert errorStr != null;
-                if (!mLeave.isEmpty() && errorStr.isEmpty()) {
-                    // 请假系统验证
-                    LogUtils.getInstance().d("请假系统前端验证成功");
-                    try {
-                        LeaveInfo.getLeave(mSno, mLeave, Constant.URI_CHECK_IN, getContext().getApplicationContext());
-                    } catch (Exception e) {
-                        errorStr = e.getMessage();
-                        LogUtils.getInstance().d("errorText:" + errorStr);
-                    }
-
-                }
-
                 // 如果修改了学号，需要清除周课表避免冲突
                 if (!Objects.equals(mSno, oldSno)) {
                     mOneWeekCourseViewModel.insertOneWeekCourse();
@@ -241,12 +223,11 @@ public class LoginFragment extends Fragment {
     }
 
     /**
-     * 提取三个文本的内容
+     * 提取两个文本的内容
      */
     private void allStr() {
         mSno = binding.etSno.getText().toString().trim();
         mEdu = binding.etEduPassword.getText().toString().trim();
-        mLeave = binding.etLeavePassword.getText().toString().trim();
     }
 
 
@@ -261,7 +242,6 @@ public class LoginFragment extends Fragment {
         StuInfo stuInfo1 = new StuInfo();
         stuInfo1.setStuID(snoStr);
         stuInfo1.setEduPassword(mEdu);
-        stuInfo1.setLeavePassword(mLeave);
         mStuInfoViewModel.insertStuInfo(stuInfo1);
     }
 

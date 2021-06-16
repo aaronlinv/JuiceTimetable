@@ -95,7 +95,7 @@ public class MainActivity extends BaseActivity {
         // menu should be considered as top level destinations.
         //app bar与nav元素、navView绑定
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_course, R.id.nav_unsigned, R.id.nav_login, R.id.nav_about,R.id.nav_grade)
+                R.id.nav_course, R.id.nav_login, R.id.nav_about, R.id.nav_grade)
                 .setDrawerLayout(drawer)
                 .build();
         //NavController与界面绑定
@@ -136,7 +136,7 @@ public class MainActivity extends BaseActivity {
             StuInfo stuInfo = new StuInfo();
             stuInfo.setStuID(Integer.valueOf(userInfoUtils.getID()));
             stuInfo.setEduPassword(userInfoUtils.getEduPasswd());
-            stuInfo.setLeavePassword(userInfoUtils.getLeavePasswd());
+
             stuInfoViewModel.insertStuInfo(stuInfo);
             LogUtils.getInstance().d("调试模式：注入学号密码结束");
         }
@@ -149,8 +149,6 @@ public class MainActivity extends BaseActivity {
             Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_nav_course_to_initFragment);
         } else {
             if (luanchFragment == null) {
-            } else if (luanchFragment.equals("UnsignedFragment")) {
-                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_unsigned);
             } else if (luanchFragment.equals("EditFragment")) {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_login);
             } else if (luanchFragment.equals("AboutFragment")) {

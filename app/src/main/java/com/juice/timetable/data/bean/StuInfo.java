@@ -20,14 +20,12 @@ public class StuInfo {
 
     private String eduPassword;
 
-    private String leavePassword;
 
     @Override
     public String toString() {
         return "StuInfo{" +
                 "stuID=" + stuID +
                 ", eduPassword='" + eduPassword + '\'' +
-                ", leavePassword='" + leavePassword + '\'' +
                 '}';
     }
 
@@ -47,11 +45,4 @@ public class StuInfo {
         this.eduPassword = eduPassword;
     }
 
-    public String getLeavePassword() {
-        return leavePassword;
-    }
-
-    public void setLeavePassword(String leavePassword) {
-        this.leavePassword = leavePassword;
-    }
 }

@@ -28,7 +28,6 @@ import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.http.EduInfo;
-import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseOneWeek;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.databinding.FragmentInitBinding;
@@ -53,16 +52,10 @@ public class InitFragment extends Fragment {
     private FragmentInitBinding binding;
     private String mSno;
     private String mEdu;
-    private String mLeave;
-    private StuInfo stuInfo;
     private Handler mHandler;
     private DrawerLayout mDrawerLayout;
     private LoadingBar mLoadingBar;
     private StuInfoViewModel mStuInfoViewModel;
-
-    public InitFragment() {
-        // Required empty public constructor
-    }
 
 
     @Override
@@ -214,20 +207,7 @@ public class InitFragment extends Fragment {
                 LogUtils.getInstance().d("教务网密码验证结束");
 
 
-                // 填写了请假系统，并且教务密码正确 校验请假系统密码
-                assert errorStr != null;
-                if (!mLeave.isEmpty() && errorStr.isEmpty()) {
-                    // 请假系统验证
-                    LogUtils.getInstance().d("请假系统前端验证成功");
-                    try {
-                        LeaveInfo.getLeave(mSno, mLeave, Constant.URI_CHECK_IN, getContext().getApplicationContext());
-                    } catch (Exception e) {
-                        errorStr = e.getMessage();
-                        LogUtils.getInstance().d("errorText:" + errorStr);
-                    }
-
-                }
-                LogUtils.getInstance().d("教务网和请假系统密码验证结束");
+                LogUtils.getInstance().d("教务网验证结束");
                 // 跳转到课表首页
                 Message message = new Message();
                 assert errorStr != null;
@@ -245,12 +225,11 @@ public class InitFragment extends Fragment {
     }
 
     /**
-     * 提取三个文本的内容
+     * 提取两个文本的内容
      */
     private void getInput() {
         mSno = binding.etSno.getText().toString().trim();
         mEdu = binding.etEduPassword.getText().toString().trim();
-        mLeave = binding.etLeavePassword.getText().toString().trim();
     }
 
 
@@ -260,7 +239,6 @@ public class InitFragment extends Fragment {
         StuInfo stuInfo = new StuInfo();
         stuInfo.setStuID(snoStr);
         stuInfo.setEduPassword(mEdu);
-        stuInfo.setLeavePassword(mLeave);
         mStuInfoViewModel.insertStuInfo(stuInfo);
     }
 
@@ -304,23 +282,7 @@ public class InitFragment extends Fragment {
         imm.hideSoftInputFromWindow(Objects.requireNonNull(activity.getCurrentFocus()).getWindowToken(), 0); //强制隐藏键盘
     }
 
-    // 屏蔽返回按键
-    /*@Override
-    public void onResume() {
-        super.onResume();
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                    //拦截到的返回事件
-                    return true;
-                }
-                return false;
-            }
-        });
-    }*/
+
     @Override
     public void onResume() {
         super.onResume();
@@ -330,7 +292,6 @@ public class InitFragment extends Fragment {
             supportActionBar.hide();
         }
     }
-
 
     private void showLoading(View v) {
         CustomLoadingFactory factory = new CustomLoadingFactory();

@@ -112,21 +112,6 @@
             app:layout_constraintTop_toTopOf="@+id/guideline2"
             app:layout_constraintVertical_bias="1.0" />
 
-        <EditText
-            android:id="@+id/et_leave_password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/et_leave_password"
-            android:inputType="textPassword"
-            android:maxLength="30"
-            app:layout_constraintBottom_toTopOf="@+id/guideline5"
-            app:layout_constraintEnd_toStartOf="@+id/guideline8"
-            app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toTopOf="@+id/guideline3"
-            app:layout_constraintVertical_bias="1.0" />
-
         <Button
             android:id="@+id/btn_go"
             android:layout_width="0dp"
@@ -177,7 +162,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="left" />
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

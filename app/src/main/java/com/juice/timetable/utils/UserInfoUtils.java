@@ -50,7 +50,5 @@ public class UserInfoUtils {
         return getProperty("eduPasswd");
     }
 
-    public String getLeavePasswd() {
-        return getProperty("leavePasswd");
-    }
+
 }

@@ -47,12 +47,9 @@ public class StuInfoRepository {
             if (stuInfo.getEduPassword() != null) {
                 eduPassword = AesCryptUtil.decrypt(secret, stuInfo.getEduPassword());
             }
-            if (stuInfo.getLeavePassword() != null) {
-                leavePassword = AesCryptUtil.decrypt(secret, stuInfo.getLeavePassword());
-            }
+
 
             stuInfo.setEduPassword(eduPassword);
-            stuInfo.setLeavePassword(leavePassword);
             LogUtils.getInstance().d("StuInfoRepository中进行解密 -- > " + stuInfo);
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,14 +68,11 @@ public class StuInfoRepository {
             if (stu.getEduPassword() != null) {
                 eduPassword = AesCryptUtil.encrypt(secret, stu.getEduPassword());
             }
-            if (stu.getLeavePassword() != null) {
-                leavePassword = AesCryptUtil.encrypt(secret, stu.getLeavePassword());
-            }
+
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
         }
         stu.setEduPassword(eduPassword);
-        stu.setLeavePassword(leavePassword);
 
         LogUtils.getInstance().d("StuInfoRepository中进行加密 -- > " + stu);
         new InsertAsyncTask(stuInfoDao).execute(stu);

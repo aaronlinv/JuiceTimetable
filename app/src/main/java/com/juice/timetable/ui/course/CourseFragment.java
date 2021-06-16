@@ -33,13 +33,10 @@ import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.Course;
 import com.juice.timetable.data.bean.CourseViewBean;
-import com.juice.timetable.data.bean.MyCheckIn;
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.http.EduInfo;
-import com.juice.timetable.data.http.LeaveInfo;
 import com.juice.timetable.data.parse.ParseAllWeek;
-import com.juice.timetable.data.parse.ParseCheckIn;
 import com.juice.timetable.data.parse.ParseOneWeek;
 import com.juice.timetable.data.viewmodel.AllWeekCourseViewModel;
 import com.juice.timetable.data.viewmodel.OneWeekCourseViewModel;
@@ -208,25 +205,9 @@ public class CourseFragment extends Fragment {
     private void initConfig() {
         // 是否开启签到提示
         Constant.ENABLE_CHECK_IN = PreferencesUtils.getBoolean(Constant.PREF_ENABLE_CHECK_IN, true);
-        // 不存请假系统密码就关掉
-        if (!hasLeavePwd()) {
-            Constant.ENABLE_CHECK_IN = false;
-        }
 
         // 是否开启慕课显示
         Constant.ENABLE_SHOW_MOOC = PreferencesUtils.getBoolean(Constant.PREF_ENABLE_SHOW_MOOC, true);
-    }
-
-    /**
-     * 用户存在请假系统密码
-     */
-    private boolean hasLeavePwd() {
-        StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
-        LogUtils.getInstance().d("用户数据库信息：" + stuInfo);
-        if (stuInfo == null) {
-            return false;
-        }
-        return (!stuInfo.getLeavePassword().isEmpty());
     }
 
 
@@ -244,10 +225,6 @@ public class CourseFragment extends Fragment {
             refreshData();
             // 设置为false
             Constant.REFRESH_DATE = false;
-        }
-        // 开启签到显示 且 在签到时间刷新签到情况
-        if (Constant.ENABLE_CHECK_IN && Utils.isCheckInTime()) {
-            getCheckIn();
         }
         initEvent();
     }
@@ -374,7 +351,6 @@ public class CourseFragment extends Fragment {
                 LogUtils.getInstance().d("cou.getCouRoom() == >" + cou.getCouRoom());
 
 
-
                 new SweetAlertDialog(requireActivity(), SweetAlertDialog.NORMAL_TYPE)
                         .setTitleText(cou.getCouName())
                         .setContentText(sb)
@@ -457,15 +433,9 @@ public class CourseFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 LogUtils.getInstance().d("签到提示按钮 -- > " + isChecked);
                 if (isChecked) {
-                    if (hasLeavePwd()) {
-                        Toasty.custom(requireActivity(), "签到提示开启，会在签到时间段显示签到情况", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_LONG, true, true).show();
-                        Toasty.Config.reset();
-
-                    } else {
-                        Toasty.info(requireActivity(), "需要先在修改认证信息界面添加请假系统密码才可以开启哦", LENGTH_LONG).show();
-                        isChecked = false;
-                        switchCheckIn.setChecked(false);
-                    }
+                    Toasty.info(requireActivity(), "需要先在修改认证信息界面添加请假系统密码才可以开启哦", LENGTH_LONG).show();
+                    isChecked = false;
+                    switchCheckIn.setChecked(false);
                 } else {
                     Toasty.custom(requireActivity(), "签到提示已关闭", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
                     Toasty.Config.reset();
@@ -476,7 +446,6 @@ public class CourseFragment extends Fragment {
                 if (Utils.isCheckInTime() && isChecked) {
                     mTvCheckIn.setVisibility(TextView.VISIBLE);
                     // 通知刷新数据
-                    getCheckIn();
                 } else {
                     mTvCheckIn.setVisibility(TextView.GONE);
                     // 通知ViewPager 重新调整布局，不然下方会有空隙
@@ -644,7 +613,7 @@ public class CourseFragment extends Fragment {
         // 开启签到显示 且 在签到时间刷新签到情况
         if (Constant.ENABLE_CHECK_IN && Utils.isCheckInTime()) {
             mTvCheckIn.setVisibility(View.VISIBLE);
-            getCheckIn();
+
             // 设置可见
         } else {
             mTvCheckIn.setVisibility(View.GONE);
@@ -805,54 +774,6 @@ public class CourseFragment extends Fragment {
 
             }
         };
-    }
-
-
-    /**
-     * 获取签到情况
-     */
-    private void getCheckIn() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();
-                LogUtils.getInstance().d("用户数据库信息：" + stuInfo);
-                boolean hasLeavePwd = (stuInfo.getEduPassword() != null);
-                // 数据库有请假系统密码  初始化签到信息
-                LogUtils.getInstance().d("有请假系统密码则开始获取签到信息");
-                if (hasLeavePwd) {
-                    Message checkInMSG = new Message();
-                    try {
-
-                        String checkIn = LeaveInfo.getLeave(stuInfo.getStuID().toString(), stuInfo.getLeavePassword(), Constant.URI_CHECK_IN, requireContext());
-                        LogUtils.getInstance().d("签到数据：" + checkIn);
-
-                        MyCheckIn mySigned = ParseCheckIn.getMySigned(checkIn);
-                        // 测试
-
-//                        if (!mySigned.isCheckIn()) {
-                        if (mySigned.isCheckIn()) {
-                            String checkInTime = mySigned.getCheckTime();
-//                            2020/5/7 需要更换为签到时间
-//                            checkInTime = "21:50";
-//                            checkInTime = "2020-05-31 21:50:30";
-
-                            checkInMSG.what = Constant.MSG_CHECK_IN_SUCCESS;
-                            checkInMSG.obj = checkInTime;
-                            mHandler.sendMessage(checkInMSG);
-                        }
-//                            // 测试获取信息失败情况
-//                            throw new Exception();
-
-                    } catch (Exception e) {
-                        LogUtils.getInstance().e("获取签到信息失败：" + e.getMessage());
-                        checkInMSG.what = Constant.MSG_CHECK_IN_FAIL;
-                        checkInMSG.obj = e.getMessage();
-                        mHandler.sendMessage(checkInMSG);
-                    }
-                }
-            }
-        }).start();
     }
 
 

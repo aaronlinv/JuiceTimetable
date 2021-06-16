@@ -24,6 +24,7 @@ import java.util.List;
 
 public class ParseAllWeek {
     private static String sSemester = "";
+
     /**
      * 解析完整的课表
      */
@@ -220,12 +221,8 @@ public class ParseAllWeek {
                                 LogUtils.getInstance().e("完整课程rightTable解析错误--->" + e.getMessage());
                             }
                         }
-
                     }
-
                 }
-
-
             }
         }
 

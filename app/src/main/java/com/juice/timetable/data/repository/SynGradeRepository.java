@@ -6,9 +6,7 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import com.juice.timetable.data.JuiceDatabase;
-import com.juice.timetable.data.bean.ClassNoSignedItem;
 import com.juice.timetable.data.bean.SynGrade;
-import com.juice.timetable.data.dao.ClassNoSignedItemDao;
 import com.juice.timetable.data.dao.SynGradeDao;
 
 

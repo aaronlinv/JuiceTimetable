@@ -131,19 +131,6 @@
             app:layout_constraintTop_toTopOf="@+id/guideline2"
             tools:ignore="LabelFor" />
 
-        <EditText
-            android:id="@+id/et_leave_password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/text_select"
-            android:inputType="textPassword"
-            android:maxLength="30"
-            app:layout_constraintBottom_toTopOf="@+id/guideline5"
-            app:layout_constraintEnd_toStartOf="@+id/guideline8"
-            app:layout_constraintStart_toStartOf="@+id/guideline13"
-            app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
         <Button
             android:id="@+id/btn_go"
@@ -218,19 +205,6 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline11"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
             app:layout_constraintTop_toTopOf="@+id/guideline2"
-            app:layout_constraintVertical_bias="0.608" />
-
-        <TextView
-            android:id="@+id/tv_leave_password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/tv_leave_passwd"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/guideline5"
-            app:layout_constraintEnd_toStartOf="@+id/guideline11"
-            app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toTopOf="@+id/guideline3"
             app:layout_constraintVertical_bias="0.608" />
 
         <ImageView

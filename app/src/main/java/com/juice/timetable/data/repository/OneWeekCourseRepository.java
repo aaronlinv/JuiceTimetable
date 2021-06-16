@@ -24,7 +24,7 @@ import java.util.concurrent.ExecutionException;
  * </pre>
  */
 public class OneWeekCourseRepository {
-    private LiveData< List<OneWeekCourse> > oneWeekCourseLive;
+    private LiveData<List<OneWeekCourse>> oneWeekCourseLive;
     private LiveData<List<Integer>> inWeekLive;
     private OneWeekCourseDao oneWeekCourseDao;
 

@@ -109,8 +109,6 @@ public class ParseOneWeek {
                         LogUtils.getInstance().e("解析当前周课表课程异常--->" + e.getMessage());
                         //解析当前一门课程失败，跳过此课程
                     }
-
-
                 }
             }
         }
