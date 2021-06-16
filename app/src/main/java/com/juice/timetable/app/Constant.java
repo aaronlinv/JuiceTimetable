@@ -69,12 +69,10 @@ public class Constant {
     // 注入自己的账号密码，用于免登录调式
     public static boolean DEBUG_MODE = false;
     // 调式Init界面，用于调试登录界面
-    public static boolean DEBUG_INIT_FRAGMENT = false;
+    public static boolean DEBUG_INIT_FRAGMENT = true;
 
     // 初次登录和修改认证后需要要刷新数据，每次打开也要
     public static boolean REFRESH_DATE = true;
-
-    public static boolean FIRST_IN = true;
 
     // 彩虹模式的随机数 0 为关闭
     public static int RAINBOW_MODE_NUM = 10;

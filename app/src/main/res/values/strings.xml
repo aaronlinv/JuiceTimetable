@@ -8,7 +8,6 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_course">周课表</string>
-    <string name="menu_unsigned">班级未签</string>
     <string name="menu_login">修改认证信息</string>
 
     <string name="home_second">Home Second</string>
@@ -49,7 +48,6 @@
     <string name="openSource">感谢以下开源项目</string>
     <string name="thanks">感谢以下好朋友的贡献</string>
     <string name="team_blog">反馈邮箱：aaronlinv@outlook.com</string>
-    <string name="shortcuts_unsigned">看未签</string>
     <string name="shortcuts_edit">改信息</string>
     <string name="shortcuts_feedback">去反馈</string>
     <string name="user_item"><br />
@@ -79,10 +77,8 @@
     <string name="bt_item">用户条款</string>
     <string name="bt_Update">更新认证信息</string>
 
-
     <string name="go_current_week">跳转到当前周</string>
     <string name="more_option">更多选项</string>
-    <string name="tip_check_in">签到提示</string>
     <string name="tip_show_mooc">显示慕课</string>
     <string name="loading">正在登录…</string>
     <string name="week">周一</string>
@@ -90,7 +86,6 @@
     <string name="tip_current_mooc">本学期慕课课程</string>
     <string name="tip_example_mooc">走进航空航天</string>
     <string name="cool_apk">酷安</string>
-
 
     <string name="menu_grade">成绩查询</string>
     <string name="syngrade">综合成绩</string>

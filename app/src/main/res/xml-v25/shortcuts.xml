@@ -3,8 +3,7 @@
     <shortcut
         android:shortcutId="unsigned"
         android:enabled="true"
-        android:icon="@drawable/sign"
-        android:shortcutShortLabel="@string/shortcuts_unsigned">
+        android:icon="@drawable/sign">
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="com.juice.timetable"

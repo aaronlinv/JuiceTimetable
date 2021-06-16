@@ -8,33 +8,6 @@
     android:paddingEnd="10dp"
     tools:ignore="RtlSymmetry">
 
-    <RelativeLayout
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="5dp"
-            android:gravity="center_vertical"
-            android:text="@string/tip_check_in"
-            android:textColor="@android:color/black"
-            android:textSize="17sp"
-            tools:ignore="RelativeOverlap" />
-
-        <Switch
-            android:id="@+id/switch_check_in"
-            android:thumb="@drawable/switch_custom_thumb_selector"
-            android:track="@drawable/switch_custom_track_selector"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true" />
-
-
-    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="150dp"

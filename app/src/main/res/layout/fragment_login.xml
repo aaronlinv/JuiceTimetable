@@ -145,7 +145,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline16"
             app:layout_constraintStart_toStartOf="@+id/guideline19"
             app:layout_constraintTop_toTopOf="@+id/guideline5"
-            app:layout_constraintVertical_bias="0.493" />
+            app:layout_constraintVertical_bias="0.5" />
 
         <Button
             android:id="@+id/btn_user_item"
@@ -154,7 +154,7 @@
             android:background="#00000000"
             android:hapticFeedbackEnabled="false"
             android:text="@string/bt_item"
-            android:textColor="#1638D2"
+            android:textColor="@color/user_conditions"
             android:textColorHighlight="@color/design_default_color_background"
             android:textColorHint="@color/design_default_color_background"
             android:textColorLink="@color/design_default_color_background"

@@ -422,40 +422,11 @@ public class CourseFragment extends Fragment {
         View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.popupwindow, null);
         popupWindow.setContentView(contentView);
         popupWindow.showAsDropDown(toolbar, 0, 0, Gravity.RIGHT);
-        final Switch switchCheckIn = contentView.findViewById(R.id.switch_check_in);
+
         Switch switchShowMooc = contentView.findViewById(R.id.switch_show_mooc);
         // 初始化开关状态
-        switchCheckIn.setChecked(Constant.ENABLE_CHECK_IN);
+
         switchShowMooc.setChecked(Constant.ENABLE_SHOW_MOOC);
-
-        switchCheckIn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                LogUtils.getInstance().d("签到提示按钮 -- > " + isChecked);
-                if (isChecked) {
-                    Toasty.info(requireActivity(), "需要先在修改认证信息界面添加请假系统密码才可以开启哦", LENGTH_LONG).show();
-                    isChecked = false;
-                    switchCheckIn.setChecked(false);
-                } else {
-                    Toasty.custom(requireActivity(), "签到提示已关闭", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
-                    Toasty.Config.reset();
-                }
-                // 在签到时间内 就是显示签到通知条
-                Constant.ENABLE_CHECK_IN = isChecked;
-
-                if (Utils.isCheckInTime() && isChecked) {
-                    mTvCheckIn.setVisibility(TextView.VISIBLE);
-                    // 通知刷新数据
-                } else {
-                    mTvCheckIn.setVisibility(TextView.GONE);
-                    // 通知ViewPager 重新调整布局，不然下方会有空隙
-                    mCourseViewListAdapter.notifyDataSetChanged();
-                }
-
-                // 持久化
-                PreferencesUtils.putBoolean(Constant.PREF_ENABLE_CHECK_IN, isChecked);
-            }
-        });
         switchShowMooc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -475,7 +446,6 @@ public class CourseFragment extends Fragment {
                 PreferencesUtils.putBoolean(Constant.PREF_ENABLE_SHOW_MOOC, isChecked);
             }
         });
-
 
     }
 
