@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
-        android:shortcutId="unsigned"
+        android:shortcutId="grade"
         android:enabled="true"
-        android:icon="@drawable/sign">
+        android:icon="@drawable/grade"
+        android:shortcutShortLabel="@string/shortcuts_grade">
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="com.juice.timetable"
             android:targetClass="com.juice.timetable.MainActivity">
             <extra
                 android:name="luanchFragment"
-                android:value="UnsignedFragment" />
+                android:value="GradeFragment" />
         </intent>
     </shortcut>
     <shortcut

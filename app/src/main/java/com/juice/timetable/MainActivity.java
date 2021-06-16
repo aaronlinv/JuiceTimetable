@@ -153,6 +153,8 @@ public class MainActivity extends BaseActivity {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_login);
             } else if (luanchFragment.equals("AboutFragment")) {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_about);
+            } else if (luanchFragment.equals("GradeFragment")) {
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_grade);
             }
         }
     }

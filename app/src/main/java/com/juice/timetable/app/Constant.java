@@ -26,14 +26,8 @@ public class Constant {
     public static final int MSG_LOGIN_SUCCESS = 2020;
     // 登录失败
     public static final int MSG_LOGIN_FAIL = 2021;
-
-    // 未签到列表
+    // 刷新数据
     public static final int MSG_REFRESH = 2022;
-    // 指纹签到成功
-    public static final int MSG_CHECK_IN_SUCCESS = 2023;
-    // 后去指纹签到失败
-    public static final int MSG_CHECK_IN_FAIL = 2024;
-
 
     // 停止下拉刷新的动画
     public static final int STOP_REFRESH = 2025;
@@ -43,9 +37,6 @@ public class Constant {
 
     // 彩虹模式随机数 Preferences
     public static final String PREF_RAINBOW_MODE_ENABLED = "PREF_RAINBOW_MODE_ENABLED";
-
-    // 开启签到显示 Preferences
-    public static final String PREF_ENABLE_CHECK_IN = "PREF_ENABLE_CHECK_IN";
 
     // 开启慕课显示 Preferences
     public static final String PREF_ENABLE_SHOW_MOOC = "PREF_ENABLE_SHOW_MOOC";
@@ -79,9 +70,6 @@ public class Constant {
 
     // 彩虹模式开关
     public static boolean RAINBOW_MODE_ENABLED = true;
-
-    // 签到显示 开关
-    public static boolean ENABLE_CHECK_IN = true;
 
     // 慕课显示 开关
     public static boolean ENABLE_SHOW_MOOC = true;

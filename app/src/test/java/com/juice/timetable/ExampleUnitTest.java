@@ -30,11 +30,6 @@ public class ExampleUnitTest {
 
     }
 
-    @Test
-    public void leaveTest() {
-//        ParseCheckIn.getMySigned();
-    }
-
     /**
      * 汉语言完整课表
      *

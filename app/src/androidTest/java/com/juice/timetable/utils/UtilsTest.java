@@ -35,12 +35,6 @@ public class UtilsTest {
         PreferencesUtils.init(getContext());
     }
 
-
-    @Test
-    public void isCheckInTime() {
-        LogUtils.getInstance().d("isCheckInTime:" + Utils.isCheckInTime());
-    }
-
     @Test
     public void setFirstWeekPref() {
         // 2020.2.17 为第一周周一

@@ -25,9 +25,10 @@
                 android:gravity="center"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:text="今日未签到"
+                android:text="今日未签到（保留这个以后可以做软件提醒，比如新版本的提醒）"
                 android:textColor="@android:color/white"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:visibility="gone" />
 
 
             <androidx.viewpager2.widget.ViewPager2
