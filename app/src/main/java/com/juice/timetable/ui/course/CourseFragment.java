@@ -1,7 +1,5 @@
 package com.juice.timetable.ui.course;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -17,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.PopupWindow;
 import android.widget.Switch;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,7 +52,6 @@ import java.util.Random;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 
-import static android.animation.ObjectAnimator.ofObject;
 import static es.dmoral.toasty.Toasty.LENGTH_LONG;
 import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 
@@ -69,7 +65,6 @@ public class CourseFragment extends Fragment {
     private OneWeekCourseViewModel mOneWeekCourseViewModel;
     private StuInfoViewModel mStuInfoViewModel;
     private SwipeRefreshLayout mSlRefresh;
-    private TextView mTvCheckIn;
     private CourseViewListAdapter mCourseViewListAdapter;
     private List<CourseViewBean> mCourseViewBeanList = new ArrayList<>();
     private int mCurViewPagerNum;
@@ -82,7 +77,6 @@ public class CourseFragment extends Fragment {
         binding = FragmentCourseBinding.inflate(getLayoutInflater());
         mVpCourse = binding.vpCourse;
         mSlRefresh = binding.slRefresh;
-        mTvCheckIn = binding.tvCheckIn;
 
         mAllWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(AllWeekCourseViewModel.class);
         mOneWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(OneWeekCourseViewModel.class);
@@ -203,9 +197,6 @@ public class CourseFragment extends Fragment {
      * 初始化配置
      */
     private void initConfig() {
-        // 是否开启签到提示
-        Constant.ENABLE_CHECK_IN = PreferencesUtils.getBoolean(Constant.PREF_ENABLE_CHECK_IN, true);
-
         // 是否开启慕课显示
         Constant.ENABLE_SHOW_MOOC = PreferencesUtils.getBoolean(Constant.PREF_ENABLE_SHOW_MOOC, true);
     }
@@ -568,11 +559,6 @@ public class CourseFragment extends Fragment {
 
         // 初始化标题栏 只在 registerOnPageChangeCallback 中初始化 从后台切回标题栏不会显示周
         // 在 updateCourse 中初始
-
-        // 没有开启签到显示 或 不在签到时间并 隐藏签到提示栏
-        if (!Constant.ENABLE_CHECK_IN || !Utils.isCheckInTime()) {
-            mTvCheckIn.setVisibility(TextView.GONE);
-        }
     }
 
 
@@ -580,15 +566,6 @@ public class CourseFragment extends Fragment {
      * 开始刷新数据，结束刷新动画
      */
     private void refreshData() {
-        // 开启签到显示 且 在签到时间刷新签到情况
-        if (Constant.ENABLE_CHECK_IN && Utils.isCheckInTime()) {
-            mTvCheckIn.setVisibility(View.VISIBLE);
-
-            // 设置可见
-        } else {
-            mTvCheckIn.setVisibility(View.GONE);
-        }
-
         new Thread() {
             @Override
             public void run() {
@@ -699,49 +676,12 @@ public class CourseFragment extends Fragment {
                             Toasty.custom(requireActivity(), "课表刷新成功", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
                             Toasty.Config.reset();
                             mSlRefresh.setRefreshing(false);
-
                         }
-                        break;
-                    case Constant.MSG_CHECK_IN_SUCCESS:
-                        String checkInTime = (String) msg.obj;
-//                        final String checkInStr = "今天 " + checkInTime + " 已签到";
-                        final String checkInStr = checkInTime + " 已签到";
-
-//                        mTvCheckIn.setBackgroundColor(0xFFe6e6e6);
-                        ObjectAnimator backgroundColor = ofObject(mTvCheckIn, "backgroundColor", new ArgbEvaluator(), 0xFFec6b6b, 0xFFe6e6e6);
-                        backgroundColor.setDuration(1000);
-                        backgroundColor.start();
-                        ObjectAnimator textColor = ofObject(mTvCheckIn, "textColor", new ArgbEvaluator(), 0xFFFFFFFF, 0xFF101010);
-                        textColor.setDuration(1000);
-                        textColor.start();
-
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mTvCheckIn.setText(checkInStr);
-                            }
-                        }, 500);
                         break;
                     case Constant.STOP_REFRESH:
                         mSlRefresh.setRefreshing(false);
                         break;
-                    case Constant.MSG_CHECK_IN_FAIL:
-                        String checkInMsgStr = (String) msg.obj;
-                        // 获取签到信息失败
-                        LogUtils.getInstance().d("获取签到信息失败 开始提示Toasty");
-                        // 修改通知栏文字
-                        mTvCheckIn.setText("获取签到信息失败");
-
-                        if ("您输入的请假系统用户名或是密码有误".equals(checkInMsgStr)) {
-                            checkInMsgStr = "请假系统密码已被更改，请在修改认证信息页面进行修改";
-                        }
-
-                        Toasty.custom(requireActivity(), checkInMsgStr, getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_LONG, true, true).show();
-                        break;
-
-
                 }
-
             }
         };
     }

@@ -204,7 +204,7 @@ public class LoginFragment extends Fragment {
                     mOneWeekCourseViewModel.insertOneWeekCourse();
                     LogUtils.getInstance().d("修改了账号 清除数据库所有周课表");
                 }
-                LogUtils.getInstance().d("教务网和请假系统密码验证结束");
+                LogUtils.getInstance().d("教务网密码验证结束");
                 // 跳转到课表首页
 
                 Message message = new Message();

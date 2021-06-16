@@ -8,7 +8,6 @@ import com.juice.timetable.app.Constant;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
@@ -61,28 +60,6 @@ public class Utils {
      */
     public static int getColorCount() {
         return colorArr.length;
-    }
-
-    /**
-     * 判断当前是否为签到时间（注意！时间左右都不包括）
-     *
-     * @return
-     */
-    public static boolean isCheckInTime() {
-        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-        Date now = null;
-        Date beginTime = null;
-        Date endTime = null;
-        try {
-            now = df.parse(df.format(new Date()));
-            // 注意！时间左右都不包括 实际是21:40~22:40
-            beginTime = df.parse("21:39");
-            endTime = df.parse("22:40");
-//            LogUtils.getInstance().d(new Date()+"  "+beginTime+"  "+endTime);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return now.after(beginTime) && now.before(endTime);
     }
 
     private static int[] darkColorList = new int[]{
