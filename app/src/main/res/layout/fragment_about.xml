@@ -66,7 +66,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView"
                 app:layout_constraintVertical_bias="0.01"
-                tools:text="1.1.2" />
+                tools:text="@string/version" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:background="@color/about_text_background"
+                    android:background="@color/white"
                     android:orientation="vertical"
                     android:padding="8dp">
 
@@ -133,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:background="@color/about_text_background"
+                    android:background="@color/white"
                     android:orientation="vertical"
                     android:padding="8dp">
 
@@ -164,7 +164,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:background="@color/about_text_background"
+                    android:background="@color/white"
                     android:orientation="vertical"
                     android:padding="8dp">
 
@@ -204,7 +204,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:background="@color/about_text_background"
+                    android:background="@color/white"
                     android:orientation="vertical"
                     android:padding="8dp">
 
@@ -232,7 +232,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:background="@color/about_text_background"
+                    android:background="@color/white"
                     android:orientation="vertical"
                     android:padding="8dp">
 

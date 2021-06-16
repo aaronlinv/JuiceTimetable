@@ -25,14 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.25" />
+            app:layout_constraintGuide_percent="0.32" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.35" />
+            app:layout_constraintGuide_percent="0.42" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline4"
@@ -104,67 +104,6 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.85" />
 
-        <EditText
-            android:id="@+id/et_sno"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:autofillHints=""
-            android:ems="10"
-            android:inputType="number|textPersonName"
-            android:maxLength="9"
-            app:layout_constraintBottom_toTopOf="@+id/guideline2"
-            app:layout_constraintEnd_toStartOf="@+id/guideline8"
-            app:layout_constraintStart_toStartOf="@+id/guideline13"
-            app:layout_constraintTop_toTopOf="@+id/guideline" />
-
-        <EditText
-            android:id="@+id/et_edu_password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:autofillHints=""
-            android:ems="10"
-            android:inputType="textPassword"
-            android:maxLength="30"
-            app:layout_constraintBottom_toTopOf="@+id/guideline3"
-            app:layout_constraintEnd_toStartOf="@+id/guideline8"
-            app:layout_constraintStart_toStartOf="@+id/guideline13"
-            app:layout_constraintTop_toTopOf="@+id/guideline2"
-            tools:ignore="LabelFor" />
-
-
-        <Button
-            android:id="@+id/btn_go"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape"
-            android:text="@string/bt_Update"
-            android:textColor="@color/design_default_color_on_secondary"
-            android:textSize="14sp"
-
-            app:layout_constraintBottom_toTopOf="@+id/guideline6"
-            app:layout_constraintEnd_toStartOf="@+id/guideline16"
-            app:layout_constraintStart_toStartOf="@+id/guideline19"
-            app:layout_constraintTop_toTopOf="@+id/guideline5"
-            app:layout_constraintVertical_bias="0.5" />
-
-        <Button
-            android:id="@+id/btn_user_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#00000000"
-            android:hapticFeedbackEnabled="false"
-            android:text="@string/bt_item"
-            android:textColor="@color/user_conditions"
-            android:textColorHighlight="@color/design_default_color_background"
-            android:textColorHint="@color/design_default_color_background"
-            android:textColorLink="@color/design_default_color_background"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline9"
-            app:layout_constraintStart_toStartOf="@+id/guideline9"
-            app:layout_constraintTop_toTopOf="@+id/guideline6"
-            app:layout_constraintVertical_bias="0.85" />
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline16"
             android:layout_width="wrap_content"
@@ -179,6 +118,66 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.275" />
 
+        <EditText
+            android:id="@+id/et_sno"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number|textPersonName"
+            android:maxLength="9"
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline8"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline13"
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <EditText
+            android:id="@+id/et_edu_password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:maxLength="30"
+            app:layout_constraintBottom_toTopOf="@+id/guideline3"
+            app:layout_constraintEnd_toStartOf="@+id/guideline8"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline13"
+            app:layout_constraintTop_toTopOf="@+id/guideline2"
+            app:layout_constraintVertical_bias="1.0"
+            tools:ignore="LabelFor" />
+
+        <Button
+            android:id="@+id/btn_go"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/bt_Update"
+            android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="14sp"
+            android:background="@drawable/shap_progress_bg"
+            app:layout_constraintBottom_toTopOf="@+id/guideline6"
+            app:layout_constraintEnd_toStartOf="@+id/guideline16"
+            app:layout_constraintStart_toStartOf="@+id/guideline19"
+            app:layout_constraintTop_toTopOf="@+id/guideline5"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/btn_user_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:hapticFeedbackEnabled="false"
+            android:text="@string/bt_item"
+            android:textColor="@color/user_conditions"
+            android:textColorHighlight="@color/design_default_color_background"
+            android:textColorHint="@color/design_default_color_background"
+            android:textColorLink="@color/design_default_color_background"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+            app:layout_constraintStart_toStartOf="@+id/guideline9"
+            app:layout_constraintTop_toTopOf="@+id/guideline6"
+            app:layout_constraintVertical_bias="0.85" />
 
         <TextView
             android:id="@+id/tv_sno"
@@ -189,9 +188,10 @@
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toStartOf="@+id/guideline11"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
             app:layout_constraintTop_toTopOf="@+id/guideline"
-            app:layout_constraintVertical_bias="0.608"
+            app:layout_constraintVertical_bias="0.9"
             tools:text="学号" />
 
         <TextView
@@ -205,7 +205,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline11"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
             app:layout_constraintTop_toTopOf="@+id/guideline2"
-            app:layout_constraintVertical_bias="0.608" />
+            app:layout_constraintVertical_bias="0.8" />
 
         <ImageView
             android:id="@+id/im_cz_logo"
