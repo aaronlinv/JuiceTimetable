@@ -2,6 +2,8 @@ package com.juice.timetable.ui.about;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -22,6 +24,8 @@ import androidx.fragment.app.Fragment;
 
 import com.juice.timetable.R;
 
+import java.util.List;
+
 import es.dmoral.toasty.Toasty;
 
 import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
@@ -30,6 +34,7 @@ public class AboutFragment extends Fragment {
     private TextView githubLink;
     private TextView cookApkLink;
     private TextView blogLink;
+    private TextView checkUpdateView;
     private LinearLayout linearLayout;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -53,6 +58,12 @@ public class AboutFragment extends Fragment {
                 joinEmail();
             }
         });
+        checkUpdateView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkUpdate();
+            }
+        });
         NoUnderlineSpan mNoUnderlineSpan = new NoUnderlineSpan();
         if (githubLink.getText() instanceof Spannable) {
             Spannable github = (Spannable) githubLink.getText();
@@ -70,6 +81,7 @@ public class AboutFragment extends Fragment {
         blogLink = root.findViewById(R.id.blogLink);
         linearLayout = root.findViewById(R.id.linearLayout3);
         cookApkLink = root.findViewById(R.id.tv_cool_apk);
+        checkUpdateView = root.findViewById(R.id.checkUpdatesText);
     }
 
     @SuppressLint("IntentReset")
@@ -86,11 +98,30 @@ public class AboutFragment extends Fragment {
         }
     }
 
+    private void checkUpdate(){
+        Uri uri = Uri.parse("https://www.coolapk.com/apk/com.juice.timetable");
+        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            //暂时先放这
+            Toasty.custom(requireActivity(), "已经是最新版本", getResources().getDrawable(R.drawable.about), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+        }
+    }
+
+    //获取手机所有包名
+    private void initAppList() {
+        PackageManager packageManager = getActivity().getPackageManager();
+        List<PackageInfo> packageInfoList = packageManager.getInstalledPackages(0);
+        for (PackageInfo packageInfo : packageInfoList) {
+            System.out.println(packageInfo.packageName);
+        }
+    }
+
     /*******
      * 去除下划线
      */
     public static class NoUnderlineSpan extends UnderlineSpan {
-
         @Override
         public void updateDrawState(TextPaint ds) {
             ds.setColor(ds.linkColor);
