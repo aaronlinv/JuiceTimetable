@@ -1,6 +1,7 @@
 package com.juice.timetable.ui.grade;
 
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,10 @@ import com.juice.timetable.data.parse.ParseGrade;
 import com.juice.timetable.data.viewmodel.SynGradeViewModel;
 
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
+
+import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 
 //综合成绩的fragment
 public class SynGradeFragment extends Fragment {
@@ -59,6 +64,15 @@ public class SynGradeFragment extends Fragment {
                 try {
                     //获取成绩网页源码
                     String pagesource = GradeInfo.getGradeSource(Constant.URI_SYNGRADE);
+                    if(pagesource.contains("成绩测评后才能查询成绩")){
+                        Looper.prepare();
+                        Toasty.custom(requireActivity(), "成绩测评后才能查询成绩!",
+                                getResources().getDrawable(R.drawable.grade),
+                                getResources().getColor(R.color.green),
+                                getResources().getColor(R.color.white),
+                                LENGTH_SHORT, true, true).show();
+                        Looper.loop();
+                    }
                     //利用爬虫获取成绩
                     synGradeArrayList = ParseGrade.parseSynGrade(pagesource);
 

@@ -36,9 +36,6 @@ public class GradeInfo {
         Response response = client.newCall(request).execute();
         String result = response.body().string();
 
-        if (result.contains("欢迎登录至诚信息管理系统")) {
-            throw new Exception("Cookie无效,登录失败");
-        }
         return result;
     }
 }
