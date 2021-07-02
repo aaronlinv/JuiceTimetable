@@ -70,7 +70,7 @@ public class SynGradeFragment extends Fragment {
                                 getResources().getDrawable(R.drawable.grade),
                                 getResources().getColor(R.color.green),
                                 getResources().getColor(R.color.white),
-                                LENGTH_SHORT, true, true).show();
+                                LENGTH_SHORT, false, true).show();
                         Looper.loop();
                     }
                     //利用爬虫获取成绩
