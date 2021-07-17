@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -601,7 +602,10 @@ public class CourseFragment extends Fragment {
                     LogUtils.getInstance().d("爬取curSemester -- > " + ParseAllWeek.getSemester());
 
                     // 爬取的学期信息与本地不同，清除周课表
-                    if (!curSemester.equals(ParseAllWeek.getSemester())) {
+                    String parseSemester = ParseAllWeek.getSemester();
+                    if (TextUtils.isEmpty(parseSemester)) {
+                        LogUtils.getInstance().d("爬取的学期信息为空，可能为假期");
+                    } else if (!curSemester.equals(ParseAllWeek.getSemester())) {
                         mOneWeekCourseViewModel.deleteOneWeekCourse();
                         LogUtils.getInstance().d("curSemester 爬取的学期信息与本地不同，清除周课表结束");
                         // 写入学期信息
@@ -610,7 +614,7 @@ public class CourseFragment extends Fragment {
 
                     LogUtils.getInstance().d("setOnRefreshListener:解析完整课表结束");
                     if (courses.isEmpty()) {
-                        message.obj = "解析完整课表失败";
+                        message.obj = "没有解析到完整课表\n可能是放假啦~";
                         mHandler.sendMessage(message);
                         return;
                     }

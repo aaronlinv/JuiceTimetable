@@ -36,8 +36,13 @@ public class ParseAllWeek {
         Long couID = 0L;
         Document document = Jsoup.parse(parseData);
         ///将table左边的表格标签里的内容提取（课程名，老师，起始结束周）
-        Element leftTable = document.getElementsByTag("td").eq(1).get(0);
-
+        Elements left = document.getElementsByTag("td").eq(1);
+        if (left.isEmpty()) {
+            // 可能是到了假期，教务网完整课表显示：该同学暂无课程记录
+            LogUtils.getInstance().d("获取完整课表失败：该同学暂无课程记录");
+            return courseList;
+        }
+        Element leftTable = left.get(0);
         Element div = document.getElementsByTag("div").eq(0).get(0);
         sSemester = div.getElementsByTag("strong").text();
         LogUtils.getInstance().e("所在学期--->" + sSemester);
