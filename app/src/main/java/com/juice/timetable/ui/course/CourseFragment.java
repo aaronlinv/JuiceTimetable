@@ -598,14 +598,15 @@ public class CourseFragment extends Fragment {
                     List<Course> courses = ParseAllWeek.parseAllCourse(allCourse);
                     // 不为当前学期就删除 所有周课表避免冲突，完整课表下面已经删了，不用担心
                     String curSemester = PreferencesUtils.getString(Constant.CUR_SEMESTER, "");
-                    LogUtils.getInstance().d("本地curSemester -- > " + curSemester);
-                    LogUtils.getInstance().d("爬取curSemester -- > " + ParseAllWeek.getSemester());
-
-                    // 爬取的学期信息与本地不同，清除周课表
                     String parseSemester = ParseAllWeek.getSemester();
-                    if (TextUtils.isEmpty(parseSemester)) {
+
+                    LogUtils.getInstance().d("本地curSemester -- > " + curSemester);
+                    LogUtils.getInstance().d("爬取curSemester -- > " + parseSemester);
+
+                    if (TextUtils.isEmpty(parseSemester) && !TextUtils.isEmpty(curSemester)) {
                         LogUtils.getInstance().d("爬取的学期信息为空，可能为假期");
-                    } else if (!curSemester.equals(ParseAllWeek.getSemester())) {
+                    } else if (!curSemester.equals(parseSemester)) {
+                        // 爬取的学期信息与本地不同，清除周课表
                         mOneWeekCourseViewModel.deleteOneWeekCourse();
                         LogUtils.getInstance().d("curSemester 爬取的学期信息与本地不同，清除周课表结束");
                         // 写入学期信息
