@@ -12,8 +12,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-        compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 30
     testOptions {
         unitTests {
             includeAndroidResources = true
@@ -22,7 +21,7 @@ android {
     defaultConfig {
         applicationId "com.juice.timetable"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
