@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -13,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
@@ -20,6 +22,8 @@ import com.juice.timetable.data.bean.SynGrade;
 import com.juice.timetable.data.http.GradeInfo;
 import com.juice.timetable.data.parse.ParseGrade;
 import com.juice.timetable.data.viewmodel.SynGradeViewModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -33,11 +37,12 @@ public class SynGradeFragment extends Fragment {
     private RecyclerView synRecyclerView;
     private SynGradeRecycleViewAdapter synGradeRecycleViewAdapter;
     private List<SynGrade> synGradeArrayList;
+    private SwipeRefreshLayout mSlRefresh;
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        SynGrade();
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Refresh();
     }
 
     @Override
@@ -52,11 +57,13 @@ public class SynGradeFragment extends Fragment {
         synGradeRecycleViewAdapter = new SynGradeRecycleViewAdapter();
         synRecyclerView.setAdapter(synGradeRecycleViewAdapter);
 
+        getSynGradeData();
+
         return root;
     }
 
     //获取数据，然后插入数据库
-    private void SynGrade() {
+    private void getSynGradeData() {
         //新建线程
         new Thread(new Runnable() {
             @Override
@@ -64,7 +71,7 @@ public class SynGradeFragment extends Fragment {
                 try {
                     //获取成绩网页源码
                     String pagesource = GradeInfo.getGradeSource(Constant.URI_SYNGRADE);
-                    if(pagesource.contains("成绩测评后才能查询成绩")){
+                    if (pagesource.contains("成绩测评后才能查询成绩")) {
                         Looper.prepare();
                         Toasty.custom(requireActivity(), "成绩测评后才能查询成绩!",
                                 getResources().getDrawable(R.drawable.grade),
@@ -72,16 +79,18 @@ public class SynGradeFragment extends Fragment {
                                 getResources().getColor(R.color.white),
                                 LENGTH_SHORT, false, true).show();
                         Looper.loop();
+                        mSlRefresh.setRefreshing(false);
+                        return;
                     }
                     //利用爬虫获取成绩
                     synGradeArrayList = ParseGrade.parseSynGrade(pagesource);
-
                     //先清空表
                     synGradeViewModel.deleteAllSynGrade();
                     //再插入数据库
                     for (SynGrade synGrade : synGradeArrayList) {
                         synGradeViewModel.insertSynGrade(synGrade);
                     }
+                    mSlRefresh.setRefreshing(false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -104,5 +113,17 @@ public class SynGradeFragment extends Fragment {
 
     private void findID(View root) {
         synRecyclerView = root.findViewById(R.id.synRecyclerView);
+        mSlRefresh = root.findViewById(R.id.syn_refresh);
+    }
+
+    private void Refresh() {
+        mSlRefresh.setRefreshing(true);
+        // 下拉刷新监听
+        mSlRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getSynGradeData();
+            }
+        });
     }
 }

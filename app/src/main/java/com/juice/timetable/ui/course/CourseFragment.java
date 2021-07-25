@@ -228,14 +228,6 @@ public class CourseFragment extends Fragment {
         mSpinner.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-//        toolbar.hideOverflowMenu();
-//        mSpinner.setVisibility(View.INVISIBLE);
-
-    }
-
     private void initEvent() {
         // 下拉菜单 获取点击的周 设置标题栏
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -276,7 +268,6 @@ public class CourseFragment extends Fragment {
             @Override
             public void onRefresh() {
                 refreshData();
-
             }
         });
 
@@ -538,7 +529,7 @@ public class CourseFragment extends Fragment {
     private void initView() {
         toolbar = requireActivity().findViewById(R.id.toolbar);
 
-//         显示Toolbar的右侧菜单按钮
+        // 显示Toolbar的右侧菜单按钮
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, true);
 

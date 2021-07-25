@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,12 +29,12 @@ public class UniGradeFragment extends Fragment {
     private UniGradeViewModel uniGradeViewModel;
     private UniGradeRecycleViewAdapter uniGradeRecycleViewAdapter;
     private RecyclerView uniRecyclerView;
+    private SwipeRefreshLayout mSlRefresh;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        UniGrade();
-
+        Refresh();
     }
 
     @Override
@@ -48,11 +49,13 @@ public class UniGradeFragment extends Fragment {
         uniGradeRecycleViewAdapter = new UniGradeRecycleViewAdapter();
         uniRecyclerView.setAdapter(uniGradeRecycleViewAdapter);
 
+        getUniGradeData();
+
         return root;
     }
 
     //获取数据，然后插入数据库
-    private void UniGrade() {
+    private void getUniGradeData() {
         //新建线程
         new Thread(new Runnable() {
             @Override
@@ -69,6 +72,7 @@ public class UniGradeFragment extends Fragment {
                     for (UniGrade uniGrade : uniGradeArrayList) {
                         uniGradeViewModel.insertUniGrade(uniGrade);
                     }
+                    mSlRefresh.setRefreshing(false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -86,12 +90,23 @@ public class UniGradeFragment extends Fragment {
             public void onChanged(List<UniGrade> uniGrades) {
                 uniGradeRecycleViewAdapter.setUniGradeList(uniGrades);
                 uniGradeRecycleViewAdapter.notifyDataSetChanged();
-
             }
         });
     }
 
     private void findID(View root) {
         uniRecyclerView = root.findViewById(R.id.uniRecyclerView);
+        mSlRefresh = root.findViewById(R.id.uni_refresh);
+    }
+
+    private void Refresh() {
+
+        // 下拉刷新监听
+        mSlRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getUniGradeData();
+            }
+        });
     }
 }
