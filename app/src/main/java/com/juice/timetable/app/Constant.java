@@ -22,6 +22,10 @@ public class Constant {
     // 统考成绩
     public static final String URI_UNIGRADE = "https://jwc.fdzcxy.edu.cn/bmgl/tkcj/cjcx_xs.asp?menu_no=1004";
 
+    //橙汁的酷安地址
+    public static final String URI_COOLAPK= "https://www.coolapk.com/apk/com.juice.timetable";
+
+
     // 登录成功
     public static final int MSG_LOGIN_SUCCESS = 2020;
     // 登录失败

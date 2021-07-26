@@ -3,6 +3,7 @@ package com.juice.timetable.data.http;
 
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.utils.CookieUtils;
+import com.juice.timetable.utils.HttpUtils;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

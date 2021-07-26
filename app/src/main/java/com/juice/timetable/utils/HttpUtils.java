@@ -1,4 +1,4 @@
-package com.juice.timetable.data.http;
+package com.juice.timetable.utils;
 
 import okhttp3.OkHttpClient;
 

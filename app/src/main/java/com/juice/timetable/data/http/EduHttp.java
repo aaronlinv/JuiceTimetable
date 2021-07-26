@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.juice.timetable.utils.CaptchaUtils;
+import com.juice.timetable.utils.HttpUtils;
 import com.juice.timetable.utils.LogUtils;
 
 import java.io.IOException;

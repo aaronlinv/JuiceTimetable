@@ -23,6 +23,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.juice.timetable.R;
+import com.juice.timetable.app.Constant;
+import com.juice.timetable.data.parse.ParseVersion;
+import com.juice.timetable.utils.VersionUtils;
 
 import java.util.List;
 
@@ -31,15 +34,14 @@ import es.dmoral.toasty.Toasty;
 import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 
 public class AboutFragment extends Fragment {
-    private TextView githubLink;
-    private TextView cookApkLink;
-    private TextView blogLink;
-    private TextView checkUpdateView;
+    private TextView githubLink,cookApkLink,blogLink,checkUpdateView,versionView;
     private LinearLayout linearLayout;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_about, container, false);
         findID(root);
+        versionView.setText(VersionUtils.getVersionCode(requireActivity()));
+
         // 隐藏 toolbar 的按钮 和星期下拉菜单按钮
         Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
         toolbar.findViewById(R.id.spinner).setVisibility(View.INVISIBLE);
@@ -61,7 +63,11 @@ public class AboutFragment extends Fragment {
         checkUpdateView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkUpdate();
+                try {
+                    checkUpdate();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         NoUnderlineSpan mNoUnderlineSpan = new NoUnderlineSpan();
@@ -76,12 +82,13 @@ public class AboutFragment extends Fragment {
         return root;
     }
 
-    private void findID(View root) {
+    private void findID(View root){
         githubLink = root.findViewById(R.id.tv_github);
         blogLink = root.findViewById(R.id.blogLink);
         linearLayout = root.findViewById(R.id.linearLayout3);
         cookApkLink = root.findViewById(R.id.tv_cool_apk);
         checkUpdateView = root.findViewById(R.id.checkUpdatesText);
+        versionView = root.findViewById(R.id.tv_version);
     }
 
     @SuppressLint("IntentReset")
@@ -98,15 +105,37 @@ public class AboutFragment extends Fragment {
         }
     }
 
-    private void checkUpdate(){
-        Uri uri = Uri.parse("https://www.coolapk.com/apk/com.juice.timetable");
-        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
-        try {
-            startActivity(intent);
-        } catch (Exception e) {
-            //暂时先放这
-            Toasty.custom(requireActivity(), "已经是最新版本", getResources().getDrawable(R.drawable.about), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
-        }
+    private void checkUpdate() throws Exception {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String str = ParseVersion.getSource(Constant.URI_COOLAPK);
+                    String id = ParseVersion.getVersion(str);
+                    String currVersion = VersionUtils.getVersionCode(requireActivity());
+
+                    if(id.equals(currVersion)){
+                        System.out.println("yes");
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+
+
+
+//        Uri uri = Uri.parse("https://www.coolapk.com/apk/com.juice.timetable");
+//        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+//        try {
+//            startActivity(intent);
+//        } catch (Exception e) {
+//            //暂时先放这
+//            Toasty.custom(requireActivity(), "已经是最新版本", getResources().getDrawable(R.drawable.about), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+//        }
     }
 
     //获取手机所有包名

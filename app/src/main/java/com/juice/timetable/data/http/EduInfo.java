@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.utils.CookieUtils;
+import com.juice.timetable.utils.HttpUtils;
 import com.juice.timetable.utils.LogUtils;
 
 import okhttp3.OkHttpClient;

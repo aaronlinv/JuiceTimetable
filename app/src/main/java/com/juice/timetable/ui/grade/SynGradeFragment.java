@@ -1,5 +1,6 @@
 package com.juice.timetable.ui.grade;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -72,6 +73,7 @@ public class SynGradeFragment extends Fragment {
                     //获取成绩网页源码
                     String pagesource = GradeInfo.getGradeSource(Constant.URI_SYNGRADE);
                     if (pagesource.contains("成绩测评后才能查询成绩")) {
+                        mSlRefresh.setRefreshing(false);
                         Looper.prepare();
                         Toasty.custom(requireActivity(), "成绩测评后才能查询成绩!",
                                 getResources().getDrawable(R.drawable.grade),
@@ -79,7 +81,6 @@ public class SynGradeFragment extends Fragment {
                                 getResources().getColor(R.color.white),
                                 LENGTH_SHORT, false, true).show();
                         Looper.loop();
-                        mSlRefresh.setRefreshing(false);
                         return;
                     }
                     //利用爬虫获取成绩
@@ -103,6 +104,7 @@ public class SynGradeFragment extends Fragment {
         super.onStart();
         LiveData<List<SynGrade>> listSynGradeLive = synGradeViewModel.getAllSynGradeLive();
         listSynGradeLive.observe(requireActivity(), new Observer<List<SynGrade>>() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChanged(List<SynGrade> synGrades) {
                 synGradeRecycleViewAdapter.setSynGradeList(synGrades);
