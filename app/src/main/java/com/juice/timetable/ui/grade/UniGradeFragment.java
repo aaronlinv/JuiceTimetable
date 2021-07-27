@@ -43,7 +43,7 @@ public class UniGradeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_grade_uni, container, false);
         findID(root);
         //初始化ViewModel
-        uniGradeViewModel = new ViewModelProvider(getActivity()).get(UniGradeViewModel.class);
+        uniGradeViewModel = new ViewModelProvider(requireActivity()).get(UniGradeViewModel.class);
         //布局管理器
         uniRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         uniGradeRecycleViewAdapter = new UniGradeRecycleViewAdapter();

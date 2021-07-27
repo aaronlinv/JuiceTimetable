@@ -1,6 +1,7 @@
 package com.juice.timetable.ui.about;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -15,10 +16,12 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
@@ -34,8 +37,11 @@ import es.dmoral.toasty.Toasty;
 import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 
 public class AboutFragment extends Fragment {
-    private TextView githubLink,cookApkLink,blogLink,checkUpdateView,versionView;
+    private TextView githubLink, cookApkLink, blogLink, versionView;
     private LinearLayout linearLayout;
+    private Button checkUpdatesButton;
+    private String id = null;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_about, container, false);
@@ -60,7 +66,8 @@ public class AboutFragment extends Fragment {
                 joinEmail();
             }
         });
-        checkUpdateView.setOnClickListener(new OnClickListener() {
+        checkUpdatesButton.setOnClickListener(new OnClickListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
                 try {
@@ -82,12 +89,12 @@ public class AboutFragment extends Fragment {
         return root;
     }
 
-    private void findID(View root){
+    private void findID(View root) {
         githubLink = root.findViewById(R.id.tv_github);
         blogLink = root.findViewById(R.id.blogLink);
         linearLayout = root.findViewById(R.id.linearLayout3);
         cookApkLink = root.findViewById(R.id.tv_cool_apk);
-        checkUpdateView = root.findViewById(R.id.checkUpdatesText);
+        checkUpdatesButton = root.findViewById(R.id.checkUpdatesButton);
         versionView = root.findViewById(R.id.tv_version);
     }
 
@@ -105,38 +112,54 @@ public class AboutFragment extends Fragment {
         }
     }
 
-    private void checkUpdate() throws Exception {
+    private void checkUpdate() {
+        Uri uri = Uri.parse(Constant.URI_COOLAPK);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
+        // 获取当前app的版本号
+        String currVersion = VersionUtils.getVersionCode(requireActivity());
+        // 爬虫获取酷安的版本号
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     String str = ParseVersion.getSource(Constant.URI_COOLAPK);
-                    String id = ParseVersion.getVersion(str);
-                    String currVersion = VersionUtils.getVersionCode(requireActivity());
-
-                    if(id.equals(currVersion)){
-                        System.out.println("yes");
-                    }
-
+                    id = ParseVersion.getVersion(str);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }).start();
-
-
-
-
-//        Uri uri = Uri.parse("https://www.coolapk.com/apk/com.juice.timetable");
-//        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+        // 询问是否下载更新
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        if (id != null && id.equals(currVersion)) {
+            Toasty.custom(requireActivity(), "已经是最新版本", getResources().getDrawable(R.drawable.about), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+        } else if (id != null) {
+            builder.setTitle(getString(R.string.quit_dialog_title));
+            // 好
+            builder.setPositiveButton(R.string.ok_quit_dialog_title, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startActivity(intent);
+                }
+            });
+            // 取消
+            builder.setNegativeButton(R.string.no_quit_dialog_title, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+    }
+//
 //        try {
-//            startActivity(intent);
+//
 //        } catch (Exception e) {
 //            //暂时先放这
-//            Toasty.custom(requireActivity(), "已经是最新版本", getResources().getDrawable(R.drawable.about), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
-//        }
-    }
+//            }
+
 
     //获取手机所有包名
     private void initAppList() {

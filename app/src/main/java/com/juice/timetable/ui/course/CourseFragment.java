@@ -337,7 +337,6 @@ public class CourseFragment extends Fragment {
                 new SweetAlertDialog(requireActivity(), SweetAlertDialog.NORMAL_TYPE)
                         .setTitleText(cou.getCouName())
                         .setContentText(sb)
-//                        .setContentTextSize(18)
                         .hideConfirmButton()
                         .show();
             }
@@ -584,7 +583,6 @@ public class CourseFragment extends Fragment {
                 if (allCourse == null) {
 //                    message.obj = "网络好像不太好，再试一次";
                     mHandler.sendMessage(message);
-
                 } else {
                     List<Course> courses = ParseAllWeek.parseAllCourse(allCourse);
                     // 不为当前学期就删除 所有周课表避免冲突，完整课表下面已经删了，不用担心

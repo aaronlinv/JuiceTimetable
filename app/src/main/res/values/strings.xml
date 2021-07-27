@@ -90,6 +90,10 @@
     <string name="menu_grade">成绩查询</string>
     <string name="syngrade">综合成绩</string>
     <string name="unigrade">统考成绩</string>
+
     <string name="check_for_updates">检查更新</string>
+    <string name="quit_dialog_title">有新版可用，是否前往下载？</string>
+    <string name="ok_quit_dialog_title">好</string>
+    <string name="no_quit_dialog_title">取消</string>
 
 </resources>
