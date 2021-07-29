@@ -14,6 +14,7 @@ import com.juice.timetable.data.bean.UniGrade;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 /**
  * <pre>
  *     author : wyx
@@ -55,11 +56,21 @@ public class UniGradeRecycleViewAdapter extends RecyclerView.Adapter<UniGradeRec
         if (uniGradeList != null && !uniGradeList.isEmpty()) {
             UniGrade uniGrade = uniGradeList.get(position);
             holder.textViewUniYear.setText(String.valueOf(uniGrade.getuYear()));
-            holder.textViewUniName.setText(String.valueOf(uniGrade.uName));
+            holder.textViewUniName.setText(String.valueOf(uniGrade.getuName()));
             holder.textViewUniGrade.setText(String.valueOf(uniGrade.getuGrade()));
-            holder.textViewRemark.setText(String.valueOf(uniGrade.uRemarks));
+            holder.textViewRemark.setText(String.valueOf(uniGrade.getuRemarks()));
+            //点击显示完成信息
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new SweetAlertDialog(holder.itemView.getContext(), SweetAlertDialog.NORMAL_TYPE)
+                            .setTitleText(uniGrade.getuName())
+                            .setContentText("成绩：" + uniGrade.getuGrade() + " 备注：" + uniGrade.getuRemarks())
+                            .hideConfirmButton()
+                            .show();
+                }
+            });
         }
-
     }
 
     static class UniViewHolder extends RecyclerView.ViewHolder {

@@ -14,6 +14,8 @@ import com.juice.timetable.data.bean.SynGrade;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 /**
  * <pre>
  *     author : wyx
@@ -57,6 +59,17 @@ public class SynGradeRecycleViewAdapter extends RecyclerView.Adapter<SynGradeRec
             holder.textViewYear.setText(String.valueOf(synGrade.getCouYear()));
             holder.textViewGradeName.setText(String.valueOf(synGrade.getCouName()));
             holder.textViewSynGrade.setText(String.valueOf(synGrade.getCouGrade()));
+            //点击显示完成信息
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new SweetAlertDialog(holder.itemView.getContext(), SweetAlertDialog.NORMAL_TYPE)
+                            .setTitleText(synGrade.getCouName())
+                            .setContentText("成绩：" + synGrade.getCouGrade())
+                            .hideConfirmButton()
+                            .show();
+                }
+            });
         }
 
     }
