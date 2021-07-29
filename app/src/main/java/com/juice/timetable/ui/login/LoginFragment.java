@@ -98,7 +98,6 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
-                if (drawerView == null) return;
                 if (isAdded()) {
                     InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getApplicationContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
                     inputMethodManager.hideSoftInputFromWindow(drawerView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -135,22 +134,22 @@ public class LoginFragment extends Fragment {
         StuInfo stu = mStuInfoViewModel.selectStuInfo();
         if (Objects.equals(mSno, stu.getStuID().toString()) &&
                 Objects.equals(mEdu, stu.getEduPassword())) {
-            Toasty.info(getActivity(), "你还没有修改帐号或密码", Toasty.LENGTH_SHORT).show();
+            Toasty.info(requireActivity(), "你还没有修改帐号或密码", Toasty.LENGTH_SHORT).show();
             return;
         }
 
         if (mSno.isEmpty()) {
-            Toasty.info(getActivity(), "请输入学号", Toasty.LENGTH_SHORT).show();
+            Toasty.info(requireActivity(), "请输入学号", Toasty.LENGTH_SHORT).show();
         } else {
             if (mSno.length() != 9) {
-                Toasty.info(getActivity(), "请输入九位数的学号", Toasty.LENGTH_SHORT).show();
+                Toasty.info(requireActivity(), "请输入九位数的学号", Toasty.LENGTH_SHORT).show();
             } else if (!mSno.matches("21\\d{7}")) {
-                Toasty.info(getActivity(), "请输入以21开头的学号", Toasty.LENGTH_SHORT).show();
+                Toasty.info(requireActivity(), "请输入以21开头的学号", Toasty.LENGTH_SHORT).show();
             } else {
                 if (mEdu.isEmpty()) {
-                    Toasty.info(getActivity(), "请输入教务网密码", Toasty.LENGTH_SHORT).show();
+                    Toasty.info(requireActivity(), "请输入教务网密码", Toasty.LENGTH_SHORT).show();
                 } else if (mEdu.length() < 6) {
-                    Toasty.info(getActivity(), "请输入六位及以上的教务网密码", Toasty.LENGTH_SHORT).show();
+                    Toasty.info(requireActivity(), "请输入六位及以上的教务网密码", Toasty.LENGTH_SHORT).show();
                 } else {
                     // 隐藏键盘
                     hideSoftKeyboard(requireActivity());
@@ -163,11 +162,8 @@ public class LoginFragment extends Fragment {
                     // 传入修改前数据库的学号，用于比对，如果修改了学号，需要清除周课表避免冲突
                     checkPassword(stu.getStuID().toString());
                 }
-
             }
-
         }
-
     }
 
     /**

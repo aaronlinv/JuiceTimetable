@@ -67,7 +67,6 @@ public class AboutFragment extends Fragment {
             }
         });
         checkUpdatesButton.setOnClickListener(new OnClickListener() {
-            @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
                 try {
@@ -133,7 +132,7 @@ public class AboutFragment extends Fragment {
         // 询问是否下载更新
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         if (id != null && id.equals(currVersion)) {
-            Toasty.custom(requireActivity(), "已经是最新版本", getResources().getDrawable(R.drawable.about), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+            Toasty.custom(requireActivity(), "已经是最新版本", getResources().getDrawable(R.drawable.about), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, false, true).show();
         } else if (id != null) {
             builder.setTitle(getString(R.string.quit_dialog_title));
             // 好
@@ -153,13 +152,6 @@ public class AboutFragment extends Fragment {
             dialog.show();
         }
     }
-//
-//        try {
-//
-//        } catch (Exception e) {
-//            //暂时先放这
-//            }
-
 
     //获取手机所有包名
     private void initAppList() {
