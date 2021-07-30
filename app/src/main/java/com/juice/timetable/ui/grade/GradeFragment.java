@@ -2,6 +2,7 @@ package com.juice.timetable.ui.grade;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.appcompat.widget.Toolbar;
@@ -18,14 +19,10 @@ import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 import com.juice.timetable.R;
-import com.juice.timetable.databinding.FragmentGradeBinding;
 
 import java.util.ArrayList;
 
 public class GradeFragment extends Fragment {
-    private FragmentGradeBinding binding;
-    private Toolbar toolbar;
-    private View contextView;// 总视图
     private TabLayout tabLayout;
     private ViewPager viewpager;
     ArrayList fragmentList = new ArrayList<Fragment>();
@@ -34,18 +31,17 @@ public class GradeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentGradeBinding.inflate(getLayoutInflater());
         //隐藏 toolbar 的按钮 和星期下拉菜单按钮
-        toolbar = requireActivity().findViewById(R.id.toolbar);
+        Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
         toolbar.findViewById(R.id.spinner).setVisibility(View.INVISIBLE);
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, false);
 
         //tablayout+viewpager 统考成绩与综合成绩的页面切换
-        contextView = inflater.inflate(R.layout.fragment_grade, container, false);
-        findID(contextView);
+        View root = inflater.inflate(R.layout.fragment_grade, container, false);
+        findID(root);
 
-        return contextView;
+        return root;
 
     }
 
@@ -55,7 +51,7 @@ public class GradeFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // fragment中嵌套fragment, Manager需要用(getChildFragmentManager())
         MPagerAdapter mPagerAdapter = new MPagerAdapter(getChildFragmentManager());
@@ -78,6 +74,7 @@ public class GradeFragment extends Fragment {
             super(fm);
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
             return (Fragment) fragmentList.get(position);
@@ -88,8 +85,9 @@ public class GradeFragment extends Fragment {
             return fragmentList.size();
         }
 
+        @NonNull
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
             return super.instantiateItem(container, position);
         }
 
