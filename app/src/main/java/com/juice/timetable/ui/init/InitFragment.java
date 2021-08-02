@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -124,7 +125,8 @@ public class InitFragment extends Fragment {
             }
 
         }
-        mHandler = new Handler() {
+        mHandler = new Handler(Looper.getMainLooper()) {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
@@ -155,7 +157,7 @@ public class InitFragment extends Fragment {
                         // 允许侧滑打开抽屉
                         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                         // 显示Toolbar
-                        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+                        ((AppCompatActivity) requireActivity()).getSupportActionBar().show();
                         break;
                     // 登录失败
                     case Constant.MSG_LOGIN_FAIL:
@@ -199,6 +201,7 @@ public class InitFragment extends Fragment {
                 } catch (Exception e) {
                     errorStr = e.getMessage();
                     // 网络异常，包装一下
+                    assert errorStr != null;
                     if (errorStr.contains("Unable to resolve host")) {
                         errorStr = "网络不太好，检查一下网络吧";
                     }
@@ -210,7 +213,6 @@ public class InitFragment extends Fragment {
                 LogUtils.getInstance().d("教务网验证结束");
                 // 跳转到课表首页
                 Message message = new Message();
-                assert errorStr != null;
                 if (errorStr.isEmpty()) {
                     message.what = Constant.MSG_LOGIN_SUCCESS;
                 } else {
@@ -234,7 +236,6 @@ public class InitFragment extends Fragment {
 
 
     private void writeUser() {
-
         Integer snoStr = Integer.parseInt(mSno);
         StuInfo stuInfo = new StuInfo();
         stuInfo.setStuID(snoStr);

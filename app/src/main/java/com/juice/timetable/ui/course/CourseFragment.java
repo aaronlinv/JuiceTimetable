@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -70,7 +71,6 @@ public class CourseFragment extends Fragment {
     private List<CourseViewBean> mCourseViewBeanList = new ArrayList<>();
     private int mCurViewPagerNum;
     private MaterialSpinner mSpinner;
-    int temp = 1;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -619,8 +619,6 @@ public class CourseFragment extends Fragment {
                         // 填充完颜色将课程写入数据库
                         mAllWeekCourseViewModel.insertAllWeekCourse(cou);
                     }
-
-
                     try {
                         // 传入完整课表 用来匹配颜色和课程信息
                         getOneWeekCou(courses);
@@ -641,7 +639,8 @@ public class CourseFragment extends Fragment {
      */
     @SuppressLint("HandlerLeak")
     private void handler() {
-        mHandler = new Handler() {
+        mHandler = new Handler(Looper.getMainLooper()) {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);

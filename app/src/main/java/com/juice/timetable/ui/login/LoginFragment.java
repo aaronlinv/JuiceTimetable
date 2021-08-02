@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -48,7 +49,6 @@ public class LoginFragment extends Fragment {
     private DrawerLayout mDrawerLayout;
     private String mSno;
     private String mEdu;
-
     private Handler mHandler;
     private LoadingBar mLoadingBar;
     private StuInfoViewModel mStuInfoViewModel;
@@ -255,7 +255,8 @@ public class LoginFragment extends Fragment {
 
     @SuppressLint("HandlerLeak")
     private void handler() {
-        mHandler = new Handler() {
+        mHandler = new Handler(Looper.getMainLooper()) {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);

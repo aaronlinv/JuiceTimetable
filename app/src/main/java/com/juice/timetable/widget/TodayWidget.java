@@ -1,5 +1,6 @@
 package com.juice.timetable.widget;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -34,7 +35,7 @@ public class TodayWidget extends AppWidgetProvider {
         mRemoteViews.setRemoteAdapter(R.id.lv_test, intent);
         Intent intent1 = new Intent(ITEM_CLICK);
         mRemoteViews.setTextViewText(R.id.widget_week, getWeekday());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         //PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, clickIntent, 0);
         mRemoteViews.setPendingIntentTemplate(R.id.lv_test, pendingIntent);
         mRemoteViews.setOnClickPendingIntent(R.id.week, getOpenPendingIntent(context));
@@ -87,12 +88,13 @@ public class TodayWidget extends AppWidgetProvider {
         mRemoteViews.setRemoteAdapter(R.id.lv_test, intent2);
         mRemoteViews.setTextViewText(R.id.widget_week, getWeekday());
         Intent intent1 = new Intent(ITEM_CLICK);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        @SuppressLint("UnspecifiedImmutableFlag") PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         mRemoteViews.setPendingIntentTemplate(R.id.lv_test, pendingIntent);
         mRemoteViews.setOnClickPendingIntent(R.id.week, getOpenPendingIntent(context));
         context.stopService(intent2);
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     private PendingIntent getOpenPendingIntent(Context context) {
         Intent intent = new Intent();
         intent.setClass(context, MainActivity.class);

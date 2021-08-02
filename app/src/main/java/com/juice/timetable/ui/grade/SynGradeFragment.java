@@ -67,6 +67,7 @@ public class SynGradeFragment extends Fragment {
     private void getSynGradeData() {
         //新建线程
         new Thread(new Runnable() {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void run() {
                 try {
@@ -76,9 +77,9 @@ public class SynGradeFragment extends Fragment {
                         mSlRefresh.setRefreshing(false);
                         Looper.prepare();
                         Toasty.custom(requireActivity(), "成绩测评后才能查询成绩!",
-                                getResources().getDrawable(R.drawable.grade),
-                                getResources().getColor(R.color.green),
-                                getResources().getColor(R.color.white),
+                                getResources().getDrawable(R.drawable.grade,null),
+                                getResources().getColor(R.color.green,null),
+                                getResources().getColor(R.color.white,null),
                                 LENGTH_SHORT, false, true).show();
                         Looper.loop();
                         return;

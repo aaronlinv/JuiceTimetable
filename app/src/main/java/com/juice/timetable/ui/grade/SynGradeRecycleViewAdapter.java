@@ -65,7 +65,8 @@ public class SynGradeRecycleViewAdapter extends RecyclerView.Adapter<SynGradeRec
                 public void onClick(View v) {
                     new SweetAlertDialog(holder.itemView.getContext(), SweetAlertDialog.NORMAL_TYPE)
                             .setTitleText(synGrade.getCouName())
-                            .setContentText("成绩：" + synGrade.getCouGrade())
+                            .setContentText("学期：" + synGrade.getCouYear()
+                                    + "<br>成绩：" + synGrade.getCouGrade())
                             .hideConfirmButton()
                             .show();
                 }

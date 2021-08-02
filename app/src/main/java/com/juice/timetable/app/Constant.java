@@ -32,9 +32,11 @@ public class Constant {
     public static final int MSG_LOGIN_FAIL = 2021;
     // 刷新数据
     public static final int MSG_REFRESH = 2022;
-
     // 停止下拉刷新的动画
     public static final int STOP_REFRESH = 2025;
+
+    // 酷安版本号获取成功
+    public static final int MSG_COOLAPKID_SUCCESS = 2000;
 
     // 彩虹模式随机数 Preferences
     public static final String PREF_RAINBOW_MODE_NUM = "PREF_RAINBOW_MODE_NUM";

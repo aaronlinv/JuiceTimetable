@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+
 /**
  * <pre>
  *     author : wyx
@@ -65,7 +66,8 @@ public class UniGradeRecycleViewAdapter extends RecyclerView.Adapter<UniGradeRec
                 public void onClick(View v) {
                     new SweetAlertDialog(holder.itemView.getContext(), SweetAlertDialog.NORMAL_TYPE)
                             .setTitleText(uniGrade.getuName())
-                            .setContentText("成绩：" + uniGrade.getuGrade() + " 备注：" + uniGrade.getuRemarks())
+                            .setContentText("成绩：" + uniGrade.getuGrade()
+                                    + "<br>备注：" + uniGrade.getuRemarks())
                             .hideConfirmButton()
                             .show();
                 }
