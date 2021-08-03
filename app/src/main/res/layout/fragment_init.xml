@@ -135,7 +135,7 @@
             android:background="@color/transparent"
             android:hapticFeedbackEnabled="false"
             android:text="@string/btn_user_item"
-            android:textColor="@color/user_conditions"
+            android:textColor="@color/juice_deep"
             android:textColorHighlight="@color/design_default_color_background"
             android:textColorHint="@color/design_default_color_background"
             android:textColorLink="@color/design_default_color_background"

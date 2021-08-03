@@ -5,7 +5,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         //接受按钮颜色
-        <item name="colorAccent">@color/user_conditions</item>
+        <item name="colorAccent">@color/juice_deep</item>
         //光标和下划线颜色
         <item name="colorControlActivated">@color/dark_gray</item>
         //下划线默认颜色

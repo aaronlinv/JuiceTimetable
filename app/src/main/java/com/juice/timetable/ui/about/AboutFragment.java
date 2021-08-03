@@ -13,7 +13,6 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
@@ -122,7 +121,11 @@ public class AboutFragment extends Fragment {
         try {
             startActivity(Intent.createChooser(intent, "请选择"));
         } catch (Exception e) {
-            Toasty.custom(requireActivity(), "您没有任何邮箱软件", getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+            Toasty.custom(requireActivity(), "您没有任何邮箱软件",
+                    getResources().getDrawable(R.drawable.ic_error, null),
+                    getResources().getColor(R.color.red, null),
+                    getResources().getColor(R.color.white, null),
+                    LENGTH_SHORT, true, true).show();
             Toasty.Config.reset();
         }
     }
