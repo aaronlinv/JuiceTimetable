@@ -1,7 +1,10 @@
 package com.juice.timetable.ui.course;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,6 +23,7 @@ import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -37,6 +41,7 @@ import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.data.parse.ParseAllWeek;
 import com.juice.timetable.data.parse.ParseOneWeek;
+import com.juice.timetable.data.parse.ParseVersion;
 import com.juice.timetable.data.viewmodel.AllWeekCourseViewModel;
 import com.juice.timetable.data.viewmodel.OneWeekCourseViewModel;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
@@ -44,6 +49,7 @@ import com.juice.timetable.databinding.FragmentCourseBinding;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.Utils;
+import com.juice.timetable.utils.VersionUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -71,6 +77,7 @@ public class CourseFragment extends Fragment {
     private List<CourseViewBean> mCourseViewBeanList = new ArrayList<>();
     private int mCurViewPagerNum;
     private MaterialSpinner mSpinner;
+    private String id;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -89,8 +96,59 @@ public class CourseFragment extends Fragment {
         initCourse();
         // 首次打开引导
         firstGuide();
+        //检查更新
+        checkUpdate();
 
         return binding.getRoot();
+    }
+
+    /**
+     * 检查更新
+     */
+    private void checkUpdate() {
+        // TODO: 2021/8/11 今日未签到（保留这个以后可以做软件提醒，比如新版本的提醒）
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Message message = new Message();
+                try {
+                    LogUtils.getInstance().d("爬虫线程启动");
+                    String str = ParseVersion.getSource(Constant.URI_COOLAPK);
+                    id = ParseVersion.getVersion(str);
+                    LogUtils.getInstance().d("酷安id-->" + id);
+
+                    message.what = Constant.MSG_COOLAPKID_SUCCESS;
+                    mHandler.sendMessage(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        binding.tvCheckIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setTitle(getString(R.string.new_version_dialog_title));
+                // 好
+                builder.setPositiveButton(R.string.ok_quit_dialog_title, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Uri uri = Uri.parse(Constant.URI_COOLAPK);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    }
+                });
+                // 忽略
+                builder.setNegativeButton(R.string.ignore_quit_dialog_title, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        binding.tvCheckIn.setVisibility(View.GONE);
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
     }
 
     private void firstGuide() {
@@ -201,7 +259,6 @@ public class CourseFragment extends Fragment {
         // 是否开启慕课显示
         Constant.ENABLE_SHOW_MOOC = PreferencesUtils.getBoolean(Constant.PREF_ENABLE_SHOW_MOOC, true);
     }
-
 
     @SuppressLint("HandlerLeak")
     @Override
@@ -633,7 +690,6 @@ public class CourseFragment extends Fragment {
         }.start();
     }
 
-
     /**
      * Handler接受message
      */
@@ -652,7 +708,7 @@ public class CourseFragment extends Fragment {
                             if ("您输入的教务网用户名或是密码有误".equals(msgStr)) {
                                 msgStr = "教务网密码已被更改，请在修改认证信息页面进行修改";
                             }
-                            Toasty.custom(requireActivity(), msgStr, getResources().getDrawable(R.drawable.ic_error), getResources().getColor(R.color.red), getResources().getColor(R.color.white), LENGTH_LONG, true, true).show();
+                            Toasty.custom(requireActivity(), msgStr, getResources().getDrawable(R.drawable.ic_error, null), getResources().getColor(R.color.red, null), getResources().getColor(R.color.white, null), LENGTH_LONG, true, true).show();
                             Toasty.Config.reset();
                             mSlRefresh.setRefreshing(false);
                         } else {
@@ -666,7 +722,7 @@ public class CourseFragment extends Fragment {
                                 PreferencesUtils.putInt(Constant.PREF_RAINBOW_MODE_NUM, rainbowModeNum);
                             }
                             updateCourse();
-                            Toasty.custom(requireActivity(), "课表刷新成功", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                            Toasty.custom(requireActivity(), "课表刷新成功", getResources().getDrawable(R.drawable.course1, null), getResources().getColor(R.color.green, null), getResources().getColor(R.color.white, null), LENGTH_SHORT, true, true).show();
                             Toasty.Config.reset();
                             mSlRefresh.setRefreshing(false);
                         }
@@ -674,11 +730,15 @@ public class CourseFragment extends Fragment {
                     case Constant.STOP_REFRESH:
                         mSlRefresh.setRefreshing(false);
                         break;
+                    case Constant.MSG_COOLAPKID_SUCCESS:
+                        String currVersion = VersionUtils.getVersionCode(requireActivity());
+                        if (!id.equals(currVersion)) {
+                            binding.tvCheckIn.setVisibility(View.VISIBLE);
+                        }
                 }
             }
         };
     }
-
 
     /**
      * 解析课表 获取本周、上两周、下两周的周课表 同时设置当前周

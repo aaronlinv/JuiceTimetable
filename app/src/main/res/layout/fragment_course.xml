@@ -23,12 +23,13 @@
                 android:layout_height="wrap_content"
                 android:background="#ec6b6b"
                 android:gravity="center"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="今日未签到（保留这个以后可以做软件提醒，比如新版本的提醒）"
+                android:text="@string/new_version_dialog_title_course"
                 android:textColor="@android:color/white"
-                android:textSize="15sp"
-                android:visibility="gone" />
+                android:textSize="14sp"
+                android:visibility="gone"
+                android:focusable="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground" />
 
 
             <androidx.viewpager2.widget.ViewPager2
