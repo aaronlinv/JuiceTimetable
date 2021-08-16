@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.icu.util.Calendar;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -23,6 +25,7 @@ import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -48,6 +51,7 @@ import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.databinding.FragmentCourseBinding;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
+import com.juice.timetable.utils.TimeUtils;
 import com.juice.timetable.utils.Utils;
 import com.juice.timetable.utils.VersionUtils;
 
@@ -78,8 +82,10 @@ public class CourseFragment extends Fragment {
     private int mCurViewPagerNum;
     private MaterialSpinner mSpinner;
     private String id;
+    private String info;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentCourseBinding.inflate(getLayoutInflater());
@@ -103,50 +109,57 @@ public class CourseFragment extends Fragment {
     }
 
     /**
-     * 检查更新
+     * 自动检查更新，提示
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void checkUpdate() {
-        // TODO: 2021/8/11 今日未签到（保留这个以后可以做软件提醒，比如新版本的提醒）
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Message message = new Message();
-                try {
-                    LogUtils.getInstance().d("爬虫线程启动");
-                    String str = ParseVersion.getSource(Constant.URI_COOLAPK);
-                    id = ParseVersion.getVersion(str);
-                    LogUtils.getInstance().d("酷安id-->" + id);
+        //读取曾经保存的时间戳
+        long time7 = PreferencesUtils.getLong(Constant.PREF_TIME, -1);
+        //读取现在的时间
+        long time1 = Calendar.getInstance().getTimeInMillis();
+        if (time7 == -1 || time7 <= time1) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Message message = new Message();
+                    try {
+                        LogUtils.getInstance().d("爬虫线程启动");
+                        String str = ParseVersion.getSource(Constant.URI_COOLAPK);
+                        id = ParseVersion.getVersion(str);
+                        info = ParseVersion.getVersionInfo(str);
+                        LogUtils.getInstance().d("酷安id-->" + id);
 
-                    message.what = Constant.MSG_COOLAPKID_SUCCESS;
-                    mHandler.sendMessage(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                        message.what = Constant.MSG_COOLAPKID_SUCCESS;
+                        mHandler.sendMessage(message);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).start();
+            }).start();
+        }
         binding.tvCheckIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-                builder.setTitle(getString(R.string.new_version_dialog_title));
-                // 好
-                builder.setPositiveButton(R.string.ok_quit_dialog_title, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Uri uri = Uri.parse(Constant.URI_COOLAPK);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
-                    }
-                });
-                // 忽略
-                builder.setNegativeButton(R.string.ignore_quit_dialog_title, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        binding.tvCheckIn.setVisibility(View.GONE);
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                new AlertDialog.Builder(requireActivity())
+                        .setTitle(getString(R.string.new_version_dialog_title))
+                        .setMessage(info.replace(" ","\n"))
+                        .setPositiveButton(R.string.ok_quit_dialog_title, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Uri uri = Uri.parse(Constant.URI_COOLAPK);
+                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton(R.string.ignore_quit_dialog_title, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                binding.tvCheckIn.setVisibility(View.GONE);
+                                TimeUtils.saveSevenTime();
+                            }
+                        })
+                        .create()
+                        .show();
             }
         });
     }
@@ -696,6 +709,7 @@ public class CourseFragment extends Fragment {
     @SuppressLint("HandlerLeak")
     private void handler() {
         mHandler = new Handler(Looper.getMainLooper()) {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void handleMessage(@NonNull Message msg) {

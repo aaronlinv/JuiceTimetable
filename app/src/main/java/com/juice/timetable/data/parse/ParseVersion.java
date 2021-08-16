@@ -30,9 +30,16 @@ public class ParseVersion {
 
     public static String getVersion(String Source) {
         Document doc = Jsoup.parse(Source);
-        Elements rootselect = doc.select("div.apk_left_one > div > div > div.apk_topbar_mss > p.detail_app_title > span");
+        Elements rootSelect = doc.select("div.apk_left_one > div > div > div.apk_topbar_mss > p.detail_app_title > span");
 
-        return rootselect.text();
+        return rootSelect.text();
+    }
+
+    public static String getVersionInfo(String Source) {
+        Document doc = Jsoup.parse(Source);
+        Elements rootSelect = doc.select("div.apk_left_two > div > div:nth-child(2) > p.apk_left_title_info");
+
+        return rootSelect.text();
     }
 
 }

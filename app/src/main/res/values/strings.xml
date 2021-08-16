@@ -98,6 +98,6 @@
     <string name="new_version_dialog_title">有新版可用，是否前往下载？</string>
     <string name="ok_quit_dialog_title">好</string>
     <string name="no_quit_dialog_title">取消</string>
-    <string name="ignore_quit_dialog_title">忽略 (7天后再提醒)</string>
+    <string name="ignore_quit_dialog_title">7天后再提醒</string>
 
 </resources>

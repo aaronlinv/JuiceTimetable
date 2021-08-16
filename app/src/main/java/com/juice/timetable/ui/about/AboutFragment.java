@@ -39,8 +39,9 @@ import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 public class AboutFragment extends Fragment {
     private TextView developer, cookApk, github, versionView, feedback;
     private Button checkUpdatesButton;
-    private String id;
     private Handler mHandler;
+    private String info;
+    private String id;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class AboutFragment extends Fragment {
                         LogUtils.getInstance().d("爬虫线程启动");
                         String str = ParseVersion.getSource(Constant.URI_COOLAPK);
                         id = ParseVersion.getVersion(str);
+                        info = ParseVersion.getVersionInfo(str);
                         LogUtils.getInstance().d("酷安id-->" + id);
 
                         message.what = Constant.MSG_COOLAPKID_SUCCESS;
@@ -142,7 +144,7 @@ public class AboutFragment extends Fragment {
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 if (msg.what == Constant.MSG_COOLAPKID_SUCCESS) {// 询问是否下载更新
-                    AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+
                     if (id.equals(currVersion)) {
                         Toasty.custom(requireActivity(), "已经是最新版本",
                                 getResources().getDrawable(R.drawable.about, null),
@@ -150,22 +152,22 @@ public class AboutFragment extends Fragment {
                                 getResources().getColor(R.color.white, null),
                                 LENGTH_SHORT, false, true).show();
                     } else {
-                        builder.setTitle(getString(R.string.new_version_dialog_title));
-                        // 好
-                        builder.setPositiveButton(R.string.ok_quit_dialog_title, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                startActivity(intent);
-                            }
-                        });
-                        // 取消
-                        builder.setNegativeButton(R.string.no_quit_dialog_title, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
+                        new AlertDialog.Builder(requireActivity())
+                                .setTitle(getString(R.string.new_version_dialog_title))
+                                .setMessage(info.replace(" ", "\n"))
+                                .setPositiveButton(R.string.ok_quit_dialog_title, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        startActivity(intent);
+                                    }
+                                })
+                                .setNegativeButton(R.string.no_quit_dialog_title, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                })
+                                .create()
+                                .show();
                     }
                 }
             }
