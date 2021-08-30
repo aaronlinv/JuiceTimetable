@@ -105,6 +105,16 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
         // 获取今天的日
         int curDay = calendar.get(Calendar.DATE);
 
+        // 如果还没到第一周的星期一则隐藏月份和日期
+        long nowTimeInMillis = calendar.getTimeInMillis();
+        boolean afterFirstWeekMonday = nowTimeInMillis >= firstWeekMondayTime;
+
+        if (!afterFirstWeekMonday) {
+            LogUtils.getInstance().d("还没到第一周的星期一，隐藏月份和日期");
+            LogUtils.getInstance().d("获取到的第一周星期一时间：" + firstWeekMondayTime);
+            LogUtils.getInstance().d("今天的日期：" + calendar.getTimeInMillis());
+        }
+
         calendar.setTimeInMillis(firstWeekMondayTime);
         // 加上相隔的周
         calendar.add(Calendar.DATE, (item.getCurrentIndex() - 1) * 7);
@@ -130,9 +140,13 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
                         ViewGroup.LayoutParams.MATCH_PARENT);
 
                 textView.setTextSize(NODE_TEXT_SIZE);
-
+//
                 StringBuilder monthStr = new StringBuilder();
-                monthStr.append(month).append("\n月");
+                if (afterFirstWeekMonday) {
+                    monthStr.append(month).append("\n月");
+                } else {
+//                    monthStr.append("*");
+                }
                 textView.setText(monthStr);
 
             } else {
@@ -145,8 +159,10 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
                 int weekDay = getWeekDay(calendar, day, i);
 
                 StringBuilder weekStr = new StringBuilder();
-                weekStr.append(Constant.WEEK_SINGLE[i]).append("\n").append(weekDay);
-
+                weekStr.append(Constant.WEEK_SINGLE[i]);
+                if (afterFirstWeekMonday) {
+                    weekStr.append("\n").append(weekDay);
+                }
                 textView.setText(weekStr);
                 // 给今天 加深背景色 本周且为当日
                 if (Constant.CUR_WEEK == item.getCurrentIndex() && weekDay == curDay) {
