@@ -8,7 +8,7 @@ public class VersionUtils {
     public static String getVersionCode(Context context) {
         String versionCode = null;
         try {
-            //获取软件版本号，对应AndroidManifest.xml下android:versionCode
+            //获取软件版本号，对应 build.gradle 下的 versionName
             versionCode = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
