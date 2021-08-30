@@ -114,10 +114,10 @@ public class CourseFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void checkUpdate() {
         //读取曾经保存的时间戳
-        long time7 = PreferencesUtils.getLong(Constant.PREF_TIME, -1);
+        long usedTime = PreferencesUtils.getLong(Constant.PREF_TIME, -1);
         //读取现在的时间
-        long time1 = Calendar.getInstance().getTimeInMillis();
-        if (time7 == -1 || time7 <= time1) {
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        if (usedTime == -1 || usedTime <= currentTime) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
