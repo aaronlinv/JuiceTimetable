@@ -23,7 +23,7 @@ public class Constant {
     public static final String URI_UNIGRADE = "https://jwc.fdzcxy.edu.cn/bmgl/tkcj/cjcx_xs.asp?menu_no=1004";
 
     //橙汁的酷安地址
-    public static final String URI_COOLAPK= "https://www.coolapk.com/apk/com.juice.timetable";
+    public static final String URI_COOLAPK = "https://www.coolapk.com/apk/com.juice.timetable";
 
 
     // 登录成功
@@ -61,6 +61,8 @@ public class Constant {
     //保存的cookies的key
     public static final String PREF_EDU_COOKIE = "PREF_EDU_COOKIE";
     public static final String PREF_LEAVE_COOKIE = "PREF_LEAVE_COOKIE";
+
+    // 保存第一周星期一的 key
     public static final String PREF_FIRST_WEEK_MONDAY = "PREF_FIRST_WEEK_MONDAY";
 
     //保存时间的key
