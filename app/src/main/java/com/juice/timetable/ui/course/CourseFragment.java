@@ -151,7 +151,7 @@ public class CourseFragment extends Fragment {
                                 startActivity(intent);
                             }
                         })
-                        .setNegativeButton(R.string.ignore_quit_dialog_title, new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.no_quit_dialog_title, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 binding.tvCheckIn.setVisibility(View.GONE);
