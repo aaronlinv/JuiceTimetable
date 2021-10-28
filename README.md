@@ -37,11 +37,11 @@
 <a href="https://www.coolapk.com/apk/265263">前往酷安下载</a>
 
 ## 截图预览
-<img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/02.jpg" width="200" />  <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/03.jpg" width="200" /> 
-<img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/04.jpg" width="200" />  <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/05.jpg" width="200" />  
-<img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/08.jpg" width="200"  /> <img	src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/01.jpg" width="200" /> 
-<img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/07.jpg" width="200" />  <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/10.jpg" width="200" />  
-<img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/06.jpg" width="200" /> <img src="https://raw.githubusercontent.com/wangyuxiang123/JuiceTimetable/dev/img/09.jpg" width="200" />  
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/02.jpg" width="200" />  <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/03.jpg" width="200" />
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/04.jpg" width="200" />  <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/05.jpg" width="200" />  
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/08.jpg" width="200"  /> <img	src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/01.jpg" width="200" />
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/07.jpg" width="200" />  <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/10.jpg" width="200" />  
+<img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/06.jpg" width="200" /> <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/09.jpg" width="200" />
 
 
 
