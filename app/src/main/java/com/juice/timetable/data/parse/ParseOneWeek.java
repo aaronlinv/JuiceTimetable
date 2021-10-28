@@ -73,11 +73,20 @@ public class ParseOneWeek {
                                     cou.setInWeek(week);
 
                                     String couName = tdText[c];
+                                    // 停课判断逻辑
+                                    // 马克思主义基本原理概论(11)班<br>[机北407](14:00)<br>停课：马克思主义基本原理概论<br>[机北407]</td>
+                                    if (brSize > 2) {
+                                        boolean isSuspend = tdText[2].contains("停课");
+                                        if (isSuspend) {
+                                            couName = "[停课] " + couName;
+                                            System.out.println("[停课] ");
+                                        }
+                                    }
                                     cou.setCouName(couName);
 
                                     String s1 = tdText[c + 1];
                                     // 去除 [网络教室] 左右的 []
-//                                    String couRoom = s1.substring(1, s1.length() - 1);
+                                    // String couRoom = s1.substring(1, s1.length() - 1);
                                     // 20.10.27 增加了时间 故去掉上面功能，直接显示 [网络教室](19:00)
                                     String couRoom = s1;
                                     LogUtils.getInstance().d("couRoom == >" + couRoom);
