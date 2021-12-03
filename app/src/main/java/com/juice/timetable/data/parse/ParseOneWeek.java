@@ -67,7 +67,9 @@ public class ParseOneWeek {
                             String[] tdText = td.html().split("<br>");
                             int brSize = tdText.length;
                             for (int c = 0; c < brSize; c++) {
-                                if (tdText[c].contains("班") || tdText[c].contains("调课")) {
+                                // if (tdText[c].contains("班") || tdText[c].contains("调课")) {
+                                // 原来的逻辑是根据 关键词判断，但是这也会缺少判断： 形势与政策（三） 和 考试：工程制图(10:00-12:00)
+                                if (tdText[c].length() > 0) {
                                     //创建一个新的对象
                                     OneWeekCourse cou = new OneWeekCourse();
                                     cou.setInWeek(week);
@@ -79,7 +81,6 @@ public class ParseOneWeek {
                                         boolean isSuspend = tdText[2].contains("停课");
                                         if (isSuspend) {
                                             couName = "[停课] " + couName;
-                                            System.out.println("[停课] ");
                                         }
                                     }
                                     cou.setCouName(couName);

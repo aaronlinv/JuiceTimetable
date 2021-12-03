@@ -111,7 +111,6 @@ public class ParseAllWeek {
                             // 特殊情况：01～01 03～03
                             // 有几个这样的小节
                             String[] nodes = startEndNode.split("\\s+");
-                            //                            System.out.println(node);
                             for (String node : nodes) {
                                 // new一个id相同的新课来存放
                                 Course repeatedCou = new Course();
@@ -163,7 +162,9 @@ public class ParseAllWeek {
                             try {
                                 Course course = null;
                                 String[] trArr = td.split("<br>");
-                                if (trArr[a].contains("班")) {
+                                // 兼容 形势与政策（三） 这样不包含 “班” 的课程
+                                // if (trArr[a].contains("班")) {
+                                if (trArr[a].length() > 0) {
                                     String couName = td.split("<br>")[a];
                                     //在leftTable解析完的List中寻找对应course
                                     for (Course cou : couList) {
