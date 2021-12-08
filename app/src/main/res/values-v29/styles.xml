@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        //接受按钮颜色
+        <item name="colorAccent">@color/juice_deep</item>
+        //光标和下划线颜色
+        <item name="colorControlActivated">@color/dark_gray</item>
+        //下划线默认颜色
+        <item name="colorControlNormal">@color/dark_gray</item>
+        <!-- 适配深色模式 -->
+        <item name="android:forceDarkAllowed">true</item>
+    </style>
+</resources>
