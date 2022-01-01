@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey;
  *     time   : 2021/5/6 10:24
  * </pre>
  */
-//统考成绩
+//统考成绩(四六级等)
 @Entity
 public class UniGrade {
 

@@ -47,7 +47,6 @@ public class ParseGrade {
         List<SynGrade> synGradeArrayList = new ArrayList<>();
         //解析综合成绩网页源码
         Document doc = Jsoup.parse(parseStr);
-
         //如果存在成绩评测，就直接返回空列表
 
         Elements rootselect = doc.select("body > table > tbody > tr:nth-child(2) > td > table:nth-child(4) > tbody > tr");
@@ -55,20 +54,60 @@ public class ParseGrade {
         for (Element ele : rootselect) {
             //然后获得标签里面具体的内容
             Elements all = ele.select("td");
-            Element yearall = all.get(0); //学年
+
+            Element yearall = all.get(0);           //学年
             String year = yearall.text();
             if (year.equals("选课 时间")) continue;
-            Element courseall = all.get(1);  // 课程
+
+            Element courseall = all.get(1);         // 课程
             String course = courseall.text();
-            Element gradeall = all.get(3);  //成绩
+
+            Element courseCreditall = all.get(2);   //课程学分
+            String courseCredit = courseCreditall.text();
+
+            Element gradeall = all.get(3);          //成绩
             String grade = gradeall.text();
+            String gradePoint = "无";
+            String obtainCredit = "无";
+            String examType;
+            String optionalCourseType;
+            if (grade.equals("暂无成绩")) {        //有成绩
+                Element examTypeall = all.get(4);       //考试类型
+                examType = examTypeall.text();
+
+                Element optionalCourseTypeall = all.get(5); //选修类型
+                optionalCourseType = optionalCourseTypeall.text();
+            }
+            else {
+                Element gradePointall = all.get(4);     //绩点
+                gradePoint = gradePointall.text();
+
+                Element obtainCreditall = all.get(5);   //获得学分
+                obtainCredit = obtainCreditall.text();
+
+                Element examTypeall = all.get(6);       //考试类型
+                examType = examTypeall.text();
+
+                Element optionalCourseTypeall = all.get(7); //选修类型
+                optionalCourseType = optionalCourseTypeall.text();
+            }
+
 
             SynGrade synGrade = new SynGrade();
             synGrade.setCouName(course);
             synGrade.setCouGrade(grade);
+            synGrade.setCourseCredit(courseCredit);
+            synGrade.setGradePoint(gradePoint);
             synGrade.setCouYear(year);
+            synGrade.setGradePoint(gradePoint);
+            synGrade.setObtainCredit(obtainCredit);
+            synGrade.setExamType(examType);
+            synGrade.setOptionalCourseType(optionalCourseType);
+
             synGradeArrayList.add(synGrade);
+            System.out.println(synGrade);
         }
+
         return synGradeArrayList;
     }
 }
