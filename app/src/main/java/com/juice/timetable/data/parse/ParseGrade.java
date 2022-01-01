@@ -105,7 +105,6 @@ public class ParseGrade {
             synGrade.setOptionalCourseType(optionalCourseType);
 
             synGradeArrayList.add(synGrade);
-            System.out.println(synGrade);
         }
 
         return synGradeArrayList;
