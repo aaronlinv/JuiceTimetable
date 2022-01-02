@@ -26,14 +26,14 @@ public class SynGradeViewModel extends AndroidViewModel {
         synGradeRepository = new SynGradeRepository(application);
 
     }
-    public LiveData< List<SynGrade> > getAllSynGradeLive() {
+    public LiveData<List<SynGrade>> getAllSynGradeLive() {
         return synGradeRepository.getAllSynGradeLive();
     }
 
     public void insertSynGrade(SynGrade... synGrades) {
         synGradeRepository.insertSynGrade(synGrades);
     }
-    public void deleteAllSynGrade(Void... Voids) {
+    public void deleteAllSynGrade(Void... voids) {
         synGradeRepository.deleteAllSynGrade();
     }
 

@@ -18,6 +18,5 @@ public interface SynGradeDao {
     void deleteAllSynGrade();
 
     @Query("SELECT * FROM SynGrade")//查询全表
-//    List<SynGrade> getAllSynGrade();
-    LiveData< List<SynGrade> > getAllSynGradeLive();
+    LiveData<List<SynGrade>> getAllSynGradeLive();
 }

@@ -28,7 +28,7 @@ public class UniGradeViewModel extends AndroidViewModel {
     public void insertUniGrade(UniGrade... uniGrades) {
         uniGradeRepository.insertUniGrade(uniGrades);
     }
-    public void deleteAllUniGrade(Void... Voids) {
+    public void deleteAllUniGrade(Void... voids) {
         uniGradeRepository.deleteAllUniGrade();
     }
     public LiveData<List<UniGrade>> getAllUniGradeLive() {

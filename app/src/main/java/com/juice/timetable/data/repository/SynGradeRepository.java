@@ -9,7 +9,6 @@ import com.juice.timetable.data.JuiceDatabase;
 import com.juice.timetable.data.bean.SynGrade;
 import com.juice.timetable.data.dao.SynGradeDao;
 
-
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -36,14 +35,12 @@ public class SynGradeRepository {
         new DeleteAllAsyncTask(synGradeDao).execute();
     }
 
-    public LiveData<List<SynGrade>> getAllSynGradeLive(Void... Voids) {
+    public LiveData<List<SynGrade>> getAllSynGradeLive(Void... voids) {
         LiveData<List<SynGrade>> synListLiveData = null;
         AsyncTask<Void, Void, LiveData<List<SynGrade>>> execute = new SelectLiveDataAsyncTask(synGradeDao).execute();
         try {
             synListLiveData = execute.get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         return synListLiveData;
@@ -90,7 +87,6 @@ public class SynGradeRepository {
         @Override
         protected LiveData<List<SynGrade>> doInBackground(Void... voids) {
             return synGradeDao.getAllSynGradeLive();
-
         }
     }
 }

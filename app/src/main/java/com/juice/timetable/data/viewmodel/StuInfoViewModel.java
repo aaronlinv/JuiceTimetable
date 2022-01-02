@@ -34,7 +34,7 @@ public class StuInfoViewModel extends AndroidViewModel {
         repository.insertStuInfo(stuInfo);
     }
 
-    public void deleteStuInfo(Void... Voids) {
+    public void deleteStuInfo(Void... voids) {
         repository.deleteStuInfo();
     }
 

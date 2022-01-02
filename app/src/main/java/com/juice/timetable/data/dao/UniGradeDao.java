@@ -18,6 +18,5 @@ public interface UniGradeDao {
     void deleteAllUniGrade();
 
     @Query("SELECT * FROM UniGrade")//查询全表
-//    List<SynGrade> getAllUniGrade();
-    LiveData< List<UniGrade> > getAllUniGradeLive();
+    LiveData<List<UniGrade>> getAllUniGradeLive();
 }

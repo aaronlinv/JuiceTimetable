@@ -1,6 +1,5 @@
 package com.juice.timetable.data.http;
 
-
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.utils.CookieUtils;
 import com.juice.timetable.utils.HttpUtils;
@@ -12,12 +11,11 @@ import okhttp3.Response;
 /**
  * <pre>
  *     author : wyx
- *     time   : 2021/5/20 13:49
+ *     time   : 2022/1/2 9:41
  * </pre>
  */
-public class GradeInfo {
-    //直接获取PREF_EDU_COOKIE的cookies，不判断是否存在cookie(必存在)
-    public static String getGradeSource(String uri) throws Exception {
+public class ExamInfo {
+    public static String getExamSource(String uri) throws Exception {
         String prefCookie = CookieUtils.getCookie(Constant.PREF_EDU_COOKIE).replaceAll("path=/;", "");
 
         return source(prefCookie, uri);
@@ -38,5 +36,5 @@ public class GradeInfo {
 
         return response.body().string();
     }
-}
 
+}

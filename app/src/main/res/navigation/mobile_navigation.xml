@@ -44,4 +44,9 @@
         android:name="com.juice.timetable.ui.grade.GradeFragment"
         android:label="@string/menu_grade"
         tools:layout="@layout/fragment_grade" />
+    <fragment
+        android:id="@+id/nav_exam"
+        android:name="com.juice.timetable.ui.exam.ExamFragment"
+        android:label="@string/menu_exam"
+        tools:layout="@layout/exam_fragment" />
 </navigation>

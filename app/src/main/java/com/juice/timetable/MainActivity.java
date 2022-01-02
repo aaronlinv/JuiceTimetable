@@ -1,5 +1,7 @@
 package com.juice.timetable;
 
+import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
+
 import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -32,8 +34,6 @@ import com.juice.timetable.utils.UserInfoUtils;
 import com.juice.timetable.widget.TodayWidget;
 
 import es.dmoral.toasty.Toasty;
-
-import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 
 public class MainActivity extends BaseActivity {
 
@@ -95,7 +95,7 @@ public class MainActivity extends BaseActivity {
         // menu should be considered as top level destinations.
         //app bar与nav元素、navView绑定
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_course, R.id.nav_login, R.id.nav_about, R.id.nav_grade)
+                R.id.nav_course, R.id.nav_login, R.id.nav_about, R.id.nav_grade, R.id.nav_exam)
                 .setDrawerLayout(drawer)
                 .build();
         //NavController与界面绑定
@@ -155,6 +155,8 @@ public class MainActivity extends BaseActivity {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_about);
             } else if (luanchFragment.equals("GradeFragment")) {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_grade);
+            } else if (luanchFragment.equals("ExamFragment")) {
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_exam);
             }
         }
     }

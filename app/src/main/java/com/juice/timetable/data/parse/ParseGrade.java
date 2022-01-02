@@ -19,18 +19,21 @@ public class ParseGrade {
         //解析统考成绩网页源码
         Document doc = Jsoup.parse(parseStr);
         //爬虫
-        Elements rootselect = doc.select("tbody > tr");
+        Elements rootSelect = doc.select("tbody > tr");
 
-        for (Element ele : rootselect) {
+        for (Element ele : rootSelect) {
             Elements all = ele.select("td");
-            Element yearall = all.get(0);  //学年
-            String year = yearall.text();
+            Element yearAll = all.get(0);           //学年
+            String year = yearAll.text();
             if (year.equals("学年")) continue;
-            Element courseall = all.get(1); //考试项目
-            String course = courseall.text();
-            Element gradeall = all.get(2); //成绩
-            String grade = gradeall.text();
-            Element remarks = all.get(3); //备注
+
+            Element courseAll = all.get(1);         //考试项目
+            String course = courseAll.text();
+
+            Element gradeAll = all.get(2);          //成绩
+            String grade = gradeAll.text();
+
+            Element remarks = all.get(3);           //备注
             String remark = remarks.text();
 
             UniGrade uniGrade = new UniGrade();
@@ -38,8 +41,10 @@ public class ParseGrade {
             uniGrade.setuName(course);
             uniGrade.setuGrade(grade);
             uniGrade.setuRemarks(remark);
+
             uniGradeArrayList.add(uniGrade);
         }
+
         return uniGradeArrayList;
     }
 
@@ -55,41 +60,40 @@ public class ParseGrade {
             //然后获得标签里面具体的内容
             Elements all = ele.select("td");
 
-            Element yearall = all.get(0);           //学年
-            String year = yearall.text();
+            Element yearAll = all.get(0);           //学年
+            String year = yearAll.text();
             if (year.equals("选课 时间")) continue;
 
-            Element courseall = all.get(1);         // 课程
-            String course = courseall.text();
+            Element courseAll = all.get(1);         // 课程
+            String course = courseAll.text();
 
-            Element courseCreditall = all.get(2);   //课程学分
-            String courseCredit = courseCreditall.text();
+            Element courseCreditAll = all.get(2);   //课程学分
+            String courseCredit = courseCreditAll.text();
 
-            Element gradeall = all.get(3);          //成绩
-            String grade = gradeall.text();
+            Element gradeAll = all.get(3);          //成绩
+            String grade = gradeAll.text();
             String gradePoint = "无";
             String obtainCredit = "无";
             String examType;
             String optionalCourseType;
             if (grade.equals("暂无成绩")) {        //有成绩
-                Element examTypeall = all.get(4);       //考试类型
-                examType = examTypeall.text();
+                Element examTypeAll = all.get(4);       //考试类型
+                examType = examTypeAll.text();
 
-                Element optionalCourseTypeall = all.get(5); //选修类型
-                optionalCourseType = optionalCourseTypeall.text();
-            }
-            else {
-                Element gradePointall = all.get(4);     //绩点
-                gradePoint = gradePointall.text();
+                Element optionalCourseTypeAll = all.get(5); //选修类型
+                optionalCourseType = optionalCourseTypeAll.text();
+            } else {
+                Element gradePointAll = all.get(4);     //绩点
+                gradePoint = gradePointAll.text();
 
-                Element obtainCreditall = all.get(5);   //获得学分
-                obtainCredit = obtainCreditall.text();
+                Element obtainCreditAll = all.get(5);   //获得学分
+                obtainCredit = obtainCreditAll.text();
 
-                Element examTypeall = all.get(6);       //考试类型
-                examType = examTypeall.text();
+                Element examTypeAll = all.get(6);       //考试类型
+                examType = examTypeAll.text();
 
-                Element optionalCourseTypeall = all.get(7); //选修类型
-                optionalCourseType = optionalCourseTypeall.text();
+                Element optionalCourseTypeAll = all.get(7); //选修类型
+                optionalCourseType = optionalCourseTypeAll.text();
             }
 
 
