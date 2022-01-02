@@ -27,6 +27,7 @@ import com.juice.timetable.data.http.ExamInfo;
 import com.juice.timetable.data.parse.ParseExam;
 import com.juice.timetable.data.viewmodel.ExamViewModel;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ExamFragment extends Fragment {
@@ -81,6 +82,8 @@ public class ExamFragment extends Fragment {
                     //先清空表
                     examViewModel.deleteAllExam();
                     //再插入数据库
+                    //调转
+                    Collections.reverse(examArrayList);
                     for (Exam exam : examArrayList) {
                         examViewModel.insertExam(exam);
                     }

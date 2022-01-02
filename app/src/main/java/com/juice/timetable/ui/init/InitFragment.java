@@ -1,5 +1,7 @@
 package com.juice.timetable.ui.init;
 
+import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -41,8 +43,6 @@ import java.util.List;
 import java.util.Objects;
 
 import es.dmoral.toasty.Toasty;
-
-import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 
 
 /**

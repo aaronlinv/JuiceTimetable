@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textSize="18sp"
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline21"
                 app:layout_constraintStart_toStartOf="@+id/guideline21"

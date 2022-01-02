@@ -1,5 +1,7 @@
 package com.juice.timetable.ui.login;
 
+import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -39,8 +41,6 @@ import java.util.Objects;
 
 import es.dmoral.toasty.Toasty;
 
-import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
-
 /**
  * 修改认证页面相应功能实现类
  */
@@ -69,7 +69,6 @@ public class LoginFragment extends Fragment {
         toolbar.findViewById(R.id.spinner).setVisibility(View.INVISIBLE);
         Menu menu = toolbar.getMenu();
         menu.setGroupVisible(0, false);
-
 
         //图片透明度
         binding.imCzLogo.setAlpha(140);

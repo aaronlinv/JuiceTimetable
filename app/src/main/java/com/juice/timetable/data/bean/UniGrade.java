@@ -1,6 +1,5 @@
 package com.juice.timetable.data.bean;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
