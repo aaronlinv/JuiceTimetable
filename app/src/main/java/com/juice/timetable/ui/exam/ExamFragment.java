@@ -76,10 +76,8 @@ public class ExamFragment extends Fragment {
                 Message message = new Message();
                 try {
                     String pageSource = ExamInfo.getExamSource(Constant.URI_EXAM);
-
                     //利用爬虫获取考场信息
                     examArrayList = ParseExam.parseExam(pageSource);
-
                     //先清空表
                     examViewModel.deleteAllExam();
                     //再插入数据库
@@ -112,7 +110,6 @@ public class ExamFragment extends Fragment {
                         }
                     }
                 };
-
             }
         });
     }

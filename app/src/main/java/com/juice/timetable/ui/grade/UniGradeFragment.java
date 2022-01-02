@@ -1,7 +1,15 @@
 package com.juice.timetable.ui.grade;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -10,10 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
@@ -30,6 +34,7 @@ public class UniGradeFragment extends Fragment {
     private UniGradeRecycleViewAdapter uniGradeRecycleViewAdapter;
     private RecyclerView uniRecyclerView;
     private SwipeRefreshLayout mSlRefresh;
+    private Handler mHandler;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -60,6 +65,7 @@ public class UniGradeFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Message message = new Message();
                 try {
                     List<UniGrade> uniGradeArrayList;
                     //获取成绩网页源码
@@ -73,6 +79,8 @@ public class UniGradeFragment extends Fragment {
                         uniGradeViewModel.insertUniGrade(uniGrade);
                     }
                     mSlRefresh.setRefreshing(false);
+                    message.what = Constant.MSG_PARSEUNI_SUCCESS;
+                    mHandler.sendMessage(message);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -86,10 +94,18 @@ public class UniGradeFragment extends Fragment {
         super.onStart();
         LiveData<List<UniGrade>> listUniGradeLive = uniGradeViewModel.getAllUniGradeLive();
         listUniGradeLive.observe(requireActivity(), new Observer<List<UniGrade>>() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChanged(List<UniGrade> uniGrades) {
-                uniGradeRecycleViewAdapter.setUniGradeList(uniGrades);
-                uniGradeRecycleViewAdapter.notifyDataSetChanged();
+                mHandler = new Handler(Looper.getMainLooper()) {
+                    public void handleMessage(@NonNull Message msg) {
+                        super.handleMessage(msg);
+                        if (msg.what == Constant.MSG_PARSEUNI_SUCCESS) {
+                            uniGradeRecycleViewAdapter.setUniGradeList(uniGrades);
+                            uniGradeRecycleViewAdapter.notifyDataSetChanged();
+                        }
+                    }
+                };
             }
         });
     }

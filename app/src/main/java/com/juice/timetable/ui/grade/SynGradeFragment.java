@@ -1,8 +1,12 @@
 package com.juice.timetable.ui.grade;
 
+import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +34,6 @@ import java.util.List;
 
 import es.dmoral.toasty.Toasty;
 
-import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
-
 //综合成绩的fragment
 public class SynGradeFragment extends Fragment {
     private SynGradeViewModel synGradeViewModel;
@@ -39,6 +41,7 @@ public class SynGradeFragment extends Fragment {
     private SynGradeRecycleViewAdapter synGradeRecycleViewAdapter;
     private List<SynGrade> synGradeArrayList;
     private SwipeRefreshLayout mSlRefresh;
+    private Handler mHandler;
 
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -70,6 +73,7 @@ public class SynGradeFragment extends Fragment {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void run() {
+                Message message = new Message();
                 try {
                     //获取成绩网页源码
                     String pagesource = GradeInfo.getGradeSource(Constant.URI_SYNGRADE);
@@ -77,9 +81,9 @@ public class SynGradeFragment extends Fragment {
                         mSlRefresh.setRefreshing(false);
                         Looper.prepare();
                         Toasty.custom(requireActivity(), "成绩测评后才能查询成绩!",
-                                getResources().getDrawable(R.drawable.grade,null),
-                                getResources().getColor(R.color.green,null),
-                                getResources().getColor(R.color.white,null),
+                                getResources().getDrawable(R.drawable.grade, null),
+                                getResources().getColor(R.color.green, null),
+                                getResources().getColor(R.color.white, null),
                                 LENGTH_SHORT, false, true).show();
                         Looper.loop();
                         return;
@@ -93,7 +97,8 @@ public class SynGradeFragment extends Fragment {
                         synGradeViewModel.insertSynGrade(synGrade);
                     }
                     mSlRefresh.setRefreshing(false);
-
+                    message.what = Constant.MSG_PARSESYN_SUCCESS;
+                    mHandler.sendMessage(message);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -109,11 +114,19 @@ public class SynGradeFragment extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChanged(List<SynGrade> synGrades) {
-                synGradeRecycleViewAdapter.setSynGradeList(synGrades);
-                synGradeRecycleViewAdapter.notifyDataSetChanged();
+                mHandler = new Handler(Looper.getMainLooper()) {
+                    public void handleMessage(@NonNull Message msg) {
+                        super.handleMessage(msg);
+                        if (msg.what == Constant.MSG_PARSESYN_SUCCESS) {
+                            synGradeRecycleViewAdapter.setSynGradeList(synGrades);
+                            synGradeRecycleViewAdapter.notifyDataSetChanged();
+                        }
+                    }
+                };
             }
         });
     }
+
 
     private void findID(View root) {
         synRecyclerView = root.findViewById(R.id.synRecyclerView);
