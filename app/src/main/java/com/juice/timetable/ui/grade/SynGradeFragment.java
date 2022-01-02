@@ -93,6 +93,7 @@ public class SynGradeFragment extends Fragment {
                         synGradeViewModel.insertSynGrade(synGrade);
                     }
                     mSlRefresh.setRefreshing(false);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -17,6 +17,7 @@ public class Exam {
     private String semester;        //开课学期
     private String courseName;      //课程名称
     private String examType;        //考试类型
+    private String examTime;        //考试时间
     private String examCategory;    //考试类别
     private String arrangement;     //考场安排
     private String classGrade;      //班级
@@ -28,6 +29,7 @@ public class Exam {
                 ", semester='" + semester + '\'' +
                 ", courseName='" + courseName + '\'' +
                 ", examType='" + examType + '\'' +
+                ", examTime='" + examTime + '\'' +
                 ", examCategory='" + examCategory + '\'' +
                 ", arrangement='" + arrangement + '\'' +
                 ", classGrade='" + classGrade + '\'' +
@@ -66,6 +68,14 @@ public class Exam {
         this.examType = examType;
     }
 
+    public String getExamTime() {
+        return examTime;
+    }
+
+    public void setExamTime(String examTime) {
+        this.examTime = examTime;
+    }
+
     public String getExamCategory() {
         return examCategory;
     }
@@ -89,6 +99,4 @@ public class Exam {
     public void setClassGrade(String classGrade) {
         this.classGrade = classGrade;
     }
-
-
 }

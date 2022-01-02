@@ -15,22 +15,11 @@ import androidx.room.PrimaryKey;
 public class UniGrade {
 
     @PrimaryKey(autoGenerate = true)
-    public Integer unigradeId;
+    private Integer unigradeId;
     public String uYear;
     public String uName;
     public String uGrade;
     public String uRemarks;
-
-    @Override
-    public String toString() {
-        return "UniGrade{" +
-                "unigradeId=" + unigradeId +
-                ", uYear='" + uYear + '\'' +
-                ", uName='" + uName + '\'' +
-                ", uGrade='" + uGrade + '\'' +
-                ", uRemarks='" + uRemarks + '\'' +
-                '}';
-    }
 
     public Integer getUnigradeId() {
         return unigradeId;

@@ -74,7 +74,7 @@ public class AboutFragment extends Fragment {
                 public void run() {
                     Message message = new Message();
                     try {
-                        LogUtils.getInstance().d("爬虫线程启动");
+                        LogUtils.getInstance().d("检查更新爬虫线程启动");
                         String str = ParseVersion.getSource(Constant.URI_COOLAPK);
                         id = ParseVersion.getVersion(str);
                         info = ParseVersion.getVersionInfo(str);

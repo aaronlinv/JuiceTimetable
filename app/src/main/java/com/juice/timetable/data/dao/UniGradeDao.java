@@ -14,7 +14,7 @@ public interface UniGradeDao {
     @Insert//增加
     void insertUniGrade(UniGrade... uniGrades);
 
-    @Query("Delete From UniGrade")//删除
+    @Query("DELETE FROM UniGrade")//删除
     void deleteAllUniGrade();
 
     @Query("SELECT * FROM UniGrade")//查询全表

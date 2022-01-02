@@ -20,9 +20,9 @@ import java.util.List;
 public class ExamViewModel extends AndroidViewModel{
     private final ExamRepository examRepository;
 
-    public ExamViewModel(@NonNull Application application, ExamRepository examRepository) {
+    public ExamViewModel(@NonNull Application application) {
         super(application);
-        this.examRepository = examRepository;
+        examRepository = new ExamRepository(application);
 
     }
 

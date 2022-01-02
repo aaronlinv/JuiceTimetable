@@ -22,16 +22,10 @@ import java.util.concurrent.ExecutionException;
  */
 public class UniGradeRepository {
     private UniGradeDao uniGradeDao;
-    private LiveData<List<UniGrade>> listUniGradeLive;
 
     public UniGradeRepository(Context context) {
         JuiceDatabase juiceDatabase = JuiceDatabase.getDatabase(context);
         uniGradeDao = juiceDatabase.getUniGradeDao();
-        listUniGradeLive = uniGradeDao.getAllUniGradeLive();
-    }
-
-    public LiveData<List<UniGrade>> getAllUniGradeLive() {
-        return listUniGradeLive;
     }
 
     //接口
@@ -48,9 +42,7 @@ public class UniGradeRepository {
         AsyncTask<Void, Void, LiveData<List<UniGrade>>> execute = new UniGradeRepository.SelectLiveDataAsyncTask(uniGradeDao).execute();
         try {
             uniListLiveData = execute.get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         return uniListLiveData;

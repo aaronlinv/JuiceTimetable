@@ -41,6 +41,15 @@ public class Constant {
     // 酷安版本号获取成功
     public static final int MSG_COOLAPKID_SUCCESS = 2000;
 
+    //考场爬虫线程运行结束
+    public static final int MSG_PARSEEXAM_SUCCESS = 2001;
+
+    //综合成绩爬虫线程结束
+    public static final int MSG_PARSESYN_SUCCESS = 2002;
+
+    //统考成绩爬虫线程结束
+    public static final int MSG_PARSEUNI_SUCCESS = 2003;
+
     // 彩虹模式随机数 Preferences
     public static final String PREF_RAINBOW_MODE_NUM = "PREF_RAINBOW_MODE_NUM";
 
