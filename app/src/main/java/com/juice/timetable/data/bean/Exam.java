@@ -22,6 +22,18 @@ public class Exam {
     private String arrangement;     //考场安排
     private String classGrade;      //班级
 
+
+    public Exam(String semester, String courseName, String examType, String examTime,
+                String examCategory, String arrangement, String classGrade) {
+        this.semester = semester;
+        this.courseName = courseName;
+        this.examType = examType;
+        this.examTime = examTime;
+        this.examCategory = examCategory;
+        this.arrangement = arrangement;
+        this.classGrade = classGrade;
+    }
+
     @Override
     public String toString() {
         return "Exam{" +

@@ -48,14 +48,8 @@ public class ParseExam {
             Element classGradeAll = all.get(6);
             String classGrade = classGradeAll.text();       //班级
 
-            Exam exam = new Exam();
-            exam.setSemester(semester);
-            exam.setCourseName(courseName);
-            exam.setExamType(examType);
-            exam.setExamCategory(examCategory);
-            exam.setExamTime(examTime);
-            exam.setArrangement(arrangement);
-            exam.setClassGrade(classGrade);
+            Exam exam = new Exam(semester, courseName, examType, examTime, examCategory,
+                    arrangement, classGrade);
 
             examArrayList.add(exam);
         }

@@ -1,6 +1,5 @@
 package com.juice.timetable.data.bean;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -40,13 +39,22 @@ public class SynGrade {
                 '}';
     }
 
+    public SynGrade(String couYear, String couName, String couGrade, String courseCredit, String gradePoint, String obtainCredit, String examType, String optionalCourseType) {
+        this.couYear = couYear;
+        this.couName = couName;
+        this.couGrade = couGrade;
+        this.courseCredit = courseCredit;
+        this.gradePoint = gradePoint;
+        this.obtainCredit = obtainCredit;
+        this.examType = examType;
+        this.optionalCourseType = optionalCourseType;
+    }
 
-    @NonNull
     public Integer getSyngradeId() {
         return syngradeId;
     }
 
-    public void setSyngradeId(@NonNull Integer syngradeId) {
+    public void setSyngradeId(Integer syngradeId) {
         this.syngradeId = syngradeId;
     }
 
@@ -73,10 +81,6 @@ public class SynGrade {
     public void setCouGrade(String couGrade) {
         this.couGrade = couGrade;
     }
-
-
-
-    //以下是新加的
 
     public String getCourseCredit() {
         return courseCredit;

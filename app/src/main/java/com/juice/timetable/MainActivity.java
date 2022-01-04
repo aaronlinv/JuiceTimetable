@@ -90,10 +90,8 @@ public class MainActivity extends BaseActivity {
         // 初始化彩虹模式开关
         Constant.RAINBOW_MODE_ENABLED = PreferencesUtils.getBoolean(Constant.PREF_RAINBOW_MODE_ENABLED, false);
 
-
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        //app bar与nav元素、navView绑定
+        // Passing each menu ID as a set of Ids because each menu should be considered as top level destinations.
+        // app bar与nav元素、navView绑定
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_course, R.id.nav_login, R.id.nav_about, R.id.nav_grade, R.id.nav_exam)
                 .setDrawerLayout(drawer)
@@ -105,8 +103,6 @@ public class MainActivity extends BaseActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         // 侧边栏橙汁图标
-        NavigationView navigation = this.findViewById(R.id.nav_view);
-//        navigation.inflateHeaderView(R.layout.nav_header_main);
         ImageView juiceIcon = navigationView.getHeaderView(0).findViewById(R.id.imageView);
 
         // 单击开启/关闭 彩虹模式
@@ -163,13 +159,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-/*        // Inflate the menu; this adds items to the action bar if it is present.
-        // 添加周的显示
-        for (int i = 0; i < 25; i++) {
-            menu.add(0, i, i, "第" + (i + 1) + "周");
-        }*/
         // 填充toolBar的布局
-        getMenuInflater().inflate(R.menu.main, menu);
+//        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 

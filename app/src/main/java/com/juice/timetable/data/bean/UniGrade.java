@@ -20,6 +20,14 @@ public class UniGrade {
     public String uGrade;
     public String uRemarks;
 
+
+    public UniGrade(String uYear, String uName, String uGrade, String uRemarks) {
+        this.uYear = uYear;
+        this.uName = uName;
+        this.uGrade = uGrade;
+        this.uRemarks = uRemarks;
+    }
+
     public Integer getUnigradeId() {
         return unigradeId;
     }

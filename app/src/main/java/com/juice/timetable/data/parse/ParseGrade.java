@@ -23,24 +23,20 @@ public class ParseGrade {
 
         for (Element ele : rootSelect) {
             Elements all = ele.select("td");
-            Element yearAll = all.get(0);           //学年
-            String year = yearAll.text();
-            if (year.equals("学年")) continue;
+            Element uYearAll = all.get(0);           //学年
+            String uYear = uYearAll.text();
+            if (uYear.equals("学年")) continue;
 
-            Element courseAll = all.get(1);         //考试项目
-            String course = courseAll.text();
+            Element uNameAll = all.get(1);         //考试项目
+            String uName = uNameAll.text();
 
-            Element gradeAll = all.get(2);          //成绩
-            String grade = gradeAll.text();
+            Element uGradeAll = all.get(2);          //成绩
+            String uGrade = uGradeAll.text();
 
-            Element remarks = all.get(3);           //备注
-            String remark = remarks.text();
+            Element uRemarkAll = all.get(3);           //备注
+            String uRemark = uRemarkAll.text();
 
-            UniGrade uniGrade = new UniGrade();
-            uniGrade.setuYear(year);
-            uniGrade.setuName(course);
-            uniGrade.setuGrade(grade);
-            uniGrade.setuRemarks(remark);
+            UniGrade uniGrade = new UniGrade(uYear, uName, uGrade, uRemark);
 
             uniGradeArrayList.add(uniGrade);
         }
@@ -60,23 +56,23 @@ public class ParseGrade {
             //然后获得标签里面具体的内容
             Elements all = ele.select("td");
 
-            Element yearAll = all.get(0);           //学年
-            String year = yearAll.text();
-            if (year.equals("选课 时间")) continue;
+            Element couYearAll = all.get(0);           //学年
+            String couYear = couYearAll.text();
+            if (couYear.equals("选课 时间")) continue;
 
-            Element courseAll = all.get(1);         // 课程
-            String course = courseAll.text();
+            Element courseNameAll = all.get(1);         // 课程
+            String courseName = courseNameAll.text();
 
             Element courseCreditAll = all.get(2);   //课程学分
             String courseCredit = courseCreditAll.text();
 
-            Element gradeAll = all.get(3);          //成绩
-            String grade = gradeAll.text();
+            Element cougradeAll = all.get(3);          //成绩
+            String couGrade = cougradeAll.text();
             String gradePoint = "无";
             String obtainCredit = "无";
             String examType;
             String optionalCourseType;
-            if (grade.equals("暂无成绩")) {        //有成绩
+            if (couGrade.equals("暂无成绩")) {        //有成绩
                 Element examTypeAll = all.get(4);       //考试类型
                 examType = examTypeAll.text();
 
@@ -96,17 +92,8 @@ public class ParseGrade {
                 optionalCourseType = optionalCourseTypeAll.text();
             }
 
-
-            SynGrade synGrade = new SynGrade();
-            synGrade.setCouName(course);
-            synGrade.setCouGrade(grade);
-            synGrade.setCourseCredit(courseCredit);
-            synGrade.setGradePoint(gradePoint);
-            synGrade.setCouYear(year);
-            synGrade.setGradePoint(gradePoint);
-            synGrade.setObtainCredit(obtainCredit);
-            synGrade.setExamType(examType);
-            synGrade.setOptionalCourseType(optionalCourseType);
+            SynGrade synGrade = new SynGrade(couYear, courseName, couGrade, courseCredit,
+                    gradePoint, obtainCredit, examType, optionalCourseType);
 
             synGradeArrayList.add(synGrade);
         }

@@ -1,5 +1,8 @@
 package com.juice.timetable.ui.course;
 
+import static es.dmoral.toasty.Toasty.LENGTH_LONG;
+import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
+
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +18,7 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -64,9 +68,6 @@ import java.util.Random;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 
-import static es.dmoral.toasty.Toasty.LENGTH_LONG;
-import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
-
 @SuppressWarnings("unchecked")
 public class CourseFragment extends Fragment {
     private FragmentCourseBinding binding;
@@ -108,6 +109,17 @@ public class CourseFragment extends Fragment {
         return binding.getRoot();
     }
 
+    public CourseFragment() {
+        setHasOptionsMenu(true);
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.main, menu);
+    }
+
     /**
      * 自动检查更新，提示
      */
@@ -142,7 +154,7 @@ public class CourseFragment extends Fragment {
             public void onClick(View v) {
                 new AlertDialog.Builder(requireActivity())
                         .setTitle(getString(R.string.new_version_dialog_title))
-                        .setMessage(info.replace(" ","\n"))
+                        .setMessage(info.replace(" ", "\n"))
                         .setPositiveButton(R.string.ok_quit_dialog_title, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
