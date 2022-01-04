@@ -6,7 +6,9 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import com.juice.timetable.data.JuiceDatabase;
+import com.juice.timetable.data.bean.Exam;
 import com.juice.timetable.data.bean.SynGrade;
+import com.juice.timetable.data.dao.ExamDao;
 import com.juice.timetable.data.dao.SynGradeDao;
 
 import java.util.List;
@@ -38,6 +40,17 @@ public class SynGradeRepository {
     public LiveData<List<SynGrade>> getAllSynGradeLive(Void... voids) {
         LiveData<List<SynGrade>> synListLiveData = null;
         AsyncTask<Void, Void, LiveData<List<SynGrade>>> execute = new SelectLiveDataAsyncTask(synGradeDao).execute();
+        try {
+            synListLiveData = execute.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return synListLiveData;
+    }
+
+    public LiveData<List<SynGrade>> findNameWithPattern(String pattern) {
+        LiveData<List<SynGrade>> synListLiveData = null;
+        AsyncTask<String, Void, LiveData<List<SynGrade>>> execute = new FindSynLiveDataAsyncTask(synGradeDao).execute(pattern);
         try {
             synListLiveData = execute.get();
         } catch (ExecutionException | InterruptedException e) {
@@ -87,6 +100,20 @@ public class SynGradeRepository {
         @Override
         protected LiveData<List<SynGrade>> doInBackground(Void... voids) {
             return synGradeDao.getAllSynGradeLive();
+        }
+    }
+
+    //模糊匹配(LiveData)AsyncTask
+    static class FindSynLiveDataAsyncTask extends AsyncTask<String, Void, LiveData<List<SynGrade>>> {
+        private SynGradeDao synGradeDao;
+
+        public FindSynLiveDataAsyncTask(SynGradeDao synGradeDao) {
+            this.synGradeDao = synGradeDao;
+        }
+
+        @Override
+        protected LiveData<List<SynGrade>> doInBackground(String... strings) {
+            return synGradeDao.findNameWithPattern(strings[0]);
         }
     }
 }

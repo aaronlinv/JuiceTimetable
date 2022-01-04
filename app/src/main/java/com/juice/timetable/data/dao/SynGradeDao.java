@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
+import com.juice.timetable.data.bean.Exam;
 import com.juice.timetable.data.bean.SynGrade;
 
 import java.util.List;
@@ -19,4 +20,7 @@ public interface SynGradeDao {
 
     @Query("SELECT * FROM SynGrade")//查询全表
     LiveData<List<SynGrade>> getAllSynGradeLive();
+
+    @Query("SELECT * FROM SynGrade WHERE couName LIKE :pattern")
+    LiveData<List<SynGrade>> findNameWithPattern(String pattern);
 }

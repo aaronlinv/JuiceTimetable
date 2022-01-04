@@ -69,13 +69,10 @@ public class ExamFragment extends Fragment {
         examRecyclerView.setAdapter(examRecycleViewAdapter);
 
         getExamData();
-
+        //开启搜索
+        setHasOptionsMenu(true);
 
         return root;
-    }
-
-    public ExamFragment() {
-        setHasOptionsMenu(true);
     }
 
     @Override

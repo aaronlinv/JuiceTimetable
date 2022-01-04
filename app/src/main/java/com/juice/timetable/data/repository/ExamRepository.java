@@ -47,7 +47,6 @@ public class ExamRepository {
 
     }
 
-    //模糊匹配
     public LiveData<List<Exam>> findNameWithPattern(String pattern) {
         LiveData<List<Exam>> examListLiveData = null;
         AsyncTask<String, Void, LiveData<List<Exam>>> execute = new FindLiveDataAsyncTask(examDao).execute(pattern);
@@ -58,6 +57,7 @@ public class ExamRepository {
         }
         return examListLiveData;
     }
+
 
     //插入AsyncTask
     static class InsertAsyncTask extends AsyncTask<Exam, Void, Void> {

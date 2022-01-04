@@ -37,5 +37,9 @@ public class SynGradeViewModel extends AndroidViewModel {
         synGradeRepository.deleteAllSynGrade();
     }
 
+    public LiveData<List<SynGrade>> findNameWithPattern(String pattern){
+        return synGradeRepository.findNameWithPattern("%" + pattern + "%");
+    }
+
 
 }

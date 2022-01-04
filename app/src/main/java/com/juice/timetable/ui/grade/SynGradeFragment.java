@@ -8,8 +8,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +45,7 @@ public class SynGradeFragment extends Fragment {
     private List<SynGrade> synGradeArrayList;
     private SwipeRefreshLayout mSlRefresh;
     private Handler mHandler;
+    private LiveData<List<SynGrade>> filterSynList;
 
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -63,7 +67,42 @@ public class SynGradeFragment extends Fragment {
 
         getSynGradeData();
 
+        //开启搜索
+        setHasOptionsMenu(true);
+
         return root;
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.grade_bar, menu);
+        SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_grade_search).getActionView();
+        searchView.setMaxWidth(300);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String pattern = query.trim();
+//                filterSynList.removeObservers(requireActivity());
+                filterSynList = synGradeViewModel.findNameWithPattern(pattern);
+                filterSynList.observe(requireActivity(), new Observer<List<SynGrade>>() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onChanged(List<SynGrade> synGrades) {
+                        synGradeRecycleViewAdapter.setSynGradeList(synGrades);
+                        synGradeRecycleViewAdapter.notifyDataSetChanged();
+                    }
+                });
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
     }
 
     //获取数据，然后插入数据库
