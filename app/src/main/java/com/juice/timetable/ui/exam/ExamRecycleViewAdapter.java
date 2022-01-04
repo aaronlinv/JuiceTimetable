@@ -83,9 +83,9 @@ public class ExamRecycleViewAdapter extends RecyclerView.Adapter<ExamRecycleView
 
     @Override
     public int getItemCount() {
-        if(examArrayList.size() == 0){
-            return 1;
-        }
+//        if(examArrayList.size() == 0){
+//            return 1;
+//        }
         return examArrayList.size();
     }
 

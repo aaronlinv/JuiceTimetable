@@ -47,6 +47,18 @@ public class ExamRepository {
 
     }
 
+    //模糊匹配
+    public LiveData<List<Exam>> findNameWithPattern(String pattern) {
+        LiveData<List<Exam>> examListLiveData = null;
+        AsyncTask<String, Void, LiveData<List<Exam>>> execute = new FindLiveDataAsyncTask(examDao).execute(pattern);
+        try {
+            examListLiveData = execute.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return examListLiveData;
+    }
+
     //插入AsyncTask
     static class InsertAsyncTask extends AsyncTask<Exam, Void, Void> {
         private ExamDao examDao;
@@ -91,4 +103,17 @@ public class ExamRepository {
         }
     }
 
+    //模糊匹配(LiveData)AsyncTask
+    static class FindLiveDataAsyncTask extends AsyncTask<String, Void, LiveData<List<Exam>>> {
+        private ExamDao examDao;
+
+        public FindLiveDataAsyncTask(ExamDao examDao) {
+            this.examDao = examDao;
+        }
+
+        @Override
+        protected LiveData<List<Exam>> doInBackground(String... strings) {
+            return examDao.findNameWithPattern(strings[0]);
+        }
+    }
 }

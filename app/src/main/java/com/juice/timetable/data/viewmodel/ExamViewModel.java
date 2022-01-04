@@ -30,6 +30,10 @@ public class ExamViewModel extends AndroidViewModel{
         return examRepository.getAllExamLive();
     }
 
+    public LiveData<List<Exam>> findNameWithPattern(String pattern){
+        return examRepository.findNameWithPattern("%" + pattern + "%");
+    }
+
     public void insertExam(Exam... exams){
         examRepository.insertExam(exams);
     }

@@ -19,4 +19,7 @@ public interface ExamDao {
 
     @Query("SELECT * FROM Exam")//查询全表
     LiveData<List<Exam>> getAllExamLive();
+
+    @Query("SELECT * FROM Exam WHERE courseName LIKE :pattern")
+    LiveData<List<Exam>> findNameWithPattern(String pattern);
 }
