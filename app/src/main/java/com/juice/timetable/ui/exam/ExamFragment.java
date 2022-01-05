@@ -85,7 +85,13 @@ public class ExamFragment extends Fragment {
             //确定时候改变
             @Override
             public boolean onQueryTextSubmit(String query) {
-                String pattern = query.trim();
+                return false;
+            }
+
+            //输入时候改变
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                String pattern = newText.trim();
                 filterExamList.removeObservers(requireActivity());
                 filterExamList = examViewModel.findNameWithPattern(pattern);
                 filterExamList.observe(requireActivity(), new Observer<List<Exam>>() {
@@ -98,12 +104,6 @@ public class ExamFragment extends Fragment {
                     }
                 });
                 return true;
-            }
-
-            //输入时候改变
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
             }
         });
 

@@ -83,8 +83,12 @@ public class SynGradeFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                String pattern = query.trim();
-//                filterSynList.removeObservers(requireActivity());
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                String pattern = newText.trim();
                 filterSynList = synGradeViewModel.findNameWithPattern(pattern);
                 filterSynList.observe(requireActivity(), new Observer<List<SynGrade>>() {
                     @SuppressLint("NotifyDataSetChanged")
@@ -94,13 +98,7 @@ public class SynGradeFragment extends Fragment {
                         synGradeRecycleViewAdapter.notifyDataSetChanged();
                     }
                 });
-
                 return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
             }
         });
     }
