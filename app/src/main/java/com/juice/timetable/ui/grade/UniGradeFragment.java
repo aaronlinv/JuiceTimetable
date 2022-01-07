@@ -35,6 +35,7 @@ public class UniGradeFragment extends Fragment {
     private RecyclerView uniRecyclerView;
     private SwipeRefreshLayout mSlRefresh;
     private Handler mHandler;
+    private LiveData<List<UniGrade>> listUniGradeLive;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -85,29 +86,29 @@ public class UniGradeFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-        }) {
-        }.start();
+        }).start();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        LiveData<List<UniGrade>> listUniGradeLive = uniGradeViewModel.getAllUniGradeLive();
-        listUniGradeLive.observe(requireActivity(), new Observer<List<UniGrade>>() {
-            @SuppressLint("NotifyDataSetChanged")
+        mHandler = new Handler(Looper.getMainLooper()) {
             @Override
-            public void onChanged(List<UniGrade> uniGrades) {
-                mHandler = new Handler(Looper.getMainLooper()) {
-                    public void handleMessage(@NonNull Message msg) {
-                        super.handleMessage(msg);
-                        if (msg.what == Constant.MSG_PARSEUNI_SUCCESS) {
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == Constant.MSG_PARSEUNI_SUCCESS) {
+                    listUniGradeLive = uniGradeViewModel.getAllUniGradeLive();
+                    listUniGradeLive.observe(requireActivity(), new Observer<List<UniGrade>>() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        @Override
+                        public void onChanged(List<UniGrade> uniGrades) {
                             uniGradeRecycleViewAdapter.setUniGradeList(uniGrades);
                             uniGradeRecycleViewAdapter.notifyDataSetChanged();
                         }
-                    }
-                };
+                    });
+                }
             }
-        });
+        };
     }
 
     private void findID(View root) {

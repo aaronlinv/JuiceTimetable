@@ -55,8 +55,8 @@ public class ExamFragment extends Fragment {
         //隐藏 toolbar 的按钮 和星期下拉菜单按钮
         Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
         toolbar.findViewById(R.id.spinner).setVisibility(View.INVISIBLE);
-//        Menu menu = toolbar.getMenu();
-//        menu.setGroupVisible(0, false);
+        Menu menu = toolbar.getMenu();
+        menu.setGroupVisible(0, false);
 
         View root = inflater.inflate(R.layout.fragment_exam, container, false);
 
@@ -100,7 +100,6 @@ public class ExamFragment extends Fragment {
                     public void onChanged(List<Exam> exams) {
                         examRecycleViewAdapter.setExamArrayList(exams);
                         examRecycleViewAdapter.notifyDataSetChanged();
-//                        examRecycleViewAdapter.notifyItemChanged(R.id.exam_refresh);
                     }
                 });
                 return true;
@@ -140,23 +139,24 @@ public class ExamFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        filterExamList = examViewModel.getAllExamLive();
-        filterExamList.observe(requireActivity(), new Observer<List<Exam>>() {
+
+        mHandler = new Handler(Looper.getMainLooper()) {
             @Override
-            public void onChanged(List<Exam> exams) {
-                mHandler = new Handler(Looper.getMainLooper()) {
-                    @SuppressLint("NotifyDataSetChanged")
-                    public void handleMessage(@NonNull Message msg) {
-                        super.handleMessage(msg);
-                        if (msg.what == Constant.MSG_PARSEEXAM_SUCCESS) {
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == Constant.MSG_PARSEEXAM_SUCCESS) {
+                    filterExamList = examViewModel.getAllExamLive();
+                    filterExamList.observe(requireActivity(), new Observer<List<Exam>>() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        @Override
+                        public void onChanged(List<Exam> exams) {
                             examRecycleViewAdapter.setExamArrayList(exams);
-//                            examRecycleViewAdapter.notifyItemChanged(R.id.exam_refresh);
                             examRecycleViewAdapter.notifyDataSetChanged();
                         }
-                    }
-                };
+                    });
+                }
             }
-        });
+        };
     }
 
     private void findID(View root) {

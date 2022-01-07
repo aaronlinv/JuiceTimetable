@@ -66,7 +66,6 @@ public class SynGradeFragment extends Fragment {
         synRecyclerView.setAdapter(synGradeRecycleViewAdapter);
 
         getSynGradeData();
-
         //开启搜索
         setHasOptionsMenu(true);
 
@@ -146,24 +145,26 @@ public class SynGradeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        LiveData<List<SynGrade>> listSynGradeLive = synGradeViewModel.getAllSynGradeLive();
-        listSynGradeLive.observe(requireActivity(), new Observer<List<SynGrade>>() {
-            @SuppressLint("NotifyDataSetChanged")
+        mHandler = new Handler(Looper.getMainLooper()) {
             @Override
-            public void onChanged(List<SynGrade> synGrades) {
-                mHandler = new Handler(Looper.getMainLooper()) {
-                    public void handleMessage(@NonNull Message msg) {
-                        super.handleMessage(msg);
-                        if (msg.what == Constant.MSG_PARSESYN_SUCCESS) {
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == Constant.MSG_PARSESYN_SUCCESS) {
+                    filterSynList = synGradeViewModel.getAllSynGradeLive();
+                    filterSynList.observe(requireActivity(), new Observer<List<SynGrade>>() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        @Override
+                        public void onChanged(List<SynGrade> synGrades) {
                             synGradeRecycleViewAdapter.setSynGradeList(synGrades);
                             synGradeRecycleViewAdapter.notifyDataSetChanged();
                         }
-                    }
-                };
-            }
-        });
-    }
+                    });
+                }
 
+            }
+        };
+
+    }
 
     private void findID(View root) {
         synRecyclerView = root.findViewById(R.id.synRecyclerView);
