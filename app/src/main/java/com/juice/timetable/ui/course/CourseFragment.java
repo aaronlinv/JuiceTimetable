@@ -34,6 +34,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -97,6 +99,9 @@ public class CourseFragment extends Fragment {
         mOneWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(OneWeekCourseViewModel.class);
         mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
 
+        //开启tool bar
+        setHasOptionsMenu(true);
+
         initConfig();
         initCurrentWeek();
         initView();
@@ -108,11 +113,6 @@ public class CourseFragment extends Fragment {
 
         return binding.getRoot();
     }
-
-    public CourseFragment() {
-        setHasOptionsMenu(true);
-    }
-
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -181,8 +181,11 @@ public class CourseFragment extends Fragment {
         if (showGuide) {
             LogUtils.getInstance().d("显示首次登录 引导提示");
             // 显示引导
-            showGuideView();
-
+            try {
+                showGuideView();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             // 首次登录引导显示一次，然后就置为false 以后不显示
             PreferencesUtils.putBoolean(Constant.FIRST_LOGIN_GUIDE, false);
         }
@@ -222,46 +225,65 @@ public class CourseFragment extends Fragment {
                                 .onHide(new ViewTooltip.ListenerHide() {
                                     @Override
                                     public void onHide(View view) {
-                                        View itemGoCurrentWeek = requireActivity().findViewById(R.id.item_go_current_week);
-                                        if (itemGoCurrentWeek == null) {
+                                        View origin_course = requireActivity().findViewById(R.id.item_origin_course);
+                                        if (origin_course == null) {
                                             return;
                                         }
-                                        ViewTooltip.on(itemGoCurrentWeek)
-                                                .autoHide(true, 2000)
+                                        ViewTooltip.on(origin_course)
                                                 .position(ViewTooltip.Position.BOTTOM)
-                                                .color(getResources().getColor(R.color.blue))
                                                 .clickToHide(true)
-                                                .text("回到当前周")
+                                                .autoHide(true, 2000)
+                                                .color(getResources().getColor(R.color.blue))
+                                                .text("这里是查看源课表")
+                                                .arrowSourceMargin(0)
+                                                .arrowTargetMargin(0)
                                                 .animation(new ViewTooltip.FadeTooltipAnimation(500))
                                                 .onHide(new ViewTooltip.ListenerHide() {
                                                     @Override
                                                     public void onHide(View view) {
-                                                        View itemMoreOption = requireActivity().findViewById(R.id.item_more_option);
-                                                        if (itemMoreOption == null) {
+                                                        View itemGoCurrentWeek = requireActivity().findViewById(R.id.item_go_current_week);
+                                                        if (itemGoCurrentWeek == null) {
                                                             return;
                                                         }
-                                                        ViewTooltip.on(itemMoreOption)
-                                                                .position(ViewTooltip.Position.BOTTOM)
+                                                        ViewTooltip.on(itemGoCurrentWeek)
                                                                 .autoHide(true, 2000)
+                                                                .position(ViewTooltip.Position.BOTTOM)
                                                                 .color(getResources().getColor(R.color.blue))
                                                                 .clickToHide(true)
-                                                                .text("更多设置")
+                                                                .text("回到当前周")
                                                                 .animation(new ViewTooltip.FadeTooltipAnimation(500))
                                                                 .onHide(new ViewTooltip.ListenerHide() {
                                                                     @Override
                                                                     public void onHide(View view) {
-                                                                        if (mSlRefresh == null) {
+                                                                        View itemMoreOption = requireActivity().findViewById(R.id.item_more_option);
+                                                                        if (itemMoreOption == null) {
                                                                             return;
                                                                         }
-                                                                        ViewTooltip.on(mSlRefresh)
-                                                                                .position(ViewTooltip.Position.TOP)
+                                                                        ViewTooltip.on(itemMoreOption)
+                                                                                .position(ViewTooltip.Position.BOTTOM)
                                                                                 .autoHide(true, 2000)
-                                                                                .align(ViewTooltip.ALIGN.CENTER)
                                                                                 .color(getResources().getColor(R.color.blue))
                                                                                 .clickToHide(true)
-                                                                                .distanceWithView(-height)
-                                                                                .text("下拉刷新课表，左右滑动切换周")
+                                                                                .text("更多设置")
                                                                                 .animation(new ViewTooltip.FadeTooltipAnimation(500))
+                                                                                .onHide(new ViewTooltip.ListenerHide() {
+                                                                                    @Override
+                                                                                    public void onHide(View view) {
+                                                                                        if (mSlRefresh == null) {
+                                                                                            return;
+                                                                                        }
+                                                                                        ViewTooltip.on(mSlRefresh)
+                                                                                                .position(ViewTooltip.Position.TOP)
+                                                                                                .autoHide(true, 2000)
+                                                                                                .align(ViewTooltip.ALIGN.CENTER)
+                                                                                                .color(getResources().getColor(R.color.blue))
+                                                                                                .clickToHide(true)
+                                                                                                .distanceWithView(-height)
+                                                                                                .text("下拉刷新课表，左右滑动切换周")
+                                                                                                .animation(new ViewTooltip.FadeTooltipAnimation(500))
+                                                                                                .show();
+                                                                                    }
+                                                                                })
                                                                                 .show();
                                                                     }
                                                                 })
@@ -270,11 +292,9 @@ public class CourseFragment extends Fragment {
                                                 })
                                                 .show();
                                     }
-                                })
-                                .show();
+                                }).show();
                     }
                 }).show();
-
     }
 
     /**
@@ -316,16 +336,6 @@ public class CourseFragment extends Fragment {
             @SuppressLint("RtlHardcoded")
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-/*                int week = item.getItemId() + 1;
-                LogUtils.getInstance().d("MenuItem <" + week + "> onMenuItemClick");
-
-                if (week != Constant.CUR_WEEK) {
-                    toolbar.setTitle("第" + week + "周 (非本周)");
-                } else {
-                    toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
-                }
-
-                mVpCourse.setCurrentItem(item.getItemId(), true);*/
                 // 跳转当前周 图标监听
                 if (item.getItemId() == R.id.item_go_current_week) {
                     // 如果是当前周，提示
@@ -339,6 +349,10 @@ public class CourseFragment extends Fragment {
                 }
                 if (item.getItemId() == R.id.item_more_option) {
                     popupWindowEvent();
+                }
+                if (item.getItemId() == R.id.item_origin_course) {
+                    NavController controller  = Navigation.findNavController(requireView());
+                    controller.navigate(R.id.action_nav_course_to_nav_courseWebView);
                 }
                 return false;
             }

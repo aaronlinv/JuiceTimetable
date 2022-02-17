@@ -93,7 +93,12 @@ public class MainActivity extends BaseActivity {
         // Passing each menu ID as a set of Ids because each menu should be considered as top level destinations.
         // app bar与nav元素、navView绑定
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_course, R.id.nav_login, R.id.nav_about, R.id.nav_grade, R.id.nav_exam)
+                R.id.nav_course,
+                R.id.nav_login,
+                R.id.nav_about,
+                R.id.nav_grade,
+                R.id.nav_exam,
+                R.id.nav_tools)
                 .setDrawerLayout(drawer)
                 .build();
         //NavController与界面绑定

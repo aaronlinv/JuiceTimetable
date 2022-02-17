@@ -7,14 +7,10 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_course">周课表</string>
-    <string name="menu_login">修改认证信息</string>
-
     <string name="home_second">Home Second</string>
     <string name="tv_amend_title">登录</string>
     <string name="et_sno">学号</string>
     <string name="et_edu_password">教务网密码</string>
-
     <string name="btn_go">登录</string>
     <string name="btn_user_item">用户条款</string>
 
@@ -22,7 +18,6 @@
     <string name="textView1">序号</string>
     <string name="textView2">学号</string>
     <string name="textView3">姓名</string>
-    <string name="menu_about">关于</string>
     <string name="todo">TODO</string>
 
     <string name="app_name_for_about">橙汁</string>
@@ -81,6 +76,7 @@
     <string name="bt_item">用户条款</string>
     <string name="bt_Update">更新认证信息</string>
 
+    <string name="go_origin_course">跳转到原始课表</string>
     <string name="go_current_week">跳转到当前周</string>
     <string name="more_option">更多选项</string>
     <string name="tip_show_mooc">显示慕课</string>
@@ -91,11 +87,17 @@
     <string name="tip_example_mooc">走进航空航天</string>
     <string name="cool_apk">酷安</string>
 
-    <string name="menu_grade">成绩查询</string>
     <string name="syngrade">综合成绩</string>
     <string name="unigrade">统考成绩</string>
 
+    <string name="menu_about">关于</string>
+    <string name="menu_course_webView">源课表</string>
+    <string name="menu_grade">成绩查询</string>
     <string name="menu_exam">考场查询</string>
+    <string name="menu_tools">工具箱</string>
+    <string name="menu_course">周课表</string>
+    <string name="menu_login">修改认证信息</string>
+    <string name="menu_settings">设置</string>
 
     <string name="check_for_updates">检查更新</string>
     <string name="new_version_dialog_title_course">有新版可用</string>
@@ -103,5 +105,24 @@
     <string name="ok_quit_dialog_title">好</string>
     <string name="no_quit_dialog_title">取消</string>
     <string name="ignore_quit_dialog_title">下次一定</string>
+
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

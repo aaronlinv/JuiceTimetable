@@ -16,6 +16,9 @@
             app:destination="@id/initFragment"
             app:popUpTo="@id/nav_course"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_nav_course_to_nav_courseWebView"
+            app:destination="@id/nav_courseWebView" />
 
     </fragment>
 
@@ -49,4 +52,19 @@
         android:name="com.juice.timetable.ui.exam.ExamFragment"
         android:label="@string/menu_exam"
         tools:layout="@layout/fragment_exam" />
+    <fragment
+        android:id="@+id/nav_courseWebView"
+        android:name="com.juice.timetable.ui.course.CourseWebViewFragment"
+        android:label="@string/menu_course_webView"
+        tools:layout="@layout/fragment_course_web_view" />
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.juice.timetable.ui.settings.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@xml/root_preferences"/>
+    <fragment
+        android:id="@+id/nav_tools"
+        android:name="com.juice.timetable.ui.tools.ToolsFragment"
+        android:label="@string/menu_tools"
+        tools:layout="@layout/fragment_tools" />
 </navigation>

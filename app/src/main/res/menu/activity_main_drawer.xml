@@ -17,9 +17,18 @@
             android:icon="@drawable/exam"
             android:title="@string/menu_exam" />
         <item
+            android:id="@+id/nav_tools"
+            android:icon="@drawable/tools"
+            android:title="@string/menu_tools" />
+
+        <item
             android:id="@+id/nav_login"
             android:icon="@drawable/edit"
             android:title="@string/menu_login" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/settings"
+            android:title="@string/menu_settings" />
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/about"
