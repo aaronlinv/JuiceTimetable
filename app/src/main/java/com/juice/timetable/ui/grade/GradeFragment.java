@@ -45,9 +45,9 @@ public class GradeFragment extends Fragment {
 
     }
 
-    private void findID(View contextView) {
-        tabLayout = contextView.findViewById(R.id.tabgrade);
-        viewpager = contextView.findViewById(R.id.vp_grade);
+    private void findID(View root) {
+        tabLayout = root.findViewById(R.id.tabgrade);
+        viewpager = root.findViewById(R.id.vp_grade);
     }
 
     @Override

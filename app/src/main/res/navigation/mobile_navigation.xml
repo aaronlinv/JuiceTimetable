@@ -66,5 +66,12 @@
         android:id="@+id/nav_tools"
         android:name="com.juice.timetable.ui.tools.ToolsFragment"
         android:label="@string/menu_tools"
-        tools:layout="@layout/fragment_tools" />
+        tools:layout="@layout/fragment_tools" >
+        <action
+            android:id="@+id/action_nav_tools_to_nav_grade"
+            app:destination="@id/nav_grade" />
+        <action
+            android:id="@+id/action_nav_tools_to_nav_exam"
+            app:destination="@id/nav_exam" />
+    </fragment>
 </navigation>

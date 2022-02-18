@@ -9,18 +9,9 @@
             android:icon="@drawable/course"
             android:title="@string/menu_course" />
         <item
-            android:id="@+id/nav_grade"
-            android:icon="@drawable/grade"
-            android:title="@string/menu_grade" />
-        <item
-            android:id="@+id/nav_exam"
-            android:icon="@drawable/exam"
-            android:title="@string/menu_exam" />
-        <item
             android:id="@+id/nav_tools"
             android:icon="@drawable/tools"
             android:title="@string/menu_tools" />
-
         <item
             android:id="@+id/nav_login"
             android:icon="@drawable/edit"

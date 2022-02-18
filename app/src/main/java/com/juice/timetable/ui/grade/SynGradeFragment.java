@@ -78,7 +78,7 @@ public class SynGradeFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.grade_bar, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_grade_search).getActionView();
-        searchView.setMaxWidth(300);
+        searchView.setMaxWidth(1000);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
