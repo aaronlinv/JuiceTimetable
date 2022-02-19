@@ -6,6 +6,7 @@ import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.util.Calendar;
 import android.net.Uri;
@@ -36,6 +37,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -108,9 +110,11 @@ public class CourseFragment extends Fragment {
         initCourse();
         // 首次打开引导
         firstGuide();
-        //检查更新
-        checkUpdate();
-
+        //设置是否开启自动检查更新
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        if (preferences.getBoolean("sync", false)) {
+            checkUpdate();
+        }
         return binding.getRoot();
     }
 
@@ -351,7 +355,7 @@ public class CourseFragment extends Fragment {
                     popupWindowEvent();
                 }
                 if (item.getItemId() == R.id.item_origin_course) {
-                    NavController controller  = Navigation.findNavController(requireView());
+                    NavController controller = Navigation.findNavController(requireView());
                     controller.navigate(R.id.action_nav_course_to_nav_courseWebView);
                 }
                 return false;

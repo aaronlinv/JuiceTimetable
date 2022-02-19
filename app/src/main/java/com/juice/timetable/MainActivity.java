@@ -28,6 +28,7 @@ import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.utils.BaseActivity;
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.NightModeUtil;
 import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.UserInfoUtils;
 import com.juice.timetable.widget.TodayWidget;
@@ -43,6 +44,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //android O 及以上可开启跟随系统深色模式
+        NightModeUtil.AppFromSysNightMode(this);
         /**
          * 通知栏透明
          * SYSTEM_UI_FLAG_LIGHT_STATUS_BAR

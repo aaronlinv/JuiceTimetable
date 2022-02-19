@@ -7,9 +7,10 @@
         //接受按钮颜色
         <item name="colorAccent">@color/juice_deep</item>
         //光标和下划线颜色
-        <item name="colorControlActivated">@color/dark_gray</item>
+        <item name="colorControlActivated">@color/juice</item>
         //下划线默认颜色
         <item name="colorControlNormal">@color/dark_gray</item>
+        <item name="colorSwitchThumbNormal">@color/juice</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
