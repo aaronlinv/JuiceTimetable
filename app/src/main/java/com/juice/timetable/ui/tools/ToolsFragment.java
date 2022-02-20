@@ -48,8 +48,8 @@ public class ToolsFragment extends Fragment {
 
     private void initTools() {
         if (!flag) {
-            Tool tool1 = new Tool("成绩查询", R.drawable.grade);
-            Tool tool2 = new Tool("考场查询", R.drawable.exam);
+            Tool tool1 = new Tool(getResources().getString(R.string.menu_grade), R.drawable.grade);
+            Tool tool2 = new Tool(getResources().getString(R.string.menu_exam), R.drawable.exam);
             toolList.add(tool1);
             toolList.add(tool2);
 

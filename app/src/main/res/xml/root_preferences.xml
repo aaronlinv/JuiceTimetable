@@ -4,7 +4,7 @@
     <PreferenceCategory app:title="@string/messages_header">
 
         <SwitchPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             app:key="dark"
             app:summaryOff="@string/dark_theme_summary_off"
             app:summaryOn="@string/dark_theme_summary_on"
@@ -16,6 +16,7 @@
     <PreferenceCategory app:title="@string/sync_header">
 
         <SwitchPreferenceCompat
+            app:defaultValue="true"
             app:key="sync"
             app:summaryOff="@string/attachment_summary_off"
             app:summaryOn="@string/attachment_summary_on"

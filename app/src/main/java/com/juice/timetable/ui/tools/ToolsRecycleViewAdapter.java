@@ -23,7 +23,6 @@ import java.util.List;
  * </pre>
  */
 public class ToolsRecycleViewAdapter extends RecyclerView.Adapter<ToolsRecycleViewAdapter.ToolsViewHolder> {
-    //    String[] toolList = {"成绩查询","考场查询"};
     List<Tool> toolList = new ArrayList<>();
 
     public void setToolList(List<Tool> toolList) {
@@ -49,9 +48,9 @@ public class ToolsRecycleViewAdapter extends RecyclerView.Adapter<ToolsRecycleVi
             @Override
             public void onClick(View v) {
                 NavController navController = Navigation.findNavController(v);
-                if (tool.getToolName().equals("成绩查询")) {
+                if (tool.getToolName().equals(holder.toolTextView.getResources().getString(R.string.menu_grade))) {
                     navController.navigate(R.id.action_nav_tools_to_nav_grade);
-                } else if (tool.getToolName().equals("考场查询")) {
+                } else if (tool.getToolName().equals(holder.toolTextView.getResources().getString(R.string.menu_exam))) {
                     navController.navigate(R.id.action_nav_tools_to_nav_exam);
                 }
             }
