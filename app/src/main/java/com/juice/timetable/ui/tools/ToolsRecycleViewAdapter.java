@@ -16,6 +16,8 @@ import com.juice.timetable.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 /**
  * <pre>
  *     author : wyx
@@ -48,10 +50,12 @@ public class ToolsRecycleViewAdapter extends RecyclerView.Adapter<ToolsRecycleVi
             @Override
             public void onClick(View v) {
                 NavController navController = Navigation.findNavController(v);
-                if (tool.getToolName().equals(holder.toolTextView.getResources().getString(R.string.menu_grade))) {
+                if (tool.getToolName().equals(holder.itemView.getResources().getString(R.string.menu_grade))) {
                     navController.navigate(R.id.action_nav_tools_to_nav_grade);
-                } else if (tool.getToolName().equals(holder.toolTextView.getResources().getString(R.string.menu_exam))) {
+                } else if (tool.getToolName().equals(holder.itemView.getResources().getString(R.string.menu_exam))) {
                     navController.navigate(R.id.action_nav_tools_to_nav_exam);
+                } else if(tool.getToolName().equals(holder.itemView.getResources().getString(R.string.menu_expect))){
+                    Toasty.info(v.getContext(), "(๑•̀ㅂ•́)و✧", Toasty.LENGTH_SHORT,false).show();
                 }
             }
         });

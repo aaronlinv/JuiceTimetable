@@ -48,10 +48,12 @@ public class ToolsFragment extends Fragment {
 
     private void initTools() {
         if (!flag) {
-            Tool tool1 = new Tool(getResources().getString(R.string.menu_grade), R.drawable.grade);
-            Tool tool2 = new Tool(getResources().getString(R.string.menu_exam), R.drawable.exam);
-            toolList.add(tool1);
-            toolList.add(tool2);
+            Tool grade = new Tool(getResources().getString(R.string.menu_grade), R.drawable.grade);
+            Tool exam = new Tool(getResources().getString(R.string.menu_exam), R.drawable.exam);
+            Tool expect = new Tool(getResources().getString(R.string.menu_expect),R.drawable.expect);
+            toolList.add(grade);
+            toolList.add(exam);
+            toolList.add(expect);
 
             flag = true;
         }

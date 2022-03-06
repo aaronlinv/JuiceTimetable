@@ -94,6 +94,7 @@
     <string name="menu_course_webView">源课表</string>
     <string name="menu_grade">考试成绩</string>
     <string name="menu_exam">考场安排</string>
+    <string name="menu_expect">后续功能尽情期待…</string>
     <string name="menu_tools">工具箱</string>
     <string name="menu_course">周课表</string>
     <string name="menu_login">修改认证信息</string>

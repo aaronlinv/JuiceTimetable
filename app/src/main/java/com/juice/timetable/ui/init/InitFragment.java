@@ -118,12 +118,9 @@ public class InitFragment extends Fragment {
                     binding.btnGo.setVisibility(View.GONE);
                     //loading显示
                     showLoading(binding.btnGo);
-
                     checkPassword();
                 }
-
             }
-
         }
         mHandler = new Handler(Looper.getMainLooper()) {
             @SuppressLint("UseCompatLoadingForDrawables")

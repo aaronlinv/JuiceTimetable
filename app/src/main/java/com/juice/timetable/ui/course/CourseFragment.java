@@ -351,9 +351,11 @@ public class CourseFragment extends Fragment {
                     }
                     LogUtils.getInstance().d("点击了 跳转到当前周图标 -- > " + (Constant.CUR_WEEK - 1));
                 }
+                // 更多选项 图标监听
                 if (item.getItemId() == R.id.item_more_option) {
                     popupWindowEvent();
                 }
+                // 源科表 图标监听
                 if (item.getItemId() == R.id.item_origin_course) {
                     NavController controller = Navigation.findNavController(requireView());
                     controller.navigate(R.id.action_nav_course_to_nav_courseWebView);

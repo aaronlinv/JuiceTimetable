@@ -30,6 +30,7 @@ import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.bean.StuInfo;
 import com.juice.timetable.data.http.EduInfo;
+import com.juice.timetable.data.viewmodel.AllWeekCourseViewModel;
 import com.juice.timetable.data.viewmodel.OneWeekCourseViewModel;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.databinding.FragmentLoginBinding;
@@ -52,6 +53,7 @@ public class LoginFragment extends Fragment {
     private Handler mHandler;
     private LoadingBar mLoadingBar;
     private StuInfoViewModel mStuInfoViewModel;
+    private AllWeekCourseViewModel mAllWeekCourseViewModel;
     private OneWeekCourseViewModel mOneWeekCourseViewModel;
 
 
@@ -63,6 +65,7 @@ public class LoginFragment extends Fragment {
         mDrawerLayout = requireActivity().findViewById(R.id.drawer_layout);
         mStuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
         mOneWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(OneWeekCourseViewModel.class);
+        mAllWeekCourseViewModel = new ViewModelProvider(requireActivity()).get(AllWeekCourseViewModel.class);
 
         // 隐藏 toolbar 的按钮 和星期下拉菜单按钮
         Toolbar toolbar = requireActivity().findViewById(R.id.toolbar);
@@ -232,6 +235,8 @@ public class LoginFragment extends Fragment {
     private void updateUser() {
         // 先删除用户信息
         mStuInfoViewModel.deleteStuInfo();
+        mAllWeekCourseViewModel.deleteAllWeekCourse();
+        mOneWeekCourseViewModel.deleteOneWeekCourse();
 
         Integer snoStr = Integer.parseInt(mSno);
         StuInfo stuInfo1 = new StuInfo();

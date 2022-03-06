@@ -53,12 +53,12 @@ public class SynGradeRecycleViewAdapter extends RecyclerView.Adapter<SynGradeRec
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SynViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull SynViewHolder holder, int position) {
         if (synGradeList != null && !synGradeList.isEmpty()) {
             SynGrade synGrade = synGradeList.get(position);
-            holder.textViewYear.setText(String.valueOf(synGrade.getCouYear()));
-            holder.textViewGradeName.setText(String.valueOf(synGrade.getCouName()));
-            holder.textViewSynGrade.setText(String.valueOf(synGrade.getCouGrade()));
+            holder.textViewYear.setText(synGrade.getCouYear());
+            holder.textViewGradeName.setText(synGrade.getCouName());
+            holder.textViewSynGrade.setText(synGrade.getCouGrade());
             //点击显示完成信息
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
