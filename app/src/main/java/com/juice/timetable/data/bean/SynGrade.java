@@ -12,8 +12,8 @@ import androidx.room.PrimaryKey;
 //综合成绩(学校考试的成绩)
 @Entity
 public class SynGrade {
-    @PrimaryKey(autoGenerate = true)
-    private Integer syngradeId;
+    @PrimaryKey
+    private Integer synGradeId;
 
     private String couYear;             //选课时间
     private String couName;             //课程名
@@ -24,22 +24,8 @@ public class SynGrade {
     private String examType;            //考试类型
     private String optionalCourseType;  //选修类型
 
-    @Override
-    public String toString() {
-        return "SynGrade{" +
-                "syngradeId=" + syngradeId +
-                ", couYear='" + couYear + '\'' +
-                ", couName='" + couName + '\'' +
-                ", couGrade='" + couGrade + '\'' +
-                ", courseCredit='" + courseCredit + '\'' +
-                ", gradePoint='" + gradePoint + '\'' +
-                ", obtainCredit='" + obtainCredit + '\'' +
-                ", examType='" + examType + '\'' +
-                ", optionalCourseType='" + optionalCourseType + '\'' +
-                '}';
-    }
-
-    public SynGrade(String couYear, String couName, String couGrade, String courseCredit, String gradePoint, String obtainCredit, String examType, String optionalCourseType) {
+    public SynGrade(Integer synGradeId, String couYear, String couName, String couGrade, String courseCredit, String gradePoint, String obtainCredit, String examType, String optionalCourseType) {
+        this.synGradeId = synGradeId;
         this.couYear = couYear;
         this.couName = couName;
         this.couGrade = couGrade;
@@ -50,12 +36,12 @@ public class SynGrade {
         this.optionalCourseType = optionalCourseType;
     }
 
-    public Integer getSyngradeId() {
-        return syngradeId;
+    public Integer getSynGradeId() {
+        return synGradeId;
     }
 
-    public void setSyngradeId(Integer syngradeId) {
-        this.syngradeId = syngradeId;
+    public void setSynGradeId(Integer synGradeId) {
+        this.synGradeId = synGradeId;
     }
 
     public String getCouYear() {

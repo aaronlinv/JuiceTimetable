@@ -23,6 +23,9 @@ public class ParseExam {
         Document doc = Jsoup.parse(parseStr);
 
         Elements rootSelect = doc.select("body > table > tbody > tr:nth-child(4) > td > table > tbody > tr");
+
+        int examId = 0;
+
         for (Element ele : rootSelect) {
             Elements all = ele.select("td");
 
@@ -48,7 +51,7 @@ public class ParseExam {
             Element classGradeAll = all.get(6);
             String classGrade = classGradeAll.text();       //班级
 
-            Exam exam = new Exam(semester, courseName, examType, examTime, examCategory,
+            Exam exam = new Exam(examId++, semester, courseName, examType, examTime, examCategory,
                     arrangement, classGrade);
 
             examArrayList.add(exam);

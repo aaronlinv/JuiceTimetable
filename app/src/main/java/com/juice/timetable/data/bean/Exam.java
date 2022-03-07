@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey;
  */
 @Entity
 public class Exam {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private Integer examId;
 
     private String semester;        //开课学期
@@ -23,8 +23,8 @@ public class Exam {
     private String classGrade;      //班级
 
 
-    public Exam(String semester, String courseName, String examType, String examTime,
-                String examCategory, String arrangement, String classGrade) {
+    public Exam(Integer examId, String semester, String courseName, String examType, String examTime, String examCategory, String arrangement, String classGrade) {
+        this.examId = examId;
         this.semester = semester;
         this.courseName = courseName;
         this.examType = examType;
@@ -32,20 +32,6 @@ public class Exam {
         this.examCategory = examCategory;
         this.arrangement = arrangement;
         this.classGrade = classGrade;
-    }
-
-    @Override
-    public String toString() {
-        return "Exam{" +
-                "examId=" + examId +
-                ", semester='" + semester + '\'' +
-                ", courseName='" + courseName + '\'' +
-                ", examType='" + examType + '\'' +
-                ", examTime='" + examTime + '\'' +
-                ", examCategory='" + examCategory + '\'' +
-                ", arrangement='" + arrangement + '\'' +
-                ", classGrade='" + classGrade + '\'' +
-                '}';
     }
 
     public Integer getExamId() {

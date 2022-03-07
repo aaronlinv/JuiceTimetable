@@ -6,34 +6,34 @@ import androidx.room.PrimaryKey;
 /**
  * <pre>
  *     author : wyx
- *     time   : 2021/5/6 10:24
+ *     time   : 2022/3/8 0:09
  * </pre>
  */
 //统考成绩(四六级等)
 @Entity
 public class UniGrade {
+    @PrimaryKey
+    private Integer uniGradeId;
 
-    @PrimaryKey(autoGenerate = true)
-    private Integer unigradeId;
     public String uYear;
     public String uName;
     public String uGrade;
     public String uRemarks;
 
-
-    public UniGrade(String uYear, String uName, String uGrade, String uRemarks) {
+    public UniGrade(Integer uniGradeId, String uYear, String uName, String uGrade, String uRemarks) {
+        this.uniGradeId = uniGradeId;
         this.uYear = uYear;
         this.uName = uName;
         this.uGrade = uGrade;
         this.uRemarks = uRemarks;
     }
 
-    public Integer getUnigradeId() {
-        return unigradeId;
+    public Integer getUniGradeId() {
+        return uniGradeId;
     }
 
-    public void setUnigradeId(Integer unigradeId) {
-        this.unigradeId = unigradeId;
+    public void setUniGradeId(Integer uniGradeId) {
+        this.uniGradeId = uniGradeId;
     }
 
     public String getuYear() {

@@ -21,6 +21,8 @@ public class ParseGrade {
         //爬虫
         Elements rootSelect = doc.select("tbody > tr");
 
+        int uniGradeId = 0;
+
         for (Element ele : rootSelect) {
             Elements all = ele.select("td");
             Element uYearAll = all.get(0);           //学年
@@ -36,7 +38,7 @@ public class ParseGrade {
             Element uRemarkAll = all.get(3);           //备注
             String uRemark = uRemarkAll.text();
 
-            UniGrade uniGrade = new UniGrade(uYear, uName, uGrade, uRemark);
+            UniGrade uniGrade = new UniGrade(uniGradeId++, uYear, uName, uGrade, uRemark);
 
             uniGradeArrayList.add(uniGrade);
         }
@@ -51,6 +53,8 @@ public class ParseGrade {
         //如果存在成绩评测，就直接返回空列表
 
         Elements rootselect = doc.select("body > table > tbody > tr:nth-child(2) > td > table:nth-child(4) > tbody > tr");
+
+        int synGradeId = 0;
 
         for (Element ele : rootselect) {
             //然后获得标签里面具体的内容
@@ -92,7 +96,7 @@ public class ParseGrade {
                 optionalCourseType = optionalCourseTypeAll.text();
             }
 
-            SynGrade synGrade = new SynGrade(couYear, courseName, couGrade, courseCredit,
+            SynGrade synGrade = new SynGrade(synGradeId++, couYear, courseName, couGrade, courseCredit,
                     gradePoint, obtainCredit, examType, optionalCourseType);
 
             synGradeArrayList.add(synGrade);

@@ -30,7 +30,7 @@ import com.juice.timetable.data.dao.UniGradeDao;
  *     version: 1.0
  * </pre>
  */
-@Database(entities = {OneWeekCourse.class,  StuInfo.class, Course.class, SynGrade.class, UniGrade.class, Exam.class}, version = 3, exportSchema = false)
+@Database(entities = {OneWeekCourse.class,  StuInfo.class, Course.class, SynGrade.class, UniGrade.class, Exam.class}, version = 4, exportSchema = false)
 public abstract class JuiceDatabase extends RoomDatabase {
     private static JuiceDatabase INSTANCE;
 
