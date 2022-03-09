@@ -1,5 +1,7 @@
 package com.juice.timetable.ui.about;
 
+import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
+
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,8 +36,6 @@ import java.util.List;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import es.dmoral.toasty.Toasty;
 
-import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
-
 public class AboutFragment extends Fragment {
     private TextView developer, cookApk, github, versionView, feedback;
     private Button checkUpdatesButton;
@@ -66,6 +66,7 @@ public class AboutFragment extends Fragment {
         checkUpdate();
     }
 
+    // 按钮点击跳转功能
     private void setOnClickListener() {
         checkUpdatesButton.setOnClickListener(v -> {
             // 爬虫获取酷安的版本号
@@ -89,7 +90,7 @@ public class AboutFragment extends Fragment {
             }).start();
         });
         github.setOnClickListener(v -> {
-            Uri uri = Uri.parse("https://github.com/aaronlinv/JuiceTimetable");
+            Uri uri = Uri.parse(Constant.URI_GITHUB);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
         });
@@ -143,8 +144,8 @@ public class AboutFragment extends Fragment {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
-                if (msg.what == Constant.MSG_COOLAPKID_SUCCESS) {// 询问是否下载更新
-
+                // 询问是否下载更新
+                if (msg.what == Constant.MSG_COOLAPKID_SUCCESS) {
                     if (id.equals(currVersion)) {
                         Toasty.custom(requireActivity(), "已经是最新版本",
                                 getResources().getDrawable(R.drawable.about, null),
