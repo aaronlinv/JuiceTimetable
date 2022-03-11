@@ -344,7 +344,11 @@ public class CourseFragment extends Fragment {
                 if (item.getItemId() == R.id.item_go_current_week) {
                     // 如果是当前周，提示
                     if (mVpCourse.getCurrentItem() == Constant.CUR_WEEK - 1) {
-                        Toasty.custom(requireActivity(), "已在当前周", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                        Toasty.custom(requireActivity(), "已在当前周",
+                                getResources().getDrawable(R.drawable.course1,null),
+                                getResources().getColor(R.color.green,null),
+                                getResources().getColor(R.color.white,null),
+                                LENGTH_SHORT, true, true).show();
                         Toasty.Config.reset();
                     } else {
                         mVpCourse.setCurrentItem(Constant.CUR_WEEK - 1, true);
@@ -364,7 +368,6 @@ public class CourseFragment extends Fragment {
             }
         });
 
-
         // 下拉刷新监听
         mSlRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -381,13 +384,6 @@ public class CourseFragment extends Fragment {
                 mCurViewPagerNum = position;
                 // 设置 toolbar 显示当前周
                 mSpinner.setSelectedIndex(position);
-
-/*                int week = position + 1;
-                if (week != Constant.CUR_WEEK) {
-                    toolbar.setTitle("第" + week + "周 (非本周)");
-                } else {
-                    toolbar.setTitle("第" + week + "周");
-                }*/
             }
         });
 
@@ -516,10 +512,18 @@ public class CourseFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 LogUtils.getInstance().d("慕课显示按钮 -- > " + isChecked);
                 if (isChecked) {
-                    Toasty.custom(requireActivity(), "慕课显示开启，课表下方会显示所选慕课信息", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_LONG, true, true).show();
+                    Toasty.custom(requireActivity(), "慕课显示开启，课表下方会显示所选慕课信息",
+                            getResources().getDrawable(R.drawable.course1, null),
+                            getResources().getColor(R.color.green, null),
+                            getResources().getColor(R.color.white, null),
+                            LENGTH_LONG, true, true).show();
                     Toasty.Config.reset();
                 } else {
-                    Toasty.custom(requireActivity(), "慕课显示已关闭", getResources().getDrawable(R.drawable.course1), getResources().getColor(R.color.green), getResources().getColor(R.color.white), LENGTH_SHORT, true, true).show();
+                    Toasty.custom(requireActivity(), "慕课显示已关闭",
+                            getResources().getDrawable(R.drawable.course1, null),
+                            getResources().getColor(R.color.green, null),
+                            getResources().getColor(R.color.white, null),
+                            LENGTH_SHORT, true, true).show();
                     Toasty.Config.reset();
                 }
                 Constant.ENABLE_SHOW_MOOC = isChecked;
@@ -557,13 +561,6 @@ public class CourseFragment extends Fragment {
         LogUtils.getInstance().d("spinner 设置当前周 -- > " + curWeek);
 
         mSpinner.setSelectedIndex(curWeek - 1);
-/*        // 显示标题栏
-
-        if ((mCurViewPagerNum + 1) != Constant.CUR_WEEK) {
-            toolbar.setTitle("第" + Constant.CUR_WEEK + "周 (非本周)");
-        } else {
-            toolbar.setTitle("第" + Constant.CUR_WEEK + "周");
-        }*/
     }
 
     /**
@@ -645,7 +642,7 @@ public class CourseFragment extends Fragment {
         }
 
         mSpinner.setItems(weekArr);
-        mSpinner.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        mSpinner.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark,null));
         mSpinner.setTextColor(0xFF000000);
         mSpinner.setTextSize(20);
         mSpinner.setDropdownMaxHeight(700);
@@ -754,7 +751,11 @@ public class CourseFragment extends Fragment {
                             if ("您输入的教务网用户名或是密码有误".equals(msgStr)) {
                                 msgStr = "教务网密码已被更改，请在修改认证信息页面进行修改";
                             }
-                            Toasty.custom(requireActivity(), msgStr, getResources().getDrawable(R.drawable.ic_error, null), getResources().getColor(R.color.red, null), getResources().getColor(R.color.white, null), LENGTH_LONG, true, true).show();
+                            Toasty.custom(requireActivity(), msgStr,
+                                    getResources().getDrawable(R.drawable.ic_error, null),
+                                    getResources().getColor(R.color.red, null),
+                                    getResources().getColor(R.color.white, null),
+                                    LENGTH_LONG, true, true).show();
                             Toasty.Config.reset();
                             mSlRefresh.setRefreshing(false);
                         } else {
@@ -768,7 +769,11 @@ public class CourseFragment extends Fragment {
                                 PreferencesUtils.putInt(Constant.PREF_RAINBOW_MODE_NUM, rainbowModeNum);
                             }
                             updateCourse();
-                            Toasty.custom(requireActivity(), "课表刷新成功", getResources().getDrawable(R.drawable.course1, null), getResources().getColor(R.color.green, null), getResources().getColor(R.color.white, null), LENGTH_SHORT, true, true).show();
+                            Toasty.custom(requireActivity(), "课表刷新成功",
+                                    getResources().getDrawable(R.drawable.course1, null),
+                                    getResources().getColor(R.color.green, null),
+                                    getResources().getColor(R.color.white, null),
+                                    LENGTH_SHORT, true, true).show();
                             Toasty.Config.reset();
                             mSlRefresh.setRefreshing(false);
                         }

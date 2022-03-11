@@ -3,6 +3,7 @@ package com.juice.timetable.data.http;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 
 import com.juice.timetable.utils.CaptchaUtils;
 import com.juice.timetable.utils.HttpUtils;
@@ -102,12 +103,9 @@ public class EduHttp {
 
         Response response = client.newCall(request).execute();
 
-//        okHttp似乎不会返回302，直接返回登录成功的200
-//        int statusCode = response.code();
-//        LogUtils.getInstance().d("模拟登录状态码：" + statusCode);
         String result = response.body().string();
         LogUtils.getInstance().d("result == >" + result);
-        if (result == null) {
+        if (TextUtils.isEmpty(result)) {
             throw new Exception("responseBody为空");
         } else if (result.contains("您输入的用户名或是密码出错")) {
             throw new Exception("您输入的教务网用户名或是密码有误");

@@ -21,12 +21,14 @@ public class Constant {
     public static final String URI_SYNGRADE = "https://jwc.fdzcxy.edu.cn/cjgl/cx/zhcx_xs.asp";
     // 统考成绩
     public static final String URI_UNIGRADE = "https://jwc.fdzcxy.edu.cn/bmgl/tkcj/cjcx_xs.asp?menu_no=1004";
-
-    //考试查询
+    // 考试查询
     public static final String URI_EXAM = "https://jwc.fdzcxy.edu.cn/ksgl/ksap/ksap_xs_list.asp";
 
-    //橙汁的酷安地址
+    // 橙汁的酷安地址
     public static final String URI_COOLAPK = "https://www.coolapk.com/apk/com.juice.timetable";
+
+    // GitHub地址
+    public static final String URI_GITHUB = "https://github.com/aaronlinv/JuiceTimetable";
 
 
     // 登录成功

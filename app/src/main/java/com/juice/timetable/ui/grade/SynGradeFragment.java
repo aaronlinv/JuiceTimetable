@@ -112,11 +112,12 @@ public class SynGradeFragment extends Fragment {
                 Message message = new Message();
                 try {
                     //获取成绩网页源码
-                    String pagesource = GradeInfo.getGradeSource(Constant.URI_SYNGRADE);
-                    if (pagesource.contains("成绩测评后才能查询成绩")) {
+                    String pageSource = GradeInfo.getGradeSource(Constant.URI_SYNGRADE);
+                    if (pageSource.contains(String.valueOf(R.string.need_evaluation))) {
                         mSlRefresh.setRefreshing(false);
                         Looper.prepare();
-                        Toasty.custom(requireActivity(), "成绩测评后才能查询成绩!",
+                        Toasty.custom(requireActivity(),
+                                getResources().getString(R.string.need_evaluation),
                                 getResources().getDrawable(R.drawable.grade, null),
                                 getResources().getColor(R.color.green, null),
                                 getResources().getColor(R.color.white, null),
@@ -125,7 +126,7 @@ public class SynGradeFragment extends Fragment {
                         return;
                     }
                     //利用爬虫获取成绩
-                    synGradeArrayList = ParseGrade.parseSynGrade(pagesource);
+                    synGradeArrayList = ParseGrade.parseSynGrade(pageSource);
                     //先清空表
                     synGradeViewModel.deleteAllSynGrade();
                     //再插入数据库

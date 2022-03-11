@@ -74,7 +74,7 @@ public class LoginFragment extends Fragment {
         menu.setGroupVisible(0, false);
 
         //图片透明度
-        binding.imCzLogo.setAlpha(140);
+        binding.imCzLogo.setImageAlpha(140);
         return binding.getRoot();
     }
 

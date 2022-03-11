@@ -36,7 +36,6 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
     private int NODE_WIDTH = 28;
     private int WEEK_TEXT_SIZE = 12;
     private int NODE_TEXT_SIZE = 11;
-    private Integer mCurrentMonth = 5;
     private OnItemClickListener mItemClickListener;
 
     protected CourseViewListAdapter() {
@@ -122,7 +121,6 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
         int day = calendar.get(Calendar.DATE);
         LogUtils.getInstance().d("第" + item.getCurrentIndex() + "周 周一为 -- > " + month + "." + day);
 
-
         // 星期栏
         LinearLayout week = holder.itemView.findViewById(R.id.ll_week);
         week.removeAllViews();
@@ -176,8 +174,6 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
         // 课程节数列表
         LinearLayout node = holder.itemView.findViewById(R.id.ll_node);
         int dip2px = Utils.dip2px(holder.itemView.getContext().getApplicationContext(), 125);
-//        LogUtils.getInstance().d("高度 == >" + height);
-//        mHeight = mColItemHeight * mColCount;
 
         // 节数栏使用绝对高度
         int heightPixels = holder.itemView.getResources().getDisplayMetrics().heightPixels;
@@ -189,7 +185,6 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
         node.removeAllViews();
         //  课程节数栏
 
-//        int nodeItemHeight = Utils.dip2px(holder.itemView.getContext().getApplicationContext(), 55);
         for (int i = 1; i <= 11; i++) {
             TextView textView = new TextView(holder.itemView.getContext().getApplicationContext());
             textView.setTextSize(NODE_TEXT_SIZE);

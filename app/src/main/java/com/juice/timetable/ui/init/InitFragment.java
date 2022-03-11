@@ -93,7 +93,7 @@ public class InitFragment extends Fragment {
 
     @SuppressLint("HandlerLeak")
     private void judgmentLogic() {
-        // 获取三个输入框的内容
+        // 获取两个输入框的内容
         getInput();
 
         if (mSno.isEmpty()) {
@@ -142,12 +142,8 @@ public class InitFragment extends Fragment {
                         LogUtils.getInstance().d("查询数据库：" + mStuInfoViewModel.selectStuInfo());
                         // 跳转结束后将debugInit置为false否则死循环
                         Constant.DEBUG_INIT_FRAGMENT = false;
-                        // 之前使用这种退栈的方法，不靠谱
-//                        Navigation.findNavController(requireView()).popBackStack(R.id.initFragment, true);
                         Navigation.findNavController(requireView()).navigate(R.id.action_initFragment_to_nav_course);
 
-                        // 设置首次登录，刷新数据
-//                        Constant.REFRESH_DATE = true;
                         // 设置打开首次登录引导
                         PreferencesUtils.putBoolean(Constant.FIRST_LOGIN_GUIDE, true);
 
