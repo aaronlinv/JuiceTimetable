@@ -10,7 +10,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.SearchView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +33,8 @@ import com.juice.timetable.data.bean.Exam;
 import com.juice.timetable.data.http.ExamInfo;
 import com.juice.timetable.data.parse.ParseExam;
 import com.juice.timetable.data.viewmodel.ExamViewModel;
+import com.juice.timetable.data.viewmodel.StuInfoViewModel;
+import com.juice.timetable.utils.PreferencesUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,12 +42,18 @@ import java.util.List;
 public class ExamFragment extends Fragment {
     private SwipeRefreshLayout mSlRefresh;
     private ExamViewModel examViewModel;
+    private StuInfoViewModel stuInfoViewModel;
     private RecyclerView examRecyclerView;
     private List<Exam> examArrayList;
     private Handler mHandler;
     private ExamRecycleViewAdapter examRecycleViewAdapter;
     private LiveData<List<Exam>> filterExamList;
+    private Spinner spinnerExamYear, spinnerExamType;
 
+    private String year;
+    private String type;
+    String[] mItemsYear = new String[4];
+    String[] mItemsType = {"上", "下"};
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -63,24 +75,31 @@ public class ExamFragment extends Fragment {
         findID(root);
         //初始化ViewModel
         examViewModel = new ViewModelProvider(requireActivity()).get(ExamViewModel.class);
+        stuInfoViewModel = new ViewModelProvider(requireActivity()).get(StuInfoViewModel.class);
+
+        //初始化spinner
+        initSpinner();
+        //切换学期
+        shiftSemester();
+
         //布局管理器
         examRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         examRecycleViewAdapter = new ExamRecycleViewAdapter();
         examRecyclerView.setAdapter(examRecycleViewAdapter);
 
-        getExamData();
         //开启搜索
         setHasOptionsMenu(true);
 
         return root;
     }
 
+    //搜索功能
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.exam_bar, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_exam_search).getActionView();
-        searchView.setMaxWidth(300);
+        searchView.setMaxWidth(1000);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             //确定时候改变
             @Override
@@ -105,17 +124,84 @@ public class ExamFragment extends Fragment {
                 return true;
             }
         });
-
     }
 
+    private void initSpinner() {
+        //获取学号
+        String stu_str = stuInfoViewModel.selectStuInfo().getStuID().toString().substring(2, 4);
+        int stu = Integer.parseInt(stu_str);
+        //初始化year、type
+        year = PreferencesUtils.getString("CUR_SEMESTER", "20" + stu_str).substring(9, 13);
+        type = PreferencesUtils.getString("CUR_SEMESTER", null).substring(13, 14);
+
+        for (int i = 0; i < 4; i++) {
+            mItemsYear[i] = "20" + stu;
+            stu++;
+        }
+        ArrayAdapter<String> adapterYear = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, mItemsYear);
+        adapterYear.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        ArrayAdapter<String> adapterType = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, mItemsType);
+        adapterYear.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerExamYear.setAdapter(adapterYear);
+        spinnerExamType.setAdapter(adapterType);
+
+        //初始化时间为当前学期
+        int location = 0;
+        for (int i = 0; i < 4; i++) {
+            if (mItemsYear[i].equals(year)) {
+                location = i;
+            }
+        }
+        spinnerExamYear.setSelection(location);
+
+        for (int i = 0; i < 2; i++) {
+            if (mItemsType[i].equals(type)) {
+                location = i;
+            }
+        }
+        spinnerExamType.setSelection(location);
+    }
+
+
+    private void shiftSemester() {
+        spinnerExamYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                TextView tv = (TextView) view;
+                tv.setTextSize(16f);
+                year = mItemsYear[position];
+                getExamData(year, type);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spinnerExamType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                TextView tv = (TextView) view;
+                tv.setTextSize(16f);
+                type = mItemsType[position];
+                getExamData(year, type);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+
     //获取数据，然后插入数据库
-    private void getExamData() {
+    private void getExamData(String year, String type) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Message message = new Message();
                 try {
-                    String pageSource = ExamInfo.getExamSource(Constant.URI_EXAM);
+                    String pageSource = ExamInfo.getExamSource(Constant.URI_EXAM, year, type);
                     //利用爬虫获取考场信息
                     examArrayList = ParseExam.parseExam(pageSource);
                     //先清空表
@@ -162,6 +248,8 @@ public class ExamFragment extends Fragment {
     private void findID(View root) {
         examRecyclerView = root.findViewById(R.id.examRecyclerView);
         mSlRefresh = root.findViewById(R.id.exam_refresh);
+        spinnerExamYear = root.findViewById(R.id.sp_exam_year);
+        spinnerExamType = root.findViewById(R.id.sp_exam_type);
     }
 
     private void Refresh() {
@@ -170,7 +258,7 @@ public class ExamFragment extends Fragment {
         mSlRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getExamData();
+                getExamData(year, type);
             }
         });
     }

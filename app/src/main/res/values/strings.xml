@@ -89,6 +89,7 @@
 
     <string name="syngrade">综合成绩</string>
     <string name="unigrade">统考成绩</string>
+    <string name="need_evaluation">成绩测评后才能查询成绩</string>
 
     <string name="menu_about">关于</string>
     <string name="menu_course_webView">源课表</string>
@@ -100,12 +101,16 @@
     <string name="menu_login">修改认证信息</string>
     <string name="menu_settings">设置</string>
 
+    <string name="exam_year">学年</string>
+    <string name="exam_type">学期</string>
+
     <string name="check_for_updates">检查更新</string>
     <string name="new_version_dialog_title_course">有新版可用</string>
     <string name="new_version_dialog_title">有新版可用，是否前往下载？</string>
     <string name="ok_quit_dialog_title">好</string>
     <string name="no_quit_dialog_title">取消</string>
     <string name="ignore_quit_dialog_title">下次一定</string>
+    <string name="github_url">https://github.com/aaronlinv/JuiceTimetable</string>
 
     <string name="dark_theme">跟随系统深色模式</string>
     <string name="dark_theme_summary_off">开启后，将随系统打开或关闭深色模式</string>
