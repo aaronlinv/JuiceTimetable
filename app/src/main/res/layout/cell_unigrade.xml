@@ -26,6 +26,8 @@
                 android:id="@+id/textViewUniYear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="TextView"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -38,7 +40,9 @@
                 android:id="@+id/textViewRemark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:ellipsize="end"
                 android:maxEms="10"
@@ -46,6 +50,8 @@
                 android:text="TextView"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline24"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/textViewUniName"
                 app:layout_constraintTop_toBottomOf="@+id/textViewUniName"
                 tools:text="351370202107930351370202107930" />
@@ -61,12 +67,14 @@
                 android:id="@+id/textViewUniGrade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:text="TextView"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/guideline24"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline24"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.488"
                 tools:text="445" />
 
             <androidx.constraintlayout.widget.Guideline
@@ -74,13 +82,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.85" />
+                app:layout_constraintGuide_percent="0.8" />
 
             <TextView
                 android:id="@+id/textViewUniName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:ellipsize="end"
                 android:maxEms="10"
                 android:maxLines="1"
