@@ -90,6 +90,7 @@
     <string name="syngrade">综合成绩</string>
     <string name="unigrade">统考成绩</string>
     <string name="need_evaluation">成绩测评后才能查询成绩</string>
+    <string name="refresh_success">数据刷新成功</string>
 
     <string name="menu_about">关于</string>
     <string name="menu_course_webView">源课表</string>

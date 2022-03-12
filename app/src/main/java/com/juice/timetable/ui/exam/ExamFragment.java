@@ -1,5 +1,7 @@
 package com.juice.timetable.ui.exam;
 
+import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,6 +40,8 @@ import com.juice.timetable.utils.PreferencesUtils;
 
 import java.util.Collections;
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
 
 public class ExamFragment extends Fragment {
     private SwipeRefreshLayout mSlRefresh;
@@ -259,6 +263,13 @@ public class ExamFragment extends Fragment {
             @Override
             public void onRefresh() {
                 getExamData(year, type);
+
+                Toasty.custom(requireActivity(),
+                        getResources().getString(R.string.refresh_success),
+                        getResources().getDrawable(R.drawable.success, null),
+                        getResources().getColor(R.color.green, null),
+                        getResources().getColor(R.color.white, null),
+                        LENGTH_SHORT, true, true).show();
             }
         });
     }

@@ -46,6 +46,7 @@ public class SynGradeFragment extends Fragment {
     private SwipeRefreshLayout mSlRefresh;
     private Handler mHandler;
     private LiveData<List<SynGrade>> filterSynList;
+    boolean flag = false;
 
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -104,43 +105,46 @@ public class SynGradeFragment extends Fragment {
 
     //获取数据，然后插入数据库
     private void getSynGradeData() {
-        //新建线程
-        new Thread(new Runnable() {
-            @SuppressLint("UseCompatLoadingForDrawables")
-            @Override
-            public void run() {
-                Message message = new Message();
-                try {
-                    //获取成绩网页源码
-                    String pageSource = GradeInfo.getGradeSource(Constant.URI_SYNGRADE);
-                    if (pageSource.contains(String.valueOf(R.string.need_evaluation))) {
+        if (!flag) {
+            //新建线程
+            new Thread(new Runnable() {
+                @SuppressLint("UseCompatLoadingForDrawables")
+                @Override
+                public void run() {
+                    Message message = new Message();
+                    try {
+                        //获取成绩网页源码
+                        String pageSource = GradeInfo.getGradeSource(Constant.URI_SYNGRADE);
+                        if (pageSource.contains(String.valueOf(R.string.need_evaluation))) {
+                            mSlRefresh.setRefreshing(false);
+                            Looper.prepare();
+                            Toasty.custom(requireActivity(),
+                                    getResources().getString(R.string.need_evaluation),
+                                    getResources().getDrawable(R.drawable.grade, null),
+                                    getResources().getColor(R.color.green, null),
+                                    getResources().getColor(R.color.white, null),
+                                    LENGTH_SHORT, false, true).show();
+                            Looper.loop();
+                            return;
+                        }
+                        //利用爬虫获取成绩
+                        synGradeArrayList = ParseGrade.parseSynGrade(pageSource);
+                        //先清空表
+                        synGradeViewModel.deleteAllSynGrade();
+                        //再插入数据库
+                        for (SynGrade synGrade : synGradeArrayList) {
+                            synGradeViewModel.insertSynGrade(synGrade);
+                        }
                         mSlRefresh.setRefreshing(false);
-                        Looper.prepare();
-                        Toasty.custom(requireActivity(),
-                                getResources().getString(R.string.need_evaluation),
-                                getResources().getDrawable(R.drawable.grade, null),
-                                getResources().getColor(R.color.green, null),
-                                getResources().getColor(R.color.white, null),
-                                LENGTH_SHORT, false, true).show();
-                        Looper.loop();
-                        return;
+                        message.what = Constant.MSG_PARSESYN_SUCCESS;
+                        mHandler.sendMessage(message);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    //利用爬虫获取成绩
-                    synGradeArrayList = ParseGrade.parseSynGrade(pageSource);
-                    //先清空表
-                    synGradeViewModel.deleteAllSynGrade();
-                    //再插入数据库
-                    for (SynGrade synGrade : synGradeArrayList) {
-                        synGradeViewModel.insertSynGrade(synGrade);
-                    }
-                    mSlRefresh.setRefreshing(false);
-                    message.what = Constant.MSG_PARSESYN_SUCCESS;
-                    mHandler.sendMessage(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
-        }).start();
+            }).start();
+            flag = true;
+        }
     }
 
     @Override
@@ -179,6 +183,13 @@ public class SynGradeFragment extends Fragment {
             @Override
             public void onRefresh() {
                 getSynGradeData();
+
+                Toasty.custom(requireActivity(),
+                        getResources().getString(R.string.refresh_success),
+                        getResources().getDrawable(R.drawable.success, null),
+                        getResources().getColor(R.color.green, null),
+                        getResources().getColor(R.color.white, null),
+                        LENGTH_SHORT, true, true).show();
             }
         });
     }

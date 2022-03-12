@@ -1,5 +1,7 @@
 package com.juice.timetable.ui.grade;
 
+import static es.dmoral.toasty.Toasty.LENGTH_SHORT;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +29,8 @@ import com.juice.timetable.data.parse.ParseGrade;
 import com.juice.timetable.data.viewmodel.UniGradeViewModel;
 
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
 
 //统考成绩的fragment
 public class UniGradeFragment extends Fragment {
@@ -123,6 +127,13 @@ public class UniGradeFragment extends Fragment {
             @Override
             public void onRefresh() {
                 getUniGradeData();
+
+                Toasty.custom(requireActivity(),
+                        getResources().getString(R.string.refresh_success),
+                        getResources().getDrawable(R.drawable.success, null),
+                        getResources().getColor(R.color.green, null),
+                        getResources().getColor(R.color.white, null),
+                        LENGTH_SHORT, true, true).show();
             }
         });
     }
