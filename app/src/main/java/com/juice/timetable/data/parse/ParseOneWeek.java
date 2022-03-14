@@ -123,9 +123,6 @@ public class ParseOneWeek {
             }
         }
         // 解析结束
-            /*for (OneWeekCourse course : couList) {
-                System.out.println(course);
-            }*/
         LogUtils.getInstance().e("结束解析当前周课表--->" + couList);
         return couList;
     }

@@ -138,12 +138,9 @@ public class CourseViewListAdapter extends ListAdapter<CourseViewBean, CourseVie
                         ViewGroup.LayoutParams.MATCH_PARENT);
 
                 textView.setTextSize(NODE_TEXT_SIZE);
-//
                 StringBuilder monthStr = new StringBuilder();
                 if (afterFirstWeekMonday) {
                     monthStr.append(month).append("\n月");
-                } else {
-//                    monthStr.append("*");
                 }
                 textView.setText(monthStr);
 

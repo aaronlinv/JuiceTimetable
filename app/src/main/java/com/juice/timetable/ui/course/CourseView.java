@@ -216,12 +216,7 @@ public class CourseView extends FrameLayout {
         tv.setLayoutParams(params);
         // 设置tv文本
         // 撞课 在前面 添加[课程冲突]
-
-
         String showText = "";
-//        if (course.getCouWeekType() == 4) {
-//            showText = "[课程冲突]";
-//        }
         if (conflictList.size() > 0) {
             showText = "[课程冲突]";
         }
@@ -416,12 +411,7 @@ public class CourseView extends FrameLayout {
 
         int dip2px = Utils.dip2px(this.getContext().getApplicationContext(), 125);
 
-//        LogUtils.getInstance().d("高度 == >" + height);
-
-//        mHeight = mColItemHeight * mColCount;
-
         int heightPixels = getResources().getDisplayMetrics().heightPixels;
-//        int heightResult = MeasureSpec.makeMeasureSpec(mHeight, MeasureSpec.EXACTLY);
 
         setMeasuredDimension(widthMeasureSpec, heightPixels - dip2px);
     }
