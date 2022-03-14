@@ -232,18 +232,20 @@ public class LoginFragment extends Fragment {
     /**
      * 更新用户账户密码数据
      */
-    private void updateUser() {
-        // 先删除用户信息
-        mStuInfoViewModel.deleteStuInfo();
-        mAllWeekCourseViewModel.deleteAllWeekCourse();
-        mOneWeekCourseViewModel.deleteOneWeekCourse();
+private void updateUser() {
+    // 先删除用户信息
+    mStuInfoViewModel.deleteStuInfo();
+    mAllWeekCourseViewModel.deleteAllWeekCourse();
+    mOneWeekCourseViewModel.deleteOneWeekCourse();
+    //关闭彩虹模式
+    PreferencesUtils.putBoolean(Constant.PREF_RAINBOW_MODE_ENABLED, false);
 
-        Integer snoStr = Integer.parseInt(mSno);
-        StuInfo stuInfo1 = new StuInfo();
-        stuInfo1.setStuID(snoStr);
-        stuInfo1.setEduPassword(mEdu);
-        mStuInfoViewModel.insertStuInfo(stuInfo1);
-    }
+    Integer snoStr = Integer.parseInt(mSno);
+    StuInfo stuInfo1 = new StuInfo();
+    stuInfo1.setStuID(snoStr);
+    stuInfo1.setEduPassword(mEdu);
+    mStuInfoViewModel.insertStuInfo(stuInfo1);
+}
 
     /**
      * 点击用户协议，弹出对话框
