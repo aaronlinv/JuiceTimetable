@@ -77,7 +77,6 @@ public class SynGradeRecycleViewAdapter extends RecyclerView.Adapter<SynGradeRec
                 }
             });
         }
-
     }
 
     @Override

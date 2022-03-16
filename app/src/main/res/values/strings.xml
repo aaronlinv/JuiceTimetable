@@ -101,9 +101,11 @@
     <string name="menu_course">周课表</string>
     <string name="menu_login">修改认证信息</string>
     <string name="menu_settings">设置</string>
+    <string name="menu_credit">学分</string>
 
     <string name="exam_year">学年</string>
     <string name="exam_type">学期</string>
+    <string name="credits">学分</string>
 
     <string name="check_for_updates">检查更新</string>
     <string name="new_version_dialog_title_course">有新版可用</string>
@@ -123,6 +125,8 @@
     <string name="attachment_title">自动下载</string>
     <string name="attachment_summary_on">每7天检查一次</string>
     <string name="attachment_summary_off">关闭</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

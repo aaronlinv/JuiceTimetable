@@ -46,7 +46,11 @@
         android:id="@+id/nav_grade"
         android:name="com.juice.timetable.ui.grade.GradeFragment"
         android:label="@string/menu_grade"
-        tools:layout="@layout/fragment_grade" />
+        tools:layout="@layout/fragment_grade" >
+        <action
+            android:id="@+id/action_nav_grade_to_nav_credit"
+            app:destination="@id/nav_credit" />
+    </fragment>
     <fragment
         android:id="@+id/nav_exam"
         android:name="com.juice.timetable.ui.exam.ExamFragment"
@@ -74,4 +78,9 @@
             android:id="@+id/action_nav_tools_to_nav_exam"
             app:destination="@id/nav_exam" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_credit"
+        android:name="com.juice.timetable.ui.grade.CreditFragment"
+        android:label="@string/menu_credit"
+        tools:layout="@layout/fragment_credit" />
 </navigation>

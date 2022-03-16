@@ -10,28 +10,31 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
+import com.juice.timetable.data.bean.Credit;
 import com.juice.timetable.data.bean.SynGrade;
 import com.juice.timetable.data.http.GradeInfo;
 import com.juice.timetable.data.parse.ParseGrade;
+import com.juice.timetable.data.viewmodel.CreditViewModel;
 import com.juice.timetable.data.viewmodel.SynGradeViewModel;
-
-import org.jetbrains.annotations.NotNull;
+import com.juice.timetable.utils.LogUtils;
 
 import java.util.List;
 
@@ -40,19 +43,14 @@ import es.dmoral.toasty.Toasty;
 //综合成绩的fragment
 public class SynGradeFragment extends Fragment {
     private SynGradeViewModel synGradeViewModel;
+    private CreditViewModel creditViewModel;
     private RecyclerView synRecyclerView;
     private SynGradeRecycleViewAdapter synGradeRecycleViewAdapter;
     private List<SynGrade> synGradeArrayList;
+    public List<Credit> creditArrayList;
     private SwipeRefreshLayout mSlRefresh;
     private Handler mHandler;
     private LiveData<List<SynGrade>> filterSynList;
-    boolean flag = false;
-
-    @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Refresh();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,18 +59,20 @@ public class SynGradeFragment extends Fragment {
         findID(root);
         //初始化ViewModel
         synGradeViewModel = new ViewModelProvider(requireActivity()).get(SynGradeViewModel.class);
+        creditViewModel = new ViewModelProvider(requireActivity()).get(CreditViewModel.class);
         //布局管理器
         synRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         synGradeRecycleViewAdapter = new SynGradeRecycleViewAdapter();
         synRecyclerView.setAdapter(synGradeRecycleViewAdapter);
-
+        //获取数据
         getSynGradeData();
+        //下拉刷新
+        Refresh();
         //开启搜索
         setHasOptionsMenu(true);
 
         return root;
     }
-
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
@@ -80,6 +80,7 @@ public class SynGradeFragment extends Fragment {
         inflater.inflate(R.menu.grade_bar, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.app_bar_grade_search).getActionView();
         searchView.setMaxWidth(1000);
+        // 搜索按钮点击
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -101,50 +102,70 @@ public class SynGradeFragment extends Fragment {
                 return true;
             }
         });
+        // 学分按钮点击
+        menu.findItem(R.id.app_bar_credits).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                NavController controller = Navigation.findNavController(requireView());
+                controller.navigate(R.id.action_nav_grade_to_nav_credit);
+                return true;
+            }
+        });
+
     }
 
     //获取数据，然后插入数据库
     private void getSynGradeData() {
-        if (!flag) {
-            //新建线程
-            new Thread(new Runnable() {
-                @SuppressLint("UseCompatLoadingForDrawables")
-                @Override
-                public void run() {
-                    Message message = new Message();
-                    try {
-                        //获取成绩网页源码
-                        String pageSource = GradeInfo.getGradeSource(Constant.URI_SYNGRADE);
-                        if (pageSource.contains(String.valueOf(R.string.need_evaluation))) {
-                            mSlRefresh.setRefreshing(false);
-                            Looper.prepare();
-                            Toasty.custom(requireActivity(),
-                                    getResources().getString(R.string.need_evaluation),
-                                    getResources().getDrawable(R.drawable.grade, null),
-                                    getResources().getColor(R.color.green, null),
-                                    getResources().getColor(R.color.white, null),
-                                    LENGTH_SHORT, false, true).show();
-                            Looper.loop();
-                            return;
-                        }
-                        //利用爬虫获取成绩
-                        synGradeArrayList = ParseGrade.parseSynGrade(pageSource);
-                        //先清空表
-                        synGradeViewModel.deleteAllSynGrade();
-                        //再插入数据库
-                        for (SynGrade synGrade : synGradeArrayList) {
-                            synGradeViewModel.insertSynGrade(synGrade);
-                        }
+        mSlRefresh.setRefreshing(true);
+        //新建线程
+        new Thread(new Runnable() {
+            @SuppressLint("UseCompatLoadingForDrawables")
+            @Override
+            public void run() {
+                Message message = new Message();
+                try {
+                    //获取成绩网页源码
+                    String pageSource = GradeInfo.getGradeSource(Constant.URI_SYNGRADE);
+                    if (pageSource.contains(String.valueOf(R.string.need_evaluation))) {
                         mSlRefresh.setRefreshing(false);
-                        message.what = Constant.MSG_PARSESYN_SUCCESS;
+                        Looper.prepare();
+                        Toasty.custom(requireActivity(),
+                                getResources().getString(R.string.need_evaluation),
+                                getResources().getDrawable(R.drawable.grade, null),
+                                getResources().getColor(R.color.green, null),
+                                getResources().getColor(R.color.white, null),
+                                LENGTH_SHORT, false, true).show();
+                        Looper.loop();
+                        return;
+                    }
+                    //利用爬虫获取成绩
+                    synGradeArrayList = ParseGrade.parseSynGrade(pageSource);
+                    //先清空表
+                    synGradeViewModel.deleteAllSynGrade();
+                    creditViewModel.deleteAllCredit();
+                    //再插入数据库
+                    for (SynGrade synGrade : synGradeArrayList) {
+                        synGradeViewModel.insertSynGrade(synGrade);
+                    }
+                    creditArrayList = ParseGrade.parseCredits(pageSource);
+                    for (Credit credit : creditArrayList) {
+                        creditViewModel.insertCredit(credit);
+                    }
+                    mSlRefresh.setRefreshing(false);
+                    message.what = Constant.MSG_PARSESYN_SUCCESS;
+                    mHandler.sendMessage(message);
+                } catch (Exception e) {
+                    // 网络不好的情况
+                    LogUtils.getInstance().d("setOnRefreshListener：" + e.getMessage());
+                    if (e.getMessage().contains("Unable to resolve host")) {
+                        message.obj = "网络好像不太好，请检查网络";
                         mHandler.sendMessage(message);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } else {
+                        message.obj = e.getMessage();
                     }
                 }
-            }).start();
-            flag = true;
-        }
+            }
+        }).start();
     }
 
     @Override
@@ -164,8 +185,16 @@ public class SynGradeFragment extends Fragment {
                             synGradeRecycleViewAdapter.notifyDataSetChanged();
                         }
                     });
+                    mSlRefresh.setRefreshing(false);
+                } else if (msg.obj == "网络好像不太好，请检查网络") {
+                    Toasty.custom(requireActivity(),
+                            msg.obj.toString(),
+                            getResources().getDrawable(R.drawable.ic_error, null),
+                            getResources().getColor(R.color.red, null),
+                            getResources().getColor(R.color.white, null),
+                            LENGTH_SHORT, true, true).show();
+                    mSlRefresh.setRefreshing(false);
                 }
-
             }
         };
 
@@ -177,19 +206,19 @@ public class SynGradeFragment extends Fragment {
     }
 
     private void Refresh() {
-        mSlRefresh.setRefreshing(true);
         // 下拉刷新监听
         mSlRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 getSynGradeData();
-
+                System.out.println("refresh");
                 Toasty.custom(requireActivity(),
                         getResources().getString(R.string.refresh_success),
                         getResources().getDrawable(R.drawable.success, null),
                         getResources().getColor(R.color.green, null),
                         getResources().getColor(R.color.white, null),
                         LENGTH_SHORT, true, true).show();
+                mSlRefresh.setRefreshing(false);
             }
         });
     }

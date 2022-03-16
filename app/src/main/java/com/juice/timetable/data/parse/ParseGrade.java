@@ -1,5 +1,6 @@
 package com.juice.timetable.data.parse;
 
+import com.juice.timetable.data.bean.Credit;
 import com.juice.timetable.data.bean.SynGrade;
 import com.juice.timetable.data.bean.UniGrade;
 
@@ -103,5 +104,31 @@ public class ParseGrade {
         }
 
         return synGradeArrayList;
+    }
+
+    public static List<Credit> parseCredits(String parseStr) {
+        List<Credit> creditsArrayList = new ArrayList<>();
+
+        Document doc = Jsoup.parse(parseStr);
+        //如果存在成绩评测，就直接返回空列表
+
+        Elements r = doc.select("body > table > tbody > tr:nth-child(2) > td > table:nth-child(2) > tbody > tr");
+        int creditID = 0;
+
+        for (Element e : r) {
+            Elements all = e.select("td");
+            Element CourseTypeALL = all.get(0);
+            String CourseType = CourseTypeALL.text();
+
+            Element CompletedCreditsALL = all.get(1);
+            String CompletedCredits = CompletedCreditsALL.text();
+
+            Element takeHomeCreditsALL = all.get(2);
+            String takeHomeCredits = takeHomeCreditsALL.text();
+
+            Credit credit = new Credit(creditID++, CourseType, CompletedCredits, takeHomeCredits);
+            creditsArrayList.add(credit);
+        }
+        return creditsArrayList;
     }
 }

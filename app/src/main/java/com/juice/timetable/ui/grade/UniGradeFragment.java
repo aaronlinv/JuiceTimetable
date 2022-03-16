@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -40,26 +39,23 @@ public class UniGradeFragment extends Fragment {
     private SwipeRefreshLayout mSlRefresh;
     private Handler mHandler;
     private LiveData<List<UniGrade>> listUniGradeLive;
+    private List<UniGrade> uniGradeArrayList;
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Refresh();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_grade_uni, container, false);
         findID(root);
-        //初始化ViewModel
         uniGradeViewModel = new ViewModelProvider(requireActivity()).get(UniGradeViewModel.class);
         //布局管理器
         uniRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         uniGradeRecycleViewAdapter = new UniGradeRecycleViewAdapter();
         uniRecyclerView.setAdapter(uniGradeRecycleViewAdapter);
-
+        //获取数据
         getUniGradeData();
+        // 下拉刷新
+        Refresh();
 
         return root;
     }
@@ -72,11 +68,10 @@ public class UniGradeFragment extends Fragment {
             public void run() {
                 Message message = new Message();
                 try {
-                    List<UniGrade> uniGradeArrayList;
                     //获取成绩网页源码
-                    String pagesource = GradeInfo.getGradeSource(Constant.URI_UNIGRADE);
+                    String gradeSource = GradeInfo.getGradeSource(Constant.URI_UNIGRADE);
                     //利用爬虫获取成绩
-                    uniGradeArrayList = ParseGrade.parseUniGrade(pagesource);
+                    uniGradeArrayList = ParseGrade.parseUniGrade(gradeSource);
                     //先清空表
                     uniGradeViewModel.deleteAllUniGrade();
                     //再插入数据库
@@ -121,19 +116,18 @@ public class UniGradeFragment extends Fragment {
     }
 
     private void Refresh() {
-
         // 下拉刷新监听
         mSlRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 getUniGradeData();
-
                 Toasty.custom(requireActivity(),
                         getResources().getString(R.string.refresh_success),
                         getResources().getDrawable(R.drawable.success, null),
                         getResources().getColor(R.color.green, null),
                         getResources().getColor(R.color.white, null),
                         LENGTH_SHORT, true, true).show();
+                mSlRefresh.setRefreshing(false);
             }
         });
     }
