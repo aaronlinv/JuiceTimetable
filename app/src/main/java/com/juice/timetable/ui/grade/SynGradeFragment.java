@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -53,6 +54,23 @@ public class SynGradeFragment extends Fragment {
     private LiveData<List<SynGrade>> filterSynList;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //获取数据
+        getSynGradeData();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (synGradeArrayList != null) {
+            synGradeRecycleViewAdapter.setSynGradeList(synGradeArrayList);
+            synGradeRecycleViewAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_grade_syn, container, false);
@@ -64,8 +82,8 @@ public class SynGradeFragment extends Fragment {
         synRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         synGradeRecycleViewAdapter = new SynGradeRecycleViewAdapter();
         synRecyclerView.setAdapter(synGradeRecycleViewAdapter);
-        //获取数据
-        getSynGradeData();
+        //显示刷新按钮
+        mSlRefresh.setRefreshing(true);
         //下拉刷新
         Refresh();
         //开启搜索
@@ -116,7 +134,6 @@ public class SynGradeFragment extends Fragment {
 
     //获取数据，然后插入数据库
     private void getSynGradeData() {
-        mSlRefresh.setRefreshing(true);
         //新建线程
         new Thread(new Runnable() {
             @SuppressLint("UseCompatLoadingForDrawables")
@@ -127,7 +144,7 @@ public class SynGradeFragment extends Fragment {
                     //获取成绩网页源码
                     String pageSource = GradeInfo.getGradeSource(Constant.URI_SYNGRADE);
                     if (pageSource.contains(String.valueOf(R.string.need_evaluation))) {
-                        mSlRefresh.setRefreshing(false);
+//                        mSlRefresh.setRefreshing(false);
                         Looper.prepare();
                         Toasty.custom(requireActivity(),
                                 getResources().getString(R.string.need_evaluation),
@@ -151,7 +168,6 @@ public class SynGradeFragment extends Fragment {
                     for (Credit credit : creditArrayList) {
                         creditViewModel.insertCredit(credit);
                     }
-                    mSlRefresh.setRefreshing(false);
                     message.what = Constant.MSG_PARSESYN_SUCCESS;
                     mHandler.sendMessage(message);
                 } catch (Exception e) {
@@ -173,9 +189,9 @@ public class SynGradeFragment extends Fragment {
         super.onStart();
         mHandler = new Handler(Looper.getMainLooper()) {
             @Override
-            public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
-                if (msg.what == Constant.MSG_PARSESYN_SUCCESS) {
+            public void handleMessage(@NonNull Message message) {
+                super.handleMessage(message);
+                if (message.what == Constant.MSG_PARSESYN_SUCCESS) {
                     filterSynList = synGradeViewModel.getAllSynGradeLive();
                     filterSynList.observe(requireActivity(), new Observer<List<SynGrade>>() {
                         @SuppressLint("NotifyDataSetChanged")
@@ -186,9 +202,9 @@ public class SynGradeFragment extends Fragment {
                         }
                     });
                     mSlRefresh.setRefreshing(false);
-                } else if (msg.obj == "网络好像不太好，请检查网络") {
+                } else if (message.obj == "网络好像不太好，请检查网络") {
                     Toasty.custom(requireActivity(),
-                            msg.obj.toString(),
+                            message.obj.toString(),
                             getResources().getDrawable(R.drawable.ic_error, null),
                             getResources().getColor(R.color.red, null),
                             getResources().getColor(R.color.white, null),
@@ -197,7 +213,6 @@ public class SynGradeFragment extends Fragment {
                 }
             }
         };
-
     }
 
     private void findID(View root) {
@@ -211,7 +226,6 @@ public class SynGradeFragment extends Fragment {
             @Override
             public void onRefresh() {
                 getSynGradeData();
-                System.out.println("refresh");
                 Toasty.custom(requireActivity(),
                         getResources().getString(R.string.refresh_success),
                         getResources().getDrawable(R.drawable.success, null),

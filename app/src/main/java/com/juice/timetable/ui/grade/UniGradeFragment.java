@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -41,6 +42,22 @@ public class UniGradeFragment extends Fragment {
     private LiveData<List<UniGrade>> listUniGradeLive;
     private List<UniGrade> uniGradeArrayList;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //获取数据
+        getUniGradeData();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (uniGradeArrayList != null) {
+            uniGradeRecycleViewAdapter.setUniGradeList(uniGradeArrayList);
+            uniGradeRecycleViewAdapter.notifyDataSetChanged();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,8 +69,7 @@ public class UniGradeFragment extends Fragment {
         uniRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         uniGradeRecycleViewAdapter = new UniGradeRecycleViewAdapter();
         uniRecyclerView.setAdapter(uniGradeRecycleViewAdapter);
-        //获取数据
-        getUniGradeData();
+
         // 下拉刷新
         Refresh();
 
@@ -78,7 +94,6 @@ public class UniGradeFragment extends Fragment {
                     for (UniGrade uniGrade : uniGradeArrayList) {
                         uniGradeViewModel.insertUniGrade(uniGrade);
                     }
-                    mSlRefresh.setRefreshing(false);
                     message.what = Constant.MSG_PARSEUNI_SUCCESS;
                     mHandler.sendMessage(message);
                 } catch (Exception e) {
@@ -105,6 +120,7 @@ public class UniGradeFragment extends Fragment {
                             uniGradeRecycleViewAdapter.notifyDataSetChanged();
                         }
                     });
+                    mSlRefresh.setRefreshing(false);
                 }
             }
         };
