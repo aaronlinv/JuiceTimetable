@@ -1,21 +1,18 @@
 package com.juice.timetable.ui.grade;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.juice.timetable.R;
@@ -25,8 +22,8 @@ import java.util.ArrayList;
 public class GradeFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewpager;
-    ArrayList fragmentList = new ArrayList<Fragment>();
-    String[] temp = {"综合成绩", "统考成绩"};
+    private ArrayList fragmentList = new ArrayList<Fragment>();
+    private String[] temp = {"综合成绩", "统考成绩"};
     private boolean flag = false;
 
     @Override
@@ -61,7 +58,6 @@ public class GradeFragment extends Fragment {
     }
 
     private void initFragment() {
-        //只需要创建一遍
         if (!flag) {
             fragmentList.add(new SynGradeFragment());
             fragmentList.add(new UniGradeFragment());

@@ -95,7 +95,8 @@ public class MainActivity extends BaseActivity {
                 R.id.nav_grade,
                 R.id.nav_exam,
                 R.id.nav_tools)
-                .setDrawerLayout(drawer)
+                .setOpenableLayout(drawer)
+//                .setDrawerLayout(drawer)
                 .build();
         //NavController与界面绑定
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

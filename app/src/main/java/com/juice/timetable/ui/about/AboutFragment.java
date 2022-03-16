@@ -84,7 +84,14 @@ public class AboutFragment extends Fragment {
                         message.what = Constant.MSG_COOLAPKID_SUCCESS;
                         mHandler.sendMessage(message);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        // 网络不好的情况
+                        LogUtils.getInstance().d("setOnRefreshListener：" + e.getMessage());
+                        if (e.getMessage().contains("Unable to resolve host")) {
+                            message.obj = "网络好像不太好，请检查网络";
+                            mHandler.sendMessage(message);
+                        } else {
+                            message.obj = e.getMessage();
+                        }
                     }
                 }
             }).start();
@@ -170,6 +177,13 @@ public class AboutFragment extends Fragment {
                                 .create()
                                 .show();
                     }
+                } else if (msg.obj == "网络好像不太好，请检查网络") {
+                    Toasty.custom(requireActivity(),
+                            msg.obj.toString(),
+                            getResources().getDrawable(R.drawable.ic_error, null),
+                            getResources().getColor(R.color.red, null),
+                            getResources().getColor(R.color.white, null),
+                            LENGTH_SHORT, true, true).show();
                 }
             }
         };

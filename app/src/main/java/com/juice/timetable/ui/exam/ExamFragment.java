@@ -36,6 +36,7 @@ import com.juice.timetable.data.http.ExamInfo;
 import com.juice.timetable.data.parse.ParseExam;
 import com.juice.timetable.data.viewmodel.ExamViewModel;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
+import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.PreferencesUtils;
 
 import java.util.Collections;
@@ -56,8 +57,8 @@ public class ExamFragment extends Fragment {
 
     private String year;
     private String type;
-    String[] mItemsYear = new String[4];
-    String[] mItemsType = {"上", "下"};
+    private String[] mItemsYear = new String[4];
+    private String[] mItemsType = {"上", "下"};
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -220,7 +221,14 @@ public class ExamFragment extends Fragment {
                     message.what = Constant.MSG_PARSEEXAM_SUCCESS;
                     mHandler.sendMessage(message);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    // 网络不好的情况
+                    LogUtils.getInstance().d("setOnRefreshListener：" + e.getMessage());
+                    if (e.getMessage().contains("Unable to resolve host")) {
+                        message.obj = "网络好像不太好，请检查网络";
+                        mHandler.sendMessage(message);
+                    } else {
+                        message.obj = e.getMessage();
+                    }
                 }
             }
         }).start();
