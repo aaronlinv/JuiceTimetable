@@ -168,7 +168,7 @@ public class ExamFragment extends Fragment {
         spinnerExamType.setSelection(location);
     }
 
-
+    // 学期学年切换
     private void shiftSemester() {
         spinnerExamYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -176,6 +176,7 @@ public class ExamFragment extends Fragment {
                 TextView tv = (TextView) view;
                 tv.setTextSize(16f);
                 year = mItemsYear[position];
+                mSlRefresh.setRefreshing(true);
                 getExamData(year, type);
             }
 
@@ -189,6 +190,7 @@ public class ExamFragment extends Fragment {
                 TextView tv = (TextView) view;
                 tv.setTextSize(16f);
                 type = mItemsType[position];
+                mSlRefresh.setRefreshing(true);
                 getExamData(year, type);
             }
 
@@ -240,9 +242,9 @@ public class ExamFragment extends Fragment {
 
         mHandler = new Handler(Looper.getMainLooper()) {
             @Override
-            public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
-                if (msg.what == Constant.MSG_PARSEEXAM_SUCCESS) {
+            public void handleMessage(@NonNull Message message) {
+                super.handleMessage(message);
+                if (message.what == Constant.MSG_PARSEEXAM_SUCCESS) {
                     filterExamList = examViewModel.getAllExamLive();
                     filterExamList.observe(requireActivity(), new Observer<List<Exam>>() {
                         @SuppressLint("NotifyDataSetChanged")
@@ -252,6 +254,14 @@ public class ExamFragment extends Fragment {
                             examRecycleViewAdapter.notifyDataSetChanged();
                         }
                     });
+                } else if (message.obj == "网络好像不太好，请检查网络") {
+                    Toasty.custom(requireActivity(),
+                            message.obj.toString(),
+                            getResources().getDrawable(R.drawable.ic_error, null),
+                            getResources().getColor(R.color.red, null),
+                            getResources().getColor(R.color.white, null),
+                            LENGTH_SHORT, true, true).show();
+                    mSlRefresh.setRefreshing(false);
                 }
             }
         };
