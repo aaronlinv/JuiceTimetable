@@ -58,12 +58,14 @@ import com.juice.timetable.data.viewmodel.OneWeekCourseViewModel;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
 import com.juice.timetable.databinding.FragmentCourseBinding;
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.NotificationUtils;
 import com.juice.timetable.utils.PreferencesUtils;
 import com.juice.timetable.utils.TimeUtils;
 import com.juice.timetable.utils.Utils;
 import com.juice.timetable.utils.VersionUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -108,14 +110,43 @@ public class CourseFragment extends Fragment {
         initCurrentWeek();
         initView();
         initCourse();
+
         // 首次打开引导
         firstGuide();
-        //设置是否开启自动检查更新
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        if (preferences.getBoolean("sync", false)) {
-            checkUpdate();
-        }
+        // 通知提醒明日课程
+//        showTomorrowCourse();
+        //是否开启自动检查更新
+        checkUpdate();
+
         return binding.getRoot();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void showTomorrowCourse() {
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        if (p.getBoolean("notify", false)) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(new Date(System.currentTimeMillis()));
+
+            int weekday = c.get(Calendar.DAY_OF_WEEK);
+            int week;
+
+            if (weekday == 1) {
+                week = mVpCourse.getCurrentItem() + 2;
+            } else {
+                week = mVpCourse.getCurrentItem() + 1;
+            }
+            List<OneWeekCourse> oneDay = mOneWeekCourseViewModel.getSomeWeek(weekday, week);
+            if (oneDay.isEmpty()) {
+                NotificationUtils.show(requireContext(), getResources().getString(R.string.notify_tomorrow_null_course), "ヾ(≧▽≦*)o");
+            } else {
+                String text = "";
+                for (OneWeekCourse course : oneDay) {
+                    text += course.getCouName() + course.getCouRoom() + "\n";
+                }
+                NotificationUtils.show(requireContext(), "明日课程", text);
+            }
+        }
     }
 
     @Override
@@ -129,55 +160,58 @@ public class CourseFragment extends Fragment {
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void checkUpdate() {
-        //读取曾经保存的时间戳
-        long usedTime = PreferencesUtils.getLong(Constant.PREF_TIME, -1);
-        //读取现在的时间
-        long currentTime = Calendar.getInstance().getTimeInMillis();
-        if (usedTime == -1 || usedTime <= currentTime) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Message message = new Message();
-                    try {
-                        LogUtils.getInstance().d("爬虫线程启动");
-                        String str = ParseVersion.getSource(Constant.URI_COOLAPK);
-                        id = ParseVersion.getVersion(str);
-                        info = ParseVersion.getVersionInfo(str);
-                        LogUtils.getInstance().d("酷安id-->" + id);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        if (preferences.getBoolean("sync", false)) {
+            //读取曾经保存的时间戳
+            long usedTime = PreferencesUtils.getLong(Constant.PREF_TIME, -1);
+            //读取现在的时间
+            long currentTime = Calendar.getInstance().getTimeInMillis();
+            if (usedTime == -1 || usedTime <= currentTime) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Message message = new Message();
+                        try {
+                            LogUtils.getInstance().d("爬虫线程启动");
+                            String str = ParseVersion.getSource(Constant.URI_COOLAPK);
+                            id = ParseVersion.getVersion(str);
+                            info = ParseVersion.getVersionInfo(str);
+                            LogUtils.getInstance().d("酷安id-->" + id);
 
-                        message.what = Constant.MSG_COOLAPKID_SUCCESS;
-                        mHandler.sendMessage(message);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                            message.what = Constant.MSG_COOLAPKID_SUCCESS;
+                            mHandler.sendMessage(message);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            }).start();
-        }
-        binding.tvCheckIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AlertDialog.Builder(requireActivity())
-                        .setTitle(getString(R.string.new_version_dialog_title))
-                        .setMessage(info.replace(" ", "\n"))
-                        .setPositiveButton(R.string.ok_quit_dialog_title, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Uri uri = Uri.parse(Constant.URI_COOLAPK);
-                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                startActivity(intent);
-                            }
-                        })
-                        .setNegativeButton(R.string.no_quit_dialog_title, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                binding.tvCheckIn.setVisibility(View.GONE);
-                                TimeUtils.saveSevenTime();
-                            }
-                        })
-                        .create()
-                        .show();
+                }).start();
             }
-        });
+            binding.tvCheckIn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new AlertDialog.Builder(requireActivity())
+                            .setTitle(getString(R.string.new_version_dialog_title))
+                            .setMessage(info.replace(" ", "\n"))
+                            .setPositiveButton(R.string.ok_quit_dialog_title, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Uri uri = Uri.parse(Constant.URI_COOLAPK);
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                    startActivity(intent);
+                                }
+                            })
+                            .setNegativeButton(R.string.no_quit_dialog_title, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    binding.tvCheckIn.setVisibility(View.GONE);
+                                    TimeUtils.saveSevenTime();
+                                }
+                            })
+                            .create()
+                            .show();
+                }
+            });
+        }
     }
 
     private void firstGuide() {
@@ -185,12 +219,8 @@ public class CourseFragment extends Fragment {
         if (showGuide) {
             LogUtils.getInstance().d("显示首次登录 引导提示");
             // 显示引导
-            try {
-                showGuideView();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            // 首次登录引导显示一次，然后就置为false 以后不显示
+            showGuideView();
+            // 首次登录引导显示一次，然后就置为false，在设置中可重置
             PreferencesUtils.putBoolean(Constant.FIRST_LOGIN_GUIDE, false);
         }
 
@@ -345,9 +375,9 @@ public class CourseFragment extends Fragment {
                     // 如果是当前周，提示
                     if (mVpCourse.getCurrentItem() == Constant.CUR_WEEK - 1) {
                         Toasty.custom(requireActivity(), "已在当前周",
-                                getResources().getDrawable(R.drawable.course1,null),
-                                getResources().getColor(R.color.green,null),
-                                getResources().getColor(R.color.white,null),
+                                getResources().getDrawable(R.drawable.course1, null),
+                                getResources().getColor(R.color.green, null),
+                                getResources().getColor(R.color.white, null),
                                 LENGTH_SHORT, true, true).show();
                         Toasty.Config.reset();
                     } else {
@@ -642,7 +672,7 @@ public class CourseFragment extends Fragment {
         }
 
         mSpinner.setItems(weekArr);
-        mSpinner.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark,null));
+        mSpinner.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark, null));
         mSpinner.setTextColor(0xFF000000);
         mSpinner.setTextSize(20);
         mSpinner.setDropdownMaxHeight(700);

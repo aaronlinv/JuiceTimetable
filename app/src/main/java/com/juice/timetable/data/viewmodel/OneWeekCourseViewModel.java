@@ -11,16 +11,7 @@ import com.juice.timetable.data.repository.OneWeekCourseRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * <pre>
- *     author : soreak
- *     e-mail : sorea1k@163.com
- *     time   : 2020/05/04
- *     desc   : nothing
- *     item   : juice
- *     version: 1.0
- * </pre>
- */
+
 public class OneWeekCourseViewModel extends AndroidViewModel {
 
     private final OneWeekCourseRepository repository;
@@ -50,5 +41,8 @@ public class OneWeekCourseViewModel extends AndroidViewModel {
         repository.deleteWeek(arrayLists[0]);
     }
 
+    public List<OneWeekCourse> getSomeWeek(int dayOfWeek, int week) {
+        return repository.getSomeWeek(dayOfWeek, week);
+    }
 
 }

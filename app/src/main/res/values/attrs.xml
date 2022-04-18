@@ -3,4 +3,9 @@
     <declare-styleable name="RippleLayout">
         <attr name="count" format="integer" />
     </declare-styleable>
+
+    <string-array name="time">
+        <item>晚上9:00</item>
+        <item>晚上10:00</item>
+    </string-array>
 </resources>

@@ -1,7 +1,23 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/messages_header">
+    <PreferenceCategory android:title="@string/preferenceCategory_notify">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="notify"
+            android:title="@string/notify_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            android:dependency="notify"
+            android:title="@string/notify_time_title"
+            app:entries="@array/time"
+            app:entryValues="@array/time"
+            app:key="time"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/preferenceCategory_preference">
 
         <SwitchPreference
             android:defaultValue="true"
@@ -13,14 +29,19 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
+    <PreferenceCategory app:title="@string/preferenceCategory_other">
 
-        <SwitchPreferenceCompat
+        <SwitchPreference
             app:defaultValue="true"
             app:key="sync"
             app:summaryOff="@string/attachment_summary_off"
             app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/sync_title" />
+            app:title="@string/sync_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <Preference
+            android:key="restButton"
+            android:title="重置引导" />
 
     </PreferenceCategory>
 

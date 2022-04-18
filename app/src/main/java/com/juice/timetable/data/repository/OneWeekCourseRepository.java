@@ -48,9 +48,7 @@ public class OneWeekCourseRepository {
         AsyncTask<Void, Void, List<OneWeekCourse>> asyncTask = new SelectAsyncTask(oneWeekCourseDao).execute();
         try {
             oneWeekCourses = asyncTask.get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         return oneWeekCourses;
@@ -61,9 +59,7 @@ public class OneWeekCourseRepository {
         AsyncTask<Void, Void, List<Integer>> asyncTask = new SelectWeekAsyncTask(oneWeekCourseDao).execute();
         try {
             integers = asyncTask.get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         return integers;
@@ -71,6 +67,17 @@ public class OneWeekCourseRepository {
 
     public void deleteWeek(ArrayList<Integer>... arrayLists) {
         new DeleteWeekAsyncTask(oneWeekCourseDao).execute(arrayLists[0]);
+    }
+
+    public List<OneWeekCourse> getSomeWeek(int dayOfWeek, int week) {
+        List<OneWeekCourse> someWeekCourses = null;
+        AsyncTask<Integer, Void, List<OneWeekCourse>> asyncTask = new SelectSomeWeekAsyncTask(oneWeekCourseDao).execute(dayOfWeek, week);
+        try {
+            someWeekCourses = asyncTask.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return someWeekCourses;
     }
 
     //插入
@@ -147,5 +154,19 @@ public class OneWeekCourseRepository {
             return null;
         }
 
+    }
+
+    // 获取第几周，第几天的课程
+    static class SelectSomeWeekAsyncTask extends AsyncTask<Integer, Void, List<OneWeekCourse>> {
+        private OneWeekCourseDao oneWeekCourseDao;
+
+        public SelectSomeWeekAsyncTask(OneWeekCourseDao oneWeekCourseDao) {
+            this.oneWeekCourseDao = oneWeekCourseDao;
+        }
+
+        @Override
+        protected List<OneWeekCourse> doInBackground(Integer... integers) {
+            return oneWeekCourseDao.getSomeWeek(integers[0], integers[1]);
+        }
     }
 }

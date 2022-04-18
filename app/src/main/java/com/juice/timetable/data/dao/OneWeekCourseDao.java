@@ -43,4 +43,8 @@ public interface OneWeekCourseDao {
     // 删除指定周的课程信息
     @Query("DELETE FROM OneWeekCourse  WHERE InWeek IN (:week)")
     void deleteCourseByWeek(ArrayList<Integer> week);
+
+    // 获取第几周，第几天的课程
+    @Query("SELECT * FROM OneWeekCourse WHERE dayOfWeek = :dayOfWeek AND InWeek = :week AND couName NOT LIKE '%停课%'")
+    List<OneWeekCourse> getSomeWeek(int dayOfWeek, int week);
 }

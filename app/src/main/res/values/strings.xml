@@ -98,7 +98,7 @@
     <string name="menu_exam">考场安排</string>
     <string name="menu_expect">后续功能尽情期待…</string>
     <string name="menu_tools">工具箱</string>
-    <string name="menu_course">周课表</string>
+    <string name="menu_course">首页</string>
     <string name="menu_login">修改认证信息</string>
     <string name="menu_settings">设置</string>
     <string name="menu_credit">学分</string>
@@ -114,19 +114,23 @@
     <string name="no_quit_dialog_title">取消</string>
     <string name="ignore_quit_dialog_title">下次一定</string>
     <string name="github_url">https://github.com/aaronlinv/JuiceTimetable</string>
+    <string name="email">mailto:aaronlinv@outlook.com</string>
 
     <string name="dark_theme">跟随系统深色模式</string>
     <string name="dark_theme_summary_off">开启后，将随系统打开或关闭深色模式</string>
     <string name="dark_theme_summary_on">仅支持Android 10.0及以上</string>
 
-    <string name="messages_header">个性化</string>
-    <string name="sync_header">其他</string>
+    <string name="preferenceCategory_preference">个性化</string>
+    <string name="preferenceCategory_other">其他</string>
     <string name="sync_title">自动检查更新</string>
     <string name="attachment_title">自动下载</string>
     <string name="attachment_summary_on">每7天检查一次</string>
     <string name="attachment_summary_off">关闭</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="preferenceCategory_notify">通知</string>
+    <string name="notify_title">提醒明天上的课</string>
+    <string name="notify_time_title">选择一个时间</string>
+
+    <string name="notify_tomorrow_null_course">明天是周末，太好了明天没课！</string>
 
 
 </resources>
