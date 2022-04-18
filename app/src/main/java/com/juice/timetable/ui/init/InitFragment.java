@@ -45,10 +45,6 @@ import java.util.Objects;
 import es.dmoral.toasty.Toasty;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
-
 public class InitFragment extends Fragment {
     private FragmentInitBinding binding;
     private String mSno;

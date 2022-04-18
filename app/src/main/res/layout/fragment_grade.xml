@@ -1,37 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabgrade"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        app:tabIndicatorColor="@color/juice">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabgrade"
-            android:layout_width="match_parent"
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:tabIndicatorColor="@color/juice">
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/syngrade" />
+            android:text="@string/syngrade" />
 
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/unigrade" />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/unigrade" />
 
-        </com.google.android.material.tabs.TabLayout>
+    </com.google.android.material.tabs.TabLayout>
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/vp_grade"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_grade"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        </androidx.viewpager.widget.ViewPager>
+    </androidx.viewpager.widget.ViewPager>
 
-    </LinearLayout>
-</layout>
+</LinearLayout>

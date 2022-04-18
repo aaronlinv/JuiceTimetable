@@ -32,10 +32,13 @@ public class CaptchaUtils {
      * @return
      */
     public static String getAllOcr(Bitmap code, Context context) {
+        // 分割
         List<Bitmap> listImg = split(code);
+        // 加载识别样本
         Map<Bitmap, String> map = loadTrainData(context);
         String result = "";
         for (Bitmap bi : listImg) {
+            // 识别单个字符
             result += getSingleCharOcr(bi, map);
         }
         return result;

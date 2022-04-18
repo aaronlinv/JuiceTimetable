@@ -124,7 +124,7 @@ public class AboutFragment extends Fragment {
 
     @SuppressLint({"IntentReset", "UseCompatLoadingForDrawables"})
     private void joinEmail() {
-        Uri uri = Uri.parse("mailto:aaronlinv@outlook.com");
+        Uri uri = Uri.parse(getResources().getString(R.string.email));
         Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
         intent.putExtra(Intent.EXTRA_TEXT, "“对于<橙汁>的意见反馈"); // 正文
         intent.putExtra(Intent.EXTRA_SUBJECT, "我的建议");
