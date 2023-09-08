@@ -66,9 +66,12 @@ public class ParseOneWeek {
                         if (!"".equals(td.text())) {
                             String[] tdText = td.html().split("<br>");
                             int brSize = tdText.length;
-                            for (int c = 0; c < brSize; c++) {
+                            // 累加 2 是因为 它的规则是：一行课程 一行教室
+                            // 例如：大学物理（上）(15)班<br>[网络教学]<br>形势与政策（六）(6)班<br>[网络教学]</td>
+                            for (int c = 0; c < brSize; c += 2) {
                                 // if (tdText[c].contains("班") || tdText[c].contains("调课")) {
                                 // 原来的逻辑是根据 关键词判断，但是这也会缺少判断： 形势与政策（三） 和 考试：工程制图(10:00-12:00)
+                                // 具体课程解析逻辑
                                 if (tdText[c].length() > 0) {
                                     //创建一个新的对象
                                     OneWeekCourse cou = new OneWeekCourse();
@@ -77,20 +80,21 @@ public class ParseOneWeek {
                                     String couName = tdText[c];
                                     // 停课判断逻辑
                                     // 马克思主义基本原理概论(11)班<br>[机北407](14:00)<br>停课：马克思主义基本原理概论<br>[机北407]</td>
-                                    if (brSize > 2) {
-                                        boolean isSuspend = tdText[2].contains("停课");
-                                        if (isSuspend) {
-                                            couName = "[停课] " + couName;
-                                        }
-                                    }
+
+                                    // 22.5.14 自带停课提示，所以移除下面逻辑
+                                    // if (brSize >= c+1) {
+                                    //     boolean isSuspend = tdText[c+1].contains("停课");
+                                    //     if (isSuspend) {
+                                    //         couName = "[停课] " + couName;
+                                    //     }
+                                    // }
                                     cou.setCouName(couName);
 
-                                    String s1 = tdText[c + 1];
+                                    String couRoom = tdText[c + 1];
                                     // 去除 [网络教室] 左右的 []
                                     // String couRoom = s1.substring(1, s1.length() - 1);
                                     // 20.10.27 增加了时间 故去掉上面功能，直接显示 [网络教室](19:00)
-                                    String couRoom = s1;
-                                    LogUtils.getInstance().d("couRoom == >" + couRoom);
+                                    LogUtils.getInstance().i("couRoom --> " + couRoom);
                                     cou.setCouRoom(couRoom);
 
                                     String id = td.attr("id");

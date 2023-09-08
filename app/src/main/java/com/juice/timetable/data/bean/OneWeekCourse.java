@@ -33,6 +33,7 @@ public class OneWeekCourse {
 
     private Integer InWeek;
 
+    // 4：重课（课程冲突）
     private Integer CourseType;
 
     private Integer Color;

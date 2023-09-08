@@ -3,6 +3,9 @@ package com.juice.timetable.utils;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.juice.timetable.app.Constant;
 
@@ -90,12 +93,14 @@ public class Utils {
      *
      * @param week 当前周
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static void setFirstWeekPref(int week) {
         Calendar cal = getFirstWeekMon(week, new Date());
         PreferencesUtils.putLong(Constant.PREF_FIRST_WEEK_MONDAY, cal.getTimeInMillis());
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @NotNull
     public static Calendar getFirstWeekMon(int week, Date date) {
         // 当前时间

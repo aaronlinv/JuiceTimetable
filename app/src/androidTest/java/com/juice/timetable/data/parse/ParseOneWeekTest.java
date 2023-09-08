@@ -1,7 +1,11 @@
 package com.juice.timetable.data.parse;
 
+import com.juice.timetable.data.bean.OneWeekCourse;
+
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * <pre>
@@ -55,11 +59,12 @@ public class ParseOneWeekTest {
 
 
     /**
-     * 马老师周课表测试
+     * 马同学周课表测试
      */
     @Test
     public void parseTeacherMaOneWeekTest() {
-        String question = ParseOneWeek.parseCourse(getTeacherMaOneWeek()).toString();
+        List<OneWeekCourse> oneWeekCourses = ParseOneWeek.parseCourse(getTeacherMaOneWeek());
+        String question = oneWeekCourses.toString();
         String answer = getTeacherMaOneWeekAnswer();
         boolean isCheck = answer.equals(question);
 
@@ -71,7 +76,8 @@ public class ParseOneWeekTest {
      */
     @Test
     public void parseSuspendOneWeekTest() {
-        String question = ParseOneWeek.parseCourse(getSuspendOneWeekStr()).toString();
+        List<OneWeekCourse> oneWeekCourses = ParseOneWeek.parseCourse(getSuspendOneWeekStr());
+        String question = oneWeekCourses.toString();
         String answer = getSuspendOneWeekAnswer();
         boolean isCheck = answer.equals(question);
 
@@ -282,12 +288,12 @@ public class ParseOneWeekTest {
      * @return String
      */
     private static String getOneWeekAnswer() {
-        return "[OneWeekCourse{onlyID=null, couID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=1, startNode=1, endNode=4, InWeek=11, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=3, startNode=1, endNode=4, InWeek=11, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=2, startNode=3, endNode=4, InWeek=11, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='软件工程(1)班', couRoom='网络教学', dayOfWeek=1, startNode=5, endNode=6, InWeek=11, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='大数据应用开发实践(1)班', couRoom='网络教学', dayOfWeek=2, startNode=5, endNode=8, InWeek=11, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='大数据综合应用案例实训(1)班', couRoom='网络教学', dayOfWeek=4, startNode=5, endNode=8, InWeek=11, CourseType=0, Color=null}]";
+        return "[OneWeekCourse{onlyID=null, couID=null, couName='高级数据库技术(1)班', couRoom='[网络教学]', dayOfWeek=1, startNode=1, endNode=4, InWeek=11, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='高级数据库技术(1)班', couRoom='[网络教学]', dayOfWeek=3, startNode=1, endNode=4, InWeek=11, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='高级数据库技术(1)班', couRoom='[网络教学]', dayOfWeek=2, startNode=3, endNode=4, InWeek=11, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='软件工程(1)班', couRoom='[网络教学]', dayOfWeek=1, startNode=5, endNode=6, InWeek=11, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='大数据应用开发实践(1)班', couRoom='[网络教学]', dayOfWeek=2, startNode=5, endNode=8, InWeek=11, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='大数据综合应用案例实训(1)班', couRoom='[网络教学]', dayOfWeek=4, startNode=5, endNode=8, InWeek=11, CourseType=0, Color=null}]";
     }
 
     /**
@@ -501,14 +507,14 @@ public class ParseOneWeekTest {
      * @return String
      */
     private static String getChineseTimetableAnswer() {
-        return "[OneWeekCourse{onlyID=null, couID=null, couName='毛泽东思想和中国特色社会主义理论体系概论(19)班', couRoom='网络教学', dayOfWeek=2, startNode=1, endNode=2, InWeek=12, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='古代汉语（下）(1)班', couRoom='网络教学', dayOfWeek=3, startNode=2, endNode=4, InWeek=12, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='语言学概论(1)班', couRoom='网络教学', dayOfWeek=1, startNode=3, endNode=4, InWeek=12, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='大学英语（四）(10)班', couRoom='网络教学', dayOfWeek=1, startNode=5, endNode=6, InWeek=12, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='语言学概论(1)班', couRoom='网络教学', dayOfWeek=2, startNode=5, endNode=6, InWeek=12, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='毛泽东思想和中国特色社会主义理论体系概论(19)班', couRoom='网络教学', dayOfWeek=4, startNode=5, endNode=6, InWeek=12, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='中国现当代文学（下）(1)班', couRoom='网络教学', dayOfWeek=1, startNode=9, endNode=11, InWeek=12, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='中国古代文学（四）(1)班', couRoom='机北407', dayOfWeek=3, startNode=9, endNode=11, InWeek=12, CourseType=0, Color=null}]";
+        return "[OneWeekCourse{onlyID=null, couID=null, couName='毛泽东思想和中国特色社会主义理论体系概论(19)班', couRoom='[网络教学]', dayOfWeek=2, startNode=1, endNode=2, InWeek=12, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='古代汉语（下）(1)班', couRoom='[网络教学]', dayOfWeek=3, startNode=2, endNode=4, InWeek=12, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='语言学概论(1)班', couRoom='[网络教学]', dayOfWeek=1, startNode=3, endNode=4, InWeek=12, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='大学英语（四）(10)班', couRoom='[网络教学]', dayOfWeek=1, startNode=5, endNode=6, InWeek=12, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='语言学概论(1)班', couRoom='[网络教学]', dayOfWeek=2, startNode=5, endNode=6, InWeek=12, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='毛泽东思想和中国特色社会主义理论体系概论(19)班', couRoom='[网络教学]', dayOfWeek=4, startNode=5, endNode=6, InWeek=12, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='中国现当代文学（下）(1)班', couRoom='[网络教学]', dayOfWeek=1, startNode=9, endNode=11, InWeek=12, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='中国古代文学（四）(1)班', couRoom='[机北407]', dayOfWeek=3, startNode=9, endNode=11, InWeek=12, CourseType=0, Color=null}]";
     }
 
     /**
@@ -728,14 +734,14 @@ public class ParseOneWeekTest {
      * @return String
      */
     private static String get2019SoftwareEngineeringAnswer() {
-        return "[OneWeekCourse{onlyID=null, couID=null, couName='证券投资模拟实验(实验班)班', couRoom='网络教学', dayOfWeek=2, startNode=1, endNode=4, InWeek=15, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='数据挖掘应用实践(实验班)班', couRoom='网络教学', dayOfWeek=3, startNode=1, endNode=4, InWeek=15, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='大数据计算实践(实验班)班', couRoom='网络教学', dayOfWeek=4, startNode=1, endNode=4, InWeek=15, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='数据可视化与可视分析(实验班)班', couRoom='网络教学', dayOfWeek=6, startNode=1, endNode=2, InWeek=15, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='数据可视化与可视分析(实验班)班', couRoom='网络教学', dayOfWeek=1, startNode=5, endNode=8, InWeek=15, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='互联网金融产品运营实践(实验班)班', couRoom='网络教学', dayOfWeek=6, startNode=5, endNode=8, InWeek=15, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='金融仿真模拟交易系统(实验班)班', couRoom='网络教学', dayOfWeek=2, startNode=9, endNode=11, InWeek=15, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='调课：形势与政策（六）', couRoom='网络教学', dayOfWeek=3, startNode=9, endNode=10, InWeek=15, CourseType=0, Color=null}]";
+        return "[OneWeekCourse{onlyID=null, couID=null, couName='证券投资模拟实验(实验班)班', couRoom='[网络教学]', dayOfWeek=2, startNode=1, endNode=4, InWeek=15, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='数据挖掘应用实践(实验班)班', couRoom='[网络教学]', dayOfWeek=3, startNode=1, endNode=4, InWeek=15, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='大数据计算实践(实验班)班', couRoom='[网络教学]', dayOfWeek=4, startNode=1, endNode=4, InWeek=15, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='数据可视化与可视分析(实验班)班', couRoom='[网络教学]', dayOfWeek=6, startNode=1, endNode=2, InWeek=15, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='数据可视化与可视分析(实验班)班', couRoom='[网络教学]', dayOfWeek=1, startNode=5, endNode=8, InWeek=15, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='互联网金融产品运营实践(实验班)班', couRoom='[网络教学]', dayOfWeek=6, startNode=5, endNode=8, InWeek=15, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='金融仿真模拟交易系统(实验班)班', couRoom='[网络教学]', dayOfWeek=2, startNode=9, endNode=11, InWeek=15, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='调课：形势与政策（六）', couRoom='[网络教学]', dayOfWeek=3, startNode=9, endNode=10, InWeek=15, CourseType=0, Color=null}]";
     }
 
     /**
@@ -962,14 +968,14 @@ public class ParseOneWeekTest {
      * @return String
      */
     private static String getTeacherMaOneWeekAnswer() {
-        return "[OneWeekCourse{onlyID=null, couID=null, couName='高级数据库技术(1)班', couRoom='网络教学', dayOfWeek=1, startNode=1, endNode=4, InWeek=13, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='数据挖掘应用实践(1)班', couRoom='网络教学', dayOfWeek=3, startNode=1, endNode=4, InWeek=13, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='大学物理（上）(15)班', couRoom='网络教学', dayOfWeek=2, startNode=3, endNode=4, InWeek=13, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='形势与政策（六）(6)班', couRoom='网络教学', dayOfWeek=2, startNode=3, endNode=4, InWeek=13, CourseType=4, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='大数据应用开发实践(1)班', couRoom='网络教学', dayOfWeek=2, startNode=5, endNode=8, InWeek=13, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='软件工程(1)班', couRoom='网络教学', dayOfWeek=3, startNode=5, endNode=8, InWeek=13, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='概率论与数理统计(普10)班', couRoom='网络教学', dayOfWeek=6, startNode=5, endNode=6, InWeek=13, CourseType=0, Color=null}, " +
-                "OneWeekCourse{onlyID=null, couID=null, couName='概率论与数理统计(普10)班', couRoom='网络教学', dayOfWeek=3, startNode=9, endNode=10, InWeek=13, CourseType=0, Color=null}]";
+        return "[OneWeekCourse{onlyID=null, couID=null, couName='高级数据库技术(1)班', couRoom='[网络教学]', dayOfWeek=1, startNode=1, endNode=4, InWeek=13, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='数据挖掘应用实践(1)班', couRoom='[网络教学]', dayOfWeek=3, startNode=1, endNode=4, InWeek=13, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='大学物理（上）(15)班', couRoom='[网络教学]', dayOfWeek=2, startNode=3, endNode=4, InWeek=13, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='形势与政策（六）(6)班', couRoom='[网络教学]', dayOfWeek=2, startNode=3, endNode=4, InWeek=13, CourseType=4, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='大数据应用开发实践(1)班', couRoom='[网络教学]', dayOfWeek=2, startNode=5, endNode=8, InWeek=13, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='软件工程(1)班', couRoom='[网络教学]', dayOfWeek=3, startNode=5, endNode=8, InWeek=13, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='概率论与数理统计(普10)班', couRoom='[网络教学]', dayOfWeek=6, startNode=5, endNode=6, InWeek=13, CourseType=0, Color=null}, " +
+                "OneWeekCourse{onlyID=null, couID=null, couName='概率论与数理统计(普10)班', couRoom='[网络教学]', dayOfWeek=3, startNode=9, endNode=10, InWeek=13, CourseType=0, Color=null}]";
     }
 
     /**
@@ -1175,7 +1181,7 @@ public class ParseOneWeekTest {
      * @return
      */
     private static String getSuspendOneWeekAnswer() {
-        return "[OneWeekCourse{onlyID=null, couID=null, couName='工程力学(1)班', couRoom='[地矿310](08:00)', dayOfWeek=1, startNode=1, endNode=2, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='大学物理（下）(17)班', couRoom='[机北305](08:00)', dayOfWeek=2, startNode=1, endNode=2, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='工程制图(1)班', couRoom='[地矿310](08:00)', dayOfWeek=4, startNode=1, endNode=2, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='工程制图(1)班', couRoom='[地矿310](09:55)', dayOfWeek=2, startNode=3, endNode=4, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='工程CAD(1)班', couRoom='[轻工615](09:55)', dayOfWeek=4, startNode=3, endNode=4, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='大学物理实验（下）(5)班', couRoom='[单][电机楼四楼大厅](14:00)', dayOfWeek=2, startNode=5, endNode=6, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='工程力学(1)班', couRoom='[地矿310](14:00)', dayOfWeek=3, startNode=5, endNode=6, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='[停课] 马克思主义基本原理概论(11)班', couRoom='[机北407](14:00)', dayOfWeek=5, startNode=5, endNode=6, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='电工学(1)班', couRoom='[地矿306](15:55)', dayOfWeek=1, startNode=7, endNode=8, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='电工学(1)班', couRoom='[地矿306](15:55)', dayOfWeek=3, startNode=7, endNode=8, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='体育（三）(48)班', couRoom='[田径场](15:55)', dayOfWeek=4, startNode=7, endNode=8, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='跨文化交际(16)班', couRoom='[机北207]', dayOfWeek=2, startNode=9, endNode=11, InWeek=9, CourseType=0, Color=null}]";
+        return "[OneWeekCourse{onlyID=null, couID=null, couName='工程力学(1)班', couRoom='[地矿310](08:00)', dayOfWeek=1, startNode=1, endNode=2, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='大学物理（下）(17)班', couRoom='[机北305](08:00)', dayOfWeek=2, startNode=1, endNode=2, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='工程制图(1)班', couRoom='[地矿310](08:00)', dayOfWeek=4, startNode=1, endNode=2, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='工程制图(1)班', couRoom='[地矿310](09:55)', dayOfWeek=2, startNode=3, endNode=4, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='工程CAD(1)班', couRoom='[轻工615](09:55)', dayOfWeek=4, startNode=3, endNode=4, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='大学物理实验（下）(5)班', couRoom='[单][电机楼四楼大厅](14:00)', dayOfWeek=2, startNode=5, endNode=6, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='工程力学(1)班', couRoom='[地矿310](14:00)', dayOfWeek=3, startNode=5, endNode=6, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='马克思主义基本原理概论(11)班', couRoom='[机北407](14:00)', dayOfWeek=5, startNode=5, endNode=6, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='停课：马克思主义基本原理概论', couRoom='[机北407]', dayOfWeek=5, startNode=5, endNode=6, InWeek=9, CourseType=4, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='电工学(1)班', couRoom='[地矿306](15:55)', dayOfWeek=1, startNode=7, endNode=8, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='电工学(1)班', couRoom='[地矿306](15:55)', dayOfWeek=3, startNode=7, endNode=8, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='体育（三）(48)班', couRoom='[田径场](15:55)', dayOfWeek=4, startNode=7, endNode=8, InWeek=9, CourseType=0, Color=null}, OneWeekCourse{onlyID=null, couID=null, couName='跨文化交际(16)班', couRoom='[机北207]', dayOfWeek=2, startNode=9, endNode=11, InWeek=9, CourseType=0, Color=null}]";
     }
 
 }
