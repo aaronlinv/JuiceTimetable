@@ -13,9 +13,9 @@ public class Constant {
     // 当前周 周课表
     public static final String URI_CUR_WEEK = "https://jwc.fdzcxy.edu.cn/kb/zkb_xs.asp";
     // 查询某一周的周课表（只能查询当前周和以及前后各两周） 后面要拼接需要查询的周
-    public static final String URI_ONE_WEEK = "http://jwc.fdzcxy.edu.cn/kb/zkb_xs.asp?week1=";
+    public static final String URI_ONE_WEEK = "https://jwc.fdzcxy.edu.cn/kb/zkb_xs.asp?week1=";
     // 完整课表
-    public static final String URI_WHOLE_COURSE = "http://jwc.fdzcxy.edu.cn/kb/kb_xs.asp";
+    public static final String URI_WHOLE_COURSE = "https://jwc.fdzcxy.edu.cn/kb/kb_xs.asp";
 
     // 综合成绩
     public static final String URI_SYNGRADE = "https://jwc.fdzcxy.edu.cn/cjgl/cx/zhcx_xs.asp";

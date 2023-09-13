@@ -87,7 +87,7 @@ public class EduHttp {
 
     private static String login(String stuID, String stuPassword, String firstCookie, String code) throws Exception {
         // 登录入口url
-        String loginURL = "http://jwc.fdzcxy.edu.cn/loginchk.asp?id=.447517";
+        String loginURL = "https://jwc.fdzcxy.edu.cn/loginchk.asp?id=.447517";
 
         // okHttp
         FormBody formBody = new FormBody.Builder()
