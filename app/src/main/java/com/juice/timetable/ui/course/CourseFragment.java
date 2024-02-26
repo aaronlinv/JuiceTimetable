@@ -875,18 +875,24 @@ public class CourseFragment extends Fragment {
             if (week == 0) {
                 continue;
             }
+            int targetWeek = curWeek + week;
+            // 当前周从 1 开始
+            if (targetWeek <= 0){
+                continue;
+            }
+
             oneWeekCouStr = EduInfo.getTimeTable(
                     stuInfo.getStuID().toString(),
                     stuInfo.getEduPassword(),
-                    Constant.URI_ONE_WEEK + (curWeek + week),
+                    Constant.URI_ONE_WEEK + (targetWeek),
                     requireContext());
 
             oneWeekCourList = ParseOneWeek.parseCourse(oneWeekCouStr);
-            LogUtils.getInstance().d("获取第 <" + (curWeek + week) + "> 周课表 -- > " + oneWeekCourList);
+            LogUtils.getInstance().d("获取第 <" + targetWeek + "> 周课表 -- > " + oneWeekCourList);
             couList.addAll(oneWeekCourList);
             // 删除该数据库中 单前周和后两周的课表，避免冲突
             if (week > 0) {
-                delList.add((curWeek + week));
+                delList.add((targetWeek));
             }
         }
         // 添加当前周
