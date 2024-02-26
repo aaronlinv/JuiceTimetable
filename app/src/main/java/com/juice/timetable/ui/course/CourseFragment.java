@@ -733,7 +733,7 @@ public class CourseFragment extends Fragment {
 
                     LogUtils.getInstance().d("setOnRefreshListener:解析完整课表结束");
                     if (courses.isEmpty()) {
-                        message.obj = "没有解析到完整课表\n可能是放假啦~";
+                        message.obj = "没有解析到完整课表\n课程未排期或是放假啦~";
                         mHandler.sendMessage(message);
                         return;
                     }
