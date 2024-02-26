@@ -30,6 +30,8 @@ public class Constant {
     // GitHub地址
     public static final String URI_GITHUB = "https://github.com/aaronlinv/JuiceTimetable";
 
+    // 橙汁的酷安地址
+    public static final String URI_COOLAPK = "https://www.coolapk.com/feed/53910362?shareKey=OTQ5NTM4N2JkMDM4NjVkYzlhYzE~";
 
     // 登录成功
     public static final int MSG_LOGIN_SUCCESS = 2020;

@@ -101,7 +101,7 @@ public class AboutFragment extends Fragment {
             startActivity(intent);
         });
         cookApk.setOnClickListener(v -> {
-            Uri uri = Uri.parse(versionDTO.getDownloadUrl());
+            Uri uri = Uri.parse(Constant.URI_COOLAPK);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
         });

@@ -1,8 +1,8 @@
 package com.juice.timetable.data.parse.dto;
 
 public class VersionDTO {
-    private String latestVersion;
-    private String downloadUrl;
+    private String latestVersion = "";
+    private String downloadUrl = "";
 
     public VersionDTO(String latestVersion, String downloadUrl) {
         this.latestVersion = latestVersion;
