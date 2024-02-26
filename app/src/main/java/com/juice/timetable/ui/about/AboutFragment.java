@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment;
 import com.juice.timetable.R;
 import com.juice.timetable.app.Constant;
 import com.juice.timetable.data.parse.ParseVersion;
+import com.juice.timetable.data.parse.dto.VersionDTO;
 import com.juice.timetable.utils.LogUtils;
 import com.juice.timetable.utils.VersionUtils;
 
@@ -40,8 +41,7 @@ public class AboutFragment extends Fragment {
     private TextView developer, cookApk, github, versionView, feedback;
     private Button checkUpdatesButton;
     private Handler mHandler;
-    private String info;
-    private String id;
+    private VersionDTO versionDTO;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -69,17 +69,16 @@ public class AboutFragment extends Fragment {
     // 按钮点击跳转功能
     private void setOnClickListener() {
         checkUpdatesButton.setOnClickListener(v -> {
-            // 爬虫获取酷安的版本号
+            // 爬虫获取 GitHub 的版本号
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     Message message = new Message();
                     try {
                         LogUtils.getInstance().d("检查更新爬虫线程启动");
-                        String str = ParseVersion.getSource(Constant.URI_COOLAPK);
-                        id = ParseVersion.getVersion(str);
-                        info = ParseVersion.getVersionInfo(str);
-                        LogUtils.getInstance().d("酷安id-->" + id);
+                        String str = ParseVersion.getSource(Constant.URI_GITHUB_RELEASE_API);
+                        versionDTO = ParseVersion.getVersion(str);
+                        LogUtils.getInstance().d("GitHub 版本-->" + versionDTO);
 
                         message.what = Constant.MSG_COOLAPKID_SUCCESS;
                         mHandler.sendMessage(message);
@@ -102,7 +101,7 @@ public class AboutFragment extends Fragment {
             startActivity(intent);
         });
         cookApk.setOnClickListener(v -> {
-            Uri uri = Uri.parse(Constant.URI_COOLAPK);
+            Uri uri = Uri.parse(versionDTO.getDownloadUrl());
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
         });
@@ -141,8 +140,6 @@ public class AboutFragment extends Fragment {
     }
 
     private void checkUpdate() {
-        Uri uri = Uri.parse(Constant.URI_COOLAPK);
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         // 获取当前app的版本号
         String currVersion = VersionUtils.getVersionCode(requireActivity());
         // 接受线程消息
@@ -153,16 +150,20 @@ public class AboutFragment extends Fragment {
                 super.handleMessage(msg);
                 // 询问是否下载更新
                 if (msg.what == Constant.MSG_COOLAPKID_SUCCESS) {
-                    if (id.equals(currVersion)) {
+                    String latestVersion = versionDTO.getLatestVersion();
+                    if (latestVersion.equals(currVersion)) {
                         Toasty.custom(requireActivity(), "已经是最新版本",
                                 getResources().getDrawable(R.drawable.about, null),
                                 getResources().getColor(R.color.green, null),
                                 getResources().getColor(R.color.white, null),
                                 LENGTH_SHORT, false, true).show();
                     } else {
+                        Uri uri = Uri.parse(versionDTO.getDownloadUrl());
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+
                         new AlertDialog.Builder(requireActivity())
                                 .setTitle(getString(R.string.new_version_dialog_title))
-                                .setMessage(info.replace(" ", "\n"))
+                                .setMessage(getString(R.string.new_version_dialog_message) + latestVersion)
                                 .setPositiveButton(R.string.ok_quit_dialog_title, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {

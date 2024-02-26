@@ -34,7 +34,9 @@
 - 更改软件所存储的认证信息
 
 ## 下载链接
-<a href="https://www.coolapk.com/apk/265263">前往酷安下载</a>
+<a href="https://github.com/aaronlinv/JuiceTimetable/releases">GitHub Release 下载（推荐）</a>
+
+<a href="https://www.coolapk.com/apk/265263">酷安下载（已下架）</a>
 
 ## 截图预览
 <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/02.jpg" width="200" />  <img src="https://raw.githubusercontent.com/aaronlinv/JuiceTimetable/dev/img/03.jpg" width="200" />

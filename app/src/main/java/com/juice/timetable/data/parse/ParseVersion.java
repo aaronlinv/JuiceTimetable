@@ -1,18 +1,17 @@
 package com.juice.timetable.data.parse;
 
+import com.juice.timetable.data.parse.dto.VersionDTO;
 import com.juice.timetable.utils.HttpUtils;
+import com.juice.timetable.utils.LogUtils;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class ParseVersion {
-
-
     public static String getSource(String url) throws Exception {
         OkHttpClient client = HttpUtils.getHttpClient();
         Request request = new Request.Builder()
@@ -28,18 +27,19 @@ public class ParseVersion {
         return result;
     }
 
-    public static String getVersion(String Source) {
-        Document doc = Jsoup.parse(Source);
-        Elements rootSelect = doc.select("div.apk_left_one > div > div > div.apk_topbar_mss > p.detail_app_title > span");
+    public static VersionDTO getVersion(String source) {
+        try {
+            JSONObject json = new JSONObject(source);
+            String latestVersion = json.getString("tag_name");
+            String downloadUrl = json.getString("html_url");
 
-        return rootSelect.text();
-    }
+            latestVersion = latestVersion.replace("v","");
+            return new VersionDTO(latestVersion, downloadUrl);
 
-    public static String getVersionInfo(String Source) {
-        Document doc = Jsoup.parse(Source);
-        Elements rootSelect = doc.select("div.apk_left_two > div > div:nth-child(2) > p.apk_left_title_info");
-
-        return rootSelect.text();
+        } catch (JSONException e) {
+            LogUtils.getInstance().e("获取版本错误：" + e.getMessage());
+        }
+        return new VersionDTO();
     }
 
 }

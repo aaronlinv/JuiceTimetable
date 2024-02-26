@@ -24,8 +24,8 @@ public class Constant {
     // 考试查询
     public static final String URI_EXAM = "https://jwc.fdzcxy.edu.cn/ksgl/ksap/ksap_xs_list.asp";
 
-    // 橙汁的酷安地址
-    public static final String URI_COOLAPK = "https://www.coolapk.com/apk/com.juice.timetable";
+    // GitHub Release API
+    public static final String URI_GITHUB_RELEASE_API = "https://api.github.com/repos/aaronlinv/JuiceTimetable/releases/latest";
 
     // GitHub地址
     public static final String URI_GITHUB = "https://github.com/aaronlinv/JuiceTimetable";

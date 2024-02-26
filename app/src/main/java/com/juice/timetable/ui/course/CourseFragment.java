@@ -53,6 +53,7 @@ import com.juice.timetable.data.http.EduInfo;
 import com.juice.timetable.data.parse.ParseAllWeek;
 import com.juice.timetable.data.parse.ParseOneWeek;
 import com.juice.timetable.data.parse.ParseVersion;
+import com.juice.timetable.data.parse.dto.VersionDTO;
 import com.juice.timetable.data.viewmodel.AllWeekCourseViewModel;
 import com.juice.timetable.data.viewmodel.OneWeekCourseViewModel;
 import com.juice.timetable.data.viewmodel.StuInfoViewModel;
@@ -88,8 +89,7 @@ public class CourseFragment extends Fragment {
     private List<CourseViewBean> mCourseViewBeanList = new ArrayList<>();
     private int mCurViewPagerNum;
     private MaterialSpinner mSpinner;
-    private String id;
-    private String info;
+    private VersionDTO versionDTO;
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -173,15 +173,14 @@ public class CourseFragment extends Fragment {
                         Message message = new Message();
                         try {
                             LogUtils.getInstance().d("爬虫线程启动");
-                            String str = ParseVersion.getSource(Constant.URI_COOLAPK);
-                            id = ParseVersion.getVersion(str);
-                            info = ParseVersion.getVersionInfo(str);
-                            LogUtils.getInstance().d("酷安id-->" + id);
+                            String str = ParseVersion.getSource(Constant.URI_GITHUB_RELEASE_API);
+                            versionDTO = ParseVersion.getVersion(str);
+                            LogUtils.getInstance().d("GitHub 版本：" + versionDTO);
 
                             message.what = Constant.MSG_COOLAPKID_SUCCESS;
                             mHandler.sendMessage(message);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            LogUtils.getInstance().e("首页检查更新失败：" + e);
                         }
                     }
                 }).start();
@@ -191,11 +190,11 @@ public class CourseFragment extends Fragment {
                 public void onClick(View v) {
                     new AlertDialog.Builder(requireActivity())
                             .setTitle(getString(R.string.new_version_dialog_title))
-                            .setMessage(info.replace(" ", "\n"))
+                            .setMessage(getString(R.string.new_version_dialog_message) + versionDTO.getLatestVersion())
                             .setPositiveButton(R.string.ok_quit_dialog_title, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Uri uri = Uri.parse(Constant.URI_COOLAPK);
+                                    Uri uri = Uri.parse(versionDTO.getDownloadUrl());
                                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                                     startActivity(intent);
                                 }
@@ -687,6 +686,7 @@ public class CourseFragment extends Fragment {
      */
     private void refreshData() {
         new Thread() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
                 super.run();
@@ -813,7 +813,7 @@ public class CourseFragment extends Fragment {
                         break;
                     case Constant.MSG_COOLAPKID_SUCCESS:
                         String currVersion = VersionUtils.getVersionCode(requireActivity());
-                        if (!id.equals(currVersion)) {
+                        if (!versionDTO.getLatestVersion().equals(currVersion)) {
                             binding.tvCheckIn.setVisibility(View.VISIBLE);
                         }
                 }
@@ -826,6 +826,7 @@ public class CourseFragment extends Fragment {
      *
      * @param allWeekCourse
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void getOneWeekCou(List<Course> allWeekCourse) throws Exception {
         // 获取用户数据
         StuInfo stuInfo = mStuInfoViewModel.selectStuInfo();

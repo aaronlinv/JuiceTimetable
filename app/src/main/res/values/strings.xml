@@ -109,7 +109,8 @@
 
     <string name="check_for_updates">检查更新</string>
     <string name="new_version_dialog_title_course">有新版可用</string>
-    <string name="new_version_dialog_title">有新版可用，是否前往下载？</string>
+    <string name="new_version_dialog_title">发现新版本</string>
+    <string name="new_version_dialog_message">建议前往 GitHub 下载安装\n最新版本：</string>
     <string name="ok_quit_dialog_title">好</string>
     <string name="no_quit_dialog_title">取消</string>
     <string name="ignore_quit_dialog_title">下次一定</string>
