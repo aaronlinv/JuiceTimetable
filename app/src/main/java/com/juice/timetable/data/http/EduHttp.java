@@ -36,7 +36,11 @@ public class EduHttp {
         LogUtils.getInstance().e("自动识别验证结果：" + code);
 
         String cookies = login(stuID, stuPassword, firstCookie, code);
-        return cookies;
+
+        String muser = extractValueFromCookie(cookies, "muser");
+        String ssid = extractValueFromCookie(cookies, "ssid");
+
+        return createCookieString(muser, ssid);
     }
 
     /**
@@ -121,5 +125,24 @@ public class EduHttp {
         // 需要添加Cookie：muser
         cookie.append("muser=").append(stuID);
         return cookie.toString();
+    }
+
+    private static String extractValueFromCookie(String cookieString, String key) {
+        String[] cookies = cookieString.split(";");
+
+        for (String cookie : cookies) {
+            String[] keyValue = cookie.trim().split("=");
+
+            if (keyValue.length == 2 && keyValue[0].equals(key)) {
+                return keyValue[1];
+            }
+        }
+
+        return null;
+    }
+
+    private static String createCookieString(String muser, String ssid) {
+        return "muser=" + muser + "; " +
+                "ssid=" + ssid + "; ";
     }
 }
