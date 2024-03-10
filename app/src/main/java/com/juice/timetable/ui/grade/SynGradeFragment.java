@@ -143,9 +143,10 @@ public class SynGradeFragment extends Fragment {
                 try {
                     //获取成绩网页源码
                     String pageSource = GradeInfo.getGradeSource(Constant.URI_SYNGRADE);
-                    if (pageSource.contains(String.valueOf(R.string.need_evaluation))) {
-//                        mSlRefresh.setRefreshing(false);
+                    String needEvaluationStr = getString(R.string.need_evaluation);
+                    if (pageSource.contains(needEvaluationStr)) {
                         Looper.prepare();
+                        mSlRefresh.setRefreshing(false);
                         Toasty.custom(requireActivity(),
                                 getResources().getString(R.string.need_evaluation),
                                 getResources().getDrawable(R.drawable.grade, null),
