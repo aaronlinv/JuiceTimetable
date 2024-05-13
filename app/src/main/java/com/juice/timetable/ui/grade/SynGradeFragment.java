@@ -176,10 +176,11 @@ public class SynGradeFragment extends Fragment {
                     LogUtils.getInstance().d("setOnRefreshListener：" + e.getMessage());
                     if (e.getMessage().contains("Unable to resolve host")) {
                         message.obj = "网络好像不太好，请检查网络";
-                        mHandler.sendMessage(message);
                     } else {
-                        message.obj = e.getMessage();
+                        message.obj = "获取综合成绩异常："+e.getMessage();
                     }
+                    message.what = Constant.MSG_PARSESYN_FAILED;
+                    mHandler.sendMessage(message);
                 }
             }
         }).start();
@@ -203,9 +204,14 @@ public class SynGradeFragment extends Fragment {
                         }
                     });
                     mSlRefresh.setRefreshing(false);
-                } else if (message.obj == "网络好像不太好，请检查网络") {
+                } else if (message.what == Constant.MSG_PARSESYN_FAILED) {
+                    String messageStr = "获取综合成绩异常";
+                    if (message.obj != null) {
+                        messageStr = message.obj.toString();
+                    }
+
                     Toasty.custom(requireActivity(),
-                            message.obj.toString(),
+                            messageStr,
                             getResources().getDrawable(R.drawable.ic_error, null),
                             getResources().getColor(R.color.red, null),
                             getResources().getColor(R.color.white, null),

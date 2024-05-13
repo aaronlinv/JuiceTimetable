@@ -3,6 +3,7 @@ package com.juice.timetable.data.parse;
 import com.juice.timetable.data.bean.Credit;
 import com.juice.timetable.data.bean.SynGrade;
 import com.juice.timetable.data.bean.UniGrade;
+import com.juice.timetable.utils.LogUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -53,7 +54,7 @@ public class ParseGrade {
         Document doc = Jsoup.parse(parseStr);
         //如果存在成绩评测，就直接返回空列表
 
-        Elements rootselect = doc.select("body > table > tbody > tr:nth-child(2) > td > table:nth-child(4) > tbody > tr");
+        Elements rootselect = doc.select("#tableSort > tbody > tr");
 
         int synGradeId = 0;
 
@@ -117,6 +118,10 @@ public class ParseGrade {
 
         for (Element e : r) {
             Elements all = e.select("td");
+            if (all.size()<3 ){
+                LogUtils.getInstance().d("获取综合成绩跳过备注行："+all);
+                continue;
+            }
             Element CourseTypeALL = all.get(0);
             String CourseType = CourseTypeALL.text();
 
