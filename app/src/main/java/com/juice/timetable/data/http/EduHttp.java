@@ -117,6 +117,8 @@ public class EduHttp {
             throw new Exception("验证码识别失败，请再尝试一次");
         } else if (result.contains("您已连续输错密码3次，请过5分钟再尝试")) {
             throw new Exception("您已连续输错教务网密码3次，请过5分钟再尝试");
+        } else if (result.contains("用户密码修改")) {
+            throw new Exception("密码太简单，请登陆教务网重新设置密码");
         } else if (!result.contains("网络办公系统")) {
             LogUtils.getInstance().d("模拟登录成功");
         }
