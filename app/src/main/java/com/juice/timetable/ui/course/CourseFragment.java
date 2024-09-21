@@ -751,11 +751,11 @@ public class CourseFragment extends Fragment {
                     try {
                         // 传入完整课表 用来匹配颜色和课程信息
                         getOneWeekCou(courses);
+                        message.obj = "ok";
                     } catch (Exception e) {
                         message.obj = e.getMessage();
                     }
                     LogUtils.getInstance().d("setOnRefreshListener:获取完整课表和周课表 写入数据库结束");
-                    message.obj = "ok";
                     mHandler.sendMessage(message);
                 }
             }
