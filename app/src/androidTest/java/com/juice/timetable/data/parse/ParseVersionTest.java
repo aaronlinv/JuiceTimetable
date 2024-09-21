@@ -23,7 +23,8 @@ public class ParseVersionTest {
         VersionDTO version = ParseVersion.getVersion(source);
         String latestVersion = version.getLatestVersion();
         assertThat(latestVersion).isNotEmpty();
-        assertThat(latestVersion).startsWith(".");
+        String[] versionArr = latestVersion.split("\\.");
+        assertThat(versionArr).hasSize(3);
 
         String downloadUrl = version.getDownloadUrl();
         assertThat(downloadUrl).startsWith("https://").contains(latestVersion);
