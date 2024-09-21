@@ -3,6 +3,7 @@ package com.juice.timetable.data.parse;
 
 import com.juice.timetable.data.bean.OneWeekCourse;
 import com.juice.timetable.utils.LogUtils;
+import com.juice.timetable.utils.Utils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,9 +27,6 @@ import java.util.List;
 public class ParseOneWeek {
     /**
      * 周课表解析
-     *
-     * @param parseStr
-     * @return
      */
     public static List<OneWeekCourse> parseCourse(String parseStr) {
         List<OneWeekCourse> couList = new ArrayList<>();
@@ -129,5 +127,20 @@ public class ParseOneWeek {
         // 解析结束
         LogUtils.getInstance().e("结束解析当前周课表--->" + couList);
         return couList;
+    }
+
+    // 获取当前周
+    public static int getCurWeek(String parseStr) {
+        Document doc = Jsoup.parse(parseStr);
+        String title = doc.getElementsByClass("td3").text().trim();
+
+        try {
+            int curWeek = Integer.parseInt(title.substring(title.indexOf("第") + 1, title.indexOf("周")));
+            LogUtils.getInstance().e("开始解析当前周课表--->" + curWeek);
+            return curWeek;
+        } catch (Exception e) {
+            LogUtils.getInstance().e("周课表解析当前周失败---->" + e.getMessage());
+            return Utils.UNSET_CUR_WEEK;
+        }
     }
 }

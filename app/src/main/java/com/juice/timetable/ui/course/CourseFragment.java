@@ -839,18 +839,26 @@ public class CourseFragment extends Fragment {
             throw new Exception("没有查询到周课表信息");
         }
         oneWeekCourList = ParseOneWeek.parseCourse(oneWeekCouStr);
-        if (oneWeekCouStr.isEmpty()) {
-            throw new Exception("没有查询到周课表信息");
+
+        int curWeek = Utils.UNSET_CUR_WEEK;
+        if (oneWeekCourList.isEmpty()) {
+            LogUtils.getInstance().d("没有查询到周课表信息");
+            curWeek = ParseOneWeek.getCurWeek(oneWeekCouStr);
+        } else {
+            curWeek = oneWeekCourList.get(0).getInWeek();
         }
-        // 当前周 第13周 curWeek就是13
-        int curWeek = oneWeekCourList.get(0).getInWeek();
         LogUtils.getInstance().d("获取第 <" + curWeek + "> 周课表 -- > " + oneWeekCourList);
         // 存储所有周课表
         List<OneWeekCourse> couList = new ArrayList<>(oneWeekCourList);
 
         // 设置当前周
-        Utils.setFirstWeekPref(curWeek);
-        LogUtils.getInstance().d("设置当前周为 -- > " + curWeek);
+        if (curWeek != Utils.UNSET_CUR_WEEK){
+            Utils.setFirstWeekPref(curWeek);
+            Constant.CUR_WEEK = curWeek;
+            LogUtils.getInstance().d("设置当前周为 -- > " + curWeek);
+        } else {
+            throw new Exception("没有解析到当前周");
+        }
 
         // 获取数据库中存了哪些周的周课表
         List<Integer> inWeek = mOneWeekCourseViewModel.getWeek();

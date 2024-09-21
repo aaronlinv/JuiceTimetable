@@ -18,6 +18,11 @@ import java.util.List;
  * </pre>
  */
 public class ParseOneWeekTest {
+    @Test
+    public void getCurWeek(){
+        Assert.assertEquals(11,ParseOneWeek.getCurWeek(getOneWeekStr()));
+        Assert.assertEquals(ParseOneWeek.UNSET_CUR_WEEK,ParseOneWeek.getCurWeek(""));
+    }
 
     /**
      * 17计科
